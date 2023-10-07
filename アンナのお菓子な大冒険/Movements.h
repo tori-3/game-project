@@ -397,6 +397,8 @@ public:
 
 	void start(Character* character)override
 	{
+		Vec2 parentPos = character->joint->pos;
+
 		/*for (auto& move : m_movements)
 		{
 			delete move;
@@ -428,6 +430,8 @@ public:
 			character->get(name)->z = baseJoint->z;
 		}
 		//for (auto& move : m_movements)move->start(character);
+
+		character->joint->pos = parentPos;
 	}
 
 	void update(Character* character, double dt = Scene::DeltaTime())override

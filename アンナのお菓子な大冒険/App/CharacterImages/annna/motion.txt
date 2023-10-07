@@ -55,7 +55,7 @@ RotateTo,rshin,30,@fase1
 
 #Walk
 //腕の角度をセット
-Base,body
+//Base,body
 RotateTo,rsholder,-20
 RotateTo,lsholder,20
 RotateTo,rlower_arm,-10
@@ -65,7 +65,7 @@ StartMotion,ArmWalk,true,1.8
 
 #Standing
 //立ちポーズ
-Base,body
+//Base,body
 RotateTo,rshin,30,0.2
 RotateTo,lupper_arm,10,0.2
 

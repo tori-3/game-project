@@ -308,14 +308,6 @@ public:
 		return base.get();
 	}
 
-	void setPos(const Vec2& pos) {
-		joint->pos = pos;
-	}
-
-	void setX(double x) {
-		joint->pos.x = x;
-	}
-
 	void update(double dt = Scene::DeltaTime()) {
 		if (KeyZ.pressed())for (auto& joint : getBase()->get(U"base-body")->getAll())Print << joint->size;
 		for (auto it = motionTable.begin(); it != motionTable.end();)
@@ -367,7 +359,18 @@ public:
 	}
 
 	void touchGround(double y) {
-		joint->pos.y += y - nowMaxY- joint->pos.y;
+		addPos({0,y - getMaxY()});
+	}
+
+	void setPos(const Vec2& pos)
+	{
+		joint->pos = pos;
+		joint->update();
+	}
+
+	void addPos(const Vec2& pos) {
+		joint->pos += pos;
+		joint->update();
 	}
 
 	double getMaxY() {
