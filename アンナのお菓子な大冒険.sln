@@ -7,8 +7,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "アンナのお菓子な大
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ステージエディタ改", "ステージエディタ改\ステージエディタ改.vcxproj", "{BBC8AD56-1137-4240-B08C-8A007477E8FF}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenSiv3D_0.6.61", "OpenSiv3D_0.6.61\OpenSiv3D_0.6.61.vcxproj", "{3D0000BF-B42C-4105-A965-0741FFB0AAF0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -23,10 +21,6 @@ Global
 		{BBC8AD56-1137-4240-B08C-8A007477E8FF}.Debug|x64.Build.0 = Debug|x64
 		{BBC8AD56-1137-4240-B08C-8A007477E8FF}.Release|x64.ActiveCfg = Release|x64
 		{BBC8AD56-1137-4240-B08C-8A007477E8FF}.Release|x64.Build.0 = Release|x64
-		{3D0000BF-B42C-4105-A965-0741FFB0AAF0}.Debug|x64.ActiveCfg = Debug|x64
-		{3D0000BF-B42C-4105-A965-0741FFB0AAF0}.Debug|x64.Build.0 = Debug|x64
-		{3D0000BF-B42C-4105-A965-0741FFB0AAF0}.Release|x64.ActiveCfg = Release|x64
-		{3D0000BF-B42C-4105-A965-0741FFB0AAF0}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
