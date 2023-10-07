@@ -1,0 +1,308 @@
+﻿#pragma once
+#include"HitBox.h"
+#include"DataManager.h"
+#include"setting.h"
+
+#include"RingEffect.h"
+
+
+class Block {
+public:
+	Block() {};
+	virtual void reaction(const Point& pos, PhysicsBox* box)
+	{
+		box->hit(Rect{ pos * rect_size,rect_size });
+	}
+
+	virtual void update(const Point& pos){}
+
+	virtual void draw(const Point& pos)const {};
+};
+
+class CakeSurface :public Block
+{
+public:
+	void draw(const Point& pos)const override
+	{
+		TextureAsset(U"CakeSurface").resized(rect_size).draw(pos * rect_size);
+	}
+};
+
+class CakeGround :public Block
+{
+public:
+	void draw(const Point& pos)const override
+	{
+		TextureAsset(U"CakeGround").resized(rect_size).draw(pos * rect_size);
+	}
+};
+
+class CakeRightWall :public Block
+{
+public:
+	void draw(const Point& pos)const override
+	{
+		TextureAsset(U"CakeRightWall").resized(rect_size).draw(pos * rect_size);
+	}
+};
+
+class CakeLeftWall:public Block
+{
+public:
+	void draw(const Point& pos)const override
+	{
+		TextureAsset(U"CakeLeftWall").resized(rect_size).draw(pos * rect_size);
+	}
+};
+
+class CakeRightEdge :public Block
+{
+public:
+	void draw(const Point& pos)const override
+	{
+		TextureAsset(U"CakeRightEdge").resized(rect_size).draw(pos * rect_size);
+	}
+};
+
+class CakeLeftEdge :public Block
+{
+public:
+	void draw(const Point& pos)const override
+	{
+		TextureAsset(U"CakeLeftEdge").resized(rect_size).draw(pos * rect_size);
+	}
+};
+
+class ChocolateWall :public Block
+{
+public:
+	void draw(const Point& pos)const override
+	{
+		TextureAsset(U"ChocolateWall").resized(rect_size).draw(pos * rect_size);
+	}
+};
+
+
+class Slider :public Block
+{
+public:
+	void reaction(const Point& pos, PhysicsBox* box)override
+	{
+		Point p = pos*rect_size;
+		const Triangle triangle{ p, p + Point(0,rect_size), p + Point(rect_size,rect_size) };
+		box->hit(triangle);
+		if (box->lines(Direction::left).intersects(triangle)) {
+			*(box->pos) += Vec2(5, 5);
+		}
+	}
+
+	void draw(const Point& pos)const override
+	{
+		Point p = pos * rect_size;
+		Triangle{ p, p + Point(0,rect_size), p + Point(rect_size,rect_size) }.draw(Color{ 240 });
+	}
+};
+
+class Moving :public Block
+{
+public:
+	void reaction(const Point& pos, PhysicsBox* box)override
+	{
+		RectF rect{ pos * rect_size,rect_size };
+		rect.x += Periodic::Triangle0_1(3s, DataManager::get().time) * rect_size * 3;
+		if (box->lines(Direction::down).intersects(rect)) {
+			if (Periodic::Square0_1(3s, DataManager::get().time))box->pos->x += Scene::DeltaTime() / 1.5 * rect_size * 3;
+			else box->pos->x -= Scene::DeltaTime() / 1.5 * rect_size * 3;
+		}
+		box->hit(rect);
+	}
+
+	void draw(const Point& pos)const override
+	{
+		RectF rect{ pos * rect_size,rect_size };
+		rect.x += Periodic::Triangle0_1(3s, DataManager::get().time) * rect_size * 3;
+		TextureAsset(U"ChocolateWall").resized(rect_size).draw(rect.pos);
+	}
+};
+
+class Elevator :public Block
+{
+public:
+	void reaction(const Point& pos, PhysicsBox* box)override
+	{
+		Rect rect{ pos * rect_size,rect_size };
+		rect.y += rect_size * 3;
+		rect.y -= (int32)(Periodic::Triangle0_1(6s, DataManager::get().time) * rect_size * 5);
+		box->hit(rect);
+
+		if (box->lines(Direction::down).intersects(rect) && not Periodic::Square0_1(6s, DataManager::get().time)) {
+			box->pos->y += (rect_size * 5)*Scene::DeltaTime() / 3+0.2;
+		}
+	}
+	void draw(const Point& pos)const override
+	{
+		Rect rect{ pos * rect_size,rect_size };
+		rect.y += rect_size * 3;
+		rect.y -= (int32)(Periodic::Triangle0_1(6s, DataManager::get().time) * rect_size * 5);
+		TextureAsset(U"ChocolateWall").resized(rect_size).draw(rect.pos);
+	}
+};
+
+
+
+
+class Spring :public Block
+{
+public:
+	class CookieSpring
+	{
+	public:
+
+		void update(bool pressed)
+		{
+
+			for (m_accumulatedTime += Scene::DeltaTime(); 0.005 <= m_accumulatedTime; m_accumulatedTime -= 0.005)
+			{
+				// ばねの力（変化を打ち消す方向）
+				double force = (-0.02 * m_x);
+
+				// 画面を押しているときに働く力
+				if (pressed)force += 0.01;
+
+				// 速度に力を適用（減衰もさせる）
+				m_velocity = (m_velocity + force) * 0.92;
+
+				// 位置に反映
+				m_x += m_velocity;
+			}
+		}
+
+		double get() const
+		{
+			return m_x;
+		}
+
+	private:
+
+		// ばねの伸び
+		double m_x = 0.0;
+
+		// ばねの速度
+		double m_velocity = 0.0;
+
+		// ばねの蓄積時間
+		double m_accumulatedTime = 0.0;
+	}spring;
+
+	bool flg = false;
+
+	void reaction(const Point& pos,PhysicsBox* box)override {
+		RectF rect{ pos * rect_size + Vec2(0,spring.get() * rect_size),rect_size,rect_size * (1 - spring.get()) };
+		box->hit(rect);
+		if (box->lines(Direction::down).intersects(rect)) {
+			(box->vel->y) = -Min(Abs(box->vel->y), 800.0);
+			flg = true;
+
+			DataManager::get().effect.add<RingEffect>(rect.center());
+		}
+
+	}
+
+	void update(const Point& pos)override {
+		spring.update(flg);
+		flg = false;
+	}
+
+	void draw(const Point& pos)const override {
+		RectF rect{ pos * rect_size + Vec2(0,spring.get() * rect_size),rect_size,rect_size * (1 - spring.get()) };
+		rect.draw();
+	}
+};
+
+class StrawberrySoldierBlock :public Block {
+public:
+
+	bool bornFlg = false;
+
+	void reaction(const Point& pos, PhysicsBox* box)override{}
+
+	void update(const Point& pos)override {
+		if (not bornFlg) {
+			DataManager::get().addEntity(U"StrawberrySoldier", pos* rect_size + Vec2{ 0.5,0.5 }*rect_size);
+			bornFlg = true;
+		}
+	}
+
+};
+
+class CookieSoldierBlock :public Block {
+public:
+
+	bool bornFlg = false;
+
+	void reaction(const Point& pos, PhysicsBox* box)override {}
+
+	void update(const Point& pos)override {
+		if (not bornFlg) {
+			DataManager::get().addEntity(U"CookieSoldier", pos * rect_size+Vec2{0.5,0.5}*rect_size);
+			bornFlg = true;
+		}
+	}
+
+};
+
+class Hawk :public Block {
+public:
+	Hawk() {
+		TextureAsset::Register(U"Hawk", U"🦅"_emoji, TextureDesc::Mipped);
+	}
+
+	bool touchFlg = false;
+
+	void reaction(const Point& pos, PhysicsBox* box)override {}
+
+	void update(const Point& pos)override {
+		if (DataManager::get().playerPos.intersects(Circle{ (pos + Vec2::All(0.5)) * rect_size,rect_size * 2 })) {
+			DataManager::get().table.emplace(U"DoorOpen");
+			if (not touchFlg) {
+				touchFlg = true;
+				DataManager::get().talkWindow.addTalk(U"鷹", U"やあそこのお嬢さん。");
+				DataManager::get().talkWindow.addTalk(U"鷹", U"上の扉の鍵ならこの崖の向こうにありますよ。");
+				DataManager::get().talkWindow.addTalk(U"鷹", U"よければ取って来ましょうか？");
+				DataManager::get().talkWindow.addTalk(U"ゲーム", U"本当はここでミニゲームが始める");
+				DataManager::get().talkWindow.addTalk(U"ゲーム", U"扉が開きました。");
+			}
+		}
+	}
+
+	void draw(const Point& pos)const override {
+		Circle{ (pos + Vec2::All(0.5)) * rect_size,rect_size*2 }.drawFrame(2,Palette::Red);
+		TextureAsset(U"Hawk").resized(rect_size * 1.2).draw(pos * rect_size);
+	}
+};
+
+class Door :public Block {
+public:
+
+	Timer timer{ 1s };
+
+	void reaction(const Point& pos, PhysicsBox* box)override {}
+
+	void update(const Point& pos)override {
+		if (DataManager::get().table.contains(U"DoorOpen")) {
+			timer.start();
+
+			if (Rect{ pos * rect_size,rect_size * 2 }.intersects(DataManager::get().playerPos)) {
+				DataManager::get().table.emplace(U"Clear");
+			}
+		}
+	}
+
+	void draw(const Point& pos)const override {
+		Rect{ pos * rect_size,rect_size * 2 }.draw(Palette::Black);
+		double d = Sin(timer.sF() * 80_deg+10_deg);
+		TextureAsset(U"Door").resized(rect_size * 2).scaled(d,1).draw(pos * rect_size);
+		TextureAsset(U"Door").resized(rect_size * 2).scaled(d,1).mirrored().draw(pos * rect_size+Vec2::UnitX()*(1-d)*2* rect_size);
+	}
+
+};

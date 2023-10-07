@@ -1,0 +1,36 @@
+﻿{
+  "Body": {
+    "arm": {
+      "Parent": "base-body",
+      "Position": "(0, 0)",
+      "RotateCenter": "(14.77154, 44.53182)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/yukidaruma/arm.png",
+      "Z": 10.0
+    },
+    "base-body": {
+      "Parent": "__Main__",
+      "Position": "(600, 350)",
+      "RotateCenter": "(-19.86541, 66.51381)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/yukidaruma/base-body.png",
+      "Z": -10.0
+    },
+    "hat": {
+      "Parent": "head",
+      "Position": "(0, 0)",
+      "RotateCenter": "(17.70115, -77.46486)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/yukidaruma/hat.png",
+      "Z": 5.0
+    },
+    "head": {
+      "Parent": "base-body",
+      "Position": "(0, 0)",
+      "RotateCenter": "(-12.59334, 6.56271)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/yukidaruma/head.png",
+      "Z": 0.0
+    }
+  }
+}

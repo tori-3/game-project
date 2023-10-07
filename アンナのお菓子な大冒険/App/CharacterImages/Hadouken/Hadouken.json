@@ -1,0 +1,20 @@
+﻿{
+  "Body": {
+    "body": {
+      "Parent": "__Main__",
+      "Position": "(600, 350)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "CharacterImages/Hadouken/body.png",
+      "Z": 0.0
+    },
+    "wing": {
+      "Parent": "body",
+      "Position": "(0, 0)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "CharacterImages/Hadouken/wing.png",
+      "Z": -10.0
+    }
+  }
+}

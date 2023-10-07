@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "アンナのお菓子な大冒険", "アンナのお菓子な大冒険\アンナのお菓子な大冒険.vcxproj", "{06F7E449-4656-437E-AA89-FE7F129A9180}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{06F7E449-4656-437E-AA89-FE7F129A9180}.Debug|x64.ActiveCfg = Debug|x64
+		{06F7E449-4656-437E-AA89-FE7F129A9180}.Debug|x64.Build.0 = Debug|x64
+		{06F7E449-4656-437E-AA89-FE7F129A9180}.Release|x64.ActiveCfg = Release|x64
+		{06F7E449-4656-437E-AA89-FE7F129A9180}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {03839760-7A24-4B1E-B34B-119D836AA1AD}
+	EndGlobalSection
+EndGlobal
