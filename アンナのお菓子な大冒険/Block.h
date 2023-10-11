@@ -306,3 +306,71 @@ public:
 	}
 
 };
+
+class WeakWall:public Block {
+
+	bool breaked = false;
+
+	void reaction(const Point& pos, PhysicsBox* box)override
+	{
+
+		const Rect rect{ pos * rect_size,rect_size };
+
+		if (not breaked) {
+			if (box->lines(Direction::left).intersects(rect) || box->lines(Direction::right).intersects(rect)) {
+				if (Abs(box->vel->x) > 500) {					
+					breaked = true;
+					return;
+				}
+			}
+			box->hit(rect);
+		}		
+	}
+
+	void draw(const Point& pos)const override {
+		if (not breaked) {
+			TextureAsset(U"ChocolateWall").resized(rect_size).draw(pos * rect_size);
+			Rect{ pos * rect_size,rect_size }.draw(ColorF{ Palette::Red,0.3 });
+		}
+	}
+};
+
+class BeltConveyorRight :public Block {
+
+	void reaction(const Point& pos, PhysicsBox* box)override
+	{
+		RectF rect{ pos * rect_size,rect_size };
+		if (rect.stretched(0, 0.1).intersects(box->lines(Direction::down).center())) {
+			box->pos->x += Scene::DeltaTime() * rect_size / 0.5;
+		}
+		box->hit(rect);
+	}
+
+	void draw(const Point& pos)const override {
+		const double size = TextureAsset(U"ChocolateWall").size().x;
+		const double d = Periodic::Sawtooth0_1(0.5s,DataManager::get().time);
+		TextureAsset(U"ChocolateWall")(size - size * d, 0, size * d, size).resized(rect_size * d, rect_size).draw(pos * rect_size);
+		TextureAsset(U"ChocolateWall")(0, 0, size - size * d, size).resized(rect_size * (1 - d), rect_size).draw((pos + Vec2{ d,0 }) * rect_size);
+	}
+};
+
+class BeltConveyorLeft :public Block {
+
+	void reaction(const Point& pos, PhysicsBox* box)override
+	{
+		RectF rect{ pos * rect_size,rect_size };
+
+		if (box->lines(Direction::down).center().intersects(rect.stretched(0,0.1))) {
+			box->pos->x -= Scene::DeltaTime() * rect_size / 0.5;
+		}
+
+		box->hit(rect);
+	}
+
+	void draw(const Point& pos)const override {
+		const double size = TextureAsset(U"ChocolateWall").size().x;
+		const double d = 1-Periodic::Sawtooth0_1(0.5s, DataManager::get().time);
+		TextureAsset(U"ChocolateWall")(size - size * d, 0, size * d, size).resized(rect_size * d, rect_size).draw(pos * rect_size);
+		TextureAsset(U"ChocolateWall")(0, 0, size - size * d, size).resized(rect_size * (1 - d), rect_size).draw((pos + Vec2{ d,0 }) * rect_size);
+	}
+};

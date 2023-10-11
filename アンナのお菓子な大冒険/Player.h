@@ -150,23 +150,23 @@ public:
 			character.addMotion(U"Walk",true);
 		}
 
-		//if (jump==false&& tmpJump==true) {
-		//	if (walk) {
-		//		character.addMotion(U"Walk");
-		//	}
-		//	else {
-		//		character.addMotion(U"Standing");
-		//	}
-		//}
+		if (jump==false&& tmpJump==true) {
+			if (walk) {
+				character.addMotion(U"Walk");
+			}
+			else {
+				character.addMotion(U"Standing");
+			}
+		}
 
-		//if (not jump&&walk != tmpWalk) {
-		//	if (walk) {
-		//		character.addMotion(U"Walk");
-		//	}
-		//	else {
-		//		character.addMotion(U"Standing");
-		//	}
-		//}
+		if (not jump&&walk != tmpWalk) {
+			if (walk) {
+				character.addMotion(U"Walk");
+			}
+			else {
+				character.addMotion(U"Standing");
+			}
+		}
 
 
 		if (MouseL.down()) {
@@ -197,35 +197,35 @@ public:
 
 
 
-		//if (not rushMode) {
+		if (not rushMode) {
 
-		//	//モーション制御
-		//	if ((not tmpWalk) && walk) {
-		//		character.addMotion(U"Walk");
-		//	}
+			//モーション制御
+			if ((not tmpWalk) && walk) {
+				character.addMotion(U"Walk");
+			}
 
-		//	if (tmpWalk && (not walk)) {
-		//		character.removeMotion(U"Walk");
-		//	}
-		//}
+			if (tmpWalk && (not walk)) {
+				character.removeMotion(U"Walk");
+			}
+		}
 
-		//if ((not rushMode) && tmpRush) {
-		//	if (walk) {
-		//		character.addMotion(U"Walk");
-		//	}
-		//	else {
-		//		character.removeMotion(U"Walk");
-		//	}
-		//}
+		if ((not rushMode) && tmpRush) {
+			if (walk) {
+				character.addMotion(U"Walk");
+			}
+			else {
+				character.removeMotion(U"Walk");
+			}
+		}
 
-		Print << character.character.joint->size;
 		character.update(pos, left);
 		character.character.touchGround(hitBox.Get_Box().boundingRect().bottomY());
-		Print << character.character.joint->size;
 	}
 
 	void draw()const override {
 		character.draw();
+
+		hitBox.Get_Box().boundingRect().bottomCenter().asCircle(2).draw(Palette::Orange);
 	}
 
 	void damage(int32 n, const Vec2& force = {})override {

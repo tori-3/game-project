@@ -309,7 +309,6 @@ public:
 	}
 
 	void update(double dt = Scene::DeltaTime()) {
-		if (KeyZ.pressed())for (auto& joint : getBase()->get(U"base-body")->getAll())Print << joint->size;
 		for (auto it = motionTable.begin(); it != motionTable.end();)
 		{
 			if (not it->second.isActive())
@@ -322,12 +321,12 @@ public:
 				++it;
 			}
 		}
+		jointAlign();
+	}
 
+	void jointAlign() {
 		Transformer2D trans{ Mat3x2::Scale(Cos(angle) * scale,scale,joint->pos) };
 		joint->update();
-
-
-		nowMaxY += ((getMaxY()-joint->pos.y) - nowMaxY) / (100);
 	}
 
 	void addMotion(const String&name, const Motion& motion) {
@@ -365,12 +364,11 @@ public:
 	void setPos(const Vec2& pos)
 	{
 		joint->pos = pos;
-		joint->update();
+		jointAlign();
 	}
 
 	void addPos(const Vec2& pos) {
-		joint->pos += pos;
-		joint->update();
+		setPos(joint->pos + pos);
 	}
 
 	double getMaxY() {

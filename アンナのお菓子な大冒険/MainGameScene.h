@@ -129,6 +129,9 @@ public:
 				changeScene(U"MainGameScene");
 			}
 		}
+
+		ClearPrint();
+		Print << player->pos.y;
 	}
 
 	// 描画関数（オプション）

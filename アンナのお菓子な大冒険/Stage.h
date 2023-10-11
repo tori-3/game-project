@@ -25,7 +25,10 @@ public:
 		{U"StrawberrySoldier",[]() {return new StrawberrySoldierBlock(); }},
 		{U"CookieSoldier",[]() {return new CookieSoldierBlock(); }},
 		{U"Hawk",[]() {return new Hawk(); }},
-		{U"Door",[]() {return new Door(); }}
+		{U"Door",[]() {return new Door(); }},
+		{U"WeakWall",[]() {return new WeakWall(); }},
+		{U"BeltConveyorRight",[]() {return new BeltConveyorRight(); }},
+		{U"BeltConveyorLeft",[]() {return new BeltConveyorLeft(); }},
 	};
 
 	~Stage() {

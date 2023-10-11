@@ -28,6 +28,14 @@ public:
 	}
 
 	virtual bool isActive() {
+
+		if (hitBox.touch(Direction::down) && hitBox.touch(Direction::up)) {
+			hp = 0;
+		}
+		if (hitBox.touch(Direction::left) && hitBox.touch(Direction::right)) {
+			hp = 0;
+		}
+
 		return 0<hp&& pos.y<1000;
 	}
 

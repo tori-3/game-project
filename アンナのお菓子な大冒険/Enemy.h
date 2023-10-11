@@ -38,10 +38,6 @@ public:
 			vel.x = 100;
 		}
 
-		if (hitBox.touch(Direction::down) && hitBox.touch(Direction::up) && hitBox.touch(Direction::left) && hitBox.touch(Direction::right)) {
-			hp = 0;
-		}
-
 		hitBox.physicsUpdate();
 		hitBox.update();
 
@@ -103,10 +99,6 @@ public:
 			left = false;
 		}
 
-		if (hitBox.touch(Direction::down) && hitBox.touch(Direction::up) && hitBox.touch(Direction::left) && hitBox.touch(Direction::right)) {
-			hp = 0;
-		}
-
 		hitBox.physicsUpdate();
 		hitBox.update();
 
@@ -137,6 +129,8 @@ class Snowman:public Entity {
 public:
 	bool left = false;
 
+	bool attackMode = false;
+
 	double attackAccumlater=0;
 
 	CharacterSystem character;
@@ -151,25 +145,19 @@ public:
 
 		manager->stage->hit(&hitBox);
 
-		if (Abs(manager->get(U"Player")->pos.x - pos.x) < rect_size * 5) {
-
-			if (manager->get(U"Player")->pos.x < pos.x) {
-				left = true;
-				vel.x = -100;
-			}
-			else if (manager->get(U"Player")->pos.x >= pos.x) {
-				left = false;
-				vel.x = 100;
-			}
+		if (hitBox.touch(Direction::right))
+		{
+			left = true;
 		}
-
-		//プレイヤーに近すぎる場合
-		if (Abs(manager->get(U"Player")->pos.x - pos.x) < rect_size * 0.2) {
+		else if (hitBox.touch(Direction::left)) {
 			left = false;
 		}
 
-		if (hitBox.touch(Direction::down) && hitBox.touch(Direction::up) && hitBox.touch(Direction::left) && hitBox.touch(Direction::right)) {
-			hp = 0;
+		if (left) {
+			vel.x = -100;
+		}
+		else {
+			vel.x = 100;
 		}
 
 		hitBox.physicsUpdate();
@@ -182,10 +170,10 @@ public:
 			else {
 				manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
 			}
+
 		}
 
 		character.update(pos, left);
-
 	}
 
 	void draw()const override {

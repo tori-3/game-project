@@ -118,6 +118,29 @@ void Door(Point pos) {
 	TextureAsset(U"Door").resized(rect_size * 2).mirrored().draw(pos * rect_size);
 }
 
+void WeakWall(Point pos) {
+	TextureAsset(U"ChocolateWall").resized(rect_size).draw(pos * rect_size);
+	Rect{ pos * rect_size,rect_size }.draw(ColorF{ Palette::Red,0.3 });
+}
+
+void BeltConveyorRight(Point pos) {
+	const double size = TextureAsset(U"ChocolateWall").size().x;
+	const double d = Periodic::Sawtooth0_1(2s);
+	TextureAsset(U"ChocolateWall")(size - size * d, 0, size * d, size).resized(rect_size * d, rect_size).draw(pos * rect_size);
+	TextureAsset(U"ChocolateWall")(0, 0, size - size * d, size).resized(rect_size * (1 - d), rect_size).draw((pos + Vec2{ d,0 }) * rect_size);
+
+	//const double d2 = Periodic::Sawtooth0_1(2 / 3.0 * 2);
+	//TextureAsset(U"ChocolateWall")(0,0,size/3*2,size).resized(rect_size*d2/3*2,rect_size).draw(pos * rect_size);
+	//TextureAsset(U"ChocolateWall")(0, 0, size / 3*2, size).resized(rect_size * (1-d2)/3*2, rect_size).draw(Arg::topRight=(pos + Point::UnitX() * 3) * rect_size);
+}
+
+void BeltConveyorLeft(Point pos) {
+	const double size = TextureAsset(U"ChocolateWall").size().x;
+	const double d = 1-Periodic::Sawtooth0_1(2s);
+	TextureAsset(U"ChocolateWall")(size - size * d, 0, size * d, size).resized(rect_size * d, rect_size).draw(pos * rect_size);
+	TextureAsset(U"ChocolateWall")(0, 0, size - size * d, size).resized(rect_size * (1 - d), rect_size).draw((pos + Vec2{ d,0 }) * rect_size);
+}
+
 struct Info {
 	String tag;
 	std::function<void(Point)>func;
@@ -146,7 +169,10 @@ Array<Info>list{
 	{U"Cherries",Cherries,U"さくらんぼ"},
 	{U"Blueberry",Blueberry,U"ブルーベリー"},
 	{U"Hawk",Hawk,U"鷹"},
-	{U"Door",Door,U"ドア"}
+	{U"Door",Door,U"ドア"},
+	{U"WeakWall",WeakWall,U"もろい壁"},
+	{U"BeltConveyorRight",BeltConveyorRight,U"ベルトコンベア(→)"},
+	{U"BeltConveyorLeft",BeltConveyorLeft,U"ベルトコンベア(←)"}
 };
 
 HashTable<String, std::function<void(Point)>> table;
