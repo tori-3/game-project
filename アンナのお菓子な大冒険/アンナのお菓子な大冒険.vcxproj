@@ -334,6 +334,7 @@
     <ClInclude Include="RingEffect.h" />
     <ClInclude Include="setting.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="Spawner.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="TalkWindow.h" />

@@ -21,6 +21,8 @@ public:
 
 	virtual void update() = 0;
 
+	virtual void lateUpdate(){}
+
 	virtual void draw()const = 0;
 
 	virtual void damage(int32 n,const Vec2& force={}) {
@@ -37,10 +39,6 @@ public:
 		}
 
 		return 0<hp&& pos.y<1000;
-	}
-
-	virtual void end() {
-
 	}
 
 	void setManager(EntityManager* _manager) {
@@ -78,29 +76,17 @@ public:
 			entitys[i]->update();
 		}
 
+		for (auto i : step(entitys.size())) {
+			entitys[i]->lateUpdate();
+		}
+
 		entitys.remove_if([&](const PEntity& entity) {
 			if (not entity->isActive()) {
-				entity->end();
 				table[entity->tag].remove(entity.get());
 				return true;
 			}
 		return false;
 		});//Activeで無いものを削除
-
-		//for (auto it = entitys.begin(); it != entitys.end();)
-		//{
-		//	// 円がクリックされたらその地点を表す要素を削除
-		//	if (not (*it)->isActive())
-		//	{
-		//		(*it)->end();
-		//		table[(*it)->tag].remove(it->get());
-		//		it = entitys.erase(it);
-		//	}
-		//	else
-		//	{
-		//		++it;
-		//	}
-		//}
 
 		entitys.stable_sort_by([](const PEntity& a, const PEntity& b) {return *a < *b; });//z座標でソート
 	}

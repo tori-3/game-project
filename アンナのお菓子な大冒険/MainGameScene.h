@@ -4,6 +4,7 @@
 #include"setting.h"
 #include"Pause.h"
 #include"Player.h"
+#include"Spawner.h"
 #include"BackGround.h"
 
 class EnemyAdder {
@@ -12,9 +13,10 @@ public:
 	EntityManager* manager;
 
 	EnemyAdder(EntityManager* manager) :manager{manager} {
-		table[U"CookieItem"]= [](const Vec2& pos) {return new CookieItem{ pos }; };
 		table[U"StrawberrySoldier"] = [](const Vec2& pos) {return new StrawberrySoldier{ pos }; };
 		table[U"CookieSoldier"] = [](const Vec2& pos) {return new CookieSoldier{ pos }; };
+		table[U"SpawnerStrawberrySoldier"] = [](const Vec2& pos) {return new Spawner{ pos,new StrawberrySoldier{pos} }; };
+		table[U"Player"] = [](const Vec2& pos) {return new Player{ pos }; };
 	}
 
 	HashTable<String, std::function<Entity* (const Vec2&)>>table;
@@ -24,6 +26,20 @@ public:
 			manager->add(table[a.first](a.second));
 		}
 		DataManager::get().list.clear();
+	}
+};
+
+class SmoothCamera {
+public:
+
+	Vec2 target{};
+
+	void update(const Vec2& _target) {
+		target = _target;
+	}
+
+	Mat3x2 getMat3x2()const {
+		return Mat3x2::Translate(target);
 	}
 };
 
@@ -61,11 +77,12 @@ public:
 		}
 	}
 
+	DataManagerStart start;
+
 	Stage stage{ U"stage1.json" };
 
 	MSRenderTexture rTexture{ Scene::Size(),ColorF{0,0} };
 
-	DataManagerStart start;
 	//Player player{ Point(500, 350 + 70) };
 	Background background{ U"背景.png" ,stage.width() };
 	Background background2{ U"お菓子の背景.png" ,stage.width(),2 };
@@ -83,30 +100,37 @@ public:
 
 	Player* player=nullptr;
 
+	SmoothCamera camera;
+
 	// コンストラクタ（必ず実装）
 	MainGameScene(const InitData& init)
 		: IPauseScene{ init }
 	{
-		player = new Player{ Point(500, 350 + 70) };
-		manager.add(player);
+		adder.update();
+		player = dynamic_cast<Player*>(manager.get(U"Player"));
+		stage.update(player->pos);
+		adder.update();
 		manager.stage = &stage;
-
 		manager.add(new Snowman{ Point(500 + 70 * 6, 350 + 70) });
+
+		camera.update({ draw_x - player->pos.x ,Scene::Size().y - draw_y });
 	}
 
 	// 更新関数（オプション）
 	void gameUpdate() override
 	{
+		ClearPrint();
 		DataManager::get().playerPos = player->pos;
 
 		adder.update();
 
 		//座標変換(カーソルだけ)
-		double hieght = Scene::Size().y - draw_y;
-		//if (player.pos.y < change_hieght)hieght += change_hieght - player.pos.y;
-		Mat3x2 mat = Mat3x2::Translate(Vec2{ draw_x - player->pos.x, hieght });
-		const Transformer2D transformer{ Mat3x2::Identity(),mat };
+		//double hieght = Scene::Size().y - draw_y;
+		////if (player.pos.y < change_hieght)hieght += change_hieght - player.pos.y;
+		//Mat3x2 mat = Mat3x2::Translate(Vec2{ draw_x - player->pos.x, hieght });
+		//const Transformer2D transformer{ Mat3x2::Identity(),mat };
 		{
+			const Transformer2D t{ Mat3x2::Identity(),camera.getMat3x2() };
 			manager.update();
 		}
 
@@ -130,8 +154,7 @@ public:
 			}
 		}
 
-		ClearPrint();
-		Print << player->pos.y;
+		camera.update({ draw_x - player->pos.x ,Scene::Size().y - draw_y});
 	}
 
 	// 描画関数（オプション）
@@ -142,20 +165,20 @@ public:
 		cloud.draw1();
 		background.draw(player->pos);
 		cloud.draw2();
-		Rect{ Scene::Size() }.draw(ColorF{ skyColor,0.2 });
+		Rect{ Scene::Size() }.draw(ColorF{ skyColor,0.4 });
 		background2.draw(player->pos);
 		Rect{ Scene::Size() }.draw(ColorF{ skyColor,0.2 });
 
 		{
 			//座標変換
-			double hieght = Scene::Size().y - draw_y;
-			//if (player.pos.y < change_hieght)hieght += change_hieght - player.pos.y;
-			Mat3x2 mat = Mat3x2::Translate(Vec2{ draw_x - player->pos.x, hieght });
-			const Transformer2D transformer{ mat, TransformCursor::Yes };
-
+			//double hieght = Scene::Size().y - draw_y;
+			////if (player.pos.y < change_hieght)hieght += change_hieght - player.pos.y;
+			//Mat3x2 mat = Mat3x2::Translate(Vec2{ draw_x - player->pos.x, hieght });
+			//const Transformer2D transformer{ mat, TransformCursor::Yes };
+			const Transformer2D t{ camera.getMat3x2() };
+			manager.draw();
 			stage.draw(player->pos);
 
-			manager.draw();
 
 			DataManager::get().effect.update();
 
@@ -168,6 +191,7 @@ public:
 		rTexture.resolve();
 		rTexture.draw();
 
+		//マウス
 		Circle{ Cursor::Pos(),50 }.drawFrame(5, ColorF{ Palette::Red,0.3 });
 		Shape2D::Plus(80, 5, Cursor::Pos()).draw(ColorF{ Palette::Red,0.3 });
 

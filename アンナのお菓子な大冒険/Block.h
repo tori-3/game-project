@@ -19,6 +19,10 @@ public:
 	virtual void draw(const Point& pos)const {};
 };
 
+class Untouchable: public Block {
+	void reaction(const Point& pos, PhysicsBox* box)override{}
+};
+
 class CakeSurface :public Block
 {
 public:
@@ -110,7 +114,7 @@ public:
 	{
 		RectF rect{ pos * rect_size,rect_size };
 		rect.x += Periodic::Triangle0_1(3s, DataManager::get().time) * rect_size * 3;
-		if (box->lines(Direction::down).intersects(rect)) {
+		if (box->lines(Direction::down).center().intersects(rect)) {
 			if (Periodic::Square0_1(3s, DataManager::get().time))box->pos->x += Scene::DeltaTime() / 1.5 * rect_size * 3;
 			else box->pos->x -= Scene::DeltaTime() / 1.5 * rect_size * 3;
 		}
@@ -219,12 +223,10 @@ public:
 	}
 };
 
-class StrawberrySoldierBlock :public Block {
+class StrawberrySoldierBlock :public Untouchable {
 public:
 
 	bool bornFlg = false;
-
-	void reaction(const Point& pos, PhysicsBox* box)override{}
 
 	void update(const Point& pos)override {
 		if (not bornFlg) {
@@ -235,12 +237,10 @@ public:
 
 };
 
-class CookieSoldierBlock :public Block {
+class CookieSoldierBlock :public Untouchable {
 public:
 
 	bool bornFlg = false;
-
-	void reaction(const Point& pos, PhysicsBox* box)override {}
 
 	void update(const Point& pos)override {
 		if (not bornFlg) {
@@ -251,15 +251,13 @@ public:
 
 };
 
-class Hawk :public Block {
+class Hawk :public Untouchable {
 public:
 	Hawk() {
 		TextureAsset::Register(U"Hawk", U"🦅"_emoji, TextureDesc::Mipped);
 	}
 
 	bool touchFlg = false;
-
-	void reaction(const Point& pos, PhysicsBox* box)override {}
 
 	void update(const Point& pos)override {
 		if (DataManager::get().playerPos.intersects(Circle{ (pos + Vec2::All(0.5)) * rect_size,rect_size * 2 })) {
@@ -281,12 +279,10 @@ public:
 	}
 };
 
-class Door :public Block {
+class Door :public Untouchable {
 public:
 
 	Timer timer{ 1s };
-
-	void reaction(const Point& pos, PhysicsBox* box)override {}
 
 	void update(const Point& pos)override {
 		if (DataManager::get().table.contains(U"DoorOpen")) {
@@ -308,7 +304,7 @@ public:
 };
 
 class WeakWall:public Block {
-
+public:
 	bool breaked = false;
 
 	void reaction(const Point& pos, PhysicsBox* box)override
@@ -336,11 +332,12 @@ class WeakWall:public Block {
 };
 
 class BeltConveyorRight :public Block {
+public:
 
 	void reaction(const Point& pos, PhysicsBox* box)override
 	{
 		RectF rect{ pos * rect_size,rect_size };
-		if (rect.stretched(0, 0.1).intersects(box->lines(Direction::down).center())) {
+		if (rect.stretched(0, 0.1).intersects(box->lines(Direction::down).begin)) {
 			box->pos->x += Scene::DeltaTime() * rect_size / 0.5;
 		}
 		box->hit(rect);
@@ -355,12 +352,13 @@ class BeltConveyorRight :public Block {
 };
 
 class BeltConveyorLeft :public Block {
+public:
 
 	void reaction(const Point& pos, PhysicsBox* box)override
 	{
 		RectF rect{ pos * rect_size,rect_size };
 
-		if (box->lines(Direction::down).center().intersects(rect.stretched(0,0.1))) {
+		if (box->lines(Direction::down).end.intersects(rect.stretched(0,0.1))) {
 			box->pos->x -= Scene::DeltaTime() * rect_size / 0.5;
 		}
 
@@ -372,5 +370,23 @@ class BeltConveyorLeft :public Block {
 		const double d = 1-Periodic::Sawtooth0_1(0.5s, DataManager::get().time);
 		TextureAsset(U"ChocolateWall")(size - size * d, 0, size * d, size).resized(rect_size * d, rect_size).draw(pos * rect_size);
 		TextureAsset(U"ChocolateWall")(0, 0, size - size * d, size).resized(rect_size * (1 - d), rect_size).draw((pos + Vec2{ d,0 }) * rect_size);
+	}
+};
+
+class SpawnerStrawberrySoldier :public Untouchable {
+public:
+
+	double accumlater = 0;
+
+	void update(const Point& pos)override {
+
+		if (not Rect{Arg::center(pos*rect_size),rect_size*5,9999 }.intersects(DataManager::get().playerPos)) {
+
+			constexpr double spawn = 1.0;
+
+			for (accumlater += Scene::DeltaTime(); spawn <= accumlater; accumlater -= spawn) {
+				DataManager::get().addEntity(U"SpawnerStrawberrySoldier", pos * rect_size + Vec2{ 0.5,0.5 }*rect_size);
+			}
+		}
 	}
 };

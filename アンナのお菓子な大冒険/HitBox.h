@@ -16,6 +16,8 @@ public:
 
 	double acc1=0;
 
+	bool leftFloor=false, rightFloor=false;
+
 	PhysicsBox(Vec2* pos, Vec2* vel, Vec2 delta, double width, double height, int32* hp) :pos(pos), vel(vel), delta(delta), width(width), height(height), hp{hp} {}
 
 	//それぞれの方向のshift関数を呼び出す
@@ -24,6 +26,15 @@ public:
 		shift(rect, Direction::down, Vec2{ 0,-0.1 });
 		shift(rect, Direction::right, Vec2{ -0.1,0 });
 		shift(rect, Direction::left, Vec2{ 0.1,0 });
+
+			const Vec2 p0 = *pos + delta;
+			if (rect.intersects(Vec2{ p0.x, p0.y + height+20 })) {
+				leftFloor = true;
+			}
+			if (rect.intersects(Vec2{ p0.x + width, p0.y + height+20 })) {
+				rightFloor = true;
+			}
+
 	}
 
 	//図形の埋め込みを解消する
@@ -53,6 +64,7 @@ public:
 
 	void resetFlg() {
 		touch_flag[0] = touch_flag[1] = touch_flag[2] = touch_flag[3] = 0;
+		leftFloor = rightFloor = false;
 	}
 
 	void physicsUpdate() {
@@ -120,6 +132,14 @@ public:
 	}
 
 	bool touch(Direction num)const { return physics.touch_flag[(int32)num]; }
+
+	bool leftFloor() {
+		return physics.leftFloor;
+	}
+
+	bool rightFloor() {
+		return physics.rightFloor;
+	}
 
 	//ステージから影響を受ける
 	template<typename T>void hit(T figure) { physics.hit(figure); }

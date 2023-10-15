@@ -29,6 +29,7 @@ public:
 		{U"WeakWall",[]() {return new WeakWall(); }},
 		{U"BeltConveyorRight",[]() {return new BeltConveyorRight(); }},
 		{U"BeltConveyorLeft",[]() {return new BeltConveyorLeft(); }},
+		{U"SpawnerStrawberrySoldier",[]() {return new SpawnerStrawberrySoldier(); }}
 	};
 
 	~Stage() {
@@ -56,10 +57,21 @@ public:
 		if (not json)throw Error{ U"ファイルを読み込めませんでした。" };
 
 		{
+			bool hasPlayer = false;
+
 			//ファイルにあるブロック名を読み込む(ステージで使われていないブロックを読み込もうとしてエラーになるのを防ぐため)
 			Array<String>block_name;
 			for (const auto& block : json[U"Block"]) {
 				block_name << block.key;
+				if (block.key == U"Player") {
+					DataManager::get().addEntity(U"Player", (block.value[0].get<Point>() + Vec2{ 0.5,1 })*rect_size);
+					hasPlayer = true;
+				}
+			}
+
+			//もしプレイヤーの位置が設定されていなかったら
+			if (not hasPlayer) {
+				DataManager::get().addEntity(U"Player", (Vec2{3,5} + Vec2{0.5,1}) * rect_size);
 			}
 
 			//ステージサイズのmapを用意
@@ -67,11 +79,15 @@ public:
 
 			//mapにファイルのデータを読み込む。
 			for (int i = 0; i < block_name.size(); i++) {
-				for (const auto& elem : json[U"Block"][block_name[i]].arrayView()) {
-					//_map[elem.get<Point>()] = table[block_name[i]];
-					_map[elem.get<Point>()]=maker[block_name[i]]();
+
+				if (block_name[i] != U"Player") {
+					for (const auto& elem : json[U"Block"][block_name[i]].arrayView()) {
+						//_map[elem.get<Point>()] = table[block_name[i]];
+						_map[elem.get<Point>()] = maker[block_name[i]]();
+					}
 				}
 			}
+
 			this->map = std::move(_map);
 		}
 
@@ -89,6 +105,7 @@ public:
 			}
 		}
 	}
+
 	void update(const Vec2& vec) {
 
 		Point pos = vec.asPoint() / Point(rect_size, rect_size);//プレイヤーの座標をマップ番号に変換

@@ -141,6 +141,15 @@ void BeltConveyorLeft(Point pos) {
 	TextureAsset(U"ChocolateWall")(0, 0, size - size * d, size).resized(rect_size * (1 - d), rect_size).draw((pos + Vec2{ d,0 }) * rect_size);
 }
 
+void SpawnerStrawberrySoldier(Point pos) {
+	TextureAsset(U"StrawberrySoldier").resized(rect_size).draw(pos * rect_size,ColorF{1,0.7});
+	Rect{ pos * rect_size,rect_size }.drawFrame(5,0, Palette::Orange);
+}
+
+void Player(Point pos) {
+	TextureAsset(U"アンナ").resized(rect_size,rect_size*2).draw(pos * rect_size);
+}
+
 struct Info {
 	String tag;
 	std::function<void(Point)>func;
@@ -172,7 +181,9 @@ Array<Info>list{
 	{U"Door",Door,U"ドア"},
 	{U"WeakWall",WeakWall,U"もろい壁"},
 	{U"BeltConveyorRight",BeltConveyorRight,U"ベルトコンベア(→)"},
-	{U"BeltConveyorLeft",BeltConveyorLeft,U"ベルトコンベア(←)"}
+	{U"BeltConveyorLeft",BeltConveyorLeft,U"ベルトコンベア(←)"},
+	{U"SpawnerStrawberrySoldier",SpawnerStrawberrySoldier,U"イチゴスポナー"},
+	{U"Player",Player,U"プレイヤー"}
 };
 
 HashTable<String, std::function<void(Point)>> table;

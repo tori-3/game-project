@@ -863,5 +863,8 @@
     <ClInclude Include="Movements.h">
       <Filter>Header Files\MainGameScene\Animation</Filter>
     </ClInclude>
+    <ClInclude Include="Spawner.h">
+      <Filter>Header Files\MainGameScene\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

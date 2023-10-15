@@ -9,7 +9,7 @@
 class StrawberrySoldier:public Entity {
 public:
 
-	bool left=false;
+	bool left=true;
 
 	CharacterSystem character;
 
@@ -29,6 +29,19 @@ public:
 		}
 		else if (hitBox.touch(Direction::left)) {
 			left = false;
+		}
+
+		if (hitBox.touch(Direction::down)) {
+			if (left) {
+				if (not hitBox.leftFloor()) {
+					left = false;
+				}
+			}
+			else {
+				if (not hitBox.rightFloor()) {
+					left = true;
+				}
+			}
 		}
 
 		if (left) {
@@ -54,16 +67,16 @@ public:
 		character.update(pos,left);
 	}
 
+	void lateUpdate() {
+		if (not isActive()) {
+			DataManager::get().effect.add<StarEffect>(pos, 0);
+			manager->add(new CookieItem{ pos });
+		}
+	}
+
 	void draw()const override {
 		character.draw();
 	}
-
-	void end()override {
-		DataManager::get().effect.add<StarEffect>(pos, 0);
-		DataManager::get().addEntity(U"CookieItem",pos);
-		//manager->add(new CookieItem{ pos });
-	}
-
 };
 
 class CookieSoldier :public Entity {
@@ -91,9 +104,10 @@ public:
 			}
 			else if (manager->get(U"Player")->pos.x >= pos.x) {
 				left = false;
-				vel .x = 200;
+				vel.x = 200;
 			}
 		}
+
 		//プレイヤーに近すぎる場合
 		if (Abs(manager->get(U"Player")->pos.x - pos.x) < rect_size * 0.2) {
 			left = false;
@@ -114,15 +128,61 @@ public:
 		character.update(pos, left);
 	}
 
+	void lateUpdate()override {
+		if (not isActive()) {
+			DataManager::get().effect.add<StarEffect>(pos, 50);
+			manager->add(new CookieItem{ pos });
+		}
+	}
+
 	void draw()const override {
 		character.draw();
 	}
+};
 
-	void end()override {
-		DataManager::get().effect.add<StarEffect>(pos, 50);
-		//manager->add(new CookieItem{ pos });
-		DataManager::get().addEntity(U"CookieItem", pos);
+class SnowBall:public Entity {
+public:
+	bool left;
+
+	SnowBall(const Vec2& pos, bool left) :Entity{ U"Enemy", Circle{0,0,10},pos,{0,0},1 }, left{left} {
+		vel.y = -500;
 	}
+
+	void update()override {
+		bool collisionFlg = false;
+
+		manager->stage->hit(&hitBox);
+
+		if (hitBox.touch(Direction::left) || hitBox.touch(Direction::right) || hitBox.touch(Direction::up) || hitBox.touch(Direction::down)) {
+			collisionFlg = true;
+		}
+
+		vel.x = left ? -400 : 400;
+
+		hitBox.physicsUpdate();
+		hitBox.update();
+
+		if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
+			manager->get(U"Player")->damage(1, Vec2{ left?-100:100,-20 });
+			collisionFlg = true;
+		}
+
+		if (collisionFlg) {
+			hp = 0;
+		}
+
+	}
+
+	void lateUpdate()override {
+		if (not isActive()) {
+			DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 35, Palette::White);
+		}
+	}
+
+	void draw()const override {
+		hitBox.Get_Box().draw(Palette::White);
+	}
+
 };
 
 class Snowman:public Entity {
@@ -138,30 +198,66 @@ public:
 	Snowman(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,0),90,130},cpos,{0,0},1 },
 		character{ U"Characters/yukidaruma/test.json",U"Characters/yukidaruma/motion.txt",0.5,cpos,true,false }
 	{
-		character.addMotion(U"Attack", true);
+		character.addMotion(U"Walk");
 	}
 
 	void update()override {
 
+		attackMode = false;
+
 		manager->stage->hit(&hitBox);
 
-		if (hitBox.touch(Direction::right))
-		{
-			left = true;
-		}
-		else if (hitBox.touch(Direction::left)) {
-			left = false;
-		}
-
-		if (left) {
-			vel.x = -100;
+		double playerX = manager->get(U"Player")->pos.x;
+		if (Abs(playerX - pos.x) < rect_size * 6) {
+			attackMode = true;
+			left = playerX < pos.x;
 		}
 		else {
-			vel.x = 100;
+			if (not character.character.hasMotion(U"Walk")) {
+				character.addMotion(U"Walk");
+			}
+
+			if (hitBox.touch(Direction::right))
+			{
+				left = true;
+			}
+			else if (hitBox.touch(Direction::left)) {
+				left = false;
+			}
+			if (hitBox.touch(Direction::down)) {
+				if (left) {
+					if (not hitBox.leftFloor()) {
+						left = false;
+					}
+				}
+				else {
+					if (not hitBox.rightFloor()) {
+						left = true;
+					}
+				}
+			}
+
+			if (left) {
+				vel.x = -100;
+			}
+			else {
+				vel.x = 100;
+			}
 		}
 
 		hitBox.physicsUpdate();
 		hitBox.update();
+
+		if (attackMode) {
+
+			constexpr double spawn = 1;
+			for (attackAccumlater += Scene::DeltaTime(); spawn <= attackAccumlater; attackAccumlater -= spawn) {
+
+				character.addMotion(U"Attack");
+				manager->add(new SnowBall{ pos,left });
+			}
+
+		}
 
 		if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
 			if (pos.x < manager->get(U"Player")->pos.x) {
@@ -176,23 +272,19 @@ public:
 		character.update(pos, left);
 	}
 
-	void draw()const override {
-		character.draw();
-
-		Mat3x2 mat=character.character.table.at(U"arm").joint.mat;
-		{
-			const Transformer2D transformer{ mat };
-
-			Circle{ 100,-30,20 }.draw(Palette::Red);
-
+	void lateUpdate()override {
+		if (not isActive()) {
+			DataManager::get().effect.add<StarEffect>(pos, 50);
+			manager->add(new CookieItem{ pos });
 		}
 	}
 
-	void end()override {
-		DataManager::get().effect.add<StarEffect>(pos, 50);
-		//manager->add(new CookieItem{ pos });
-		DataManager::get().addEntity(U"CookieItem", pos);
+	void draw()const override {
+		character.draw();
+
+		Mat3x2 mat = character.character.table.at(U"arm").joint.mat;
+
+		Vec2 ballPos = mat.transformPoint(Vec2{ 100, -30 });
+		Circle{ ballPos,10 }.draw(Palette::White);
 	}
-
-
 };

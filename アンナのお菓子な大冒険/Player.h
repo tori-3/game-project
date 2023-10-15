@@ -224,8 +224,6 @@ public:
 
 	void draw()const override {
 		character.draw();
-
-		hitBox.Get_Box().boundingRect().bottomCenter().asCircle(2).draw(Palette::Orange);
 	}
 
 	void damage(int32 n, const Vec2& force = {})override {
