@@ -152,9 +152,6 @@ public:
 	}
 };
 
-
-
-
 class Spring :public Block
 {
 public:
@@ -387,6 +384,18 @@ public:
 			for (accumlater += Scene::DeltaTime(); spawn <= accumlater; accumlater -= spawn) {
 				DataManager::get().addEntity(U"SpawnerStrawberrySoldier", pos * rect_size + Vec2{ 0.5,0.5 }*rect_size);
 			}
+		}
+	}
+};
+
+class SnowmanBlock :public Untouchable {
+public:
+	bool bornFlg = false;
+
+	void update(const Point& pos)override {
+		if (not bornFlg) {
+			DataManager::get().addEntity(U"Snowman", pos * rect_size + Vec2{ 1,1 }*rect_size);
+			bornFlg = true;
 		}
 	}
 };

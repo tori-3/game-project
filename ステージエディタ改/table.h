@@ -150,6 +150,13 @@ void Player(Point pos) {
 	TextureAsset(U"アンナ").resized(rect_size,rect_size*2).draw(pos * rect_size);
 }
 
+void Snowman(Point pos) {
+	TextureAsset(U"arm").resized(rect_size*2).draw(pos * rect_size);
+	TextureAsset(U"base-body").resized(rect_size*2).draw(pos * rect_size);
+	TextureAsset(U"hat").resized(rect_size*2).draw(pos * rect_size);
+	TextureAsset(U"head").resized(rect_size*2).draw(pos * rect_size);
+}
+
 struct Info {
 	String tag;
 	std::function<void(Point)>func;
@@ -183,7 +190,8 @@ Array<Info>list{
 	{U"BeltConveyorRight",BeltConveyorRight,U"ベルトコンベア(→)"},
 	{U"BeltConveyorLeft",BeltConveyorLeft,U"ベルトコンベア(←)"},
 	{U"SpawnerStrawberrySoldier",SpawnerStrawberrySoldier,U"イチゴスポナー"},
-	{U"Player",Player,U"プレイヤー"}
+	{U"Player",Player,U"プレイヤー"},
+	{U"Snowman",Snowman,U"雪だるま"}
 };
 
 HashTable<String, std::function<void(Point)>> table;

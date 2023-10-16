@@ -193,9 +193,13 @@ public:
 
 	double attackAccumlater=0;
 
+	bool holdSnowBall = false;
+
+	double t = 0;
+
 	CharacterSystem character;
 
-	Snowman(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,0),90,130},cpos,{0,0},1 },
+	Snowman(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,0),70,130},cpos,{0,0},1 },
 		character{ U"Characters/yukidaruma/test.json",U"Characters/yukidaruma/motion.txt",0.5,cpos,true,false }
 	{
 		character.addMotion(U"Walk");
@@ -250,11 +254,26 @@ public:
 
 		if (attackMode) {
 
-			constexpr double spawn = 1;
+			constexpr double spawn = 2;
 			for (attackAccumlater += Scene::DeltaTime(); spawn <= attackAccumlater; attackAccumlater -= spawn) {
 
 				character.addMotion(U"Attack");
-				manager->add(new SnowBall{ pos,left });
+				holdSnowBall = true;
+				//manager->add(new SnowBall{ pos,left });
+			}
+
+		}
+
+		if (holdSnowBall) {
+
+			t += Scene::DeltaTime();
+
+			if (0.6<t) {
+				holdSnowBall = false;
+				const Mat3x2 mat = character.character.table.at(U"arm").joint.mat;
+				const Vec2 ballPos = mat.transformPoint(Vec2{ 100, -30 });
+				manager->add(new SnowBall{ ballPos,left });
+				t = 0;
 			}
 
 		}
@@ -281,10 +300,10 @@ public:
 
 	void draw()const override {
 		character.draw();
-
-		Mat3x2 mat = character.character.table.at(U"arm").joint.mat;
-
-		Vec2 ballPos = mat.transformPoint(Vec2{ 100, -30 });
-		Circle{ ballPos,10 }.draw(Palette::White);
+		if (holdSnowBall) {
+			const Mat3x2 mat = character.character.table.at(U"arm").joint.mat;
+			const Vec2 ballPos = mat.transformPoint(Vec2{ 100, -30 });
+			Circle{ ballPos,10 }.draw(Palette::White);
+		}
 	}
 };

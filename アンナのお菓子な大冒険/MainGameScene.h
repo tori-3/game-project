@@ -17,6 +17,7 @@ public:
 		table[U"CookieSoldier"] = [](const Vec2& pos) {return new CookieSoldier{ pos }; };
 		table[U"SpawnerStrawberrySoldier"] = [](const Vec2& pos) {return new Spawner{ pos,new StrawberrySoldier{pos} }; };
 		table[U"Player"] = [](const Vec2& pos) {return new Player{ pos }; };
+		table[U"Snowman"] = [](const Vec2& pos) {return new Snowman{ pos }; };
 	}
 
 	HashTable<String, std::function<Entity* (const Vec2&)>>table;

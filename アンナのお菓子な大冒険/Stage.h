@@ -29,7 +29,8 @@ public:
 		{U"WeakWall",[]() {return new WeakWall(); }},
 		{U"BeltConveyorRight",[]() {return new BeltConveyorRight(); }},
 		{U"BeltConveyorLeft",[]() {return new BeltConveyorLeft(); }},
-		{U"SpawnerStrawberrySoldier",[]() {return new SpawnerStrawberrySoldier(); }}
+		{U"SpawnerStrawberrySoldier",[]() {return new SpawnerStrawberrySoldier(); }},
+		{U"Snowman",[]() {return new SnowmanBlock(); }}
 	};
 
 	~Stage() {
