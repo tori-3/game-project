@@ -34,8 +34,8 @@ public:
 		{U"ItigoSlave",[]() {return new ItigoSlaveBlock(); }},
 		{U"CloudEnemy",[]() {return new CloudEnemyBlock(); }},
 		{U"Corn",[]() {return new CornBlock(); }},
-		{U"CookieMuti",[]() {return new CookieMutiBlock(); }}
-
+		{U"CookieMuti",[]() {return new CookieMutiBlock(); }},
+		{U"CookieKaban",[]() {return new CookieKabanBlock(); }}
 	};
 
 	~Stage() {

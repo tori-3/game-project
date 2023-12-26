@@ -179,6 +179,9 @@ void CookieMuti(Point pos) {
 	TextureAsset(U"cookieMuti-whip").resized(rect_size).draw(pos * rect_size);
 }
 
+void CookieKaban(Point pos) {
+	TextureAsset(U"cookieKaban").resized(rect_size).draw(pos * rect_size);
+}
 
 struct Info {
 	String tag;
@@ -218,7 +221,8 @@ Array<Info>list{
 	{U"ItigoSlave",ItigoSlave,U"奴隷イチゴ"},
 	{U"CloudEnemy",CloudEnemy,U"わたあめ"},
 	{U"Corn",Corn,U"コーン"},
-	{U"CookieMuti",CookieMuti,U"鞭クッキー"}
+	{U"CookieMuti",CookieMuti,U"鞭クッキー"},
+	{U"CookieKaban",CookieKaban,U"鞄クッキー"}
 
 };
 

@@ -691,20 +691,20 @@ public:
 			attackTimer.reset();
 			if (manager->get(U"Player")->hitBox.Get_Box().intersects(hitBox.Get_Box().movedBy(left ? -60 : 60, 0))) {
 				if (left) {
-					manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+					manager->get(U"Player")->damage(2, Vec2{ -100,-20 });
 				}
 				else {
-					manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+					manager->get(U"Player")->damage(2, Vec2{ 100,-20 });
 				}
 			}
 		}
 
 		if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
 			if (pos.x < manager->get(U"Player")->pos.x) {
-				manager->get(U"Player")->damage(0, Vec2{ 100,-20 });
+				manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
 			}
 			else {
-				manager->get(U"Player")->damage(0, Vec2{ -100,-20 });
+				manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
 			}
 		}
 
@@ -725,3 +725,92 @@ public:
 		character.draw();
 	}
 };
+
+class CookieKaban :public Entity {
+public:
+
+	Timer attackTimer{ 0.4s };
+
+	bool left = false;
+
+	CharacterSystem character;
+
+	CookieKaban(const Vec2& cpos) :Entity{ {U"Enemy"}, RectF{Arg::center(0,0),50,100},cpos,{0,0},1 },
+		character{ U"Characters/cookieKaban/cookieKaban.json",U"Characters/cookieKaban/motion.txt",0.4,cpos,true,false }
+	{
+		//character.addMotion(U"walk", true);
+	}
+
+	void update()override {
+
+		manager->stage->hit(&hitBox);
+
+		//if (Abs(manager->get(U"Player")->pos.x - pos.x) < rect_size * 5) {
+
+		if (manager->get(U"Player")->pos.x < pos.x) {
+			left = true;
+			vel.x = -200;
+		}
+		else if (manager->get(U"Player")->pos.x >= pos.x) {
+			left = false;
+			vel.x = 200;
+		}
+		//}
+
+		//プレイヤーに近すぎる場合
+		if (Abs(manager->get(U"Player")->pos.x - pos.x) < rect_size * 0.2) {
+			left = false;
+		}
+
+		hitBox.physicsUpdate();
+		hitBox.update();
+
+		if ((not character.hasMotion(U"attack")) && manager->get(U"Player")->hitBox.Get_Box().intersects(hitBox.Get_Box().movedBy(left ? -20 : 20, 0).scaled(3, 1))) {
+			character.removeMotion(U"walk");
+			character.addMotion(U"attack");
+			attackTimer.start();
+		}
+
+		if (not character.hasMotion(U"attack") && not character.hasMotion(U"walk")) {
+			character.addMotion(U"walk");
+		}
+
+		if (attackTimer.sF() == 0) {
+			attackTimer.reset();
+			if (manager->get(U"Player")->hitBox.Get_Box().intersects(hitBox.Get_Box())) {
+				if (left) {
+					manager->get(U"Player")->damage(2, Vec2{ -100,-20 });
+				}
+				else {
+					manager->get(U"Player")->damage(2, Vec2{ 100,-20 });
+				}
+			}
+		}
+
+		if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
+			if (pos.x < manager->get(U"Player")->pos.x) {
+				manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+			}
+			else {
+				manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+			}
+		}
+
+		character.update(pos, left);
+	}
+
+	void lateUpdate()override {
+		if (not isActive()) {
+			DataManager::get().effect.add<StarEffect>(pos, 50);
+			manager->add(new CookieItem{ pos });
+		}
+	}
+
+	void draw()const override {
+		//hitBox.Get_Box().movedBy(left ? -20 : 20, 0).draw();
+		//hitBox.Get_Box().movedBy(left ? -60 : 60, 0).draw(Palette::Orange);
+		//hitBox.draw(Palette::Red);
+		character.draw();
+	}
+};
+

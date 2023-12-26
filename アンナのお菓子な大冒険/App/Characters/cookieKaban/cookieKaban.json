@@ -1,0 +1,20 @@
+﻿{
+  "Body": {
+    "bag": {
+      "Parent": "body",
+      "Position": "(6.31593, 20.13633)",
+      "RotateCenter": "(-28.39731, 1.87527)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/cookieKaban/bag.png",
+      "Z": -15.0
+    },
+    "body": {
+      "Parent": "__Main__",
+      "Position": "(600, 350)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/cookieKaban/body.png",
+      "Z": -10.0
+    }
+  }
+}
