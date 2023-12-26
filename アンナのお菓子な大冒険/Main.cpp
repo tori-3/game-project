@@ -1,5 +1,6 @@
 ﻿# include"Common.h"
 # include"MainGameScene.h"
+#include"Map.h"
 
 
 void Main()
@@ -13,6 +14,7 @@ void Main()
 
 	App manager;
 
+	manager.add<Map>(U"Map");
 	manager.add<MainGameScene>(U"MainGameScene");
 
 	while (System::Update())

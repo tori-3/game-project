@@ -13,7 +13,7 @@ public:
 
 	CharacterSystem character;
 
-	StrawberrySoldier(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,0),70,70},cpos,{0,0},1}
+	StrawberrySoldier(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,0),70,69},cpos,{0,0},1}
 		, character{ U"CharacterImages/itigo/itigo.json" ,U"CharacterImages/itigo/motion.txt" ,0.3,cpos,true,false }
 	{
 		character.addMotion(U"",true);
@@ -86,7 +86,7 @@ public:
 
 	CharacterSystem character;
 
-	CookieSoldier(const Vec2& cpos) :Entity{ {U"Enemy"}, RectF{Arg::center(0,0),70,70},cpos,{0,0},1},
+	CookieSoldier(const Vec2& cpos) :Entity{ {U"Enemy"}, RectF{Arg::center(0,0),70,69},cpos,{0,0},1},
 		character{ U"CharacterImages/cookie/cookie.json",U"CharacterImages/cookie/motion_cookie.txt",0.3,cpos,true,false }
 	{
 		character.addMotion(U"",true);

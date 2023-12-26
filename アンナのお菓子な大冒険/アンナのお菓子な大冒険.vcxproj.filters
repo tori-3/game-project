@@ -866,5 +866,8 @@
     <ClInclude Include="Spawner.h">
       <Filter>Header Files\MainGameScene\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

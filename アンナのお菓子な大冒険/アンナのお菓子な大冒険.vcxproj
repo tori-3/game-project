@@ -327,6 +327,7 @@
     <ClInclude Include="Figure.hpp" />
     <ClInclude Include="HitBox.h" />
     <ClInclude Include="MainGameScene.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="MotionLoader.h" />
     <ClInclude Include="Movements.h" />
     <ClInclude Include="Pause.h" />

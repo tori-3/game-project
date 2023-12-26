@@ -80,7 +80,7 @@ public:
 
 	DataManagerStart start;
 
-	Stage stage{ U"stage1.json" };
+	Stage stage{ U"s{}.json"_fmt(getData().stage)};
 
 	MSRenderTexture rTexture{ Scene::Size(),ColorF{0,0} };
 
@@ -103,6 +103,8 @@ public:
 
 	SmoothCamera camera;
 
+	double startY = 0;
+
 	// コンストラクタ（必ず実装）
 	MainGameScene(const InitData& init)
 		: IPauseScene{ init }
@@ -112,9 +114,8 @@ public:
 		stage.update(player->pos);
 		adder.update();
 		manager.stage = &stage;
-		manager.add(new Snowman{ Point(500 + 70 * 6, 350 + 70) });
-
-		camera.update({ draw_x - player->pos.x ,Scene::Size().y - draw_y });
+		startY = player->pos.y;
+		camera.update({ draw_x - player->pos.x ,draw_y-startY });
 	}
 
 	// 更新関数（オプション）
@@ -137,8 +138,9 @@ public:
 
 		////落下したらスタートに戻す。(デバッグ用)
 		if (player->hp <= 0||1000<player->pos.y) {
-			player->pos = Vec2(500, 350);
-			player->hp = 3;
+			//player->pos = Vec2(500, 350);
+			//player->hp = 3;
+			EndGame(false);
 		}
 
 		stage.update(player->pos);
@@ -151,11 +153,11 @@ public:
 
 		if (DataManager::get().table.contains(U"Clear")) {
 			if (KeyEnter.down()) {
-				changeScene(U"MainGameScene");
+				EndGame(true);
 			}
 		}
 
-		camera.update({ draw_x - player->pos.x ,Scene::Size().y - draw_y});
+		camera.update({ draw_x - player->pos.x ,draw_y-startY});
 	}
 
 	// 描画関数（オプション）
@@ -210,7 +212,7 @@ public:
 			Rect{ Scene::Size() }.draw(ColorF{ 0,0.5 });
 			FontAsset(U"TitleFont")(U"クリア！！").drawAt(100,Scene::Center());
 
-			FontAsset(U"TitleFont")(U"Enterキー：もう一度").drawAt(50, Scene::Center().x,600);
+			FontAsset(U"TitleFont")(U"Enterキー：マップへ").drawAt(50, Scene::Center().x,600);
 		}
 	}
 
@@ -230,4 +232,9 @@ public:
 		auto _=SimpleGUI::ButtonAt(U"ゲームに戻る", { Scene::Center().x,700 });
 	}
 
+
+	void EndGame(bool clear) {
+		getData().mini_clear = clear;//クリア状況保存
+		changeScene(U"Map");
+	}
 };

@@ -1,0 +1,40 @@
+﻿{
+  "ClearStage": 5,
+  "StageData": {
+    "Stage1": {
+      "Picture": "image1.png",
+      "SceneName": "MainGameScene",
+      "Sentence": "<1-1>\n"
+    },
+    "Stage2": {
+      "Picture": "image2.png",
+      "SceneName": "MainGameScene",
+      "Sentence": "<1-2>\n"
+    },
+    "Stage3": {
+      "Picture": "example/windmill.png",
+      "SceneName": "MainGameScene",
+      "Sentence": "<1-3>\n"
+    },
+    "Stage4": {
+      "Picture": "example/windmill.png",
+      "SceneName": "MainGameScene",
+      "Sentence": "<1-4>\n"
+    },
+    "Stage5": {
+      "Picture": "example/windmill.png",
+      "SceneName": "MainGameScene",
+      "Sentence": "<1-5>\n"
+    },
+    "Stage6": {
+      "Picture": "example/windmill.png",
+      "SceneName": "MainGameScene",
+      "Sentence": "<1-6>\n"
+    },
+    "Stage7": {
+      "Picture": "example/windmill.png",
+      "SceneName": "MainGameScene",
+      "Sentence": "<1-7>\n"
+    }
+  }
+}

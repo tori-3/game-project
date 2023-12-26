@@ -282,12 +282,10 @@ public:
 	Timer timer{ 1s };
 
 	void update(const Point& pos)override {
-		if (DataManager::get().table.contains(U"DoorOpen")) {
-			timer.start();
 
-			if (Rect{ pos * rect_size,rect_size * 2 }.intersects(DataManager::get().playerPos)) {
-				DataManager::get().table.emplace(U"Clear");
-			}
+		if (Rect{ pos * rect_size,rect_size * 2 }.intersects(DataManager::get().playerPos)) {
+			timer.start();
+			DataManager::get().table.emplace(U"Clear");
 		}
 	}
 

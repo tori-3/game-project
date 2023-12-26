@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-using App = SceneManager<String>;
+using App = SceneManager<String, GameData>;
 
 // タイトルシーン
 class IPauseScene : public App::Scene
