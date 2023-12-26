@@ -34,6 +34,8 @@ public:
 	virtual void update(Character* character, double t = Scene::DeltaTime()) = 0;
 
 	virtual bool isActive() = 0;
+
+	virtual void finalize(Character* character) {};
 };
 
 class Motion :public Move {

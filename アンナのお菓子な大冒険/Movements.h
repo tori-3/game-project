@@ -2,7 +2,6 @@
 #include"AnimationSystem.h"
 
 class MotionLoader;
-
 //設定した角度回転
 class Rotate :public TimeMove {
 public:
@@ -26,6 +25,7 @@ inline double seikika(double theta) {
 	if (0 <= theta)return Fmod(theta, 360_deg);//正規化
 	else return 360_deg + Fmod(theta, 360_deg);
 }
+
 /// @brief 符号判定
 /// @param A 
 /// @return Aが負なら-1　Aが正なら+1
@@ -68,12 +68,12 @@ public:
 		if (direction > 0)
 		{
 			//時計回り
-			delta < 0 ? rad = 360_deg + delta : rad = delta;
+			rad = delta < 0 ? 360_deg + delta : delta;
 		}
 		else
 		{
 			//反時計回り
-			delta > 0 ? rad = delta - 360_deg : rad = delta;
+			rad = delta > 0 ? delta - 360_deg : delta;
 		}
 	}
 	//Rotateのupdateを使う
@@ -88,7 +88,6 @@ public:
 	Translate(const String& target, const Vec2& deltaPos, double time)
 		:TimeMove{ time }, target(target), dp(deltaPos)
 	{
-
 	};
 
 	void start(Character* character)override
@@ -99,7 +98,6 @@ public:
 			character->get(target)->pos += dp;
 			return;
 		}
-		//character->get(target)->pos = { 100,100 };
 	}
 
 	void update(Character* character, double dt = Scene::DeltaTime())override {
@@ -109,12 +107,14 @@ public:
 	}
 };
 
-class SetPos :public Translate
+class SetPos :public TimeMove
 {
 public:
+	String target;
 	const Vec2 pos;
+	Vec2 firstPos;
 	SetPos(const String& target, Vec2 pos, double time)
-		:Translate(target, { 0,0 }, time), pos(pos)
+		:TimeMove(time), target(target), pos(pos)
 	{}
 
 	void start(Character* character)override
@@ -125,7 +125,14 @@ public:
 			character->get(target)->pos = pos;
 			return;
 		}
-		dp = pos - character->get(target)->pos;
+		firstPos = character->get(target)->pos;
+	}
+
+	void update(Character* character, double dt = Scene::DeltaTime())override
+	{
+		dt = calTime(dt);
+		if (timelim == 0)return;
+		character->get(target)->pos = firstPos.lerp(pos, time / timelim);
 	}
 };
 
@@ -361,49 +368,82 @@ public:
 	}
 };
 
-class AddZ :public Move
+class AddZ :public TimeMove
 {
 public:
 	const double d;
 	const bool following;
 	const String target;
-
-	AddZ(const String& target, double delta, bool following = true)
-		:target(target), d(delta), following(following) {};
+	Array<Joint*> joints;
+	AddZ(const String& target, double delta, double time, bool following = true)
+		:TimeMove(time), target(target), d(delta), following(following) {};
 
 	void start(Character* character)override
 	{
-		Array<Joint*> joints;
+		TimeMove::start(character);
 		following ? joints.append(character->get(target)->getAll()) : joints << character->get(target);
-		for (auto& joint : joints)joint->z += d;
+		if (timelim == 0)for (auto& joint : joints)joint->z += d;
 	};
 
-	void update(Character* character, double dt = Scene::DeltaTime())override {}
-
-	bool isActive()override { return false; }
+	void update(Character* character, double dt = Scene::DeltaTime())override {
+		dt = calTime(dt);
+		if (timelim == 0)return;
+		for (auto& joint : joints)joint->z += d * dt / timelim;
+	}
 };
 
-class TransformToBase :public Move
+class LerpZ :public TimeMove
+{
+public:
+	const String target;
+	const bool following;
+	double dz, z;
+	Array<Joint*>joints{};
+	LerpZ(String target, double z, double time, bool following = true)
+		:TimeMove(time), target(target), z(z), following(following)
+	{}
+
+	void start(Character* character)override
+	{
+		TimeMove::start(character);
+		dz = z - character->get(target)->z;
+		following ? joints.append(character->get(target)->getAll()) : joints << character->get(target);
+		if (timelim == 0)for (auto& joint : joints)joint->z += dz;
+	}
+
+	void update(Character* character, double dt = Scene::DeltaTime())override {
+		dt = calTime(dt);
+		if (timelim == 0)return;
+		for (auto& joint : joints)joint->z += dz * dt / timelim;
+	}
+};
+
+class TransformToBase :public TimeMove
 {
 public:
 	String target;
-	//Array<TimeMove*>m_movements;
-	//RotateTo,SetPosがfollowingの選択に対応してないので,とりあえず後続に対しても影響を与える仕様にする
-	TransformToBase(String target)
-		:target(target)
+	Array<TimeMove*>m_movements;
+	TransformToBase(String target, double time)
+		:TimeMove(time), target(target)
 	{
+	}
 
+	~TransformToBase()
+	{
+		for (auto& m : m_movements)delete m;
 	}
 
 	void start(Character* character)override
 	{
-		Vec2 parentPos = character->joint->pos;
+		TimeMove::start(character);
 
-		/*for (auto& move : m_movements)
+		//Vec2 parentPos = character->joint->pos;
+
+		for (auto& move : m_movements)
 		{
 			delete move;
 		}
-		m_movements.clear();*/
+		m_movements.clear();
 
 		Array<String> jointNames;
 		HashSet<Joint*>joints;
@@ -414,32 +454,54 @@ public:
 			//名前を得る
 			if (joints.contains(&joint.second.joint) or character->joint == &joint.second.joint)jointNames << joint.first;
 		}
+
 		for (auto& name : jointNames)
 		{
 			const Joint* baseJoint = character->getBase()->get(name);
-			/*m_movements << new SetPos(name, baseJoint->pos, timelim);
+			const Joint* targetJoint = character->get(name);
+			m_movements << new SetPos(name, baseJoint->pos, timelim);
 			m_movements << new RotateTo(name, baseJoint->angle, timelim);
-			m_movements << new BaseChangeScale(name, 1, 1, timelim,false);
-			m_movements << new ChangeColor(name, character->getBase()->get(target)->color, timelim,false);
-			m_movements << new ChangeTexture(name, baseJoint->textureName, timelim);*/
-			character->get(name)->size = baseJoint->size;
-			character->get(name)->angle = baseJoint->angle;
-			character->get(name)->pos = baseJoint->pos;
-			character->get(name)->rotatePos = baseJoint->rotatePos;
-			character->get(name)->textureName = baseJoint->textureName;
-			character->get(name)->z = baseJoint->z;
+			m_movements << new ChangeScale(name, baseJoint->size.x / targetJoint->size.x, baseJoint->size.y / targetJoint->size.y, timelim, false);
+			m_movements << new ChangeColor(name, character->getBase()->get(target)->color, timelim, false);
+			m_movements << new ChangeTexture(name, baseJoint->textureName, timelim);
+			m_movements << new LerpZ(name, baseJoint->z, timelim, false);
 		}
-		//for (auto& move : m_movements)move->start(character);
 
-		character->joint->pos = parentPos;
+		m_movements.each([=](TimeMove* move) {move->start(character); });
+
+		//character->joint->pos = parentPos;
 	}
 
 	void update(Character* character, double dt = Scene::DeltaTime())override
 	{
-		//dt = calTime(dt);
-		//for (auto& move : m_movements)move->update(character, dt);
+		dt = calTime(dt);
+		for (auto& move : m_movements)move->update(character, dt);
 	}
-	bool isActive()override { return false; }
+	//最終手段　ChangeScaleとSetPosの相性が悪かった...
+	void finalize(Character* character)override
+	{
+		Array<String> jointNames;
+		HashSet<Joint*>joints;
+		for (auto& joint : character->get(target)->getAll())joints.emplace(joint);
+
+		for (auto& joint : character->table)
+		{
+			//名前を得る
+			if (joints.contains(&joint.second.joint) or character->joint == &joint.second.joint)jointNames << joint.first;
+		}
+
+		for (auto& name : jointNames)
+		{
+			const Joint* baseJoint = character->getBase()->get(name);
+
+			character->get(name)->size = baseJoint->size;
+			character->get(name)->angle = baseJoint->angle;
+			//character->get(name)->pos = baseJoint->pos;
+			//character->get(name)->rotatePos = baseJoint->rotatePos;
+			character->get(name)->textureName = baseJoint->textureName;
+			character->get(name)->z = baseJoint->z;
+		}
+	}
 };
 
 class Mirror :public TimeMove {

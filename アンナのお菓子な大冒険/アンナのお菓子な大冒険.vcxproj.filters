@@ -165,6 +165,9 @@
     <ClCompile Include="Movements.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="IMotionField.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -868,6 +871,9 @@
     </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IMotionField.h">
+      <Filter>Header Files\MainGameScene\Animation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
