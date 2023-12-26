@@ -1,0 +1,36 @@
+﻿{
+  "Body": {
+    "body": {
+      "Parent": "__Main__",
+      "Position": "(600, 350)",
+      "RotateCenter": "(61.60006, 129.60001)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/itigoSlave/body.png",
+      "Z": 0.0
+    },
+    "lfoot": {
+      "Parent": "body",
+      "Position": "(0, 0)",
+      "RotateCenter": "(160.79998, 196.79994)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/itigoSlave/lfoot.png",
+      "Z": 5.0
+    },
+    "rfoot": {
+      "Parent": "body",
+      "Position": "(0, 0)",
+      "RotateCenter": "(31.20006, 189.60004)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/itigoSlave/rfoot.png",
+      "Z": -10.0
+    },
+    "weapon": {
+      "Parent": "body",
+      "Position": "(0, 0)",
+      "RotateCenter": "(-20.80004, 115.2)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/itigoSlave/weapon.png",
+      "Z": -5.0
+    }
+  }
+}

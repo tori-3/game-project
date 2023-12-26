@@ -17,7 +17,7 @@ public:
 	int32 hp;
 	HitBox hitBox;
 
-	Entity(const String& tag,const Figure& figure, const Vec2& _pos, const Vec2& _vel,int32 _hp) :tag{ tag },pos{_pos}, vel{_vel}, hp{_hp}, hitBox{&pos, &vel, figure, &hp} {}
+	Entity(const String& tag,const Figure& figure, const Vec2& _pos, const Vec2& _vel,int32 _hp) :tag{ tag },pos{_pos}, vel{_vel}, hp{_hp}, hitBox{&pos, &vel, figure, &hp,figure.center()} {}
 
 	virtual void update() = 0;
 
@@ -38,7 +38,7 @@ public:
 			hp = 0;
 		}
 
-		return 0<hp&& pos.y<1000;
+		return 0<hp&& pos.y<2000;
 	}
 
 	void setManager(EntityManager* _manager) {

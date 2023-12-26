@@ -74,6 +74,10 @@ public:
 		character.removeMotion(motionName);
 	}
 
+	bool hasMotion(const String& motionName) {
+		return character.hasMotion(motionName);
+	}
+
 private:
 
 };

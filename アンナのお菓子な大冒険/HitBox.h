@@ -92,7 +92,7 @@ public:
 	{
 		const RectF rect = hitbox.boundingRect();
 		hitbox.setCenter(*pos + Relative + (hitbox.center() - rect.center()));
-		physics = PhysicsBox{ pos, vel, -Vec2{ rect.w / 2,rect.h / 2 }, rect.w, rect.h,hp };
+		physics = PhysicsBox{ pos, vel, Relative -Vec2{ rect.w / 2,rect.h / 2 }, rect.w, rect.h,hp };
 	}
 
 	virtual ~HitBox() {}

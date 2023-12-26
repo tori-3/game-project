@@ -157,6 +157,14 @@ void Snowman(Point pos) {
 	TextureAsset(U"head").resized(rect_size*2).draw(pos * rect_size);
 }
 
+void ItigoSlave(Point pos) {
+	TextureAsset(U"itigoSlave-rfoot").resized(rect_size ).draw(pos * rect_size);
+	TextureAsset(U"itigoSlave-lfoot").resized(rect_size ).draw(pos * rect_size);
+	TextureAsset(U"itigoSlave-body").resized(rect_size ).draw(pos * rect_size);
+	TextureAsset(U"itigoSlave-weapon").resized(rect_size ).draw(pos * rect_size);
+}
+
+
 struct Info {
 	String tag;
 	std::function<void(Point)>func;
@@ -191,7 +199,8 @@ Array<Info>list{
 	{U"BeltConveyorLeft",BeltConveyorLeft,U"ベルトコンベア(←)"},
 	{U"SpawnerStrawberrySoldier",SpawnerStrawberrySoldier,U"イチゴスポナー"},
 	{U"Player",Player,U"プレイヤー"},
-	{U"Snowman",Snowman,U"雪だるま"}
+	{U"Snowman",Snowman,U"雪だるま"},
+	{U"ItigoSlave",ItigoSlave,U"奴隷イチゴ"}
 };
 
 HashTable<String, std::function<void(Point)>> table;

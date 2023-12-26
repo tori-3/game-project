@@ -307,3 +307,91 @@ public:
 		}
 	}
 };
+
+class ItigoSlave :public Entity {
+public:
+
+	bool left = true;
+
+	CharacterSystem character;
+
+	ItigoSlave(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,15),70 * 1.5,69 * 1.5 },cpos,{0,0},1 }
+		, character{ U"Characters/itigoSlave/itigoSlave.json" ,U"Characters/itigoSlave/motion.txt" ,0.3,cpos,true,false }
+	{
+		character.addMotion(U"walk", true);
+	}
+
+	Timer attackTimer{ 0.5s };
+
+	void update()override {
+
+		manager->stage->hit(&hitBox);
+
+		if (hitBox.touch(Direction::right))
+		{
+			left = true;
+		}
+		else if (hitBox.touch(Direction::left)) {
+			left = false;
+		}
+
+		if (hitBox.touch(Direction::down)) {
+			if (left) {
+				if (not hitBox.leftFloor()) {
+					left = false;
+				}
+			}
+			else {
+				if (not hitBox.rightFloor()) {
+					left = true;
+				}
+			}
+		}
+
+		if (left) {
+			vel.x = -100;
+		}
+		else {
+			vel.x = 100;
+		}
+
+		hitBox.physicsUpdate();
+		hitBox.update();
+
+		if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
+			if (pos.x < manager->get(U"Player")->pos.x) {
+				manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+			}
+			else {
+				manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+			}
+		}
+
+		if ((not character.hasMotion(U"attack"))&&manager->get(U"Player")->hitBox.Get_Box().intersects(hitBox.Get_Box().movedBy(left ? -60 : 60, 0))) {
+			attackTimer.restart();
+			character.addMotion(U"attack");
+		}
+
+		if (attackTimer.sF()==0) {
+			if (manager->get(U"Player")->hitBox.Get_Box().intersects(hitBox.Get_Box().movedBy(left ? -25 : 25, 0))) {
+				manager->get(U"Player")->damage(2, Vec2{ left ? -200 : 200,-20 });
+			}
+		}
+
+		character.update(pos, left);
+	}
+
+	void lateUpdate() {
+		if (not isActive()) {
+			DataManager::get().effect.add<StarEffect>(pos, 0);
+			manager->add(new CookieItem{ pos });
+		}
+	}
+
+	void draw()const override {
+		//hitBox.Get_Box().movedBy(left ? -60 : 60, 0).draw();
+		//hitBox.Get_Box().movedBy(left?-25:25, 0).draw(Palette::Red);
+		//hitBox.draw(Palette::Orange);
+		character.draw();
+	}
+};

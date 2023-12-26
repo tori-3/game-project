@@ -12,7 +12,7 @@ public:
 
 	CharacterSystem character;
 
-	Hadouken(const Vec2& _pos, double angle) :Entity {U"PlayerAttack", RectF{Arg::center(_pos),50,50},_pos,{0,0},1}, angle{angle}
+	Hadouken(const Vec2& _pos, double angle) :Entity {U"PlayerAttack", RectF{Arg::center(0,0),50,50},_pos,{0,0},1}, angle{angle}
 		, character{ U"CharacterImages/Hadouken/Hadouken.json",U"CharacterImages/Hadouken/motion.txt",0.25,_pos,false }
 	{
 		character.addMotion(U"");
