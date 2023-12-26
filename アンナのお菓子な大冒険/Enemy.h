@@ -395,3 +395,245 @@ public:
 		character.draw();
 	}
 };
+
+class Kompeito :public Entity {
+public:
+	double velX;
+
+	size_t type=Random(2);
+
+	Kompeito(const Vec2& cpos,double velX) :Entity{ U"Enemy", Circle{25},cpos,{0,0},1}, velX{velX}
+	{
+		vel.y = -300;
+		TextureAsset::Register(U"金平糖0",U"Characters/cloud/金平糖/konpeitou.png");
+		TextureAsset::Register(U"金平糖1", U"Characters/cloud/金平糖/konpeitouB.png");
+		TextureAsset::Register(U"金平糖2", U"Characters/cloud/金平糖/konpeitouR.png");
+	}
+
+	void update()override {
+
+		vel.x = velX;
+
+		hitBox.physicsUpdate();
+		hitBox.update();
+
+		if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
+			if (pos.x < manager->get(U"Player")->pos.x) {
+				manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+			}
+			else {
+				manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+			}
+		}
+	}
+
+	void lateUpdate() {
+		constexpr ColorF colorList[] = {Palette::Yellow,Palette::Blue,Palette::Red};
+		if (not isActive()) {
+			DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 35, colorList[type]);
+		}
+	}
+
+	void draw()const override {
+		TextureAsset(U"金平糖{}"_fmt(type)).resized(100).drawAt(pos);
+	}
+};
+
+class CloudEnemy :public Entity {
+public:
+
+	CharacterSystem character;
+
+	CloudEnemy(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,0),70 * 1.5,69 },cpos,{0,0},1 }
+		, character{ U"Characters/cloud/cloud.json" ,U"Characters/cloud/motion.txt" ,0.5,cpos,true,false }
+	{
+		character.addMotion(U"walk", true);
+	}
+
+	Timer attackTimer{ 0.5s };
+
+	double accumulatedTime = 0;
+
+	void update()override {
+
+		//manager->stage->hit(&hitBox);
+
+		pos.x= Math::SmoothDamp(pos.x, manager->get(U"Player")->pos.x, vel.x, 1, 600);
+
+		hitBox.update();
+
+		if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
+			if (pos.x < manager->get(U"Player")->pos.x) {
+				manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+			}
+			else {
+				manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+			}
+		}
+
+		if (Abs(manager->get(U"Player")->pos.x - pos.x) < 70 * 6) {
+
+			accumulatedTime += Scene::DeltaTime();
+			constexpr double eventInterval = 2.5;
+			if (eventInterval <= accumulatedTime)
+			{
+				manager->add(new Kompeito{ pos,vel.x+vel.x*Random(1.0)});
+				character.addMotion(U"attack");
+
+				accumulatedTime -= eventInterval;
+			}
+		}
+
+		character.update(pos, 0<vel.x);
+	}
+
+	void lateUpdate() {
+		if (not isActive()) {
+			DataManager::get().effect.add<StarEffect>(pos, 0);
+			manager->add(new CookieItem{ pos });
+		}
+	}
+
+	void draw()const override {
+		character.draw();
+	}
+};
+
+class Corn :public Entity {
+public:
+
+	bool left = false;
+
+	bool startShake = false;
+
+	bool corn = true;
+
+	//爆発した後、地面に触れたか。
+	bool touch = false;
+
+	CharacterSystem character;
+
+	Corn(const Vec2& cpos) :Entity{ {U"Enemy"}, Circle{30},cpos,{0,0},1 },
+		character{ U"Characters/corn/corn.json",U"Characters/corn/motion.txt",0.3,cpos,true,false }
+	{
+		character.addMotion(U"walk", true);
+	}
+
+	void update()override {
+		Print << hp;
+
+		if (corn) {
+			if(not startShake)
+			if (Abs(manager->get(U"Player")->pos.x - pos.x) < rect_size * 5) {
+
+				pos = Math::SmoothDamp(pos, manager->get(U"Player")->pos, vel, 0.1, 50);
+				left = vel.x < 0;
+			}
+			hitBox.update();
+
+
+			if (startShake) {
+
+				if (not character.hasMotion(U"explode")) {
+					character.addMotion(U"change");
+					DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 200, HSV{ 20,1,1 });
+					if ((manager->get(U"Player")->pos - pos).length() < 70 * 2) {
+						if (pos.x < manager->get(U"Player")->pos.x) {
+							manager->get(U"Player")->damage(1, Vec2{ 100,-20 });							
+						}
+						else {
+							manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+						}
+					}
+
+					if (pos.x < manager->get(U"Player")->pos.x) {
+						vel = Vec2{ -600,-400 };
+
+					}
+					else {
+						vel = Vec2{ 600,-400 };
+					}
+
+
+					corn = false;
+				}
+			}
+			else if ((manager->get(U"Player")->pos - pos).length() < 70*1.5) {
+				character.clearMotion();
+				character.addMotion(U"explode");
+				startShake = true;
+			}
+		}
+		else {
+			manager->stage->hit(&hitBox);
+
+			if (hitBox.touch(Direction::right))
+			{
+				left = true;
+			}
+			else if (hitBox.touch(Direction::left)) {
+				left = false;
+			}
+
+			if (hitBox.touch(Direction::down)) {
+				touch = true;
+
+				if (left) {
+					if (not hitBox.leftFloor()) {
+						left = false;
+					}
+				}
+				else {
+					if (not hitBox.rightFloor()) {
+						left = true;
+					}
+				}
+			}
+
+			//着地前に歩くと爆発で吹き飛ばないため。
+			if (touch) {
+				if (left) {
+					vel.x = -100;
+				}
+				else {
+					vel.x = 100;
+				}
+			}
+
+			hitBox.physicsUpdate();
+			hitBox.update();
+
+			if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
+				if (pos.x < manager->get(U"Player")->pos.x) {
+					manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+				}
+				else {
+					manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+				}
+
+			}
+		}
+		
+
+		character.update(pos, left);
+	}
+
+	void lateUpdate()override {
+		if (not isActive()) {
+			if (corn) {
+				character.clearMotion();
+				startShake = true;
+				hp = 1;
+			}
+			else {
+				DataManager::get().effect.add<StarEffect>(pos, 50);
+				manager->add(new CookieItem{ pos });
+			}
+		}
+	}
+
+	void draw()const override {
+		//hitBox.draw(Palette::Orange);
+		character.draw();
+	}
+};

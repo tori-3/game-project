@@ -1,0 +1,12 @@
+﻿{
+  "Body": {
+    "corn": {
+      "Parent": "__Main__",
+      "Position": "(600, 350)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/corn/corn.png",
+      "Z": -10.0
+    }
+  }
+}

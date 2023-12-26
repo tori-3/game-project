@@ -1,0 +1,28 @@
+﻿{
+  "Body": {
+    "body": {
+      "Parent": "__Main__",
+      "Position": "(600, 350)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/cloud/body.png",
+      "Z": -10.0
+    },
+    "face1": {
+      "Parent": "body",
+      "Position": "(0, 0)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/cloud/face1.png",
+      "Z": 0.0
+    },
+    "stick": {
+      "Parent": "body",
+      "Position": "(0, 0)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/cloud/stick.png",
+      "Z": -5.0
+    }
+  }
+}

@@ -164,6 +164,15 @@ void ItigoSlave(Point pos) {
 	TextureAsset(U"itigoSlave-weapon").resized(rect_size ).draw(pos * rect_size);
 }
 
+void CloudEnemy(Point pos) {
+	TextureAsset(U"cloud-body").resized(rect_size).draw(pos * rect_size);
+	TextureAsset(U"cloud-stick").resized(rect_size).draw(pos * rect_size);
+	TextureAsset(U"cloud-face1").resized(rect_size).draw(pos * rect_size);
+}
+
+void Corn(Point pos) {
+	TextureAsset(U"corn").resized(rect_size).draw(pos * rect_size);
+}
 
 struct Info {
 	String tag;
@@ -200,7 +209,10 @@ Array<Info>list{
 	{U"SpawnerStrawberrySoldier",SpawnerStrawberrySoldier,U"イチゴスポナー"},
 	{U"Player",Player,U"プレイヤー"},
 	{U"Snowman",Snowman,U"雪だるま"},
-	{U"ItigoSlave",ItigoSlave,U"奴隷イチゴ"}
+	{U"ItigoSlave",ItigoSlave,U"奴隷イチゴ"},
+	{U"CloudEnemy",CloudEnemy,U"わたあめ"},
+	{U"Corn",Corn,U"コーン"}
+
 };
 
 HashTable<String, std::function<void(Point)>> table;

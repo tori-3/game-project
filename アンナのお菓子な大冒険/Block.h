@@ -409,3 +409,28 @@ public:
 		}
 	}
 };
+
+class CloudEnemyBlock :public Untouchable {
+public:
+	bool bornFlg = false;
+
+	void update(const Point& pos)override {
+		if (not bornFlg) {
+			DataManager::get().addEntity(U"CloudEnemy", pos * rect_size + Vec2{ 0.5,0.5 }*rect_size);
+			bornFlg = true;
+		}
+	}
+};
+
+class CornBlock :public Untouchable {
+public:
+	bool bornFlg = false;
+
+	void update(const Point& pos)override {
+		if (not bornFlg) {
+			DataManager::get().addEntity(U"Corn", pos * rect_size + Vec2{ 0.5,0.5 }*rect_size);
+			bornFlg = true;
+		}
+	}
+};
+

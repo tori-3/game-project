@@ -1,0 +1,61 @@
+#walk
+ChangeScale,body, 1.08, 1.08, 1
+MoveTo,stick,-2,-2,1
+
+ChangeScale,body, 0.95238095, 0.95238095, 1
+MoveTo,stick,0,0,1
+
+#attack
+ChangeTexture,face1,Characters/cloud/face2.png
+ChangeScale,body,0.9875,0.9875,0.25
+Move,body,4,0,0.25
+
+ChangeScale,body,0.9875,0.9875,0.25
+Move,body,-4,0,0.25
+
+ChangeScale,body,0.9875,0.9875,0.25
+Move,body,4,0,0.25
+
+ChangeScale,body,0.9875,0.9875,0.25
+Move,body,-4,0,0.25
+
+ChangeScale,body,0.9875,0.9875,0.25
+Move,body,4,0,0.25
+
+ChangeScale,body,0.9875,0.9875,0.25
+Move,body,-4,0,0.25
+
+ChangeScale,body,0.9875,0.9875,0.25
+Move,body,4,0,0.25
+
+ChangeScale,body,0.9875,0.9875,0.25
+Move,body,-4,0,0.25
+
+ChangeScale,body,1.10586768,1.10586768,0.1
+ChangeTexture,face1,Characters/cloud/face1.png
+
+#仕様説明
+全体的にマリオのジュゲムを想像してくれれば大丈夫です。
+参考：https://www.youtube.com/shorts/ghnn_prj67U
+
+〇ステータス
+・攻撃力ハート一個分
+・大きさはイチゴちゃんとかと同じくらい
+
+〇移動
+・マリオのジュゲムのように動きます。
+参考：https://www.youtube.com/shorts/ghnn_prj67U
+・常にアンナちゃんの攻撃がギリギリ届くぐらいの高さにいます。
+・左右移動しかしません。
+・プレイヤーの真上に向かって加速度的に動きます。
+
+〇攻撃
+・マリオのジュゲムと同じように攻撃します。
+参考：https://www.youtube.com/shorts/ghnn_prj67U
+・一定時間ごとに金平糖を投げます。
+　●金平糖
+　・縮むモーションの後に、頭の上から発射します。
+　・プレイヤーの方向に放物線を描いて投げられます。
+　・ハート一個分のダメージを持ちます。
+　・地面を貫通して落ちていきます。
+　・撃ち落とせます。

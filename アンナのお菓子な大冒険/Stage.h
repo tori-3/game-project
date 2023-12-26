@@ -31,7 +31,10 @@ public:
 		{U"BeltConveyorLeft",[]() {return new BeltConveyorLeft(); }},
 		{U"SpawnerStrawberrySoldier",[]() {return new SpawnerStrawberrySoldier(); }},
 		{U"Snowman",[]() {return new SnowmanBlock(); }},
-		{U"ItigoSlave",[]() {return new ItigoSlaveBlock(); }}
+		{U"ItigoSlave",[]() {return new ItigoSlaveBlock(); }},
+		{U"CloudEnemy",[]() {return new CloudEnemyBlock(); }},
+		{U"Corn",[]() {return new CornBlock(); }}
+
 	};
 
 	~Stage() {
