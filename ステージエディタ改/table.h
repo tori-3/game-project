@@ -174,6 +174,12 @@ void Corn(Point pos) {
 	TextureAsset(U"corn").resized(rect_size).draw(pos * rect_size);
 }
 
+void CookieMuti(Point pos) {
+	TextureAsset(U"cookieMuti-body").resized(rect_size).draw(pos * rect_size);
+	TextureAsset(U"cookieMuti-whip").resized(rect_size).draw(pos * rect_size);
+}
+
+
 struct Info {
 	String tag;
 	std::function<void(Point)>func;
@@ -211,7 +217,8 @@ Array<Info>list{
 	{U"Snowman",Snowman,U"雪だるま"},
 	{U"ItigoSlave",ItigoSlave,U"奴隷イチゴ"},
 	{U"CloudEnemy",CloudEnemy,U"わたあめ"},
-	{U"Corn",Corn,U"コーン"}
+	{U"Corn",Corn,U"コーン"},
+	{U"CookieMuti",CookieMuti,U"鞭クッキー"}
 
 };
 

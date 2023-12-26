@@ -33,7 +33,8 @@ public:
 		{U"Snowman",[]() {return new SnowmanBlock(); }},
 		{U"ItigoSlave",[]() {return new ItigoSlaveBlock(); }},
 		{U"CloudEnemy",[]() {return new CloudEnemyBlock(); }},
-		{U"Corn",[]() {return new CornBlock(); }}
+		{U"Corn",[]() {return new CornBlock(); }},
+		{U"CookieMuti",[]() {return new CookieMutiBlock(); }}
 
 	};
 

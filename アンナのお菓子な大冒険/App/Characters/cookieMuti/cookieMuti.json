@@ -1,0 +1,20 @@
+﻿{
+  "Body": {
+    "body": {
+      "Parent": "__Main__",
+      "Position": "(600, 350)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/cookieMuti/body.png",
+      "Z": -10.0
+    },
+    "whip": {
+      "Parent": "body",
+      "Position": "(21.67454, -85.89607)",
+      "RotateCenter": "(-30.50521, 91.91692)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/cookieMuti/whip.png",
+      "Z": -5.0
+    }
+  }
+}

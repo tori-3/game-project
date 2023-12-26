@@ -434,3 +434,14 @@ public:
 	}
 };
 
+class CookieMutiBlock :public Untouchable {
+public:
+	bool bornFlg = false;
+
+	void update(const Point& pos)override {
+		if (not bornFlg) {
+			DataManager::get().addEntity(U"CookieMuti", pos * rect_size + Vec2{ 0.5,0 }*rect_size);
+			bornFlg = true;
+		}
+	}
+};
