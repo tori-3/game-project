@@ -520,7 +520,6 @@ public:
 	}
 
 	void update()override {
-		Print << hp;
 
 		if (corn) {
 			if(not startShake)
@@ -810,6 +809,194 @@ public:
 		//hitBox.Get_Box().movedBy(left ? -20 : 20, 0).draw();
 		//hitBox.Get_Box().movedBy(left ? -60 : 60, 0).draw(Palette::Orange);
 		//hitBox.draw(Palette::Red);
+		character.draw();
+	}
+};
+
+class DropCorn :public Entity {
+public:
+
+	bool left = false;
+
+	bool startShake = false;
+
+	double velX;
+
+	bool corn = true;
+
+	//爆発した後、地面に触れたか。
+	bool touch = false;
+
+	//攻撃されたか
+	bool damaged = false;
+
+	CharacterSystem character;
+
+	DropCorn(const Vec2& cpos, double velX) :Entity{ {U"Enemy"}, Circle{30},cpos,{0,0},1 },
+		character{ U"Characters/corn/corn.json",U"Characters/corn/motion.txt",0.3,cpos,true,false },velX{velX}
+	{
+	}
+
+	void update()override {
+
+		if (corn) {
+			manager->stage->hit(&hitBox);
+
+			if (hitBox.touch(Direction::down)|| damaged) {
+				character.addMotion(U"change");
+				DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 200, HSV{ 20,1,1 });
+				if ((manager->get(U"Player")->pos - pos).length() < 70 * 2) {
+					if (pos.x < manager->get(U"Player")->pos.x) {
+						manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+					}
+					else {
+						manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+					}
+				}
+
+				if (pos.x < manager->get(U"Player")->pos.x) {
+					vel = Vec2{ -600,-400 };
+
+				}
+				else {
+					vel = Vec2{ 600,-400 };
+				}
+				corn = false;
+			}
+
+			vel.x = velX;
+			hitBox.physicsUpdate();
+			hitBox.update();
+		}
+		else {
+			manager->stage->hit(&hitBox);
+
+			if (hitBox.touch(Direction::right))
+			{
+				left = true;
+			}
+			else if (hitBox.touch(Direction::left)) {
+				left = false;
+			}
+
+			if (hitBox.touch(Direction::down)) {
+				touch = true;
+
+				if (left) {
+					if (not hitBox.leftFloor()) {
+						left = false;
+					}
+				}
+				else {
+					if (not hitBox.rightFloor()) {
+						left = true;
+					}
+				}
+			}
+
+			//着地前に歩くと爆発で吹き飛ばないため。
+			if (touch) {
+				if (left) {
+					vel.x = -100;
+				}
+				else {
+					vel.x = 100;
+				}
+			}
+
+			hitBox.physicsUpdate();
+			hitBox.update();
+
+			if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
+				if (pos.x < manager->get(U"Player")->pos.x) {
+					manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+				}
+				else {
+					manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+				}
+
+			}
+		}
+
+
+		character.update(pos, left);
+	}
+
+	void lateUpdate()override {
+		if (not isActive()) {
+			if (corn) {
+				damaged = true;
+				hp = 1;
+			}
+			else {
+				DataManager::get().effect.add<StarEffect>(pos, 50);
+				manager->add(new CookieItem{ pos });
+			}
+		}
+	}
+
+	void draw()const override {
+		//hitBox.draw(Palette::Orange);
+		character.draw();
+	}
+};
+
+
+class Zerosen :public Entity {
+public:
+
+	CharacterSystem character;
+
+	Zerosen(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,-15),70 * 1.5,50 },cpos,{0,0},1 }
+		, character{ U"Characters/zerosen/model.json" ,U"Characters/zerosen/motion.txt" ,1,cpos,false,false }
+	{
+		character.addMotion(U"susumu");
+	}
+
+	Timer attackTimer{ 0.5s };
+
+	double accumulatedTime = 0;
+
+	void update()override {
+
+		//manager->stage->hit(&hitBox);
+
+		pos.x = Math::SmoothDamp(pos.x, manager->get(U"Player")->pos.x, vel.x, 1, 600);
+
+		hitBox.update();
+
+		if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
+			if (pos.x < manager->get(U"Player")->pos.x) {
+				manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+			}
+			else {
+				manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+			}
+		}
+
+		if (Abs(manager->get(U"Player")->pos.x - pos.x) < 70 * 6) {
+
+			accumulatedTime += Scene::DeltaTime();
+			constexpr double eventInterval = 2.5;
+			if (eventInterval <= accumulatedTime)
+			{
+				manager->add(new DropCorn{ pos,vel.x + vel.x * Random(1.0) });
+
+				accumulatedTime -= eventInterval;
+			}
+		}
+
+		character.update(pos, 0 < vel.x);
+	}
+
+	void lateUpdate() {
+		if (not isActive()) {
+			DataManager::get().effect.add<StarEffect>(pos, 0);
+			manager->add(new CookieItem{ pos });
+		}
+	}
+
+	void draw()const override {
 		character.draw();
 	}
 };

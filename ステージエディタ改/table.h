@@ -183,6 +183,12 @@ void CookieKaban(Point pos) {
 	TextureAsset(U"cookieKaban").resized(rect_size).draw(pos * rect_size);
 }
 
+void Zerosen(Point pos) {
+	TextureAsset(U"zerosen-body").resized(rect_size).draw(pos * rect_size);
+	TextureAsset(U"zerosen-pera").resized(rect_size).draw(pos * rect_size);
+	TextureAsset(U"zerosen-sentan").resized(rect_size).draw(pos * rect_size);
+}
+
 struct Info {
 	String tag;
 	std::function<void(Point)>func;
@@ -222,7 +228,8 @@ Array<Info>list{
 	{U"CloudEnemy",CloudEnemy,U"わたあめ"},
 	{U"Corn",Corn,U"コーン"},
 	{U"CookieMuti",CookieMuti,U"鞭クッキー"},
-	{U"CookieKaban",CookieKaban,U"鞄クッキー"}
+	{U"CookieKaban",CookieKaban,U"鞄クッキー"},
+	{U"Zerosen",Zerosen,U"零戦クッキー"}
 
 };
 

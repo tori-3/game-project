@@ -1,0 +1,36 @@
+﻿{
+  "Body": {
+    "Hitbox": {
+      "Parent": "body",
+      "Position": "(3.72662, -6.02618)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/zerosen/hitbox.png",
+      "Z": -10.0
+    },
+    "body": {
+      "Parent": "__Main__",
+      "Position": "(600, 350)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/zerosen/body.png",
+      "Z": -10.0
+    },
+    "pera": {
+      "Parent": "body",
+      "Position": "(0, 0)",
+      "RotateCenter": "(-28.89134, -4.77893)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/zerosen/pera.png",
+      "Z": -5.0
+    },
+    "sentan": {
+      "Parent": "body",
+      "Position": "(0, 0)",
+      "RotateCenter": "(-29.10851, -5.21343)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/zerosen/sentan.png",
+      "Z": 0.0
+    }
+  }
+}

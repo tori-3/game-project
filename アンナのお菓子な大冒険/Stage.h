@@ -35,7 +35,8 @@ public:
 		{U"CloudEnemy",[]() {return new CloudEnemyBlock(); }},
 		{U"Corn",[]() {return new CornBlock(); }},
 		{U"CookieMuti",[]() {return new CookieMutiBlock(); }},
-		{U"CookieKaban",[]() {return new CookieKabanBlock(); }}
+		{U"CookieKaban",[]() {return new CookieKabanBlock(); }},
+		{U"Zerosen",[]() {return new ZerosenBlock(); }}
 	};
 
 	~Stage() {

@@ -1,0 +1,6 @@
+#mawaru
+@time,2
+Rotate,pera,-1440,@time
+
+#susumu
+StartMotion,mawaru,true,1

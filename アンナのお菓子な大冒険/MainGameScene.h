@@ -23,6 +23,7 @@ public:
 		table[U"Corn"] = [](const Vec2& pos) {return new Corn{ pos }; };
 		table[U"CookieMuti"] = [](const Vec2& pos) {return new CookieMuti{ pos }; };
 		table[U"CookieKaban"] = [](const Vec2& pos) {return new CookieKaban{ pos }; };
+		table[U"Zerosen"] = [](const Vec2& pos) {return new Zerosen{ pos }; };
 	}
 
 	HashTable<String, std::function<Entity* (const Vec2&)>>table;
