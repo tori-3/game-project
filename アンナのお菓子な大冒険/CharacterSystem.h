@@ -30,6 +30,7 @@ public:
 		drawManager.update();
 	}
 
+	
 	int32 mirrorCount = 0;
 	void update(const Vec2& pos,bool left) {
 

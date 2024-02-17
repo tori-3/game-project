@@ -116,6 +116,9 @@
     <ClCompile Include="IMotionField.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Movements.cpp" />
+    <ClCompile Include="Prg\Action.cpp" />
+    <ClCompile Include="Prg\Actions.cpp" />
+    <ClCompile Include="Prg\Condition.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -334,6 +337,10 @@
     <ClInclude Include="Movements.h" />
     <ClInclude Include="Pause.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Prg\Action.h" />
+    <ClInclude Include="Prg\Actions.h" />
+    <ClInclude Include="Prg\Condition.h" />
+    <ClInclude Include="Prg\Init.h" />
     <ClInclude Include="RingEffect.h" />
     <ClInclude Include="setting.h" />
     <ClInclude Include="Singleton.h" />

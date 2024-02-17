@@ -8,7 +8,6 @@ class EntityManager;
 
 class Entity {
 public:
-
 	EntityManager* manager = nullptr;
 
 	String tag;

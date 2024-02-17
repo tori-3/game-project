@@ -1001,3 +1001,136 @@ public:
 	}
 };
 
+class SnowKnight:public Entity
+{
+public:
+	CharacterSystem character;
+
+	double rx, lx;
+
+	std::function<void()> f;
+	std::function<void()>f2;
+
+	bool left=false;
+	double timer;
+
+	HitBox* kenHitbox;
+
+	SnowKnight(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,-15),70 * 1.5,50 },cpos,{0,0},1 }
+		, character{ U"Characters/yukidarunaito/yukidarunaito.json" ,U"Characters/yukidarunaito/motion.txt" ,1,cpos,false,false }
+	{
+		character.character.scale = 0.1;
+
+		timer = 0;
+
+		rx = pos.x + 100;
+		lx = pos.x - 100;
+
+		auto& k = character.character.table[U"kenbox"];
+
+		//kenHitbox=new HitBox(&k.joint.pos,&vel,k.joint.)
+		//character.addMotion(U"susumu");
+	}
+
+	Timer attackTimer{ 0.5s };
+
+	double accumulatedTime = 0;
+
+	Vec2 kenboxPos{0,0};
+	Vec2 kenboxVel{ 0,0 };
+	int32 kenboxHp{ 10 };
+
+	void update()override {
+
+		//manager->stage->hit(&hitBox);
+
+		//pos.x = Math::SmoothDamp(pos.x, manager->get(U"Player")->pos.x, vel.x, 1, 600);
+
+		hitBox.update();
+
+		if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
+			if (pos.x < manager->get(U"Player")->pos.x) {
+				manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+			}
+			else {
+				manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+			}
+		}
+
+		if (timer <= 0)
+		{
+			if (RandomBool() or true)
+			{
+				timer = 3;
+				int d = 0;
+				if (RandomBool())
+				{
+					d = rx - pos.x;
+				}
+				else
+				{
+					d = lx - pos.x;
+				}
+				left = d < 0;
+				f = [=]
+				{
+					pos.x += (d / 3) * Scene::DeltaTime();				
+				};
+				f2 = [=]
+				{
+					vel.x = 0;
+					left != left;
+				};
+			}
+			else
+			{
+				timer = 5.8;
+				//0.5 構え
+				//1 ためる 何もしない
+				//0.4　剣を前に突き出す
+				//1.5 何もしない
+				//0.2 切り上げ
+				//1　何もしない
+				character.addMotion(U"kiriage");
+				f = [=]
+				{
+					if (1.5 <= timer and timer <= 3.4)
+					{
+						auto& j = character.character.table[U"kiriage"].joint;
+						HitBox h(&kenboxPos, &kenboxVel, RectF{Arg::center(0,0), j.size}.rotatedAt(j.rotatePos, j.angle), &kenboxHp);
+						if (manager->get(U"Player")->hitBox.intersects(h)) {
+							manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+						}
+					}
+				};
+				f2 = [=]
+				{
+					
+				};
+			}
+		}
+		
+		if (timer > 0)
+		{
+			timer -= Scene::DeltaTime();
+			f();
+			if (timer <= 0)
+			{
+				f2();
+			}
+		}
+
+		character.update(pos, left);
+	}
+
+	void lateUpdate() {
+		/*if (not isActive()) {
+			DataManager::get().effect.add<StarEffect>(pos, 0);
+			manager->add(new CookieItem{ pos });
+		}*/
+	}
+
+	void draw()const override {
+		character.draw();
+	}
+};

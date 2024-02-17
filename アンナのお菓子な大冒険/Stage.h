@@ -36,6 +36,7 @@ public:
 		{U"Corn",[]() {return new CornBlock(); }},
 		{U"CookieMuti",[]() {return new CookieMutiBlock(); }},
 		{U"CookieKaban",[]() {return new CookieKabanBlock(); }},
+		{U"SnowKnight",[]() {return new SnowKnightBlock(); }},
 		{U"Zerosen",[]() {return new ZerosenBlock(); }}
 	};
 

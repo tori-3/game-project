@@ -1,0 +1,68 @@
+﻿{
+  "Body": {
+    "Hitbox": {
+      "Parent": "body",
+      "Position": "(89.29275, 309.86877)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/yukidarunaito/hitbox.png",
+      "Z": -10.0
+    },
+    "body": {
+      "Parent": "__Main__",
+      "Position": "(603.58032, 321.35804)",
+      "RotateCenter": "(75.68479, 855.42913)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/yukidarunaito/body.png",
+      "Z": -10.0
+    },
+    "hana": {
+      "Parent": "head",
+      "Position": "(0, 0)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/yukidarunaito/hana.png",
+      "Z": 0.0
+    },
+    "head": {
+      "Parent": "body",
+      "Position": "(0, 0)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/yukidarunaito/head.png",
+      "Z": -10.0
+    },
+    "kabuto": {
+      "Parent": "head",
+      "Position": "(0, 0)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/yukidarunaito/kabuto.png",
+      "Z": -5.0
+    },
+    "ken": {
+      "Parent": "body",
+      "Position": "(0, 0)",
+      "RotateCenter": "(242.16488, 334.84539)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/yukidarunaito/ken.png",
+      "Z": 5.0
+    },
+    "kenbox": {
+      "Parent": "ken",
+      "Position": "(479.7428, -196.38453)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/yukidarunaito/kenbox.png",
+      "Z": -10.0
+    },
+    "tate": {
+      "Parent": "body",
+      "Position": "(0, 0)",
+      "RotateCenter": "(-207.28518, 385.67018)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/yukidarunaito/tate.png",
+      "Z": 4.0
+    }
+  }
+}
