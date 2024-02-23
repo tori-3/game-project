@@ -189,6 +189,10 @@ void Zerosen(Point pos) {
 	TextureAsset(U"zerosen-sentan").resized(rect_size).draw(pos * rect_size);
 }
 
+void SnowKnight(Point pos) {
+	Rect{ pos * rect_size,rect_size }.draw(Palette::Gray);
+}
+
 struct Info {
 	String tag;
 	std::function<void(Point)>func;
@@ -229,7 +233,8 @@ Array<Info>list{
 	{U"Corn",Corn,U"コーン"},
 	{U"CookieMuti",CookieMuti,U"鞭クッキー"},
 	{U"CookieKaban",CookieKaban,U"鞄クッキー"},
-	{U"Zerosen",Zerosen,U"零戦クッキー"}
+	{U"Zerosen",Zerosen,U"零戦クッキー"},
+	{U"SnowKnight",SnowKnight,U"雪だるナイト"}
 
 };
 

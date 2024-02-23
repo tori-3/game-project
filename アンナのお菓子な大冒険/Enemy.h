@@ -1016,11 +1016,9 @@ public:
 
 	HitBox* kenHitbox;
 
-	SnowKnight(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,-15),70 * 1.5,50 },cpos,{0,0},1 }
-		, character{ U"Characters/yukidarunaito/yukidarunaito.json" ,U"Characters/yukidarunaito/motion.txt" ,1,cpos,false,false }
+	SnowKnight(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(-20,40),70 * 1,70*4-30 },cpos,{0,0},1 }
+		, character{ U"Characters/yukidarunaito/yukidarunaito.json" ,U"Characters/yukidarunaito/motion.txt" ,0.2,cpos,true,false }
 	{
-		character.character.scale = 0.1;
-
 		timer = 0;
 
 		rx = pos.x + 100;
@@ -1042,10 +1040,11 @@ public:
 
 	void update()override {
 
-		//manager->stage->hit(&hitBox);
+		manager->stage->hit(&hitBox);
 
 		//pos.x = Math::SmoothDamp(pos.x, manager->get(U"Player")->pos.x, vel.x, 1, 600);
 
+		hitBox.physicsUpdate();
 		hitBox.update();
 
 		if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
@@ -1059,7 +1058,7 @@ public:
 
 		if (timer <= 0)
 		{
-			if (RandomBool() or true)
+			if (RandomBool())
 			{
 				timer = 3;
 				int d = 0;
@@ -1096,11 +1095,11 @@ public:
 				{
 					if (1.5 <= timer and timer <= 3.4)
 					{
-						auto& j = character.character.table[U"kiriage"].joint;
-						HitBox h(&kenboxPos, &kenboxVel, RectF{Arg::center(0,0), j.size}.rotatedAt(j.rotatePos, j.angle), &kenboxHp);
-						if (manager->get(U"Player")->hitBox.intersects(h)) {
-							manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-						}
+						//auto& j = character.character.table[U"kiriage"].joint;
+						//HitBox h(&kenboxPos, &kenboxVel, RectF{Arg::center(0,0), j.size}.rotatedAt(j.rotatePos, j.angle), &kenboxHp);
+						//if (manager->get(U"Player")->hitBox.intersects(h)) {
+						//	manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+						//}
 					}
 				};
 				f2 = [=]
@@ -1131,6 +1130,8 @@ public:
 	}
 
 	void draw()const override {
+		hitBox.Get_Box().draw(Palette::Red);
+
 		character.draw();
 	}
 };

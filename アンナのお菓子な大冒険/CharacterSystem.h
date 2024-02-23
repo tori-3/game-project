@@ -23,6 +23,8 @@ public:
 	{
 		character.setDrawManager(&drawManager);
 		character.joint->pos = pos;
+		character.base->joint->pos = pos;
+
 		if(mirror)character.angle = 180_deg;
 		character.update(0);
 
@@ -44,6 +46,8 @@ public:
 
 		character.joint->pos += pos - tmpPos;
 		character.update();
+
+		character.base->joint->pos += pos - tmpPos;
 
 		tmpPos = pos;
 
