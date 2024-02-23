@@ -1006,6 +1006,7 @@ class SnowKnight:public Entity
 public:
 	CharacterSystem character;
 
+	//右と左の定位置
 	double rx, lx;
 
 	std::function<void()> f;
@@ -1013,6 +1014,8 @@ public:
 
 	bool left=false;
 	double timer;
+
+	Quad ken{};
 
 	HitBox* kenHitbox;
 
@@ -1034,6 +1037,8 @@ public:
 
 	double accumulatedTime = 0;
 
+	int32 yoroi = 3;
+
 	Vec2 kenboxPos{0,0};
 	Vec2 kenboxVel{ 0,0 };
 	int32 kenboxHp{ 10 };
@@ -1049,16 +1054,19 @@ public:
 
 		if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
 			if (pos.x < manager->get(U"Player")->pos.x) {
-				manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+				manager->get(U"Player")->damage(1, Vec2{ 200,-20 });
 			}
 			else {
-				manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+				manager->get(U"Player")->damage(1, Vec2{ -200,-20 });
 			}
 		}
 
 		if (timer <= 0)
 		{
-			if (RandomBool())
+
+			switch (Random(0,2))
+			{
+			case 0:
 			{
 				timer = 3;
 				int d = 0;
@@ -1073,7 +1081,7 @@ public:
 				left = d < 0;
 				f = [=]
 				{
-					pos.x += (d / 3) * Scene::DeltaTime();				
+					pos.x += (d / 3) * Scene::DeltaTime();
 				};
 				f2 = [=]
 				{
@@ -1081,7 +1089,8 @@ public:
 					left != left;
 				};
 			}
-			else
+				break;
+			case 1:
 			{
 				timer = 5.8;
 				//0.5 構え
@@ -1104,9 +1113,63 @@ public:
 				};
 				f2 = [=]
 				{
-					
+
 				};
 			}
+				break;
+
+			case 2:
+			{
+				timer = 1.6;
+				character.addMotion(U"ageru");
+
+				f = [=]
+				{
+
+				};
+
+				f2 = [=]
+				{
+					for (auto i : step(yoroi?3:4)) {
+						Vec2 bornPos{pos.x+Random(-200,200),200};
+
+						// 選択肢
+						const Array<std::function<Entity* (Vec2)>> options =
+						{
+							[](Vec2 pos) {
+								StrawberrySoldier* ptr = new StrawberrySoldier{ pos };
+								ptr->left = RandomBool();
+								return ptr;
+							},
+							[](Vec2 pos) {
+								CookieSoldier* ptr = new CookieSoldier{ pos };
+								ptr->left = RandomBool();
+								return ptr;
+							},
+							[](Vec2 pos) {
+								Snowman* ptr = new Snowman{ pos };
+								ptr->left = RandomBool();
+								return ptr;
+							},
+						};
+
+						// 選択肢に対応する確率分布
+						DiscreteDistribution distribution{
+						{
+								3,2,1
+						} };
+
+						manager->add(DiscreteSample(options, distribution)(bornPos));
+
+						DataManager::get().additiveEffect.add<ExplosionEffect>(bornPos, 60, Palette::Yellowgreen);
+					}
+				};
+
+			}
+				break;
+
+			}
+
 		}
 		
 		if (timer > 0)
@@ -1119,19 +1182,50 @@ public:
 			}
 		}
 
+		ken = character.character.table[U"kenbox"].joint.getQuad();
+
 		character.update(pos, left);
 	}
 
-	void lateUpdate() {
+
+
+	void lateUpdate() override {
 		/*if (not isActive()) {
 			DataManager::get().effect.add<StarEffect>(pos, 0);
 			manager->add(new CookieItem{ pos });
 		}*/
 	}
 
+	void damage(int32 n, const Vec2& force = {}) override {
+		if (yoroi) {
+			//5は突進のダメージ
+			if (5 <= n) {
+				yoroi -= 1;
+			}
+			if (yoroi <= 0) {
+				character.character.table[U"kabuto"].joint.color = ColorF{1,0};
+				character.character.base->table[U"kabuto"].joint.color = ColorF{ 1,0 };
+			}
+		}
+		else {
+			hp -= n;
+		}
+
+		if (5 <= n) {
+			dynamic_cast<Player*>(manager->get(U"Player"))->stopRush();
+			if (pos.x < manager->get(U"Player")->pos.x) {
+				manager->get(U"Player")->damage(0, Vec2{ 200,-20 });
+			}
+			else {
+				manager->get(U"Player")->damage(0, Vec2{ -200,-20 });
+			}
+		}
+	}
+
 	void draw()const override {
 		hitBox.Get_Box().draw(Palette::Red);
 
 		character.draw();
+		ken.draw(Palette::Pink);
 	}
 };

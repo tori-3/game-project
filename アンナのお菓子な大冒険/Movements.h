@@ -462,7 +462,7 @@ public:
 			m_movements << new SetPos(name, baseJoint->pos, timelim);
 			m_movements << new RotateTo(name, baseJoint->angle, timelim);
 			m_movements << new ChangeScale(name, baseJoint->size.x / targetJoint->size.x, baseJoint->size.y / targetJoint->size.y, timelim, false);
-			m_movements << new ChangeColor(name, character->getBase()->get(target)->color, timelim, false);
+			m_movements << new ChangeColor(name, baseJoint->color, timelim, false);
 			m_movements << new ChangeTexture(name, baseJoint->textureName, timelim);
 			m_movements << new LerpZ(name, baseJoint->z, timelim, false);
 		}

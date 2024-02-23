@@ -35,7 +35,7 @@ public:
 
 		for (auto& entity : manager->getArray(U"Enemy")) {
 				if (entity->hitBox.intersects(hitBox)) {
-					entity->damage(100, OffsetCircular{ {0,0},Scene::DeltaTime() * 1000,angle });
+					entity->damage(1, OffsetCircular{ {0,0},Scene::DeltaTime() * 1000,angle });
 					collisionFlg = true;
 					break;
 				}
@@ -56,7 +56,6 @@ public:
 		character.draw();
 	}
 };
-
 
 class Player :public Entity
 {
@@ -141,7 +140,7 @@ public:
 
 			for (auto& entity : manager->getArray(U"Enemy")) {
 				if (entity->hitBox.intersects(hitBox)) {
-					entity->damage(100);
+					entity->damage(5);
 				}
 			}
 		}
@@ -233,11 +232,11 @@ public:
 				return;
 			}
 			else {
-				hp -= n; damageTimer.restart();
+				hp -= n;
+				damageTimer.restart();
 				this->force = force;
 				backTimer.restart();
 				vel += force;
-
 				character.addMotion(U"Damage");
 			}
 		}
@@ -245,6 +244,10 @@ public:
 
 	bool isActive()override {
 		return true;
+	}
+
+	void stopRush() {
+		rushMode = false;
 	}
 };
 

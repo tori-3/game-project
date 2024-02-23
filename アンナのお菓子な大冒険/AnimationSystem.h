@@ -170,6 +170,20 @@ public:
 
 	Mat3x2 mat = Graphics2D::GetLocalTransform();
 
+	Quad getQuad() {
+
+		RectF rect{ Arg::center = pos,size };
+
+		auto tl = mat.transformPoint(rect.tl());
+		auto tr = mat.transformPoint(rect.tr());
+		auto br = mat.transformPoint(rect.br());
+		auto bl = mat.transformPoint(rect.bl());
+
+		return Quad{ tl,tr,br,bl };
+	}
+
+
+
 	Joint() {}
 
 	Joint(const Vec2& center, const Vec2& rotatePos, const String& textureName, double z, double scale)
