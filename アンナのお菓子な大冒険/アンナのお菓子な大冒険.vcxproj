@@ -343,6 +343,7 @@
     <ClInclude Include="Prg\Init.h" />
     <ClInclude Include="RingEffect.h" />
     <ClInclude Include="setting.h" />
+    <ClInclude Include="SimpleAction.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Spawner.h" />
     <ClInclude Include="stdafx.h" />

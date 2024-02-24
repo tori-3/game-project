@@ -896,5 +896,8 @@
     <ClInclude Include="Prg\Init.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SimpleAction.h">
+      <Filter>Header Files\MainGameScene</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@
 #include"Entity.h"
 #include"Effect.h"
 #include"CharacterSystem.h"
+#include"SimpleAction.h"
 
 class Hadouken:public Entity {
 public:
@@ -77,148 +78,415 @@ public:
 
 	CharacterSystem character;
 
-	Player(const Vec2& cpos) : Entity{ U"Player", RectF{Arg::center(0,0),60,130},cpos,{0,0},3}
-		,character{ U"CharacterImages/annna/annna.json",U"CharacterImages/annna/motion.txt",0.25,cpos,false }
+	ActionManager actMan{};
+
+	double speed = 400;
+
+	Player(const Vec2& cpos) : Entity{ U"Player", RectF{Arg::center(0,0),60,130},cpos,{0,0},3 }
+		, character{ U"Characters/annna/annna.json",U"Characters/annna/motion.txt",0.25,cpos,false }
 	{
+		actMan.add(U"Walk", {
+			.startCondition = [&]() {
+				return hitBox.touch(Direction::down) and (not actMan.hasActive(U"Jump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer")) and (KeyA.pressed() or KeyD.pressed());
+			},
+			.start = [&]() {
+				character.addMotion(U"Walk",true);
+			},
+			.update = [&](double t) {
+				return not actMan.hasActive(U"Jump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch") and (KeyA.pressed() or KeyD.pressed());
+			},
+			.end = [&]() {
+				character.removeMotion(U"Walk");
+			}
+		});
+
+		actMan.add(U"Jump", {
+			.startCondition = [&]() {
+				return hitBox.touch(Direction::down) and KeyW.down() and not actMan.hasActive(U"Sliding",U"Summer");
+			},
+			.start = [&]() {
+				character.addMotion(U"Jump");
+				jump = false;
+			},
+			.update = [&](double t) {
+				if (not jump) {
+					if (1 / 30.0 < t) {
+						vel.y = -700.0;
+						jump = true;
+					}
+					return true;
+				}
+				else {
+					return not (0 < vel.y);
+				}
+			},
+		});
+
+		actMan.add(U"Rush", {
+			.startCondition = [&]() {
+				return MouseR.pressed() && 10 <= itemCount and not actMan.hasActive(U"Sliding");
+			},
+			.start = [&]() {
+				speed = 1000;
+				character.addMotion(U"Tosshin",true);
+			},
+			.update = [&](double t) {
+				return not (hitBox.touch(Direction::left) || hitBox.touch(Direction::right));
+			},
+			.end = [&]() {
+				speed = 400;
+				character.removeMotion(U"Tosshin");
+			}
+		});
+
+		actMan.add(U"Falling", {
+			.startCondition = [&]() {
+				return 0<vel.y and not hitBox.touch(Direction::down) and not actMan.hasActive(U"Summer");
+			},
+			.start = [&]() {
+				character.addMotion(U"Falling");
+			},
+			.update = [&](double t) {
+				return 0 < vel.y and not hitBox.touch(Direction::down);
+			},
+			.end = [&]() {
+				character.removeMotion(U"Falling");
+				if (not KeyS.pressed()) {
+					actMan.start(U"Landing");
+				}
+			}
+		});
+
+		actMan.add(U"Landing", {
+			.start = [&]() {
+				character.addMotion(U"Landing");
+			},
+			.update = [&](double t) {
+				if (t < 0.05) {
+					speed = 200;
+				}
+				else {
+					speed = 400;
+				}
+				return character.hasMotion(U"Landing") and not KeyW.down() and not KeyS.pressed();
+			},
+			.end = [&]() {
+				speed = 400;
+				character.removeMotion(U"Landing");
+			}
+		});
+
+
+		actMan.add(U"Standing", {
+			.startCondition = [&]() {
+				return not actMan.hasActive(U"Jump",U"Rush",U"Falling",U"Walk",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer") and hitBox.touch(Direction::down);
+			},
+			.start = [&]() {
+				character.addMotion(U"Standing");
+			},
+			.update = [&](double t) {
+				return not actMan.hasActive(U"Jump",U"Rush",U"Falling",U"Walk",U"Landing",U"Shagamu",U"Punch");
+			},
+			.end = [&]() {
+				character.removeMotion(U"Standing");
+			}
+		});
+
+		actMan.add(U"Shagamu", {
+			.startCondition = [&]() {
+				return KeyS.pressed() and hitBox.touch(Direction::down) and not actMan.hasActive(U"Sliding",U"Summer");
+			},
+			.start = [&]() {
+				character.addMotion(U"Shagamu");
+			},
+			.update = [&](double t) {
+				speed = 0;
+				return KeyS.pressed() and not KeyW.pressed() and not MouseL.pressed();
+			},
+			.end = [&]() {
+				character.removeMotion(U"Shagamu");
+				speed = 400;
+
+				if (MouseL.pressed() and hitBox.touch(Direction::down)) {
+					actMan.start(U"Sliding");
+				}
+			}
+		});
+
+		actMan.add(U"Sliding", {
+			.start = [&]() {
+				character.addMotion(U"Sliding");
+			},
+			.update = [&](double t) {
+
+				speed = 600 * (1 - t / 0.8);
+
+				if (t < 0.8) {
+					return true;
+				}
+				else {
+					return false;
+				}
+			},
+			.end = [&]() {
+				//character.removeMotion(U"Sliding");
+			}
+		});
+
+		actMan.add(U"Punch", {
+			.startCondition = [&]() {
+				return MouseL.down() and actMan.hasActive(U"Standing",U"Walk",U"Summer");
+			},
+			.start = [&]() {
+				character.addMotion(U"Punch");
+				punch = false;
+				speed = 300;
+			},
+			.update = [&](double t) {
+
+				if (not punch) {
+					if (0.07<t) {
+						//発射
+						punch = true;
+						manager->add(new Hadouken{ pos,left?-90_deg:90_deg });
+					}
+					return true;
+				}
+				return character.hasMotion(U"Punch") and not KeyW.down();
+			},
+			.end = [&]() {
+				character.removeMotion(U"Punch");
+				speed = 400;
+			}
+		});
+
+		actMan.add(U"Summer", {
+			.startCondition = [&]() {
+				return KeyQ.down() and not actMan.hasActive(U"Punch",U"Shagamu",U"Sliding") and canSummer;
+			},
+			.start = [&]() {
+				character.addMotion(U"Summer");
+				vel.y = -500.0;
+			},
+			.update = [&](double t) {
+				return character.hasMotion(U"Summer");
+			},
+			.end = [&]() {
+				canSummer = false;
+			}
+		});
+
+
+
 
 	}
+
+	bool canSummer = true;
+
+	bool punch = false;
 
 	bool walk=false;
 
 	void update()override {
 
-		bool tmpWalk = walk;
-		walk = false;
-
-		bool tmpRush = rushMode;
-
-		bool tmpJump = jump;
-
 		manager->stage->hit(&hitBox);
 
-		if (jump && hitBox.touch(Direction::down))jump = false;
+		actMan.update();
 
-		if (KeyW.down()) {
-			if (hitBox.touch(Direction::down))
-			{
-				vel.y = -700.0; jump = true;
-				character.removeMotion(U"Walk");
-				character.addMotion(U"Jump", false);
+		if (actMan.hasActive(U"Sliding")) {
+
+			if (left) {
+				if (not hitBox.touch(Direction::left))vel.x = -speed;
 			}
-		}//ジャンプ
-
-		if (KeyA.pressed()) {
-			if (not hitBox.touch(Direction::left))vel.x = -400;
-			left = true;
-			walk = true;
-		}//左
-		else if (KeyD.pressed()) {
-			if (not hitBox.touch(Direction::right))vel.x = 400;
-			left = false;
-			walk = true;
-		}//右
-
-		if (MouseR.pressed()&&10<=itemCount) {
-			itemCount = 0;
-			rushMode = true;
-			//本当はダッシュ
-			character.addMotion(U"Walk");
+			else {
+				if (not hitBox.touch(Direction::right))vel.x = speed;
+			}
 		}
-		//突進のとき
-		if (rushMode) {
-
-			if (hitBox.touch(Direction::left) || hitBox.touch(Direction::right)) {
-				rushMode = false;
+		else if (actMan.hasActive(U"Rush")) {
+			if (KeyA.pressed()) {
+				left = true;
+			}
+			else if (KeyD.pressed()) {
+				left = false;
 			}
 
 			if (left) {
-				vel.x = -1000;
+				if (not hitBox.touch(Direction::left))vel.x = -speed;
 			}
 			else {
-				vel.x = 1000;
-			}
-
-			for (auto& entity : manager->getArray(U"Enemy")) {
-				if (entity->hitBox.intersects(hitBox)) {
-					entity->damage(5);
-				}
+				if (not hitBox.touch(Direction::right))vel.x = speed;
 			}
 		}
-
-		if (KeyD.down()) {
-			character.addMotion(U"Walk",true);
+		else {
+			if (KeyA.pressed()) {
+				if (not hitBox.touch(Direction::left))vel.x = -speed;
+				left = true;
+			}//左
+			else if (KeyD.pressed()) {
+				if (not hitBox.touch(Direction::right))vel.x = speed;
+				left = false;
+			}//右
 		}
 
-		if (jump==false&& tmpJump==true) {
-			if (walk) {
-				character.addMotion(U"Walk");
-			}
-			else {
-				character.addMotion(U"Standing");
-			}
+		if (hitBox.touch(Direction::down)) {
+			canSummer = true;
 		}
-
-		if (not jump&&walk != tmpWalk) {
-			if (walk) {
-				character.addMotion(U"Walk");
-			}
-			else {
-				character.addMotion(U"Standing");
-			}
-		}
-
-
-		if (MouseL.down()) {
-			manager->add(new Hadouken{ pos,(Cursor::PosF() - pos).getAngle() });
-		}
-
-		if (backTimer.isRunning() && 0s < backTimer) {
-			vel += force;
-		}
-
-
 
 		hitBox.physicsUpdate();
 		hitBox.update();
 
-
-
-		if (hitBox.touch(Direction::down) && hitBox.touch(Direction::up) && hitBox.touch(Direction::left) && hitBox.touch(Direction::right)) {
-			hp = 0;
-		}
-
 		for (auto& entity : manager->getArray(U"Item")) {
-				if (entity->hitBox.intersects(hitBox)) {
-					itemCount++;
-					entity->damage(1);
-				}
-		}
-
-
-
-		if (not rushMode) {
-
-			//モーション制御
-			if ((not tmpWalk) && walk) {
-				character.addMotion(U"Walk");
-			}
-
-			if (tmpWalk && (not walk)) {
-				character.removeMotion(U"Walk");
+			if (entity->hitBox.intersects(hitBox)) {
+				itemCount++;
+				entity->damage(1);
 			}
 		}
 
-		if ((not rushMode) && tmpRush) {
-			if (walk) {
-				character.addMotion(U"Walk");
-			}
-			else {
-				character.removeMotion(U"Walk");
-			}
-		}
+		ClearPrint();
+		actMan.debugPrint();
+		Print << hitBox.touch(Direction::down);
+
+
 
 		character.update(pos, left);
 		character.character.touchGround(hitBox.Get_Box().boundingRect().bottomY());
+
+
+
+
+
+		//bool tmpWalk = walk;
+		//walk = false;
+
+		//bool tmpRush = rushMode;
+
+		//bool tmpJump = jump;
+
+		//manager->stage->hit(&hitBox);
+
+		//if (jump && hitBox.touch(Direction::down))jump = false;
+
+		//if (KeyW.down()) {
+		//	if (hitBox.touch(Direction::down))
+		//	{
+		//		vel.y = -700.0; jump = true;
+		//		character.removeMotion(U"Walk");
+		//		character.addMotion(U"Jump", false);
+		//	}
+		//}//ジャンプ
+
+		//if (KeyA.pressed()) {
+		//	if (not hitBox.touch(Direction::left))vel.x = -400;
+		//	left = true;
+		//	walk = true;
+		//}//左
+		//else if (KeyD.pressed()) {
+		//	if (not hitBox.touch(Direction::right))vel.x = 400;
+		//	left = false;
+		//	walk = true;
+		//}//右
+
+		//if (MouseR.pressed()&&10<=itemCount) {
+		//	itemCount = 0;
+		//	rushMode = true;
+		//	//本当はダッシュ
+		//	character.addMotion(U"Walk");
+		//}
+		////突進のとき
+		//if (rushMode) {
+
+		//	if (hitBox.touch(Direction::left) || hitBox.touch(Direction::right)) {
+		//		rushMode = false;
+		//	}
+
+		//	if (left) {
+		//		vel.x = -1000;
+		//	}
+		//	else {
+		//		vel.x = 1000;
+		//	}
+
+		//	for (auto& entity : manager->getArray(U"Enemy")) {
+		//		if (entity->hitBox.intersects(hitBox)) {
+		//			entity->damage(5);
+		//		}
+		//	}
+		//}
+
+		//if (KeyD.down()) {
+		//	character.addMotion(U"Walk",true);
+		//}
+
+		//if (jump==false&& tmpJump==true) {
+		//	if (walk) {
+		//		character.addMotion(U"Walk");
+		//	}
+		//	else {
+		//		character.addMotion(U"Standing");
+		//	}
+		//}
+
+		//if (not jump&&walk != tmpWalk) {
+		//	if (walk) {
+		//		character.addMotion(U"Walk");
+		//	}
+		//	else {
+		//		character.addMotion(U"Standing");
+		//	}
+		//}
+
+
+		//if (MouseL.down()) {
+		//	manager->add(new Hadouken{ pos,(Cursor::PosF() - pos).getAngle() });
+		//}
+
+		//if (backTimer.isRunning() && 0s < backTimer) {
+		//	vel += force;
+		//}
+
+
+
+		//hitBox.physicsUpdate();
+		//hitBox.update();
+
+
+
+		//if (hitBox.touch(Direction::down) && hitBox.touch(Direction::up) && hitBox.touch(Direction::left) && hitBox.touch(Direction::right)) {
+		//	hp = 0;
+		//}
+
+		//for (auto& entity : manager->getArray(U"Item")) {
+		//		if (entity->hitBox.intersects(hitBox)) {
+		//			itemCount++;
+		//			entity->damage(1);
+		//		}
+		//}
+
+
+
+		//if (not rushMode) {
+
+		//	//モーション制御
+		//	if ((not tmpWalk) && walk) {
+		//		character.addMotion(U"Walk");
+		//	}
+
+		//	if (tmpWalk && (not walk)) {
+		//		character.removeMotion(U"Walk");
+		//	}
+		//}
+
+		//if ((not rushMode) && tmpRush) {
+		//	if (walk) {
+		//		character.addMotion(U"Walk");
+		//	}
+		//	else {
+		//		character.removeMotion(U"Walk");
+		//	}
+		//}
+
+		//character.update(pos, left);
+		//character.character.touchGround(hitBox.Get_Box().boundingRect().bottomY());
 	}
 
 	void draw()const override {
