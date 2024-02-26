@@ -22,8 +22,13 @@ public:
 		:character{ JSON::Load(jsonPath),scale }, loader{ CSV{motionPath} },tmpPos{pos},tmpLeft{left}
 	{
 		character.setDrawManager(&drawManager);
-		character.joint->pos = pos;
-		character.base->joint->pos = pos;
+		//character.joint->pos = pos;
+		//character.base->joint->pos = pos;
+
+		character.joint->pos = {0,0};
+		character.base->joint->pos = {0,0};
+
+		character.pos = pos;
 
 		if(mirror)character.angle = 180_deg;
 		character.update(0);
@@ -32,7 +37,8 @@ public:
 		drawManager.update();
 	}
 
-	
+
+
 	int32 mirrorCount = 0;
 	void update(const Vec2& pos,bool left) {
 
@@ -44,14 +50,18 @@ public:
 			mirrorCount++;
 		}
 
-		character.joint->pos += pos - tmpPos;
-		character.update();
+		//character.joint->pos += pos - tmpPos;
+		//character.base->joint->pos += pos - tmpPos;
 
-		character.base->joint->pos += pos - tmpPos;
+		character.pos += pos - tmpPos;
+
+		Print << character.joint->pos;
+
+		character.update();
+		drawManager.update();
 
 		tmpPos = pos;
 
-		drawManager.update();
 	}
 
 	void draw()const {
@@ -72,7 +82,7 @@ public:
 		character.addMotion(motionName,table[motionName]);
 
 		//うーん
-		character.joint->pos = tmpPos;
+		//character.joint->pos = tmpPos;
 	}
 
 	void removeMotion(const String& motionName) {

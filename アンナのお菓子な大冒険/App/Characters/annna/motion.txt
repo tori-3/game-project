@@ -321,6 +321,7 @@ ChangeTexture,lhand,Characters/annna/lhand_gu.png
 ChangeTexture,rhand,Characters/annna/rhand_back_gu.png
 //上半身
 RotateTo,body,40,t
+RotateTo,Hitbox,-40,t
 RotateTo,head,-20,t
 RotateTo,rsholder,-20,t
 RotateTo,lsholder,0,t
@@ -448,6 +449,8 @@ RotateTo,rthigh,-50,@t
 RotateTo,lthigh,-50,@t
 RotateTo,lshin,100,@t
 RotateTo,rshin,120,@t
+
+//StartMotion,Standing,false,1
 
 #HeadDropMotion
 StartMotion,Jump,false,1

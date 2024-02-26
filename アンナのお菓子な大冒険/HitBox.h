@@ -79,6 +79,7 @@ public:
 			if (not touch_flag[1])vel->y += gravity;
 
 			vel->x *= 0.8;//x軸方向の速度を減速
+			//vel->x = 0;
 		}
 	}
 
@@ -87,8 +88,8 @@ public:
 class HitBox
 {
 public:
-	HitBox(Vec2* Pos, Vec2* vel, const Figure& Hitbox,int32* hp,  const Vec2& relative={0,0})
-		:hitbox(Hitbox), pos(Pos), PrePos(*Pos), Relative(relative), physics(NULL, NULL, Vec2{ 0,0 }, 0, 0,hp)
+	HitBox(Vec2* Pos, Vec2* vel, const Figure& Hitbox,int32* hp)
+		:hitbox(Hitbox), pos(Pos), PrePos(*Pos), Relative(Hitbox.center()), physics(NULL, NULL, Vec2{ 0,0 }, 0, 0,hp)
 	{
 		const RectF rect = hitbox.boundingRect();
 		hitbox.setCenter(*pos + Relative + (hitbox.center() - rect.center()));
@@ -96,6 +97,18 @@ public:
 	}
 
 	virtual ~HitBox() {}
+
+	void setFigure(const Figure& _figure) {
+		const RectF rect = _figure.boundingRect();
+		Relative = _figure.center();
+		hitbox = _figure;
+		hitbox.setCenter(*pos + Relative + (hitbox.center() - rect.center()));
+		physics.width = rect.w;
+		physics.height = rect.h;
+		physics.delta = Relative - Vec2{ rect.w / 2,rect.h / 2 };
+
+		//physics = PhysicsBox{ pos, vel, Relative - Vec2{ rect.w / 2,rect.h / 2 }, rect.w, rect.h,hp };
+	}
 
 	bool intersects(HitBox target)const
 	{
@@ -144,6 +157,8 @@ public:
 	bool rightFloor() {
 		return physics.rightFloor;
 	}
+
+	
 
 	//ステージから影響を受ける
 	template<typename T>void hit(T figure) { physics.hit(figure); }

@@ -170,7 +170,7 @@ public:
 
 	Mat3x2 mat = Graphics2D::GetLocalTransform();
 
-	Quad getQuad() {
+	Quad getQuad()const {
 
 		RectF rect{ Arg::center = pos,size };
 
@@ -241,6 +241,9 @@ public:
 	std::unique_ptr<Character> base = nullptr;
 	//Hitboxパーツがある場合はこれがtrueになる
 	bool hasHitboxParts = false;
+
+	//追加
+	Vec2 pos{};
 
 	class Body {
 	public:
@@ -341,6 +344,7 @@ public:
 	}
 
 	void jointAlign() {
+		Transformer2D move{ Mat3x2::Translate(pos)};
 		Transformer2D trans{ Mat3x2::Scale(Cos(angle) * scale,scale,joint->pos) };
 		joint->update();
 	}
@@ -374,7 +378,11 @@ public:
 	}
 
 	void touchGround(double y) {
-		addPos({0,y - getMaxY()});
+
+		pos += {0, y - getMaxY()};
+		jointAlign();
+
+		//addPos({0,y - getMaxY()});
 	}
 
 	void setPos(const Vec2& pos)
@@ -396,6 +404,10 @@ public:
 		}
 		return max;
 	}
+
+	
+
+
 };
 
 class TimeMove :public Move {

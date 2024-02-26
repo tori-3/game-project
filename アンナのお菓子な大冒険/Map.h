@@ -71,10 +71,10 @@ public:
 
 		character.addMotion(U"Walk");
 		character.update({ rect_x(0) ,640 }, false);
-		Motion motion;
-		motion.add(new SetPos{ U"body",Vec2{ rect_x(index) ,640 },0 });
-		character.character.addMotion(U"Move", motion);
-		character.update({ rect_x(0) ,640 }, false);
+		//Motion motion;
+		//motion.add(new SetPos{ U"body",Vec2{ rect_x(index) ,640 },0 });
+		//character.character.addMotion(U"Move", motion);
+		//character.update({ rect_x(0) ,640 }, false);
 	}
 
 	void update() override
@@ -101,17 +101,17 @@ public:
 			//index
 			if (((KeyLeft | KeyA).down()) && index != 0) {
 				index--;
-				Motion motion;
-				motion.add(new SetPos{ U"body",Vec2{ rect_x(index) ,640 },1 });
-				character.character.addMotion(U"Move", motion);
+				//Motion motion;
+				//motion.add(new SetPos{ U"body",Vec2{ rect_x(index) ,640 },1 });
+				//character.character.addMotion(U"Move", motion);
 				left = true;
 				walk = true;
 			}
 			if (((KeyRight | KeyD).down()) && index != rect_num - 1 && (index < clearStage)) {
 				index++;
-				Motion motion;
-				motion.add(new SetPos{ U"body",Vec2{ rect_x(index) ,640 },1 });
-				character.character.addMotion(U"Move", motion);
+				//Motion motion;
+				//motion.add(new SetPos{ U"body",Vec2{ rect_x(index) ,640 },1 });
+				//character.character.addMotion(U"Move", motion);
 				left = false;
 			}
 

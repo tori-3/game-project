@@ -82,8 +82,12 @@ public:
 
 	double speed = 400;
 
-	Player(const Vec2& cpos) : Entity{ U"Player", RectF{Arg::center(0,0),60,130},cpos,{0,0},3 }
-		, character{ U"Characters/annna/annna.json",U"Characters/annna/motion.txt",0.25,cpos,false }
+	HitBox stand;
+
+	Player(const Vec2& cpos) : 
+		character{ U"Characters/annna/annna.json",U"Characters/annna/motion.txt",0.25,cpos,false },
+		Entity{ U"Player",RectF{Arg::center(0,0),60,130} ,cpos,{0,0},3},
+		stand{ &pos,&vel,RectF{Arg::center(0,0),60,130},&hp }
 	{
 		actMan.add(U"Walk", {
 			.startCondition = [&]() {
@@ -197,18 +201,22 @@ public:
 
 		actMan.add(U"Shagamu", {
 			.startCondition = [&]() {
-				return KeyS.pressed() and hitBox.touch(Direction::down) and not actMan.hasActive(U"Sliding",U"Summer",U"Damage");
+				return KeyS.pressed() and hitBox.touch(Direction::down) and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Landing",U"HeadDropLanding",U"HeadDrop");
 			},
 			.start = [&]() {
 				character.addMotion(U"Shagamu");
+				hitBox.setFigure(RectF{ Arg::center(0,130/4.0),60,130/2.0 });
 			},
 			.update = [&](double t) {
 				speed = 0;
+				stand.update();
 				return KeyS.pressed() and not KeyW.pressed() and not MouseL.pressed();
 			},
 			.end = [&]() {
 				character.removeMotion(U"Shagamu");
 				speed = 400;
+
+				hitBox.setFigure(RectF{ Arg::center(0,0),60,130 });
 
 				if (MouseL.pressed() and hitBox.touch(Direction::down)) {
 					actMan.start(U"Sliding");
@@ -219,6 +227,7 @@ public:
 		actMan.add(U"Sliding", {
 			.start = [&]() {
 				character.addMotion(U"Sliding");
+				hitBox.setFigure(RectF{ Arg::center(0,130 / 4.0),60,130 / 2.0 });
 			},
 			.update = [&](double t) {
 
@@ -232,7 +241,9 @@ public:
 				}
 			},
 			.end = [&]() {
+				speed = 400;
 				character.removeMotion(U"Sliding");
+				hitBox.setFigure(RectF{ Arg::center(0,0),60,130 });
 			}
 		});
 
@@ -309,7 +320,7 @@ public:
 				character.addMotion(U"HeadDropLanding");
 			},
 			.update = [&](double t) {
-				return t < 0.2;
+				return character.hasMotion(U"HeadDropLanding");;
 			},
 			.end = [&]() {
 				character.removeMotion(U"HeadDropLanding");
@@ -418,11 +429,10 @@ public:
 		actMan.debugPrint();
 		Print << hitBox.touch(Direction::down);
 
-
+		//Print << U"PlayerPos:" << pos;
 
 		character.update(pos, left);
 		character.character.touchGround(hitBox.Get_Box().boundingRect().bottomY());
-
 
 
 
@@ -521,11 +531,14 @@ public:
 		//hitBox.physicsUpdate();
 		//hitBox.update();
 
+		Print << hitBox.touch(Direction::down);
+		Print << hitBox.touch(Direction::up);
+		Print << hitBox.touch(Direction::left);
+		Print << hitBox.touch(Direction::right);
 
-
-		//if (hitBox.touch(Direction::down) && hitBox.touch(Direction::up) && hitBox.touch(Direction::left) && hitBox.touch(Direction::right)) {
-		//	hp = 0;
-		//}
+		if ((hitBox.touch(Direction::down) && hitBox.touch(Direction::up)) or (hitBox.touch(Direction::left) && hitBox.touch(Direction::right))) {
+			damage(1);
+		}
 
 		//for (auto& entity : manager->getArray(U"Item")) {
 		//		if (entity->hitBox.intersects(hitBox)) {
@@ -562,7 +575,11 @@ public:
 	}
 
 	void draw()const override {
+
+		character.character.table.at(U"Hitbox").joint.getQuad().draw(Palette::Red);
+		hitBox.draw(ColorF{Palette::Blue,0.5});
 		character.draw();
+
 	}
 
 	void damage(int32 n, const Vec2& force = {})override {
