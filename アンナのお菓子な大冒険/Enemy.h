@@ -1054,10 +1054,10 @@ public:
 
 		if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
 			if (pos.x < manager->get(U"Player")->pos.x) {
-				manager->get(U"Player")->damage(1, Vec2{ 200,-20 });
+				manager->get(U"Player")->damage(1, Vec2{ 700,-300 });
 			}
 			else {
-				manager->get(U"Player")->damage(1, Vec2{ -200,-20 });
+				manager->get(U"Player")->damage(1, Vec2{ -700,-300 });
 			}
 		}
 

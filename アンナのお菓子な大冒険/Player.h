@@ -87,13 +87,13 @@ public:
 	{
 		actMan.add(U"Walk", {
 			.startCondition = [&]() {
-				return hitBox.touch(Direction::down) and (not actMan.hasActive(U"Jump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer")) and (KeyA.pressed() or KeyD.pressed());
+				return hitBox.touch(Direction::down) and (not actMan.hasActive(U"Jump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer",U"HeadDropLanding",U"HeadDrop",U"Damage")) and (KeyA.pressed() or KeyD.pressed());
 			},
 			.start = [&]() {
 				character.addMotion(U"Walk",true);
 			},
 			.update = [&](double t) {
-				return not actMan.hasActive(U"Jump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch") and (KeyA.pressed() or KeyD.pressed());
+				return not actMan.hasActive(U"Jump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"HeadDrop") and (KeyA.pressed() or KeyD.pressed());
 			},
 			.end = [&]() {
 				character.removeMotion(U"Walk");
@@ -102,7 +102,7 @@ public:
 
 		actMan.add(U"Jump", {
 			.startCondition = [&]() {
-				return hitBox.touch(Direction::down) and KeyW.down() and not actMan.hasActive(U"Sliding",U"Summer");
+				return hitBox.touch(Direction::down) and KeyW.down() and not actMan.hasActive(U"Sliding",U"Summer",U"Damage");
 			},
 			.start = [&]() {
 				character.addMotion(U"Jump");
@@ -120,11 +120,14 @@ public:
 					return not (0 < vel.y);
 				}
 			},
+			.end = [&]() {
+				character.removeMotion(U"Jump");
+			} 
 		});
 
 		actMan.add(U"Rush", {
 			.startCondition = [&]() {
-				return MouseR.pressed() && 10 <= itemCount and not actMan.hasActive(U"Sliding");
+				return MouseR.pressed() && 10 <= itemCount and not actMan.hasActive(U"Sliding",U"Damage");
 			},
 			.start = [&]() {
 				speed = 1000;
@@ -141,13 +144,13 @@ public:
 
 		actMan.add(U"Falling", {
 			.startCondition = [&]() {
-				return 0<vel.y and not hitBox.touch(Direction::down) and not actMan.hasActive(U"Summer");
+				return 0<vel.y and not hitBox.touch(Direction::down) and not actMan.hasActive(U"Summer",U"HeadDrop",U"Damage");
 			},
 			.start = [&]() {
 				character.addMotion(U"Falling");
 			},
 			.update = [&](double t) {
-				return 0 < vel.y and not hitBox.touch(Direction::down);
+				return 0 < vel.y and not hitBox.touch(Direction::down) and not actMan.hasActive(U"HeadDrop");
 			},
 			.end = [&]() {
 				character.removeMotion(U"Falling");
@@ -179,13 +182,13 @@ public:
 
 		actMan.add(U"Standing", {
 			.startCondition = [&]() {
-				return not actMan.hasActive(U"Jump",U"Rush",U"Falling",U"Walk",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer") and hitBox.touch(Direction::down);
+				return not actMan.hasActive(U"Jump",U"Rush",U"Falling",U"Walk",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer",U"HeadDropLanding",U"Damage") and hitBox.touch(Direction::down);
 			},
 			.start = [&]() {
 				character.addMotion(U"Standing");
 			},
 			.update = [&](double t) {
-				return not actMan.hasActive(U"Jump",U"Rush",U"Falling",U"Walk",U"Landing",U"Shagamu",U"Punch");
+				return not actMan.hasActive(U"Jump",U"Rush",U"Falling",U"Walk",U"Landing",U"Shagamu",U"Punch",U"HeadDropLanding");
 			},
 			.end = [&]() {
 				character.removeMotion(U"Standing");
@@ -194,7 +197,7 @@ public:
 
 		actMan.add(U"Shagamu", {
 			.startCondition = [&]() {
-				return KeyS.pressed() and hitBox.touch(Direction::down) and not actMan.hasActive(U"Sliding",U"Summer");
+				return KeyS.pressed() and hitBox.touch(Direction::down) and not actMan.hasActive(U"Sliding",U"Summer",U"Damage");
 			},
 			.start = [&]() {
 				character.addMotion(U"Shagamu");
@@ -229,7 +232,7 @@ public:
 				}
 			},
 			.end = [&]() {
-				//character.removeMotion(U"Sliding");
+				character.removeMotion(U"Sliding");
 			}
 		});
 
@@ -240,7 +243,7 @@ public:
 			.start = [&]() {
 				character.addMotion(U"Punch");
 				punch = false;
-				speed = 300;
+				speed = 70;
 			},
 			.update = [&](double t) {
 
@@ -262,7 +265,7 @@ public:
 
 		actMan.add(U"Summer", {
 			.startCondition = [&]() {
-				return KeyQ.down() and not actMan.hasActive(U"Punch",U"Shagamu",U"Sliding") and canSummer;
+				return KeyQ.down() and not actMan.hasActive(U"Punch",U"Shagamu",U"Sliding",U"Damage") and canSummer;
 			},
 			.start = [&]() {
 				character.addMotion(U"Summer");
@@ -273,8 +276,74 @@ public:
 			},
 			.end = [&]() {
 				canSummer = false;
+				character.removeMotion(U"Summer");
 			}
 		});
+
+		actMan.add(U"HeadDrop", {
+			.startCondition = [&]() {
+				return KeyS.down() and not actMan.hasActive(U"Summer",U"Damage") and not hitBox.touch(Direction::down);
+			},
+			.start = [&]() {
+				character.addMotion(U"HeadDrop");
+				speed = 0;
+			},
+			.update = [&](double t) {
+
+				if (t < 0.7) {
+					vel.y = 0.0;
+				}
+				else {
+					vel.y = 800.0;
+				}
+				return not hitBox.touch(Direction::down);
+			},
+			.end = [&]() {
+				actMan.start(U"HeadDropLanding");
+				character.removeMotion(U"HeadDrop");
+			}
+		});
+
+		actMan.add(U"HeadDropLanding", {
+			.start = [&]() {
+				character.addMotion(U"HeadDropLanding");
+			},
+			.update = [&](double t) {
+				return t < 0.2;
+			},
+			.end = [&]() {
+				character.removeMotion(U"HeadDropLanding");
+				speed = 400;
+			}
+		});
+
+		actMan.add(U"Damage",{
+			.start = [&]() {
+				vel = force;
+				actMan.start(U"Muteki");
+			},
+			.update = [&](double t) {
+				vel.x = force.x;
+				return (not hitBox.touchAny()) or vel.y<0;
+			},
+			.end = [&]() {
+				character.removeMotion(U"HeadDropLanding");
+			}
+		});
+
+		actMan.add(U"Muteki", {
+			.start = [&]() {
+				character.addMotion(U"Muteki");
+			},
+			.update = [&](double t) {
+				return character.hasMotion(U"Muteki");
+			},
+			.end = [&]() {
+				character.removeMotion(U"Muteki");
+			}
+		});
+
+
 
 
 
@@ -317,7 +386,10 @@ public:
 				if (not hitBox.touch(Direction::right))vel.x = speed;
 			}
 		}
-		else {
+		else if (actMan.hasActive(U"Damage")) {
+			//何もできない
+		}
+		else{
 			if (KeyA.pressed()) {
 				if (not hitBox.touch(Direction::left))vel.x = -speed;
 				left = true;
@@ -495,18 +567,25 @@ public:
 
 	void damage(int32 n, const Vec2& force = {})override {
 
-		if (not rushMode) {
-			if ((damageTimer.isRunning() && 0s < damageTimer)) {
-				return;
-			}
-			else {
-				hp -= n;
-				damageTimer.restart();
-				this->force = force;
-				backTimer.restart();
-				vel += force;
-				character.addMotion(U"Damage");
-			}
+		if (not actMan.hasActive(U"Rush",U"Muteki")) {
+
+			this->force = force;
+
+			actMan.start(U"Damage");
+
+			hp -= n;
+
+			//if ((damageTimer.isRunning() && 0s < damageTimer)) {
+			//	return;
+			//}
+			//else {
+			//	hp -= n;
+			//	damageTimer.restart();
+			//	this->force = force;
+			//	backTimer.restart();
+			//	vel += force;
+			//	character.addMotion(U"Damage");
+			//}
 		}
 	}
 

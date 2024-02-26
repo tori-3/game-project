@@ -435,8 +435,6 @@ RotateTo,lshin,0,@tt
 #HeadDropLanding
 @t,0.04
 
-Wait,0.1
-
 MoveTo,skirt,-20,-20,@t
 RotateTo,head,10,@t
 RotateTo,rsholder,-50,@t
@@ -490,3 +488,20 @@ Wait,1
 StartMotion,Landing,false,1
 
 StartMotion,Standing,false,1
+
+#Muteki
+ChangeColor,body,1,1,1,0,0.25
+
+ChangeColor,body,1,1,1,1,0.25
+
+ChangeColor,body,1,1,1,0,0.25
+
+ChangeColor,body,1,1,1,1,0.25
+
+ChangeColor,body,1,1,1,0,0.25
+
+ChangeColor,body,1,1,1,1,0.25
+
+ChangeColor,body,1,1,1,0,0.25
+
+ChangeColor,body,1,1,1,1,0.25

@@ -30,6 +30,13 @@ public:
 		info.start();
 	}
 
+	void cancel() {
+		if (active) {
+			active = false;
+			info.end();
+		}
+	}
+
 	void update() {
 
 		if (active) {
@@ -56,6 +63,13 @@ public:
 
 	ActionManager() {
 
+	}
+
+	void cancelAll() {
+		for (auto&& [key, value] : table)
+		{
+			value.cancel();
+		}
 	}
 
 	void add(StringView name,const ActionInfo& info) {

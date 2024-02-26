@@ -133,6 +133,10 @@ public:
 
 	bool touch(Direction num)const { return physics.touch_flag[(int32)num]; }
 
+	bool touchAny() {
+		return touch(Direction::up) or touch(Direction::down) or touch(Direction::right) or touch(Direction::left);
+	}
+
 	bool leftFloor() {
 		return physics.leftFloor;
 	}
