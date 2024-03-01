@@ -1226,6 +1226,6 @@ public:
 		hitBox.Get_Box().draw(Palette::Red);
 
 		character.draw();
-		ken.draw(Palette::Pink);
+		ken.drawFrame(5,Palette::Pink);
 	}
 };

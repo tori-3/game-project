@@ -46,6 +46,7 @@ public:
 			Motion m;
 			m.add(new Mirror{ 0,720_deg });
 			character.addMotion(U"Mirror{}"_fmt(mirrorCount), m);
+			//character.addMotion(U"Mirror", m);
 			tmpLeft = left;
 			mirrorCount++;
 		}

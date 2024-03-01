@@ -40,14 +40,12 @@ RotateTo,hair,30,@time
 
 #Jump
 double,t,0.2
-
-StartMotion,Landing,false,6
-
 SetZ,rsholder,30,0
 ChangeTexture,rhand,Characters/annna/rhand_back.png
 ChangeTexture,lhand,Characters/annna/lhand.png
 
 Rotate,body,-30,t
+Rotate,Hitbox,30,t
 RotateTo,rsholder,140,t,false
 RotateTo,rlower_arm,-10,t
 RotateTo,lsholder,-130,t,false
@@ -61,6 +59,10 @@ RotateTo,rfoot,30,t
 RotateTo,lthigh,0,t
 RotateTo,lshin,0,t
 RotateTo,lfoot,30,t
+
+#PreJump
+double,t,0.2
+StartMotion,Landing,false,6
 
 #ArmWalk
 //歩く時の手の動き
@@ -100,6 +102,8 @@ RotateTo,rthigh,0,@fase1
 RotateTo,rshin,30,@fase1
 
 #Tosshin
+Base,body,0
+
 Rotate,body,70,0.1
 Rotate,waist,-40,0.1
 Rotate,lthigh,-20,0.1

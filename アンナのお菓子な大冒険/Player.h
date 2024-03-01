@@ -4,6 +4,12 @@
 #include"CharacterSystem.h"
 #include"SimpleAction.h"
 
+
+
+
+
+
+
 class Hadouken:public Entity {
 public:
 
@@ -71,7 +77,7 @@ public:
 
 	bool left = false;
 
-	int32 itemCount = 0;
+	int32 itemCount = 100;
 
 	Vec2 force{};
 	Timer backTimer{ 0.2s };
@@ -82,47 +88,49 @@ public:
 
 	double speed = 400;
 
-	HitBox stand;
+	static constexpr RectF defaultBody{ Arg::center(0,0),40,130 };
 
 	Player(const Vec2& cpos) : 
 		character{ U"Characters/annna/annna.json",U"Characters/annna/motion.txt",0.25,cpos,false },
-		Entity{ U"Player",RectF{Arg::center(0,0),60,130} ,cpos,{0,0},3},
-		stand{ &pos,&vel,RectF{Arg::center(0,0),60,130},&hp }
+		Entity{ U"Player",defaultBody ,cpos,{0,0},3}
 	{
 		actMan.add(U"Walk", {
 			.startCondition = [&]() {
-				return hitBox.touch(Direction::down) and (not actMan.hasActive(U"Jump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer",U"HeadDropLanding",U"HeadDrop",U"Damage")) and (KeyA.pressed() or KeyD.pressed());
+				return hitBox.touch(Direction::down) and (not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer",U"HeadDropLanding",U"HeadDrop",U"Damage")) and (KeyA.pressed() or KeyD.pressed());
 			},
 			.start = [&]() {
 				character.addMotion(U"Walk",true);
 			},
 			.update = [&](double t) {
-				return not actMan.hasActive(U"Jump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"HeadDrop") and (KeyA.pressed() or KeyD.pressed());
+				return not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"HeadDrop") and (KeyA.pressed() or KeyD.pressed());
 			},
 			.end = [&]() {
 				character.removeMotion(U"Walk");
 			}
 		});
 
-		actMan.add(U"Jump", {
+		actMan.add(U"PreJump", {
 			.startCondition = [&]() {
-				return hitBox.touch(Direction::down) and KeyW.down() and not actMan.hasActive(U"Sliding",U"Summer",U"Damage");
+				return hitBox.touch(Direction::down) and KeyW.down() and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Jump");
 			},
 			.start = [&]() {
-				character.addMotion(U"Jump");
-				jump = false;
+				if(not actMan.hasActive(U"Rush"))character.addMotion(U"PreJump");
 			},
 			.update = [&](double t) {
-				if (not jump) {
-					if (1 / 30.0 < t) {
-						vel.y = -700.0;
-						jump = true;
-					}
-					return true;
-				}
-				else {
-					return not (0 < vel.y);
-				}
+				return t<(1/30.0);				
+			},
+			.end = [&]() {
+				actMan.start(U"Jump");
+			}
+		});
+
+		actMan.add(U"Jump", {
+			.start = [&]() {
+				if (not actMan.hasActive(U"Rush"))character.addMotion(U"Jump");
+				vel.y = -700;
+			},
+			.update = [&](double t) {
+				return not (0 < vel.y);
 			},
 			.end = [&]() {
 				character.removeMotion(U"Jump");
@@ -131,24 +139,39 @@ public:
 
 		actMan.add(U"Rush", {
 			.startCondition = [&]() {
-				return MouseR.pressed() && 10 <= itemCount and not actMan.hasActive(U"Sliding",U"Damage");
+				return MouseR.pressed() && 10 <= itemCount and not actMan.hasActive(U"Sliding",U"Damage") and hitBox.touch(Direction::down);
 			},
 			.start = [&]() {
-				speed = 1000;
 				character.addMotion(U"Tosshin",true);
 			},
 			.update = [&](double t) {
-				return not (hitBox.touch(Direction::left) || hitBox.touch(Direction::right));
+				attack(U"Enemy",  character.character.table.at(U"Hitbox").joint.getQuad(), 5, 200);
+				if (hitBox.touch(Direction::left)) {
+					force= Vec2{ 300,-400 };
+					actMan.start(U"Damage");
+
+					return false;
+				}
+				else if (hitBox.touch(Direction::right)) {
+					force = Vec2{ -300,-400 };
+					actMan.start(U"Damage");
+					return false;
+				}
+				else {
+					return true;
+				}
+
+				//return not (hitBox.touch(Direction::left) || hitBox.touch(Direction::right));
 			},
 			.end = [&]() {
-				speed = 400;
 				character.removeMotion(U"Tosshin");
+				actMan.start(U"HeadDropMuteki");
 			}
 		});
 
 		actMan.add(U"Falling", {
 			.startCondition = [&]() {
-				return 0<vel.y and not hitBox.touch(Direction::down) and not actMan.hasActive(U"Summer",U"HeadDrop",U"Damage");
+				return 0<vel.y and not hitBox.touch(Direction::down) and not actMan.hasActive(U"Summer",U"HeadDrop",U"Damage",U"Rush");
 			},
 			.start = [&]() {
 				character.addMotion(U"Falling");
@@ -175,7 +198,7 @@ public:
 				else {
 					speed = 400;
 				}
-				return character.hasMotion(U"Landing") and not KeyW.down() and not KeyS.pressed();
+				return character.hasMotion(U"Landing") and not KeyW.down() and not KeyS.pressed() and not actMan.hasActive(U"Rush");
 			},
 			.end = [&]() {
 				speed = 400;
@@ -186,13 +209,13 @@ public:
 
 		actMan.add(U"Standing", {
 			.startCondition = [&]() {
-				return not actMan.hasActive(U"Jump",U"Rush",U"Falling",U"Walk",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer",U"HeadDropLanding",U"Damage") and hitBox.touch(Direction::down);
+				return not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Walk",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer",U"HeadDropLanding",U"Damage") and hitBox.touch(Direction::down);
 			},
 			.start = [&]() {
 				character.addMotion(U"Standing");
 			},
 			.update = [&](double t) {
-				return not actMan.hasActive(U"Jump",U"Rush",U"Falling",U"Walk",U"Landing",U"Shagamu",U"Punch",U"HeadDropLanding");
+				return not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Walk",U"Landing",U"Shagamu",U"Punch",U"HeadDropLanding");
 			},
 			.end = [&]() {
 				character.removeMotion(U"Standing");
@@ -205,18 +228,17 @@ public:
 			},
 			.start = [&]() {
 				character.addMotion(U"Shagamu");
-				hitBox.setFigure(RectF{ Arg::center(0,130/4.0),60,130/2.0 });
+				hitBox.setFigure(RectF{ Arg::center(0,defaultBody.h /4.0),defaultBody.w,defaultBody.h /2.0 });
 			},
 			.update = [&](double t) {
 				speed = 0;
-				stand.update();
 				return KeyS.pressed() and not KeyW.pressed() and not MouseL.pressed();
 			},
 			.end = [&]() {
 				character.removeMotion(U"Shagamu");
 				speed = 400;
 
-				hitBox.setFigure(RectF{ Arg::center(0,0),60,130 });
+				hitBox.setFigure(defaultBody);
 
 				if (MouseL.pressed() and hitBox.touch(Direction::down)) {
 					actMan.start(U"Sliding");
@@ -230,6 +252,8 @@ public:
 				hitBox.setFigure(RectF{ Arg::center(0,130 / 4.0),60,130 / 2.0 });
 			},
 			.update = [&](double t) {
+
+				attack(U"Enemy", character.character.table.at(U"Hitbox").joint.getQuad(), 1, 200);
 
 				speed = 600 * (1 - t / 0.8);
 
@@ -283,6 +307,7 @@ public:
 				vel.y = -500.0;
 			},
 			.update = [&](double t) {
+				attack(U"Enemy",Circle{ pos,70 },1,200);			
 				return character.hasMotion(U"Summer");
 			},
 			.end = [&]() {
@@ -301,26 +326,47 @@ public:
 			},
 			.update = [&](double t) {
 
+				for (auto enemy: attack(U"Enemy", hitBox.Get_Box(), 1, 200)) {
+					if (enemy->isActive()) {
+						actMan.start(U"Jump");
+						actMan.start(U"HeadDropMuteki");
+						Motion m;
+						m.add(new RotateTo{ U"body",40_deg,0 });
+						character.character.addMotion(U"Rotate", m);
+						speed = 400;
+						return false;
+					}
+				}
+
 				if (t < 0.7) {
 					vel.y = 0.0;
 				}
 				else {
-					vel.y = 800.0;
+					vel.y = 1200.0;
 				}
 				return not hitBox.touch(Direction::down);
 			},
 			.end = [&]() {
-				actMan.start(U"HeadDropLanding");
+				if(hitBox.touch(Direction::down))actMan.start(U"HeadDropLanding");
 				character.removeMotion(U"HeadDrop");
 			}
 		});
+
+		//一瞬無敵　HeadDrop以外にも使う
+		actMan.add(U"HeadDropMuteki",
+			{
+				.update = [&](double t) {
+					return t < 0.3;
+				}
+			}
+		);
 
 		actMan.add(U"HeadDropLanding", {
 			.start = [&]() {
 				character.addMotion(U"HeadDropLanding");
 			},
 			.update = [&](double t) {
-				return character.hasMotion(U"HeadDropLanding");;
+				return character.hasMotion(U"HeadDropLanding");
 			},
 			.end = [&]() {
 				character.removeMotion(U"HeadDropLanding");
@@ -335,7 +381,29 @@ public:
 			},
 			.update = [&](double t) {
 				vel.x = force.x;
-				return (not hitBox.touchAny()) or vel.y<0;
+
+					if (0 <= force.x) {
+						if (hitBox.touch(Direction::right)) {
+							return false;
+						}
+					}
+					else {
+						if (hitBox.touch(Direction::left)) {
+							return false;
+						}
+					}
+
+					if (0 < force.y) {
+						if (hitBox.touch(Direction::down)) {
+							return false;
+						}
+					}
+					else {
+						if (hitBox.touch(Direction::up)) {
+							return false;
+						}
+					}
+				return vel.y<0;
 			},
 			.end = [&]() {
 				character.removeMotion(U"HeadDropLanding");
@@ -391,14 +459,22 @@ public:
 			}
 
 			if (left) {
-				if (not hitBox.touch(Direction::left))vel.x = -speed;
+				if (not hitBox.touch(Direction::left))vel.x = -1000;
 			}
 			else {
-				if (not hitBox.touch(Direction::right))vel.x = speed;
+				if (not hitBox.touch(Direction::right))vel.x = 1000;
 			}
 		}
 		else if (actMan.hasActive(U"Damage")) {
 			//何もできない
+		}
+		else if (actMan.hasActive(U"Summer") or character.hasMotion(U"Mirror{}"_fmt(character.mirrorCount-1))) {
+			if (KeyA.pressed()) {
+				if (not hitBox.touch(Direction::left))vel.x = -speed;
+			}//左
+			else if (KeyD.pressed()) {
+				if (not hitBox.touch(Direction::right))vel.x = speed;
+			}//右
 		}
 		else{
 			if (KeyA.pressed()) {
@@ -572,19 +648,25 @@ public:
 
 		//character.update(pos, left);
 		//character.character.touchGround(hitBox.Get_Box().boundingRect().bottomY());
+		tmp = character.character.table.at(U"Hitbox").joint.getQuad();
 	}
+
+	Quad tmp;
 
 	void draw()const override {
 
-		character.character.table.at(U"Hitbox").joint.getQuad().draw(Palette::Red);
+		Circle{ pos,70 }.draw(Palette::Orange);
+
+		tmp.draw(Palette::Red);
 		hitBox.draw(ColorF{Palette::Blue,0.5});
 		character.draw();
+
 
 	}
 
 	void damage(int32 n, const Vec2& force = {})override {
 
-		if (not actMan.hasActive(U"Rush",U"Muteki")) {
+		if (not actMan.hasActive(U"Rush",U"Muteki",U"HeadDrop",U"HeadDropMuteki",U"Summer")) {
 
 			this->force = force;
 

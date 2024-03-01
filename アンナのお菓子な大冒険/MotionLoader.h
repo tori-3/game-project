@@ -230,7 +230,7 @@ private:
 	String getVariable(const String& region, const String& name, const String& default_value)
 	{
 		if (not param[region].table.contains(name)) {
-			param[region].table[name] = new MotionField(Parse<T>(default_value));
+			param[region].add<T>(name, default_value);
 			param.pre[region][name] = default_value;
 		}
 		return param[region].table[name]->getValueString();

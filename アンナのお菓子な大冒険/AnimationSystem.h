@@ -172,7 +172,7 @@ public:
 
 	Quad getQuad()const {
 
-		RectF rect{ Arg::center = pos,size };
+		RectF rect{ Arg::center = rotatePos,size };
 
 		auto tl = mat.transformPoint(rect.tl());
 		auto tr = mat.transformPoint(rect.tr());

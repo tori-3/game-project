@@ -54,7 +54,10 @@ public:
 
 	double z = 0;
 
+	Array<Entity*> attack(StringView target, const Figure& figure, double damage, double power, int32 kaisuu = -1);
+
 private:
+
 
 protected:
 };
@@ -95,11 +98,11 @@ public:
 	}
 
 
-	Entity* get(const String& tag) {
+	Entity* get(StringView tag) {
 		return table[tag][0];
 	}
 
-	const Array<Entity*>& getArray(const String& tag) {
+	const Array<Entity*>& getArray(StringView tag) {
 		return table[tag];
 	}
 
@@ -110,3 +113,21 @@ public:
 	}
 
 };
+
+Array<Entity*> Entity::attack(StringView target, const Figure& figure, double damage, double power, int32 kaisuu) {
+
+	Array<Entity*>list;
+	for (auto& entity : manager->getArray(target)) {
+		if (entity->hitBox.getFigure().intersects(figure)) {
+			entity->damage(damage, (entity->pos - pos).setLength(power));
+			list << entity;
+			if (kaisuu == 0) {
+				break;
+			}
+			else {
+				kaisuu -= 1;
+			}
+		}
+	}
+	return list;
+}

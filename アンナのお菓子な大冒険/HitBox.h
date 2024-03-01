@@ -110,6 +110,10 @@ public:
 		//physics = PhysicsBox{ pos, vel, Relative - Vec2{ rect.w / 2,rect.h / 2 }, rect.w, rect.h,hp };
 	}
 
+	Figure getFigure() {
+		return hitbox;
+	}
+
 	bool intersects(HitBox target)const
 	{
 		return target.hitbox.intersects(hitbox);
@@ -165,6 +169,7 @@ public:
 
 	Vec2* pos, PrePos, Relative;
 	PhysicsBox  physics;
-protected:
 	Figure hitbox;
+
+protected:
 };

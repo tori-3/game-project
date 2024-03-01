@@ -6,7 +6,7 @@ class FieldContainer;
 
 class IMotionField {
 public:
-	virtual String getValueString()const = 0;
+	virtual String getValueString()const { return U""; };
 };
 
 template<class T>
@@ -42,13 +42,18 @@ class FieldContainer
 {
 public:
 	//first-> paramName
-	HashTable<String, IMotionField*> table;
+	HashTable<String, std::shared_ptr<IMotionField>> table;
 
 	String region = U"";
 
 	~FieldContainer()
 	{
-		for (auto& [key, value] : table)delete value;
+		//for (auto& [key, value] : table)delete value;
+	}
+
+	template<class T>
+	void add(StringView name, StringView value) {
+		table.emplace(name, std::shared_ptr<IMotionField > (new MotionField{ Parse<T>(value) }));
 	}
 
 	template<class T>
