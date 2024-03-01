@@ -118,6 +118,8 @@ public:
 	{
 		adder.update();
 		player = dynamic_cast<Player*>(manager.get(U"Player"));
+		player->setDataP(&getData());
+
 		stage.update(player->pos);
 		adder.update();
 		manager.stage = &stage;

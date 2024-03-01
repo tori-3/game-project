@@ -4,12 +4,6 @@
 #include"CharacterSystem.h"
 #include"SimpleAction.h"
 
-
-
-
-
-
-
 class Hadouken:public Entity {
 public:
 
@@ -90,19 +84,25 @@ public:
 
 	static constexpr RectF defaultBody{ Arg::center(0,0),40,130 };
 
+	GameData* data=nullptr;
+
+	void setDataP(GameData* _data) {
+		data = _data;
+	}
+
 	Player(const Vec2& cpos) : 
 		character{ U"Characters/annna/annna.json",U"Characters/annna/motion.txt",0.25,cpos,false },
 		Entity{ U"Player",defaultBody ,cpos,{0,0},3}
 	{
 		actMan.add(U"Walk", {
 			.startCondition = [&]() {
-				return hitBox.touch(Direction::down) and (not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer",U"HeadDropLanding",U"HeadDrop",U"Damage")) and (KeyA.pressed() or KeyD.pressed());
+				return hitBox.touch(Direction::down) and (not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer",U"HeadDropLanding",U"HeadDrop",U"Damage")) and (data->leftKey.pressed() or data->rightKey.pressed());
 			},
 			.start = [&]() {
 				character.addMotion(U"Walk",true);
 			},
 			.update = [&](double t) {
-				return not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"HeadDrop") and (KeyA.pressed() or KeyD.pressed());
+				return not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"HeadDrop") and (data->leftKey.pressed() or data->rightKey.pressed());
 			},
 			.end = [&]() {
 				character.removeMotion(U"Walk");
@@ -111,7 +111,7 @@ public:
 
 		actMan.add(U"PreJump", {
 			.startCondition = [&]() {
-				return hitBox.touch(Direction::down) and KeyW.down() and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Jump");
+				return hitBox.touch(Direction::down) and data->jumpKey.down() and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Jump");
 			},
 			.start = [&]() {
 				if(not actMan.hasActive(U"Rush"))character.addMotion(U"PreJump");
@@ -139,7 +139,8 @@ public:
 
 		actMan.add(U"Rush", {
 			.startCondition = [&]() {
-				return MouseR.pressed() && 10 <= itemCount and not actMan.hasActive(U"Sliding",U"Damage") and hitBox.touch(Direction::down);
+
+				return (2s<data->attackKey.pressedDuration()) && 10 <= itemCount and not actMan.hasActive(U"Sliding",U"Damage") and hitBox.touch(Direction::down);
 			},
 			.start = [&]() {
 				character.addMotion(U"Tosshin",true);
@@ -181,7 +182,7 @@ public:
 			},
 			.end = [&]() {
 				character.removeMotion(U"Falling");
-				if (not KeyS.pressed()) {
+				if (not data->downKey.pressed()) {
 					actMan.start(U"Landing");
 				}
 			}
@@ -198,7 +199,7 @@ public:
 				else {
 					speed = 400;
 				}
-				return character.hasMotion(U"Landing") and not KeyW.down() and not KeyS.pressed() and not actMan.hasActive(U"Rush");
+				return character.hasMotion(U"Landing") and not data->jumpKey.down() and not data->downKey.pressed() and not actMan.hasActive(U"Rush");
 			},
 			.end = [&]() {
 				speed = 400;
@@ -224,7 +225,7 @@ public:
 
 		actMan.add(U"Shagamu", {
 			.startCondition = [&]() {
-				return KeyS.pressed() and hitBox.touch(Direction::down) and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Landing",U"HeadDropLanding",U"HeadDrop");
+				return data->downKey.pressed() and hitBox.touch(Direction::down) and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Landing",U"HeadDropLanding",U"HeadDrop");
 			},
 			.start = [&]() {
 				character.addMotion(U"Shagamu");
@@ -232,7 +233,7 @@ public:
 			},
 			.update = [&](double t) {
 				speed = 0;
-				return KeyS.pressed() and not KeyW.pressed() and not MouseL.pressed();
+				return data->downKey.pressed() and not data->jumpKey.pressed() and not data->attackKey.pressed();
 			},
 			.end = [&]() {
 				character.removeMotion(U"Shagamu");
@@ -240,12 +241,13 @@ public:
 
 				hitBox.setFigure(defaultBody);
 
-				if (MouseL.pressed() and hitBox.touch(Direction::down)) {
+				if (data->attackKey.pressed() and hitBox.touch(Direction::down)) {
 					actMan.start(U"Sliding");
 				}
 			}
 		});
 
+		//次回スライディングが壁にぶつかったときに止まるようにする。
 		actMan.add(U"Sliding", {
 			.start = [&]() {
 				character.addMotion(U"Sliding");
@@ -273,7 +275,7 @@ public:
 
 		actMan.add(U"Punch", {
 			.startCondition = [&]() {
-				return MouseL.down() and actMan.hasActive(U"Standing",U"Walk",U"Summer");
+				return data->attackKey.down() and actMan.hasActive(U"Standing",U"Walk",U"Summer") and hitBox.touch(Direction::down);
 			},
 			.start = [&]() {
 				character.addMotion(U"Punch");
@@ -290,7 +292,7 @@ public:
 					}
 					return true;
 				}
-				return character.hasMotion(U"Punch") and not KeyW.down();
+				return character.hasMotion(U"Punch") and not data->jumpKey.down();
 			},
 			.end = [&]() {
 				character.removeMotion(U"Punch");
@@ -300,7 +302,7 @@ public:
 
 		actMan.add(U"Summer", {
 			.startCondition = [&]() {
-				return KeyQ.down() and not actMan.hasActive(U"Punch",U"Shagamu",U"Sliding",U"Damage") and canSummer;
+				return data->attackKey.down()and not hitBox.touch(Direction::down) and not actMan.hasActive(U"Punch",U"Shagamu",U"Sliding",U"Damage") and canSummer;
 			},
 			.start = [&]() {
 				character.addMotion(U"Summer");
@@ -318,7 +320,7 @@ public:
 
 		actMan.add(U"HeadDrop", {
 			.startCondition = [&]() {
-				return KeyS.down() and not actMan.hasActive(U"Summer",U"Damage") and not hitBox.touch(Direction::down);
+				return data->downKey.down() and not actMan.hasActive(U"Summer",U"Damage") and not hitBox.touch(Direction::down);
 			},
 			.start = [&]() {
 				character.addMotion(U"HeadDrop");
@@ -451,10 +453,10 @@ public:
 			}
 		}
 		else if (actMan.hasActive(U"Rush")) {
-			if (KeyA.pressed()) {
+			if (data->leftKey.pressed()) {
 				left = true;
 			}
-			else if (KeyD.pressed()) {
+			else if (data->rightKey.pressed()) {
 				left = false;
 			}
 
@@ -469,19 +471,19 @@ public:
 			//何もできない
 		}
 		else if (actMan.hasActive(U"Summer") or character.hasMotion(U"Mirror{}"_fmt(character.mirrorCount-1))) {
-			if (KeyA.pressed()) {
+			if (data->leftKey.pressed()) {
 				if (not hitBox.touch(Direction::left))vel.x = -speed;
 			}//左
-			else if (KeyD.pressed()) {
+			else if (data->rightKey.pressed()) {
 				if (not hitBox.touch(Direction::right))vel.x = speed;
 			}//右
 		}
 		else{
-			if (KeyA.pressed()) {
+			if (data->leftKey.pressed()) {
 				if (not hitBox.touch(Direction::left))vel.x = -speed;
 				left = true;
 			}//左
-			else if (KeyD.pressed()) {
+			else if (data->rightKey.pressed()) {
 				if (not hitBox.touch(Direction::right))vel.x = speed;
 				left = false;
 			}//右
@@ -524,7 +526,7 @@ public:
 
 		//if (jump && hitBox.touch(Direction::down))jump = false;
 
-		//if (KeyW.down()) {
+		//if (data->jumpKey.down()) {
 		//	if (hitBox.touch(Direction::down))
 		//	{
 		//		vel.y = -700.0; jump = true;
@@ -533,12 +535,12 @@ public:
 		//	}
 		//}//ジャンプ
 
-		//if (KeyA.pressed()) {
+		//if (data->leftKey.pressed()) {
 		//	if (not hitBox.touch(Direction::left))vel.x = -400;
 		//	left = true;
 		//	walk = true;
 		//}//左
-		//else if (KeyD.pressed()) {
+		//else if (data->rightKey.pressed()) {
 		//	if (not hitBox.touch(Direction::right))vel.x = 400;
 		//	left = false;
 		//	walk = true;
@@ -571,7 +573,7 @@ public:
 		//	}
 		//}
 
-		//if (KeyD.down()) {
+		//if (data->rightKey.down()) {
 		//	character.addMotion(U"Walk",true);
 		//}
 
@@ -594,7 +596,7 @@ public:
 		//}
 
 
-		//if (MouseL.down()) {
+		//if (data->attackKey.down()) {
 		//	manager->add(new Hadouken{ pos,(Cursor::PosF() - pos).getAngle() });
 		//}
 

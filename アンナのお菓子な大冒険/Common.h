@@ -15,6 +15,15 @@ struct GameData
 	Input KeyLeft = s3d::KeyLeft;
 	Input KeyDown = s3d::KeyDown;
 	Input KeyRight = s3d::KeyRight;
+
+	InputGroup jumpKey=s3d::KeyW| s3d::KeySpace;
+	Input attackKey=s3d::KeyEnter;
+	Input leftKey=s3d::KeyA;
+	Input rightKey = s3d::KeyD;
+	Input downKey = s3d::KeyS;
+
+
+
 	String stageFile;
 };
 
