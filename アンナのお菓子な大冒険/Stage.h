@@ -37,7 +37,8 @@ public:
 		{U"CookieMuti",[]() {return new CookieMutiBlock(); }},
 		{U"CookieKaban",[]() {return new CookieKabanBlock(); }},
 		{U"SnowKnight",[]() {return new SnowKnightBlock(); }},
-		{U"Zerosen",[]() {return new ZerosenBlock(); }}
+		{U"Zerosen",[]() {return new ZerosenBlock(); }},
+		{U"ThroughBlock",[]() {return new ThroughBlock(); }}
 	};
 
 	~Stage() {
@@ -140,5 +141,9 @@ public:
 
 	//消すかも
 	//Grid <Block*>* getMapP() { return &map; }
-	int width() { return (int)map.width(); }
+	size_t width() { return map.width(); }
+
+	size_t height() {
+		return map.height();
+	}
 };

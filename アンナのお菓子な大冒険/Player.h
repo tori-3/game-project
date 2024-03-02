@@ -92,7 +92,7 @@ public:
 
 	Player(const Vec2& cpos) : 
 		character{ U"Characters/annna/annna.json",U"Characters/annna/motion.txt",0.25,cpos,false },
-		Entity{ U"Player",defaultBody ,cpos,{0,0},3}
+		Entity{ U"Player",defaultBody ,cpos,{0,0},500}
 	{
 		actMan.add(U"Walk", {
 			.startCondition = [&]() {
@@ -302,7 +302,7 @@ public:
 
 		actMan.add(U"Summer", {
 			.startCondition = [&]() {
-				return data->attackKey.down()and not hitBox.touch(Direction::down) and not actMan.hasActive(U"Punch",U"Shagamu",U"Sliding",U"Damage") and canSummer;
+				return data->attackKey.down()and not hitBox.touch(Direction::down) and not actMan.hasActive(U"Punch",U"Shagamu",U"Sliding",U"Damage",U"Rush") and canSummer;
 			},
 			.start = [&]() {
 				character.addMotion(U"Summer");
@@ -380,6 +380,7 @@ public:
 			.start = [&]() {
 				vel = force;
 				actMan.start(U"Muteki");
+				character.addMotion(U"Knockback");
 			},
 			.update = [&](double t) {
 				vel.x = force.x;
@@ -408,7 +409,8 @@ public:
 				return vel.y<0;
 			},
 			.end = [&]() {
-				character.removeMotion(U"HeadDropLanding");
+				character.removeMotion(U"Knockback");
+				//character.removeMotion(U"HeadDropLanding");
 			}
 		});
 

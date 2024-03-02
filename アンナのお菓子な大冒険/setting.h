@@ -16,3 +16,4 @@ constexpr double gravity = 10;
 
 //減速の割合
 constexpr double deceleration = 0.8;
+

@@ -12,7 +12,7 @@ public:
 
 	//画面下の四角形の情報
 	const int rect_size = 100;//四角形の大きさ
-	const int rect_num = 2;//四角形(ゲーム)の個数
+	const int rect_num = 3;//四角形(ゲーム)の個数
 	const int rect_gap = 20;//四角形の間隔
 
 	//アイコン画像

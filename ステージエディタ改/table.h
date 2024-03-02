@@ -193,6 +193,10 @@ void SnowKnight(Point pos) {
 	Rect{ pos * rect_size,rect_size }.draw(Palette::Gray);
 }
 
+void ThroughBlock(Point pos) {
+	RectF{ pos * rect_size,rect_size,rect_size / 10 }.draw(Palette::Blue);
+}
+
 struct Info {
 	String tag;
 	std::function<void(Point)>func;
@@ -234,8 +238,8 @@ Array<Info>list{
 	{U"CookieMuti",CookieMuti,U"鞭クッキー"},
 	{U"CookieKaban",CookieKaban,U"鞄クッキー"},
 	{U"Zerosen",Zerosen,U"零戦クッキー"},
-	{U"SnowKnight",SnowKnight,U"雪だるナイト"}
-
+	{U"SnowKnight",SnowKnight,U"雪だるナイト"},
+	{U"ThroughBlock",ThroughBlock,U"すり抜ける床"},
 };
 
 HashTable<String, std::function<void(Point)>> table;

@@ -17,6 +17,8 @@ public:
 		, character{ U"CharacterImages/itigo/itigo.json" ,U"CharacterImages/itigo/motion.txt" ,0.3,cpos,true,false }
 	{
 		character.addMotion(U"",true);
+
+		
 	}
 
 	void update()override {
@@ -54,15 +56,17 @@ public:
 		hitBox.physicsUpdate();
 		hitBox.update();
 
-		if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-			if (pos.x < manager->get(U"Player")->pos.x) {
-				manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-			}
-			else {
-				manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-			}
+		//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
+		//	if (pos.x < manager->get(U"Player")->pos.x) {
+		//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+		//	}
+		//	else {
+		//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+		//	}
 
-		}
+		//}
+
+		attack(U"Player", hitBox.getFigure(), 1);
 
 		character.update(pos,left);
 	}
@@ -116,14 +120,16 @@ public:
 		hitBox.physicsUpdate();
 		hitBox.update();
 
-		if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-			if (pos.x < manager->get(U"Player")->pos.x) {
-				manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-			}
-			else {
-				manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-			}
-		}
+		//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
+		//	if (pos.x < manager->get(U"Player")->pos.x) {
+		//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+		//	}
+		//	else {
+		//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+		//	}
+		//}
+
+		attack(U"Player", hitBox.getFigure(), 1);
 
 		character.update(pos, left);
 	}
@@ -278,15 +284,17 @@ public:
 
 		}
 
-		if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-			if (pos.x < manager->get(U"Player")->pos.x) {
-				manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-			}
-			else {
-				manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-			}
+		//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
+		//	if (pos.x < manager->get(U"Player")->pos.x) {
+		//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+		//	}
+		//	else {
+		//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+		//	}
 
-		}
+		//}
+
+		attack(U"Player", hitBox.getFigure(), 1);
 
 		character.update(pos, left);
 	}
@@ -358,14 +366,16 @@ public:
 		hitBox.physicsUpdate();
 		hitBox.update();
 
-		if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-			if (pos.x < manager->get(U"Player")->pos.x) {
-				manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-			}
-			else {
-				manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-			}
-		}
+		//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
+		//	if (pos.x < manager->get(U"Player")->pos.x) {
+		//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+		//	}
+		//	else {
+		//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+		//	}
+		//}
+
+		attack(U"Player", hitBox.getFigure(), 1);
 
 		if ((not character.hasMotion(U"attack"))&&manager->get(U"Player")->hitBox.Get_Box().intersects(hitBox.Get_Box().movedBy(left ? -60 : 60, 0))) {
 			attackTimer.restart();
@@ -417,14 +427,17 @@ public:
 		hitBox.physicsUpdate();
 		hitBox.update();
 
-		if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-			if (pos.x < manager->get(U"Player")->pos.x) {
-				manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-			}
-			else {
-				manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-			}
-		}
+		//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
+		//	if (pos.x < manager->get(U"Player")->pos.x) {
+		//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+		//	}
+		//	else {
+		//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+		//	}
+		//}
+
+		attack(U"Player", hitBox.getFigure(), 1);
+
 	}
 
 	void lateUpdate() {
@@ -462,14 +475,16 @@ public:
 
 		hitBox.update();
 
-		if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-			if (pos.x < manager->get(U"Player")->pos.x) {
-				manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-			}
-			else {
-				manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-			}
-		}
+		//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
+		//	if (pos.x < manager->get(U"Player")->pos.x) {
+		//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+		//	}
+		//	else {
+		//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+		//	}
+		//}
+
+		attack(U"Player", hitBox.getFigure(), 1);
 
 		if (Abs(manager->get(U"Player")->pos.x - pos.x) < 70 * 6) {
 
@@ -602,15 +617,17 @@ public:
 			hitBox.physicsUpdate();
 			hitBox.update();
 
-			if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-				if (pos.x < manager->get(U"Player")->pos.x) {
-					manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-				}
-				else {
-					manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-				}
+			//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
+			//	if (pos.x < manager->get(U"Player")->pos.x) {
+			//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+			//	}
+			//	else {
+			//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+			//	}
 
-			}
+			//}
+			attack(U"Player", hitBox.getFigure(), 1);
+
 		}
 		
 
@@ -688,24 +705,29 @@ public:
 
 		if (attackTimer.sF() == 0) {
 			attackTimer.reset();
-			if (manager->get(U"Player")->hitBox.Get_Box().intersects(hitBox.Get_Box().movedBy(left ? -60 : 60, 0))) {
-				if (left) {
-					manager->get(U"Player")->damage(2, Vec2{ -100,-20 });
-				}
-				else {
-					manager->get(U"Player")->damage(2, Vec2{ 100,-20 });
-				}
-			}
+			//if (manager->get(U"Player")->hitBox.Get_Box().intersects(hitBox.Get_Box().movedBy(left ? -60 : 60, 0))) {
+			//	if (left) {
+			//		manager->get(U"Player")->damage(2, Vec2{ -100,-20 });
+			//	}
+			//	else {
+			//		manager->get(U"Player")->damage(2, Vec2{ 100,-20 });
+			//	}
+			//}
+			attack(U"Player", hitBox.Get_Box().movedBy(left ? -60 : 60, 0), 2);
+
+		}
+		else {
+			attack(U"Player", hitBox.getFigure(), 1);
 		}
 
-		if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-			if (pos.x < manager->get(U"Player")->pos.x) {
-				manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-			}
-			else {
-				manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-			}
-		}
+		//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
+		//	if (pos.x < manager->get(U"Player")->pos.x) {
+		//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+		//	}
+		//	else {
+		//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+		//	}
+		//}
 
 		character.update(pos, left);
 	}
@@ -776,24 +798,29 @@ public:
 
 		if (attackTimer.sF() == 0) {
 			attackTimer.reset();
-			if (manager->get(U"Player")->hitBox.Get_Box().intersects(hitBox.Get_Box())) {
-				if (left) {
-					manager->get(U"Player")->damage(2, Vec2{ -100,-20 });
-				}
-				else {
-					manager->get(U"Player")->damage(2, Vec2{ 100,-20 });
-				}
-			}
+			//if (manager->get(U"Player")->hitBox.Get_Box().intersects(hitBox.Get_Box())) {
+			//	if (left) {
+			//		manager->get(U"Player")->damage(2, Vec2{ -100,-20 });
+			//	}
+			//	else {
+			//		manager->get(U"Player")->damage(2, Vec2{ 100,-20 });
+			//	}
+			//}
+			attack(U"Player", hitBox.Get_Box(), 2);
+		}
+		else {
+			attack(U"Player", hitBox.Get_Box(), 1);
 		}
 
-		if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-			if (pos.x < manager->get(U"Player")->pos.x) {
-				manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-			}
-			else {
-				manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-			}
-		}
+		//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
+		//	if (pos.x < manager->get(U"Player")->pos.x) {
+		//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+		//	}
+		//	else {
+		//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+		//	}
+		//}
+
 
 		character.update(pos, left);
 	}
@@ -845,14 +872,16 @@ public:
 			if (hitBox.touch(Direction::down)|| damaged) {
 				character.addMotion(U"change");
 				DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 200, HSV{ 20,1,1 });
-				if ((manager->get(U"Player")->pos - pos).length() < 70 * 2) {
-					if (pos.x < manager->get(U"Player")->pos.x) {
-						manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-					}
-					else {
-						manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-					}
-				}
+				//if ((manager->get(U"Player")->pos - pos).length() < 70 * 2) {
+				//	if (pos.x < manager->get(U"Player")->pos.x) {
+				//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+				//	}
+				//	else {
+				//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+				//	}
+				//}
+
+				attack(U"Player", Circle{pos,70*2}, 1);
 
 				if (pos.x < manager->get(U"Player")->pos.x) {
 					vel = Vec2{ -600,-400 };
@@ -907,15 +936,17 @@ public:
 			hitBox.physicsUpdate();
 			hitBox.update();
 
-			if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-				if (pos.x < manager->get(U"Player")->pos.x) {
-					manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-				}
-				else {
-					manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-				}
+			//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
+			//	if (pos.x < manager->get(U"Player")->pos.x) {
+			//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+			//	}
+			//	else {
+			//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+			//	}
 
-			}
+			//}
+			attack(U"Player", hitBox.getFigure(), 1);
+
 		}
 
 
@@ -965,14 +996,16 @@ public:
 
 		hitBox.update();
 
-		if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-			if (pos.x < manager->get(U"Player")->pos.x) {
-				manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-			}
-			else {
-				manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-			}
-		}
+		//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
+		//	if (pos.x < manager->get(U"Player")->pos.x) {
+		//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
+		//	}
+		//	else {
+		//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+		//	}
+		//}
+
+		attack(U"Player", hitBox.getFigure(), 1);
 
 		if (Abs(manager->get(U"Player")->pos.x - pos.x) < 70 * 6) {
 
@@ -1019,6 +1052,8 @@ public:
 
 	HitBox* kenHitbox;
 
+	Array<Entity*>summonList;//召喚したリスト
+
 	SnowKnight(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(-20,40),70 * 1,70*4-30 },cpos,{0,0},1 }
 		, character{ U"Characters/yukidarunaito/yukidarunaito.json" ,U"Characters/yukidarunaito/motion.txt" ,0.2,cpos,true,false }
 	{
@@ -1052,19 +1087,21 @@ public:
 		hitBox.physicsUpdate();
 		hitBox.update();
 
-		if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-			if (pos.x < manager->get(U"Player")->pos.x) {
-				manager->get(U"Player")->damage(1, Vec2{ 700,-300 });
-			}
-			else {
-				manager->get(U"Player")->damage(1, Vec2{ -700,-300 });
-			}
-		}
+		//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
+		//	if (pos.x < manager->get(U"Player")->pos.x) {
+		//		manager->get(U"Player")->damage(1, Vec2{ 700,-300 });
+		//	}
+		//	else {
+		//		manager->get(U"Player")->damage(1, Vec2{ -700,-300 });
+		//	}
+		//}
+
+		attack(U"Player", hitBox.getFigure(), 1);
 
 		if (timer <= 0)
 		{
 
-			switch (Random(0,2))
+			switch (Random(0,summonList?1:2))
 			{
 			case 0:
 			{
@@ -1133,20 +1170,22 @@ public:
 					for (auto i : step(yoroi?3:4)) {
 						Vec2 bornPos{pos.x+Random(-200,200),200};
 
+											
+
 						// 選択肢
 						const Array<std::function<Entity* (Vec2)>> options =
 						{
-							[](Vec2 pos) {
+							[&](Vec2 pos) {
 								StrawberrySoldier* ptr = new StrawberrySoldier{ pos };
 								ptr->left = RandomBool();
 								return ptr;
 							},
-							[](Vec2 pos) {
+							[&](Vec2 pos) {
 								CookieSoldier* ptr = new CookieSoldier{ pos };
 								ptr->left = RandomBool();
 								return ptr;
 							},
-							[](Vec2 pos) {
+							[&](Vec2 pos) {
 								Snowman* ptr = new Snowman{ pos };
 								ptr->left = RandomBool();
 								return ptr;
@@ -1159,8 +1198,10 @@ public:
 								3,2,1
 						} };
 
-						manager->add(DiscreteSample(options, distribution)(bornPos));
+						Entity* tmp = DiscreteSample(options, distribution)(bornPos);
 
+						manager->add(tmp);
+						summonList << tmp;
 						DataManager::get().additiveEffect.add<ExplosionEffect>(bornPos, 60, Palette::Yellowgreen);
 					}
 				};
@@ -1190,6 +1231,8 @@ public:
 
 
 	void lateUpdate() override {
+		summonList.remove_if([](Entity* entity) {return not entity->isActive(); });
+
 		/*if (not isActive()) {
 			DataManager::get().effect.add<StarEffect>(pos, 0);
 			manager->add(new CookieItem{ pos });

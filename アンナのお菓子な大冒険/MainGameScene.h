@@ -40,14 +40,41 @@ public:
 class SmoothCamera {
 public:
 
-	Vec2 target{};
+	Vec2 pos;
 
-	void update(const Vec2& _target) {
-		target = _target;
+	double vel=0;
+
+	double stageHeight = 0;
+
+	double stageWidth = 0;
+
+	void setPos(const Vec2& _pos) {
+		pos = _pos;
+	}
+
+	void setStageHeight(double h) {
+		stageHeight = h;
+	}
+
+	void setStageWidth(double w) {
+		stageWidth = w;
+	}
+
+
+	void update(const Vec2& _pos) {
+
+		//pos.y = _pos.y;
+		//pos.x=Math::SmoothDamp(pos.x, _pos.x, vel, 0.01,800);
+		pos = _pos;
+
+		pos.x = Clamp<double>(pos.x, 0, stageWidth - Scene::Width());
+
+		pos.y = Clamp<double>(pos.y,0, stageHeight-Scene::Height());
+
 	}
 
 	Mat3x2 getMat3x2()const {
-		return Mat3x2::Translate(target);
+		return Mat3x2::Translate(-pos);
 	}
 };
 
@@ -124,7 +151,11 @@ public:
 		adder.update();
 		manager.stage = &stage;
 		startY = player->pos.y;
-		camera.update({ draw_x - player->pos.x ,draw_y-startY });
+
+
+		camera.setStageWidth(stage.width() * rect_size);
+		camera.setStageHeight(stage.height()*rect_size);
+		camera.setPos({ player->pos.x-draw_x ,startY-draw_y });
 	}
 
 	// 更新関数（オプション）
@@ -146,7 +177,7 @@ public:
 		}
 
 		////落下したらスタートに戻す。(デバッグ用)
-		if (player->hp <= 0||1000<player->pos.y) {
+		if (player->hp <= 0 || 1000 < player->pos.y) {
 			//player->pos = Vec2(500, 350);
 			//player->hp = 3;
 			EndGame(false);
@@ -166,7 +197,12 @@ public:
 			}
 		}
 
-		camera.update({ draw_x - player->pos.x ,draw_y-startY});
+		if(DataManager::get().cameraPos){
+			camera.update(DataManager::get().cameraPos.value());
+		}
+		else {
+			camera.update({ player->pos.x - draw_x,player->pos.y - draw_y });
+		}
 	}
 
 	// 描画関数（オプション）
@@ -175,10 +211,10 @@ public:
 		Scene::SetBackground(skyColor);
 
 		cloud.draw1();
-		background.draw(player->pos);
+		background.draw(camera.pos+Scene::Size()/2);
 		cloud.draw2();
 		Rect{ Scene::Size() }.draw(ColorF{ skyColor,0.4 });
-		background2.draw(player->pos);
+		background2.draw(camera.pos + Scene::Size() / 2);
 		Rect{ Scene::Size() }.draw(ColorF{ skyColor,0.2 });
 
 		{
@@ -189,8 +225,7 @@ public:
 			//const Transformer2D transformer{ mat, TransformCursor::Yes };
 			const Transformer2D t{ camera.getMat3x2() };
 			manager.draw();
-			stage.draw(player->pos);
-
+			stage.draw(camera.pos+Scene::Size() / 2);
 
 			DataManager::get().effect.update();
 

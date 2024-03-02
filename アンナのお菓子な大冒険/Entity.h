@@ -54,7 +54,7 @@ public:
 
 	double z = 0;
 
-	Array<Entity*> attack(StringView target, const Figure& figure, double damage, double power, int32 kaisuu = -1);
+	Array<Entity*> attack(StringView target, const Figure& figure, double damage, double power=200, int32 kaisuu = -1);
 
 private:
 
@@ -119,7 +119,14 @@ Array<Entity*> Entity::attack(StringView target, const Figure& figure, double da
 	Array<Entity*>list;
 	for (auto& entity : manager->getArray(target)) {
 		if (entity->hitBox.getFigure().intersects(figure)) {
-			entity->damage(damage, (entity->pos - pos).setLength(power));
+
+			if (entity->pos.x < pos.x) {
+				entity->damage(damage, {-power,-200});
+			}
+			else {
+				entity->damage(damage, { power,-200 });
+			}
+
 			list << entity;
 			if (kaisuu == 0) {
 				break;

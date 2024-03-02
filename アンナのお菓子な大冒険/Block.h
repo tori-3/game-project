@@ -481,3 +481,19 @@ public:
 		}
 	}
 };
+
+class ThroughBlock :public Block {
+public:
+	void reaction(const Point& pos, PhysicsBox* box)override
+	{
+		//ヘッドドロップのときはすり抜ける(速度で判定)
+		if (not(1150<(box->vel->y))) {
+			box->hitDown(Rect{ pos * rect_size,rect_size,20 });
+		}
+	}
+
+	virtual void draw(const Point& pos)const override {
+
+		Rect{ pos * rect_size,rect_size,20 }.draw(Palette::Blue);
+	}
+};

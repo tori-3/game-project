@@ -28,10 +28,10 @@ public:
 		shift(rect, Direction::left, Vec2{ 0.1,0 });
 
 			const Vec2 p0 = *pos + delta;
-			if (rect.intersects(Vec2{ p0.x, p0.y + height+20 })) {
+			if (rect.intersects(Vec2{ p0.x, p0.y + height+5 })) {
 				leftFloor = true;
 			}
-			if (rect.intersects(Vec2{ p0.x + width, p0.y + height+20 })) {
+			if (rect.intersects(Vec2{ p0.x + width, p0.y + height+5 })) {
 				rightFloor = true;
 			}
 
@@ -80,6 +80,20 @@ public:
 
 			vel->x *= 0.8;//x軸方向の速度を減速
 			//vel->x = 0;
+		}
+	}
+
+	//下からすり抜ける床用
+	template<typename T>void hitDown(T rect) {
+
+		shift(rect, Direction::down, Vec2{ 0,-0.1 });
+
+		const Vec2 p0 = *pos + delta;
+		if (rect.intersects(Vec2{ p0.x, p0.y + height + 5 })) {
+			leftFloor = true;
+		}
+		if (rect.intersects(Vec2{ p0.x + width, p0.y + height + 5 })) {
+			rightFloor = true;
 		}
 	}
 
