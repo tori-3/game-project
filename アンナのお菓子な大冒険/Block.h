@@ -205,6 +205,8 @@ public:
 			flg = true;
 
 			DataManager::get().effect.add<RingEffect>(rect.center());
+
+			AudioAsset{ U"ボヨン" }.playOneShot();
 		}
 
 	}

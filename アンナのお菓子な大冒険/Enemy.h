@@ -1041,6 +1041,7 @@ public:
 
 	//右と左の定位置
 	double rx, lx;
+	double centerX=0;
 
 	std::function<void()> f;
 	std::function<void()>f2;
@@ -1048,35 +1049,36 @@ public:
 	bool left=false;
 	double timer;
 
-	Quad ken{};
-
 	HitBox* kenHitbox;
 
 	Array<Entity*>summonList;//召喚したリスト
 
-	SnowKnight(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(-20,40),70 * 1,70*4-30 },cpos,{0,0},1 }
+	SnowKnight(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(-20,40),70 * 1,70*4-30 },cpos,{0,0},20 }
 		, character{ U"Characters/yukidarunaito/yukidarunaito.json" ,U"Characters/yukidarunaito/motion.txt" ,0.2,cpos,true,false }
 	{
 		timer = 0;
+		centerX = pos.x;
 
 		rx = pos.x + 100;
 		lx = pos.x - 100;
 
 		auto& k = character.character.table[U"kenbox"];
-
-		//kenHitbox=new HitBox(&k.joint.pos,&vel,k.joint.)
-		//character.addMotion(U"susumu");
 	}
 
 	Timer attackTimer{ 0.5s };
 
 	double accumulatedTime = 0;
 
-	int32 yoroi = 3;
+	int32 yoroi = 1;
 
 	Vec2 kenboxPos{0,0};
 	Vec2 kenboxVel{ 0,0 };
 	int32 kenboxHp{ 10 };
+
+	Vec2 force{};
+
+//剣を振ったか
+	bool kenFlg = false;
 
 	void update()override {
 
@@ -1100,12 +1102,19 @@ public:
 
 		if (timer <= 0)
 		{
+			int32 type = 0;
+			if (not summonList) {
+				type = 2;
+			}
+			else {
+				type = Random(0, 1);
+			}
 
-			switch (Random(0,summonList?1:2))
+			switch (type)
 			{
 			case 0:
 			{
-				timer = 3;
+				timer = 1;
 				int d = 0;
 				if (RandomBool())
 				{
@@ -1118,7 +1127,7 @@ public:
 				left = d < 0;
 				f = [=]
 				{
-					pos.x += (d / 3) * Scene::DeltaTime();
+					pos.x += (d / 1) * Scene::DeltaTime();
 				};
 				f2 = [=]
 				{
@@ -1129,7 +1138,15 @@ public:
 				break;
 			case 1:
 			{
-				timer = 5.8;
+
+				left=manager->get(U"Player")->pos.x<pos.x;
+
+				double maxTime = yoroi ? 5.8 : 7.0;
+
+				timer = maxTime;
+
+				kenFlg = false;
+
 				//0.5 構え
 				//1 ためる 何もしない
 				//0.4　剣を前に突き出す
@@ -1139,14 +1156,52 @@ public:
 				character.addMotion(U"kiriage");
 				f = [=]
 				{
-					if (1.5 <= timer and timer <= 3.4)
+					double t = maxTime - timer;
+
+					if (1.5 <= t and t <= 3.4)
 					{
-						//auto& j = character.character.table[U"kiriage"].joint;
-						//HitBox h(&kenboxPos, &kenboxVel, RectF{Arg::center(0,0), j.size}.rotatedAt(j.rotatePos, j.angle), &kenboxHp);
-						//if (manager->get(U"Player")->hitBox.intersects(h)) {
-						//	manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-						//}
+						const Quad ken = character.character.table[U"kenbox"].joint.getQuad();
+
+						attack(U"Player",ken,1);
+
+						if (not kenFlg) {
+							AudioAsset{ U"剣を振る" }.play();
+							kenFlg = true;
+						}
+
+						if (yoroi or true) {
+
+							if (t <= 2.4) {
+								if (left) {
+									vel.x = -300;
+								}
+								else {
+									vel.x = 300;
+								}
+							}
+
+						}
+						else {
+
+							if (left) {
+								vel.x = -400;
+							}
+							else {
+								vel.x = 400;
+							}
+						}
+
+
 					}
+					else if(3.5<t and t<=3.6){
+						if (hitBox.touch(Direction::down)) {
+							vel.y = -300;
+						}
+
+
+					}
+
+
 				};
 				f2 = [=]
 				{
@@ -1167,8 +1222,8 @@ public:
 
 				f2 = [=]
 				{
-					for (auto i : step(yoroi?3:4)) {
-						Vec2 bornPos{pos.x+Random(-200,200),200};
+					for (auto i : step(5)) {
+						Vec2 bornPos{ centerX +Random(-400,400),200};
 
 											
 
@@ -1178,16 +1233,19 @@ public:
 							[&](Vec2 pos) {
 								StrawberrySoldier* ptr = new StrawberrySoldier{ pos };
 								ptr->left = RandomBool();
+								ptr->vel.y = -300;
 								return ptr;
 							},
 							[&](Vec2 pos) {
 								CookieSoldier* ptr = new CookieSoldier{ pos };
 								ptr->left = RandomBool();
+								ptr->vel.y = -300;
 								return ptr;
 							},
 							[&](Vec2 pos) {
 								Snowman* ptr = new Snowman{ pos };
 								ptr->left = RandomBool();
+								ptr->vel.y = -300;
 								return ptr;
 							},
 						};
@@ -1204,6 +1262,10 @@ public:
 						summonList << tmp;
 						DataManager::get().additiveEffect.add<ExplosionEffect>(bornPos, 60, Palette::Yellowgreen);
 					}
+
+					f = []() {};
+					f2 = []() {};
+					timer = 3;
 				};
 
 			}
@@ -1223,9 +1285,16 @@ public:
 			}
 		}
 
-		ken = character.character.table[U"kenbox"].joint.getQuad();
-
 		character.update(pos, left);
+		if (not yoroi) {
+			character.character.table[U"kabuto"].joint.color = ColorF{ 1,0 };
+			character.character.base->table[U"kabuto"].joint.color = ColorF{ 1,0 };
+			character.character.table[U"tate"].joint.color = ColorF{ 1,0 };
+			character.character.base->table[U"tate"].joint.color = ColorF{ 1,0 };
+			character.character.table[U"yoroi"].joint.color = ColorF{ 1,0 };
+			character.character.base->table[U"yoroi"].joint.color = ColorF{ 1,0 };
+
+		}
 	}
 
 
@@ -1239,29 +1308,44 @@ public:
 		}*/
 	}
 
-	void damage(int32 n, const Vec2& force = {}) override {
-		if (yoroi) {
-			//5は突進のダメージ
-			if (5 <= n) {
-				yoroi -= 1;
-			}
-			if (yoroi <= 0) {
-				character.character.table[U"kabuto"].joint.color = ColorF{1,0};
-				character.character.base->table[U"kabuto"].joint.color = ColorF{ 1,0 };
-			}
-		}
-		else {
-			hp -= n;
-		}
+	void damage(int32 n, const Vec2& _force = {}) override {
 
-		if (5 <= n) {
-			dynamic_cast<Player*>(manager->get(U"Player"))->stopRush();
-			if (pos.x < manager->get(U"Player")->pos.x) {
-				manager->get(U"Player")->damage(0, Vec2{ 200,-20 });
+		if (not character.hasMotion(U"Muteki") and not character.hasMotion(U"YoroiMuteki")) {
+
+			if (yoroi) {
+				//5は突進のダメージ
+				if (5 <= n) {
+					yoroi -= 1;
+				}
+				if (yoroi <= 0) {
+					character.addMotion(U"Nugeru");
+				}
+				character.addMotion(U"YoroiMuteki");
+				force = _force;
+				vel.y = force.y;
+				vel.x = force.x*1.5;
+
+				AudioAsset{ U"ヘッドドロップ" }.playOneShot();
 			}
 			else {
-				manager->get(U"Player")->damage(0, Vec2{ -200,-20 });
+				hp -= n;
+				character.addMotion(U"Muteki");
+				force = _force;
+				vel.y = force.y;
+				vel.x = force.x;
 			}
+
+			if (5 <= n) {
+				dynamic_cast<Player*>(manager->get(U"Player"))->stopRush();
+				if (pos.x < manager->get(U"Player")->pos.x) {
+					manager->get(U"Player")->damage(0, Vec2{ 200,-20 });
+				}
+				else {
+					manager->get(U"Player")->damage(0, Vec2{ -200,-20 });
+				}
+			}
+
+
 		}
 	}
 
@@ -1269,6 +1353,5 @@ public:
 		hitBox.Get_Box().draw(Palette::Red);
 
 		character.draw();
-		ken.drawFrame(5,Palette::Pink);
 	}
 };

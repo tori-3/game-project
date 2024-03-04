@@ -102,7 +102,7 @@ public:
 
 		TextureAsset::Register(U"HP", U"❤"_emoji);
 
-		for (auto i : step(3)) {
+		for (auto i : step(5)) {
 			if (i < count) {
 				TextureAsset(U"HP").resized(40).drawAt(25 + i * 40, 25);
 			}
@@ -139,10 +139,26 @@ public:
 
 	double startY = 0;
 
+	void loadAudio() {
+
+		for (auto& path : FileSystem::DirectoryContents(U"Audio"))
+		{
+			String name = FileSystem::BaseName(path);
+			AudioAsset::Register(name, path);
+			AudioAsset::LoadAsync(name);
+		}
+
+		AudioAsset{ U"足音" }.setVolume(3);
+	}
+
+
+
 	// コンストラクタ（必ず実装）
 	MainGameScene(const InitData& init)
 		: IPauseScene{ init }
 	{
+		loadAudio();
+
 		adder.update();
 		player = dynamic_cast<Player*>(manager.get(U"Player"));
 		player->setDataP(&getData());

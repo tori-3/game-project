@@ -36,8 +36,9 @@ public:
 
 		for (auto& entity : manager->getArray(U"Enemy")) {
 				if (entity->hitBox.intersects(hitBox)) {
-					entity->damage(1, OffsetCircular{ {0,0},Scene::DeltaTime() * 1000,angle });
+					entity->damage(1, OffsetCircular{ {0,0},700,angle });
 					collisionFlg = true;
+
 					break;
 				}
 		}
@@ -45,6 +46,7 @@ public:
 		if (collisionFlg) {
 			hp = 0;
 			DataManager::get().additiveEffect.add<ExplosionEffect>(pos,35,HSV{ -20,0.8,1 });
+			AudioAsset{ U"パンチヒット" }.playOneShot();
 		}
 
 		hitBox.update();
@@ -71,7 +73,7 @@ public:
 
 	bool left = false;
 
-	int32 itemCount = 100;
+	int32 itemCount = 0;
 
 	Vec2 force{};
 	Timer backTimer{ 0.2s };
@@ -92,19 +94,22 @@ public:
 
 	Player(const Vec2& cpos) : 
 		character{ U"Characters/annna/annna.json",U"Characters/annna/motion.txt",0.25,cpos,false },
-		Entity{ U"Player",defaultBody ,cpos,{0,0},500}
+		Entity{ U"Player",defaultBody ,cpos,{0,0},5}
 	{
+		
 		actMan.add(U"Walk", {
 			.startCondition = [&]() {
 				return hitBox.touch(Direction::down) and (not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer",U"HeadDropLanding",U"HeadDrop",U"Damage")) and (data->leftKey.pressed() or data->rightKey.pressed());
 			},
 			.start = [&]() {
+				AudioAsset{U"足音"}.play();
 				character.addMotion(U"Walk",true);
 			},
 			.update = [&](double t) {
 				return not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"HeadDrop") and (data->leftKey.pressed() or data->rightKey.pressed());
 			},
 			.end = [&]() {
+				AudioAsset{U"足音"}.stop(0.5s);
 				character.removeMotion(U"Walk");
 			}
 		});
@@ -114,6 +119,7 @@ public:
 				return hitBox.touch(Direction::down) and data->jumpKey.down() and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Jump");
 			},
 			.start = [&]() {
+				AudioAsset{U"ジャンプ"}.playOneShot();
 				if(not actMan.hasActive(U"Rush"))character.addMotion(U"PreJump");
 			},
 			.update = [&](double t) {
@@ -143,10 +149,26 @@ public:
 				return (2s<data->attackKey.pressedDuration()) && 10 <= itemCount and not actMan.hasActive(U"Sliding",U"Damage") and hitBox.touch(Direction::down);
 			},
 			.start = [&]() {
+				itemCount = 0;
+
+				speed = 1000;
 				character.addMotion(U"Tosshin",true);
+				AudioAsset{ U"突進足音" }.play();
+				AudioAsset{ U"風" }.play();
 			},
 			.update = [&](double t) {
-				attack(U"Enemy",  character.character.table.at(U"Hitbox").joint.getQuad(), 5, 200);
+
+				if (hitBox.touch(Direction::down)) {
+					AudioAsset{ U"突進足音" }.play();
+				}
+				else {
+					AudioAsset{ U"突進足音" }.stop(0.1s);
+				}
+
+
+				if (attackDamaged(U"Enemy",  character.character.table.at(U"Hitbox").joint.getQuad(), 5, 1500)) {
+					AudioAsset{ U"突進衝突" }.playOneShot();
+				}
 				if (hitBox.touch(Direction::left)) {
 					force= Vec2{ 300,-400 };
 					actMan.start(U"Damage");
@@ -167,6 +189,10 @@ public:
 			.end = [&]() {
 				character.removeMotion(U"Tosshin");
 				actMan.start(U"HeadDropMuteki");
+				AudioAsset{ U"突進足音" }.stop(0.1s);
+				AudioAsset{ U"風" }.stop(0.1s);
+				AudioAsset{ U"突進衝突" }.playOneShot();
+				speed = 400;
 			}
 		});
 
@@ -191,6 +217,7 @@ public:
 		actMan.add(U"Landing", {
 			.start = [&]() {
 				character.addMotion(U"Landing");
+				AudioAsset{ U"着地" }.playOneShot();
 			},
 			.update = [&](double t) {
 				if (t < 0.05) {
@@ -252,10 +279,11 @@ public:
 			.start = [&]() {
 				character.addMotion(U"Sliding");
 				hitBox.setFigure(RectF{ Arg::center(0,130 / 4.0),60,130 / 2.0 });
+				AudioAsset{ U"スライディング" }.playOneShot();
 			},
 			.update = [&](double t) {
 
-				attack(U"Enemy", character.character.table.at(U"Hitbox").joint.getQuad(), 1, 200);
+				attack(U"Enemy", character.character.table.at(U"Hitbox").joint.getQuad(), 1, 1000);
 
 				speed = 600 * (1 - t / 0.8);
 
@@ -281,6 +309,7 @@ public:
 				character.addMotion(U"Punch");
 				punch = false;
 				speed = 70;
+				AudioAsset{ U"パンチ" }.playOneShot();
 			},
 			.update = [&](double t) {
 
@@ -305,11 +334,14 @@ public:
 				return data->attackKey.down()and not hitBox.touch(Direction::down) and not actMan.hasActive(U"Punch",U"Shagamu",U"Sliding",U"Damage",U"Rush") and canSummer;
 			},
 			.start = [&]() {
+				AudioAsset{U"サマーソルト"}.playOneShot();
 				character.addMotion(U"Summer");
 				vel.y = -500.0;
 			},
 			.update = [&](double t) {
-				attack(U"Enemy",Circle{ pos,70 },1,200);			
+				if (attack(U"Enemy",Circle{ pos,70 },1,200)) {
+					AudioAsset{ U"サマーソルトヒット" }.playOneShot();
+				}
 				return character.hasMotion(U"Summer");
 			},
 			.end = [&]() {
@@ -351,6 +383,8 @@ public:
 			.end = [&]() {
 				if(hitBox.touch(Direction::down))actMan.start(U"HeadDropLanding");
 				character.removeMotion(U"HeadDrop");
+
+				AudioAsset{ U"ヘッドドロップ" }.playOneShot();
 			}
 		});
 
@@ -445,7 +479,7 @@ public:
 
 		actMan.update();
 
-		if (actMan.hasActive(U"Sliding")) {
+		if (actMan.hasActive(U"Sliding", U"Rush")) {
 
 			if (left) {
 				if (not hitBox.touch(Direction::left))vel.x = -speed;
@@ -454,25 +488,10 @@ public:
 				if (not hitBox.touch(Direction::right))vel.x = speed;
 			}
 		}
-		else if (actMan.hasActive(U"Rush")) {
-			if (data->leftKey.pressed()) {
-				left = true;
-			}
-			else if (data->rightKey.pressed()) {
-				left = false;
-			}
-
-			if (left) {
-				if (not hitBox.touch(Direction::left))vel.x = -1000;
-			}
-			else {
-				if (not hitBox.touch(Direction::right))vel.x = 1000;
-			}
-		}
 		else if (actMan.hasActive(U"Damage")) {
 			//何もできない
 		}
-		else if (actMan.hasActive(U"Summer") or character.hasMotion(U"Mirror{}"_fmt(character.mirrorCount-1))) {
+		else if (actMan.hasActive(U"Summer", U"Mirror{}"_fmt(character.mirrorCount - 1))) {
 			if (data->leftKey.pressed()) {
 				if (not hitBox.touch(Direction::left))vel.x = -speed;
 			}//左
@@ -502,6 +521,7 @@ public:
 			if (entity->hitBox.intersects(hitBox)) {
 				itemCount++;
 				entity->damage(1);
+				AudioAsset{ U"食べる" }.playOneShot();
 			}
 		}
 
@@ -509,107 +529,8 @@ public:
 		actMan.debugPrint();
 		Print << hitBox.touch(Direction::down);
 
-		//Print << U"PlayerPos:" << pos;
-
 		character.update(pos, left);
 		character.character.touchGround(hitBox.Get_Box().boundingRect().bottomY());
-
-
-
-
-		//bool tmpWalk = walk;
-		//walk = false;
-
-		//bool tmpRush = rushMode;
-
-		//bool tmpJump = jump;
-
-		//manager->stage->hit(&hitBox);
-
-		//if (jump && hitBox.touch(Direction::down))jump = false;
-
-		//if (data->jumpKey.down()) {
-		//	if (hitBox.touch(Direction::down))
-		//	{
-		//		vel.y = -700.0; jump = true;
-		//		character.removeMotion(U"Walk");
-		//		character.addMotion(U"Jump", false);
-		//	}
-		//}//ジャンプ
-
-		//if (data->leftKey.pressed()) {
-		//	if (not hitBox.touch(Direction::left))vel.x = -400;
-		//	left = true;
-		//	walk = true;
-		//}//左
-		//else if (data->rightKey.pressed()) {
-		//	if (not hitBox.touch(Direction::right))vel.x = 400;
-		//	left = false;
-		//	walk = true;
-		//}//右
-
-		//if (MouseR.pressed()&&10<=itemCount) {
-		//	itemCount = 0;
-		//	rushMode = true;
-		//	//本当はダッシュ
-		//	character.addMotion(U"Walk");
-		//}
-		////突進のとき
-		//if (rushMode) {
-
-		//	if (hitBox.touch(Direction::left) || hitBox.touch(Direction::right)) {
-		//		rushMode = false;
-		//	}
-
-		//	if (left) {
-		//		vel.x = -1000;
-		//	}
-		//	else {
-		//		vel.x = 1000;
-		//	}
-
-		//	for (auto& entity : manager->getArray(U"Enemy")) {
-		//		if (entity->hitBox.intersects(hitBox)) {
-		//			entity->damage(5);
-		//		}
-		//	}
-		//}
-
-		//if (data->rightKey.down()) {
-		//	character.addMotion(U"Walk",true);
-		//}
-
-		//if (jump==false&& tmpJump==true) {
-		//	if (walk) {
-		//		character.addMotion(U"Walk");
-		//	}
-		//	else {
-		//		character.addMotion(U"Standing");
-		//	}
-		//}
-
-		//if (not jump&&walk != tmpWalk) {
-		//	if (walk) {
-		//		character.addMotion(U"Walk");
-		//	}
-		//	else {
-		//		character.addMotion(U"Standing");
-		//	}
-		//}
-
-
-		//if (data->attackKey.down()) {
-		//	manager->add(new Hadouken{ pos,(Cursor::PosF() - pos).getAngle() });
-		//}
-
-		//if (backTimer.isRunning() && 0s < backTimer) {
-		//	vel += force;
-		//}
-
-
-
-		//hitBox.physicsUpdate();
-		//hitBox.update();
 
 		Print << hitBox.touch(Direction::down);
 		Print << hitBox.touch(Direction::up);
@@ -620,38 +541,6 @@ public:
 			damage(1);
 		}
 
-		//for (auto& entity : manager->getArray(U"Item")) {
-		//		if (entity->hitBox.intersects(hitBox)) {
-		//			itemCount++;
-		//			entity->damage(1);
-		//		}
-		//}
-
-
-
-		//if (not rushMode) {
-
-		//	//モーション制御
-		//	if ((not tmpWalk) && walk) {
-		//		character.addMotion(U"Walk");
-		//	}
-
-		//	if (tmpWalk && (not walk)) {
-		//		character.removeMotion(U"Walk");
-		//	}
-		//}
-
-		//if ((not rushMode) && tmpRush) {
-		//	if (walk) {
-		//		character.addMotion(U"Walk");
-		//	}
-		//	else {
-		//		character.removeMotion(U"Walk");
-		//	}
-		//}
-
-		//character.update(pos, left);
-		//character.character.touchGround(hitBox.Get_Box().boundingRect().bottomY());
 		tmp = character.character.table.at(U"Hitbox").joint.getQuad();
 	}
 
@@ -678,17 +567,7 @@ public:
 
 			hp -= n;
 
-			//if ((damageTimer.isRunning() && 0s < damageTimer)) {
-			//	return;
-			//}
-			//else {
-			//	hp -= n;
-			//	damageTimer.restart();
-			//	this->force = force;
-			//	backTimer.restart();
-			//	vel += force;
-			//	character.addMotion(U"Damage");
-			//}
+			AudioAsset{ U"アンナダメージ" }.playOneShot();
 		}
 	}
 

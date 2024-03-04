@@ -1,27 +1,27 @@
 #ageru
-RotateTo,body,10,0.3
+RotateTo,mbody,10,0.3
 MoveTo,ken,50,-150,0.3
 MoveTo,tate,0,-400,0.3
 
 Wait,1
 
-Base,body,0.3
+Base,mbody,0.3
 
 #kiriage
 double,tame,1
 double,dasu,0.2
 double,matu,1.5
 
-RotateTo,body,15,d(tame/2)
+RotateTo,mbody,15,d(tame/2)
 RotateTo,ken,-15,d(tame/2)
 MoveTo,ken,40,-170,d(tame/2)
 
 Wait,d(tame)
 
 RotateTo,ken,120,dasu,true
-RotateTo,body,-20,dasu
+RotateTo,mbody,-20,dasu
 MoveTo,ken,-400,-200,dasu
-ChangeTexture,body,Characters/yukidarunaito/body2.png,0
+ChangeTexture,yoroi,Characters/yukidarunaito/yoroi2.png,0
 SetZ,tate,-20,0
 MoveTo,tate,500,-100,dasu
 
@@ -30,10 +30,68 @@ SetScale,ken,1.2,-1.2,dasu
 Wait,matu
 
 RotateTo,ken,-210,dasu,true
-RotateTo,body,15,dasu
+RotateTo,mbody,15,dasu
 
 Wait,1
 
-ChangeTexture,body,Characters/yukidarunaito/body.png,0
-Base,body,1
+ChangeTexture,yoroi,Characters/yukidarunaito/yoroi.png,0
+Base,mbody,1
+
+
+#Muteki
+ChangeColor,mbody,1,1,1,0,0.25
+
+ChangeColor,mbody,1,1,1,1,0.25
+
+ChangeColor,mbody,1,1,1,0,0.25
+
+ChangeColor,mbody,1,1,1,1,0.25
+
+ChangeColor,mbody,1,1,1,0,0.25
+
+ChangeColor,mbody,1,1,1,1,0.25
+
+ChangeColor,mbody,1,1,1,0,0.25
+
+ChangeColor,mbody,1,1,1,1,0.25
+
+#YoroiMuteki
+double,a,0.7
+double,t,0.25
+ChangeColor,kabuto,1,1,1,a,t
+ChangeColor,tate,1,1,1,a,t
+ChangeColor,yoroi,1,1,1,a,t
+
+ChangeColor,kabuto,1,1,1,1,t
+ChangeColor,tate,1,1,1,1,t
+ChangeColor,yoroi,1,1,1,1,t
+
+ChangeColor,kabuto,1,1,1,a,t
+ChangeColor,tate,1,1,1,a,t
+ChangeColor,yoroi,1,1,1,a,t
+
+ChangeColor,kabuto,1,1,1,1,t
+ChangeColor,tate,1,1,1,1,t
+ChangeColor,yoroi,1,1,1,1,t
+
+ChangeColor,kabuto,1,1,1,a,t
+ChangeColor,tate,1,1,1,a,t
+ChangeColor,yoroi,1,1,1,a,t
+
+ChangeColor,kabuto,1,1,1,1,t
+ChangeColor,tate,1,1,1,1,t
+ChangeColor,yoroi,1,1,1,1,t
+
+ChangeColor,kabuto,1,1,1,a,t
+ChangeColor,tate,1,1,1,a,t
+ChangeColor,yoroi,1,1,1,a,t
+
+ChangeColor,kabuto,1,1,1,1,t
+ChangeColor,tate,1,1,1,1,t
+ChangeColor,yoroi,1,1,1,1,t
+
+#Nugeru
+ChangeColor,kabuto,1,1,1,0,0.25
+ChangeColor,tate,1,1,1,0,0.25
+ChangeColor,yoroi,1,1,1,0,0.25
 
