@@ -378,11 +378,8 @@ public:
 	}
 
 	void touchGround(double y) {
-
 		pos += {0, y - getMaxY()};
 		jointAlign();
-
-		//addPos({0,y - getMaxY()});
 	}
 
 	void setPos(const Vec2& pos)

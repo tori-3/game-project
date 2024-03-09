@@ -22,6 +22,8 @@ public:
 	void update()override {
 		bool collisionFlg = false;
 
+		ClearPrint();
+
 		manager->stage->hit(&hitBox);
 
 		if (hitBox.touch(Direction::left) || hitBox.touch(Direction::right) || hitBox.touch(Direction::up) || hitBox.touch(Direction::down)) {
@@ -116,7 +118,7 @@ public:
 
 		actMan.add(U"PreJump", {
 			.startCondition = [&]() {
-				return hitBox.touch(Direction::down) and data->jumpKey.down() and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Jump");
+				return hitBox.touch(Direction::down) and data->jumpKey.down() and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Jump",U"Punch");
 			},
 			.start = [&]() {
 				AudioAsset{U"ジャンプ"}.playOneShot();
@@ -216,21 +218,20 @@ public:
 
 		actMan.add(U"Landing", {
 			.start = [&]() {
-				character.addMotion(U"Landing");
+				//character.addMotion(U"Landing");
+				character.addMotion(U"Standing");
 				AudioAsset{ U"着地" }.playOneShot();
 			},
 			.update = [&](double t) {
-				if (t < 0.05) {
-					speed = 200;
-				}
-				else {
-					speed = 400;
-				}
-				return character.hasMotion(U"Landing") and not data->jumpKey.down() and not data->downKey.pressed() and not actMan.hasActive(U"Rush");
+				speed = 250;
+				
+				//return character.hasMotion(U"Landing") and not data->jumpKey.down() and not data->downKey.pressed() and not actMan.hasActive(U"Rush");
+				return not data->jumpKey.down() and not data->downKey.pressed() and not actMan.hasActive(U"Rush") and t<0.1;
 			},
 			.end = [&]() {
 				speed = 400;
-				character.removeMotion(U"Landing");
+				character.removeMotion(U"Standing");
+				//character.removeMotion(U"Landing");
 			}
 		});
 
@@ -252,7 +253,7 @@ public:
 
 		actMan.add(U"Shagamu", {
 			.startCondition = [&]() {
-				return data->downKey.pressed() and hitBox.touch(Direction::down) and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Landing",U"HeadDropLanding",U"HeadDrop");
+				return data->downKey.pressed()and (not data->jumpKey.pressed()) and hitBox.touch(Direction::down) and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Landing",U"HeadDropLanding",U"HeadDrop",U"Punch",U"Jump",U"PreJump",U"Falling");
 			},
 			.start = [&]() {
 				character.addMotion(U"Shagamu");
@@ -260,7 +261,7 @@ public:
 			},
 			.update = [&](double t) {
 				speed = 0;
-				return data->downKey.pressed() and not data->jumpKey.pressed() and not data->attackKey.pressed();
+				return data->downKey.pressed() and not data->jumpKey.down() and not data->attackKey.pressed();
 			},
 			.end = [&]() {
 				character.removeMotion(U"Shagamu");
@@ -268,7 +269,7 @@ public:
 
 				hitBox.setFigure(defaultBody);
 
-				if (data->attackKey.pressed() and hitBox.touch(Direction::down)) {
+				if (data->attackKey.pressed() and hitBox.touch(Direction::down) and not actMan.hasActive(U"PreJump",U"Punch")) {
 					actMan.start(U"Sliding");
 				}
 			}
@@ -278,7 +279,8 @@ public:
 		actMan.add(U"Sliding", {
 			.start = [&]() {
 				character.addMotion(U"Sliding");
-				hitBox.setFigure(RectF{ Arg::center(0,130 / 4.0),60,130 / 2.0 });
+				//hitBox.setFigure(RectF{ Arg::center(0,130 / 4.0),60,130 / 2.0 });
+				hitBox.setFigure(RectF{ Arg::center(0,defaultBody.h / 4),defaultBody.w,defaultBody.h / 2 });
 				AudioAsset{ U"スライディング" }.playOneShot();
 			},
 			.update = [&](double t) {
@@ -297,13 +299,14 @@ public:
 			.end = [&]() {
 				speed = 400;
 				character.removeMotion(U"Sliding");
-				hitBox.setFigure(RectF{ Arg::center(0,0),60,130 });
+				//hitBox.setFigure(RectF{ Arg::center(0,0),60,130 });
+				hitBox.setFigure(defaultBody);
 			}
 		});
 
 		actMan.add(U"Punch", {
 			.startCondition = [&]() {
-				return data->attackKey.down() and actMan.hasActive(U"Standing",U"Walk",U"Summer") and hitBox.touch(Direction::down);
+				return data->attackKey.down() and actMan.hasActive(U"Standing",U"Walk") and (not actMan.hasActive(U"Summer",U"PreJump",U"Jump",U"Shagamu")) and hitBox.touch(Direction::down);
 			},
 			.start = [&]() {
 				character.addMotion(U"Punch");
@@ -329,18 +332,23 @@ public:
 			}
 		});
 
+		auto summerHited = std::shared_ptr<bool>(new bool(false));
+
 		actMan.add(U"Summer", {
 			.startCondition = [&]() {
-				return data->attackKey.down()and not hitBox.touch(Direction::down) and not actMan.hasActive(U"Punch",U"Shagamu",U"Sliding",U"Damage",U"Rush") and canSummer;
+				return data->attackKey.down()and not hitBox.touch(Direction::down) and not actMan.hasActive(U"Punch",U"Shagamu",U"Sliding",U"Damage",U"Rush",U"HeadDrop") and canSummer;
 			},
-			.start = [&]() {
+			.start = [&,h=summerHited]() {
 				AudioAsset{U"サマーソルト"}.playOneShot();
 				character.addMotion(U"Summer");
+				*h = false;
 				vel.y = -500.0;
 			},
-			.update = [&](double t) {
-				if (attack(U"Enemy",Circle{ pos,70 },1,200)) {
+			.update = [&,h=summerHited](double t) {
+				Print << U"サマーソルトが当たった：" << *h;
+				if (attack(U"Enemy",Circle{ pos,70 },1,200)and (not *h)) {
 					AudioAsset{ U"サマーソルトヒット" }.playOneShot();
+					*h = true;
 				}
 				return character.hasMotion(U"Summer");
 			},
@@ -460,11 +468,6 @@ public:
 			}
 		});
 
-
-
-
-
-
 	}
 
 	bool canSummer = true;
@@ -491,7 +494,7 @@ public:
 		else if (actMan.hasActive(U"Damage")) {
 			//何もできない
 		}
-		else if (actMan.hasActive(U"Summer", U"Mirror{}"_fmt(character.mirrorCount - 1))) {
+		else if (actMan.hasActive(U"Summer",U"HeadDrop",U"HeadDropLanding", U"Mirror{}"_fmt(character.mirrorCount - 1))) {
 			if (data->leftKey.pressed()) {
 				if (not hitBox.touch(Direction::left))vel.x = -speed;
 			}//左
@@ -525,17 +528,15 @@ public:
 			}
 		}
 
-		ClearPrint();
 		actMan.debugPrint();
-		Print << hitBox.touch(Direction::down);
 
 		character.update(pos, left);
 		character.character.touchGround(hitBox.Get_Box().boundingRect().bottomY());
 
-		Print << hitBox.touch(Direction::down);
-		Print << hitBox.touch(Direction::up);
-		Print << hitBox.touch(Direction::left);
-		Print << hitBox.touch(Direction::right);
+		//Print << hitBox.touch(Direction::down);
+		//Print << hitBox.touch(Direction::up);
+		//Print << hitBox.touch(Direction::left);
+		//Print << hitBox.touch(Direction::right);
 
 		if ((hitBox.touch(Direction::down) && hitBox.touch(Direction::up)) or (hitBox.touch(Direction::left) && hitBox.touch(Direction::right))) {
 			damage(1);

@@ -324,10 +324,10 @@ ChangeTexture,rhand,Characters/annna/rhand_back_gu.png
 RotateTo,body,40,t
 RotateTo,Hitbox,-40,t
 RotateTo,head,-20,t
-RotateTo,rsholder,-20,t
-RotateTo,lsholder,0,t
-RotateTo,rlower_arm,-70,t
-RotateTo,llower_arm,-30,t
+RotateTo,rsholder,-40,t
+RotateTo,lsholder,-40,t
+//RotateTo,rlower_arm,-70,t
+//RotateTo,llower_arm,-30,t
 //下半身
 RotateTo,waist,-30,t
 RotateTo,skirt,-10,t
@@ -381,8 +381,7 @@ Wait,time
 
 RotateTo,body,170
 
-//Base,body,0.3
-//StartMotion,Falling,false,1
+StartMotion,Falling,false,1
 
 #JumpMotion
 StartMotion,Jump,false,1
