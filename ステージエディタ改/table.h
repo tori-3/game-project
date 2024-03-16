@@ -197,6 +197,10 @@ void ThroughBlock(Point pos) {
 	RectF{ pos * rect_size,rect_size,rect_size / 10 }.draw(Palette::Blue);
 }
 
+void SlaversCookie(Point pos) {
+	RectF{ pos * rect_size,rect_size,rect_size / 10 }.draw(Palette::Yellow);
+}
+
 struct Info {
 	String tag;
 	std::function<void(Point)>func;
@@ -240,6 +244,7 @@ Array<Info>list{
 	{U"Zerosen",Zerosen,U"零戦クッキー"},
 	{U"SnowKnight",SnowKnight,U"雪だるナイト"},
 	{U"ThroughBlock",ThroughBlock,U"すり抜ける床"},
+	{U"SlaversCookie",SlaversCookie,U"奴隷商クッキー"}
 };
 
 HashTable<String, std::function<void(Point)>> table;

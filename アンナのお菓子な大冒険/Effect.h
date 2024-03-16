@@ -96,3 +96,45 @@ struct StarEffect : IEffect
 		return (t < 1.0);
 	}
 };
+
+struct IrisOutEffect : IEffect
+{
+	Vec2* pos;
+	double r;
+	explicit IrisOutEffect(Vec2* pos,double r)
+		: pos{ pos }, r{r} {}
+
+	bool update(double t) override
+	{
+		//2秒待つ
+		if (t <= 2.0) {
+			return true;
+		}
+		else {
+			t -= 2.0;
+
+			Circle m_circle{ *pos,r };
+
+			Circle circle;
+			if (t <= 1.0) {
+				circle = Circle{ m_circle.center,Scene::Size().length() }.lerp(m_circle, t);
+			}
+			else if (t <= 2.0) {
+				circle = m_circle;
+			}
+			else if (t <= 3.0) {
+				circle = m_circle.lerp(Circle{ m_circle.center,0 }, t - 2);
+			}
+			else {
+				RectF{ Arg::center = m_circle.center,Scene::Size() * 2 }.draw(Palette::Black);
+				return (t < 4.0);
+			}
+
+			for (const auto& polygon : Geometry2D::Subtract(RectF{ Arg::center = m_circle.center,Scene::Size() * 2 }, circle.asPolygon()))
+			{
+				polygon.draw(Palette::Black);
+			}
+			return (t < 4.0);
+		}
+	}
+};

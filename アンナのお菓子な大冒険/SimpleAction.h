@@ -30,6 +30,16 @@ public:
 		info.start();
 	}
 
+	bool conditonStart() {
+		if (info.startCondition()) {
+			start();
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
 	void cancel() {
 		if (active) {
 			active = false;
@@ -42,8 +52,8 @@ public:
 		if (active) {
 			time += Scene::DeltaTime();
 			if (not info.update(time)) {
-				info.end();
 				active = false;
+				info.end();
 			}
 		}
 		else {
@@ -65,12 +75,19 @@ public:
 
 	}
 
-	void cancelAll() {
+	void cancelAll(HashSet<String> without={}) {
 		for (auto&& [key, value] : table)
 		{
-			value.cancel();
+			if (not without.contains(key)) {
+				value.cancel();
+			}
 		}
 	}
+
+	void cancel(StringView name) {
+		table[name].cancel();
+	}
+
 
 	void add(StringView name,const ActionInfo& info) {
 		table[name] = SimpleAction{ info };
@@ -81,6 +98,10 @@ public:
 		{
 			value.update();
 		}
+	}
+
+	bool conditonStart(StringView name) {
+		return table[name].conditonStart();
 	}
 
 	void start(StringView name) {

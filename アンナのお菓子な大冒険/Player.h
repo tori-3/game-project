@@ -75,7 +75,7 @@ public:
 
 	bool left = false;
 
-	int32 itemCount = 0;
+	int32 itemCount = 10;
 
 	Vec2 force{};
 	Timer backTimer{ 0.2s };
@@ -90,6 +90,11 @@ public:
 
 	GameData* data=nullptr;
 
+
+	Vec2 lastTouchPos{};
+
+	Timer endTimer{ 4s };
+
 	void setDataP(GameData* _data) {
 		data = _data;
 	}
@@ -101,7 +106,7 @@ public:
 		
 		actMan.add(U"Walk", {
 			.startCondition = [&]() {
-				return hitBox.touch(Direction::down) and (not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer",U"HeadDropLanding",U"HeadDrop",U"Damage")) and (data->leftKey.pressed() or data->rightKey.pressed());
+				return hitBox.touch(Direction::down) and (not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer",U"HeadDropLanding",U"HeadDrop",U"Damage",U"Dead")) and (data->leftKey.pressed() or data->rightKey.pressed());
 			},
 			.start = [&]() {
 				AudioAsset{U"足音"}.play();
@@ -118,7 +123,7 @@ public:
 
 		actMan.add(U"PreJump", {
 			.startCondition = [&]() {
-				return hitBox.touch(Direction::down) and data->jumpKey.down() and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Jump",U"Punch");
+				return hitBox.touch(Direction::down) and data->jumpKey.down() and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Jump",U"Punch",U"Dead");
 			},
 			.start = [&]() {
 				AudioAsset{U"ジャンプ"}.playOneShot();
@@ -145,11 +150,33 @@ public:
 			} 
 		});
 
-		actMan.add(U"Rush", {
+		actMan.add(U"Tame", {
 			.startCondition = [&]() {
-
-				return (2s<data->attackKey.pressedDuration()) && 10 <= itemCount and not actMan.hasActive(U"Sliding",U"Damage") and hitBox.touch(Direction::down);
+				return (0.2s < data->attackKey.pressedDuration()) && 10 <= itemCount;
 			},
+			.start = [&]() {
+
+			},
+			.update = [&](double t) {
+
+				DataManager::get().tame = Min(t / 0.8, 1.0);
+
+				if (0.8<=t && (not data->attackKey.pressed())) {
+					if (not actMan.hasActive(U"Sliding", U"Damage", U"Dead") and hitBox.touch(Direction::down)) {
+						actMan.start(U"Rush");
+					}
+					return false;
+				}
+				else {
+					return data->attackKey.pressed();
+				}
+			},
+			.end = [&]() {
+				DataManager::get().tame = 0;
+			}
+		});
+
+		actMan.add(U"Rush", {
 			.start = [&]() {
 				itemCount = 0;
 
@@ -159,6 +186,8 @@ public:
 				AudioAsset{ U"風" }.play();
 			},
 			.update = [&](double t) {
+
+				speed = 1000;
 
 				if (hitBox.touch(Direction::down)) {
 					AudioAsset{ U"突進足音" }.play();
@@ -200,7 +229,7 @@ public:
 
 		actMan.add(U"Falling", {
 			.startCondition = [&]() {
-				return 0<vel.y and not hitBox.touch(Direction::down) and not actMan.hasActive(U"Summer",U"HeadDrop",U"Damage",U"Rush");
+				return 0<vel.y and not hitBox.touch(Direction::down) and not actMan.hasActive(U"Summer",U"HeadDrop",U"Damage",U"Rush",U"Dead");
 			},
 			.start = [&]() {
 				character.addMotion(U"Falling");
@@ -210,7 +239,7 @@ public:
 			},
 			.end = [&]() {
 				character.removeMotion(U"Falling");
-				if (not data->downKey.pressed()) {
+				if (not data->downKey.pressed()&& not actMan.hasActive(U"Dead")) {
 					actMan.start(U"Landing");
 				}
 			}
@@ -238,13 +267,13 @@ public:
 
 		actMan.add(U"Standing", {
 			.startCondition = [&]() {
-				return not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Walk",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer",U"HeadDropLanding",U"Damage") and hitBox.touch(Direction::down);
+				return not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Walk",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer",U"HeadDropLanding",U"Damage",U"Dead") and hitBox.touch(Direction::down);
 			},
 			.start = [&]() {
 				character.addMotion(U"Standing");
 			},
 			.update = [&](double t) {
-				return not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Walk",U"Landing",U"Shagamu",U"Punch",U"HeadDropLanding");
+				return not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Walk",U"Landing",U"Shagamu",U"Punch",U"HeadDropLanding",U"Damage");
 			},
 			.end = [&]() {
 				character.removeMotion(U"Standing");
@@ -253,7 +282,7 @@ public:
 
 		actMan.add(U"Shagamu", {
 			.startCondition = [&]() {
-				return data->downKey.pressed()and (not data->jumpKey.pressed()) and hitBox.touch(Direction::down) and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Landing",U"HeadDropLanding",U"HeadDrop",U"Punch",U"Jump",U"PreJump",U"Falling");
+				return data->downKey.pressed()and (not data->jumpKey.pressed()) and hitBox.touch(Direction::down) and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Landing",U"HeadDropLanding",U"HeadDrop",U"Punch",U"Jump",U"PreJump",U"Falling",U"Dead");
 			},
 			.start = [&]() {
 				character.addMotion(U"Shagamu");
@@ -267,6 +296,7 @@ public:
 				character.removeMotion(U"Shagamu");
 				speed = 400;
 
+				
 				hitBox.setFigure(defaultBody);
 
 				if (data->attackKey.pressed() and hitBox.touch(Direction::down) and not actMan.hasActive(U"PreJump",U"Punch")) {
@@ -299,14 +329,17 @@ public:
 			.end = [&]() {
 				speed = 400;
 				character.removeMotion(U"Sliding");
-				//hitBox.setFigure(RectF{ Arg::center(0,0),60,130 });
-				hitBox.setFigure(defaultBody);
+
+				if (not actMan.conditonStart(U"Shagamu")) {
+					hitBox.setFigure(defaultBody);
+				}
+
 			}
 		});
 
 		actMan.add(U"Punch", {
 			.startCondition = [&]() {
-				return data->attackKey.down() and actMan.hasActive(U"Standing",U"Walk") and (not actMan.hasActive(U"Summer",U"PreJump",U"Jump",U"Shagamu")) and hitBox.touch(Direction::down);
+				return data->attackKey.down() and actMan.hasActive(U"Standing",U"Walk") and (not actMan.hasActive(U"Summer",U"PreJump",U"Jump",U"Shagamu",U"Dead")) and hitBox.touch(Direction::down);
 			},
 			.start = [&]() {
 				character.addMotion(U"Punch");
@@ -336,7 +369,7 @@ public:
 
 		actMan.add(U"Summer", {
 			.startCondition = [&]() {
-				return data->attackKey.down()and not hitBox.touch(Direction::down) and not actMan.hasActive(U"Punch",U"Shagamu",U"Sliding",U"Damage",U"Rush",U"HeadDrop") and canSummer;
+				return data->attackKey.down()and not hitBox.touch(Direction::down) and not actMan.hasActive(U"Punch",U"Shagamu",U"Sliding",U"Damage",U"Rush",U"HeadDrop",U"Dead") and canSummer;
 			},
 			.start = [&,h=summerHited]() {
 				AudioAsset{U"サマーソルト"}.playOneShot();
@@ -360,7 +393,7 @@ public:
 
 		actMan.add(U"HeadDrop", {
 			.startCondition = [&]() {
-				return data->downKey.down() and not actMan.hasActive(U"Summer",U"Damage") and not hitBox.touch(Direction::down);
+				return data->downKey.down() and not actMan.hasActive(U"Summer",U"Damage",U"Dead") and not hitBox.touch(Direction::down);
 			},
 			.start = [&]() {
 				character.addMotion(U"HeadDrop");
@@ -368,7 +401,7 @@ public:
 			},
 			.update = [&](double t) {
 
-				for (auto enemy: attack(U"Enemy", hitBox.Get_Box(), 1, 200)) {
+				for (auto enemy: attack(U"Enemy", hitBox.Get_Box(), 2, 200)) {
 					if (enemy->isActive()) {
 						actMan.start(U"Jump");
 						actMan.start(U"HeadDropMuteki");
@@ -397,13 +430,11 @@ public:
 		});
 
 		//一瞬無敵　HeadDrop以外にも使う
-		actMan.add(U"HeadDropMuteki",
-			{
+		actMan.add(U"HeadDropMuteki",{
 				.update = [&](double t) {
 					return t < 0.3;
 				}
-			}
-		);
+		});
 
 		actMan.add(U"HeadDropLanding", {
 			.start = [&]() {
@@ -468,6 +499,24 @@ public:
 			}
 		});
 
+		actMan.add(U"Dead", {
+			.startCondition=[&](){
+				return hp <= 0 or DataManager::get().table.contains(U"Clear");
+			},
+			.start = [&]() {
+				actMan.cancelAll({U"Dead"});
+				DataManager::get().effect.add<IrisOutEffect>(&pos,140);
+				character.clearMotion();
+				character.addMotion(U"Cry");
+			},
+			.update = [&](double t) {
+				return t<4.0;
+			},
+			.end = [&]() {
+				DataManager::get().playerAlive = false;
+			}
+		});
+
 	}
 
 	bool canSummer = true;
@@ -491,7 +540,7 @@ public:
 				if (not hitBox.touch(Direction::right))vel.x = speed;
 			}
 		}
-		else if (actMan.hasActive(U"Damage")) {
+		else if (actMan.hasActive(U"Damage",U"Dead")) {
 			//何もできない
 		}
 		else if (actMan.hasActive(U"Summer",U"HeadDrop",U"HeadDropLanding", U"Mirror{}"_fmt(character.mirrorCount - 1))) {
@@ -538,12 +587,39 @@ public:
 		//Print << hitBox.touch(Direction::left);
 		//Print << hitBox.touch(Direction::right);
 
+		if (hitBox.touch(Direction::down)&&hitBox.rightFloor()&&hitBox.leftFloor()) {
+			lastTouchPos = pos;
+		}
+
 		if ((hitBox.touch(Direction::down) && hitBox.touch(Direction::up)) or (hitBox.touch(Direction::left) && hitBox.touch(Direction::right))) {
 			damage(1);
 		}
 
+		//落下したら
+		if (DataManager::get().stageSize.y+200<pos.y) {
+			vel = Vec2{};			
+			pos = lastTouchPos;
+			//脱法ダメージ
+			actMan.start(U"Damage");
+			hp -= 1;
+		}
+
+		//if (hp <= 0 and not die) {
+		//	endTimer.restart();
+		//	die = true;
+		//	DataManager::get().effect.add<IrisOutEffect>(Circle{ pos,140 });
+
+		//}
+
+		//if (die and (endTimer.sF()==0)) {
+		//	DataManager::get().playerAlive = false;
+		//}
+
+
 		tmp = character.character.table.at(U"Hitbox").joint.getQuad();
 	}
+
+	bool die = false;
 
 	Quad tmp;
 
@@ -560,15 +636,18 @@ public:
 
 	void damage(int32 n, const Vec2& force = {})override {
 
-		if (not actMan.hasActive(U"Rush",U"Muteki",U"HeadDrop",U"HeadDropMuteki",U"Summer")) {
+		if (0 < hp) {
 
-			this->force = force;
+			if (not actMan.hasActive(U"Rush", U"Muteki", U"HeadDrop", U"HeadDropMuteki", U"Summer",U"Dead")) {
 
-			actMan.start(U"Damage");
+				this->force = force;
 
-			hp -= n;
+				actMan.start(U"Damage");
 
-			AudioAsset{ U"アンナダメージ" }.playOneShot();
+				hp -= n;
+
+				AudioAsset{ U"アンナダメージ" }.playOneShot();
+			}
 		}
 	}
 

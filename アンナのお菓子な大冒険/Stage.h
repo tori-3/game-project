@@ -38,7 +38,8 @@ public:
 		{U"CookieKaban",[]() {return new CookieKabanBlock(); }},
 		{U"SnowKnight",[]() {return new SnowKnightBlock(); }},
 		{U"Zerosen",[]() {return new ZerosenBlock(); }},
-		{U"ThroughBlock",[]() {return new ThroughBlock(); }}
+		{U"ThroughBlock",[]() {return new ThroughBlock(); }},
+		{U"SlaversCookie",[]() {return new SlaversCookieBlock(); }}
 	};
 
 	~Stage() {
@@ -100,6 +101,8 @@ public:
 			this->map = std::move(_map);
 		}
 
+
+		DataManager::get().stageSize = map.size() * rect_size;
 	}
 
 	void hit(HitBox* hitbox) {

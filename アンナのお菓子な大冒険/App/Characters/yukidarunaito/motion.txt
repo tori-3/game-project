@@ -1,3 +1,6 @@
+#Yarare
+ChangeTexture,head,Characters/Yukidarunaito/yarare.png
+
 #ageru
 RotateTo,mbody,10,0.3
 MoveTo,ken,50,-150,0.3

@@ -4,37 +4,44 @@
     "Stage1": {
       "Picture": "image1.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-1>\n"
+      "Sentence": "<1-1>\n",
+      "BGM": "BGM/StageSnow7.wav"
     },
     "Stage2": {
       "Picture": "image2.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-2>\n"
+      "Sentence": "<1-2>\n",
+      "BGM": "BGM/StageSnow7.wav"
     },
     "Stage3": {
       "Picture": "example/windmill.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-3>\n"
+      "Sentence": "<1-3>\n",
+      "BGM": "BGM/StageBoss6.wav"
     },
     "Stage4": {
       "Picture": "example/windmill.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-4>\n"
+      "Sentence": "<1-4>\n",
+      "BGM": "BGM/StageBoss6.wav"
     },
     "Stage5": {
       "Picture": "example/windmill.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-5>\n"
+      "Sentence": "<1-5>\n",
+      "BGM": "BGM/StageSnow7.wav"
     },
     "Stage6": {
       "Picture": "example/windmill.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-6>\n"
+      "Sentence": "<1-6>\n",
+      "BGM": "BGM/StageSnow7.wav"
     },
     "Stage7": {
       "Picture": "example/windmill.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-7>\n"
+      "Sentence": "<1-7>\n",
+      "BGM": "BGM/StageSnow7.wav"
     }
   }
 }

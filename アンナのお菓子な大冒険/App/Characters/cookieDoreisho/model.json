@@ -1,0 +1,36 @@
+﻿{
+  "Body": {
+    "Hitbox": {
+      "Parent": "body",
+      "Position": "(-19.36719, 13.85025)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/cookieDoreisho/hitbox.png",
+      "Z": -10.0
+    },
+    "body": {
+      "Parent": "__Main__",
+      "Position": "(600, 350)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/cookieDoreisho/body.png",
+      "Z": -10.0
+    },
+    "kao": {
+      "Parent": "body",
+      "Position": "(0, 0)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/cookieDoreisho/kao.png",
+      "Z": -5.0
+    },
+    "whip": {
+      "Parent": "body",
+      "Position": "(0, 0)",
+      "RotateCenter": "(25.21733, 30.54099)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/cookieDoreisho/whip.png",
+      "Z": 0.0
+    }
+  }
+}

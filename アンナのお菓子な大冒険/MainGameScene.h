@@ -6,6 +6,7 @@
 #include"Player.h"
 #include"Spawner.h"
 #include"BackGround.h"
+#include"BGMManager.hpp"
 
 class EnemyAdder {
 public:
@@ -25,6 +26,7 @@ public:
 		table[U"CookieKaban"] = [](const Vec2& pos) {return new CookieKaban{ pos }; };
 		table[U"SnowKnight"] = [](const Vec2& pos) {return new SnowKnight{ pos }; };
 		table[U"Zerosen"] = [](const Vec2& pos) {return new Zerosen{ pos }; };
+		table[U"SlaversCookie"] = [](const Vec2& pos) {return new SlaversCookie{ pos }; };
 	}
 
 	HashTable<String, std::function<Entity* (const Vec2&)>>table;
@@ -84,16 +86,25 @@ DataManager* DataManager::instance = nullptr;
 class MainGameScene : public IPauseScene
 {
 public:
-	void cookieDisplay(int32 count)const {
+	void cookieDisplay(int32 count,double tame)const {
 
 		TextureAsset::Register(U"CookieItem", U"🍪"_emoji);
 
 		for (auto i : step(10)) {
+
+			if ((i + 1) <= tame * 10) {
+				Circle{ 25 + i * 40, 75,20 }.drawShadow(Vec2{ 0, 0 }, 8, 2,HSV{ 360 / 10 * i, 0.7 });
+			}
+
 			if (i < count) {
 				TextureAsset(U"CookieItem").resized(40).drawAt(25+  i * 40, 75);
 			}
 			else {
 				TextureAsset(U"CookieItem").resized(40).drawAt(25+  i * 40, 75, ColorF{ 1,0.3 });
+			}
+
+			if ((i + 1) <= tame * 10) {
+				Circle{ 25 + i * 40, 75,20 }.draw(HSV{ 360 / 10 * i, 0.2});
 			}
 		}
 	}
@@ -171,12 +182,14 @@ public:
 
 		camera.setStageWidth(stage.width() * rect_size);
 		camera.setStageHeight(stage.height()*rect_size);
-		camera.setPos({ player->pos.x-draw_x ,startY-draw_y });
+		camera.update({ player->pos.x - draw_x,player->pos.y - draw_y });
 	}
 
 	// 更新関数（オプション）
 	void gameUpdate() override
 	{
+		BGMManager::get().play(U"Stage{}"_fmt(getData().stage));
+
 		ClearPrint();
 		DataManager::get().playerPos = player->pos;
 
@@ -193,10 +206,14 @@ public:
 		}
 
 		////落下したらスタートに戻す。(デバッグ用)
-		if (player->hp <= 0 || 1000 < player->pos.y) {
-			//player->pos = Vec2(500, 350);
-			//player->hp = 3;
-			EndGame(false);
+		if (not DataManager::get().playerAlive /* player->hp <= 0|| 1000 < player->pos.y*/) {
+
+			if (DataManager::get().table.contains(U"Clear")) {
+				EndGame(true);
+			}
+			else {
+				EndGame(false);
+			}
 		}
 
 		stage.update(player->pos);
@@ -206,12 +223,6 @@ public:
 		cloud.update();
 
 		if (KeyEscape.down())goPause();
-
-		if (DataManager::get().table.contains(U"Clear")) {
-			if (KeyEnter.down()) {
-				EndGame(true);
-			}
-		}
 
 		if(DataManager::get().cameraPos){
 			camera.update(DataManager::get().cameraPos.value());
@@ -242,7 +253,6 @@ public:
 			const Transformer2D t{ camera.getMat3x2() };
 			manager.draw();
 			stage.draw(camera.pos+Scene::Size() / 2);
-
 			DataManager::get().effect.update();
 
 			{
@@ -258,7 +268,7 @@ public:
 		Circle{ Cursor::Pos(),50 }.drawFrame(5, ColorF{ Palette::Red,0.3 });
 		Shape2D::Plus(80, 5, Cursor::Pos()).draw(ColorF{ Palette::Red,0.3 });
 
-		cookieDisplay(player->itemCount);
+		cookieDisplay(player->itemCount, DataManager::get().tame);
 		hpDisplay(player->hp);
 
 		if (DataManager::get().talkWindow.isContinue()) {
@@ -268,12 +278,12 @@ public:
 
 		FontAsset(U"TitleFont")(U"Escで操作方法").draw(40,850,0,Palette::Orange);
 
-		if (DataManager::get().table.contains(U"Clear")) {
-			Rect{ Scene::Size() }.draw(ColorF{ 0,0.5 });
-			FontAsset(U"TitleFont")(U"クリア！！").drawAt(100,Scene::Center());
+		//if (DataManager::get().table.contains(U"Clear")) {
+		//	Rect{ Scene::Size() }.draw(ColorF{ 0,0.5 });
+		//	FontAsset(U"TitleFont")(U"クリア！！").drawAt(100,Scene::Center());
 
-			FontAsset(U"TitleFont")(U"Enterキー：マップへ").drawAt(50, Scene::Center().x,600);
-		}
+		//	FontAsset(U"TitleFont")(U"Enterキー：マップへ").drawAt(50, Scene::Center().x,600);
+		//}
 	}
 
 	//ポーズ画面
@@ -292,9 +302,20 @@ public:
 		auto _=SimpleGUI::ButtonAt(U"ゲームに戻る", { Scene::Center().x,700 });
 	}
 
-
 	void EndGame(bool clear) {
 		getData().mini_clear = clear;//クリア状況保存
-		changeScene(U"Map");
+		changeScene(U"Map",0s);
+	}
+
+	void drawFadeIn(double t) const override
+	{
+		draw();		
+		Circle circle = Circle{player->pos,0}.lerp(Circle{ player->pos ,Scene::Size().length() },t);
+
+		for (const auto& polygon : Geometry2D::Subtract(RectF{ Arg::center = player->pos,Scene::Size() * 2 }, circle.asPolygon()))
+		{
+			polygon.draw(Palette::Black);
+		}
+
 	}
 };

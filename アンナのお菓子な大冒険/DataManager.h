@@ -12,8 +12,14 @@ public:
 	Vec2 playerPos{};
 	TalkWindow talkWindow;
 
+	bool playerAlive = true;
+
+	double tame = 0;
+
 	//noneのときはプレイヤーに追従
 	Optional<Vec2>cameraPos{};
+
+	SizeF stageSize{};
 
 	void addEntity(const String& name, const Vec2& pos) {
 		list << std::pair<String, Vec2>{name,pos};

@@ -323,7 +323,7 @@ public:
 
 	CharacterSystem character;
 
-	ItigoSlave(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,15),70 * 1.5,69 * 1.5 },cpos,{0,0},1 }
+	ItigoSlave(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,15),70 * 1.5,69 * 1.5 },cpos,{0,0},2 }
 		, character{ U"Characters/itigoSlave/itigoSlave.json" ,U"Characters/itigoSlave/motion.txt" ,0.3,cpos,true,false }
 	{
 		character.addMotion(U"walk", true);
@@ -872,14 +872,6 @@ public:
 			if (hitBox.touch(Direction::down)|| damaged) {
 				character.addMotion(U"change");
 				DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 200, HSV{ 20,1,1 });
-				//if ((manager->get(U"Player")->pos - pos).length() < 70 * 2) {
-				//	if (pos.x < manager->get(U"Player")->pos.x) {
-				//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-				//	}
-				//	else {
-				//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-				//	}
-				//}
 
 				attack(U"Player", Circle{pos,70*2}, 1);
 
@@ -936,15 +928,6 @@ public:
 			hitBox.physicsUpdate();
 			hitBox.update();
 
-			//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-			//	if (pos.x < manager->get(U"Player")->pos.x) {
-			//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-			//	}
-			//	else {
-			//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-			//	}
-
-			//}
 			attack(U"Player", hitBox.getFigure(), 1);
 
 		}
@@ -961,7 +944,6 @@ public:
 			}
 			else {
 				DataManager::get().effect.add<StarEffect>(pos, 50);
-				manager->add(new CookieItem{ pos });
 			}
 		}
 	}
@@ -1053,16 +1035,21 @@ public:
 
 	Array<Entity*>summonList;//召喚したリスト
 
-	SnowKnight(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(-20,40),70 * 1,70*4-30 },cpos,{0,0},20 }
+	SnowKnight(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(-20,40),70 * 1,70*4-30 },cpos,{0,0},1 }
 		, character{ U"Characters/yukidarunaito/yukidarunaito.json" ,U"Characters/yukidarunaito/motion.txt" ,0.2,cpos,true,false }
-	{
-		timer = 0;
+	{	
 		centerX = pos.x;
 
 		rx = pos.x + 100;
 		lx = pos.x - 100;
 
 		auto& k = character.character.table[U"kenbox"];
+
+		//最初は数秒何もしない
+		f = []() {};
+		f2 = []() {};
+		timer = 3;
+
 	}
 
 	Timer attackTimer{ 0.5s };
@@ -1158,7 +1145,7 @@ public:
 				{
 					double t = maxTime - timer;
 
-					if (1.5 <= t and t <= 3.4)
+					if (1.5 <= t and t <= 4.85)
 					{
 						const Quad ken = character.character.table[U"kenbox"].joint.getQuad();
 
@@ -1233,19 +1220,19 @@ public:
 							[&](Vec2 pos) {
 								StrawberrySoldier* ptr = new StrawberrySoldier{ pos };
 								ptr->left = RandomBool();
-								ptr->vel.y = -300;
+								ptr->vel.y = -500;
 								return ptr;
 							},
 							[&](Vec2 pos) {
 								CookieSoldier* ptr = new CookieSoldier{ pos };
 								ptr->left = RandomBool();
-								ptr->vel.y = -300;
+								ptr->vel.y = -500;
 								return ptr;
 							},
 							[&](Vec2 pos) {
 								Snowman* ptr = new Snowman{ pos };
 								ptr->left = RandomBool();
-								ptr->vel.y = -300;
+								ptr->vel.y = -500;
 								return ptr;
 							},
 						};
@@ -1270,7 +1257,6 @@ public:
 
 			}
 				break;
-
 			}
 
 		}
@@ -1297,11 +1283,15 @@ public:
 		}
 	}
 
-
-
 	void lateUpdate() override {
 		summonList.remove_if([](Entity* entity) {return not entity->isActive(); });
 
+			if (not isActive()) {
+				DataManager::get().table.emplace(U"Clear");
+				DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 200);
+				DataManager::get().additiveEffect.add<ExplosionEffect>(pos + Vec2{ 50,50 }, 100);
+				DataManager::get().additiveEffect.add<ExplosionEffect>(pos - Vec2{ 50,50 }, 100);
+			}
 		/*if (not isActive()) {
 			DataManager::get().effect.add<StarEffect>(pos, 0);
 			manager->add(new CookieItem{ pos });
@@ -1344,14 +1334,241 @@ public:
 					manager->get(U"Player")->damage(0, Vec2{ -200,-20 });
 				}
 			}
-
-
+		}
+		else if(character.hasMotion(U"YoroiMuteki")and 5 <= n){
+			if (yoroi) {
+				yoroi -= 1;
+				if (yoroi <= 0) {
+					character.addMotion(U"Nugeru");
+				}
+				character.addMotion(U"Muteki");
+				force = _force;
+				vel.y = force.y;
+				vel.x = force.x * 1.5;
+				AudioAsset{ U"ヘッドドロップ" }.playOneShot();
+			}
 		}
 	}
 
 	void draw()const override {
 		hitBox.Get_Box().draw(Palette::Red);
 
+		character.draw();
+	}
+};
+
+class SlaversCookie :public Entity {
+public:
+
+	Array<Entity*>summonListItigo;//召喚したリスト
+	Array<Entity*>summonListYukidaruma;//召喚したリスト
+	Entity* summonSnowLeft=nullptr;
+	Entity* summonSnowRight=nullptr;
+
+	bool left = true;
+
+	std::function<void()> f;
+	std::function<void()>f2;
+
+	double timer;
+
+	CharacterSystem character;
+
+	SlaversCookie(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,0),50,100},cpos,{0,0},1 }
+		, character{ U"Characters/cookieDoreisho/model.json" ,U"Characters/cookieDoreisho/motion.txt" ,0.4,cpos,true,false }
+	{
+		f = []() {};
+		f2 = []() {};
+		timer = 3;
+	}
+
+	void update()override {
+
+		manager->stage->hit(&hitBox);
+
+		if (hitBox.touch(Direction::right))
+		{
+			left = true;
+		}
+		else if (hitBox.touch(Direction::left)) {
+			left = false;
+		}
+
+		if (hitBox.touch(Direction::down)) {
+			if (left) {
+				if (not hitBox.leftFloor()) {
+					left = false;
+				}
+			}
+			else {
+				if (not hitBox.rightFloor()) {
+					left = true;
+				}
+			}
+		}
+
+		if (timer <= 0) {
+
+			size_t type = Random(0, 3);
+
+			if (not summonListItigo) {
+				type = 1;
+			}
+
+			switch (type)
+			{
+			case 0: {
+
+				timer = 2;
+
+				character.addMotion(U"walk", true);
+
+				f = [&]() {
+					if (left) {
+						vel.x = -300;
+					}
+					else {
+						vel.x = 300;
+					}
+				};
+
+				f2 = [&]() {
+					character.removeMotion(U"walk");
+				};
+
+			}break;
+			case 1: {
+
+				if (summonListItigo.size()<10) {
+					for (auto i : step(2)) {
+						Vec2 bornPos{};
+
+						if (i == 0) {
+							bornPos = { rect_size*1.5,pos.y + 200 };
+						}
+						else {
+							bornPos = { DataManager::get().stageSize.x- rect_size * 1.5,pos.y + 200 };
+						}
+
+
+						Entity* tmp = new ItigoSlave{ bornPos };
+						manager->add(tmp);
+						summonListItigo << tmp;
+						DataManager::get().additiveEffect.add<ExplosionEffect>(bornPos, 60, Palette::Yellowgreen);
+					}
+					character.addMotion(U"meirei");
+
+					f = [&]() {
+
+					};
+
+					f2 = [&]() {
+						character.removeMotion(U"meirei");
+					};
+
+					timer = 2;
+
+				}
+				else {
+					timer = 0;
+					f = []() {};
+					f2 = []() {};
+				}
+
+			}break;
+			case 2: {
+				timer = 1;
+
+				character.addMotion(U"nageire");
+
+
+				f = [&]() {};
+
+				f2 = [&]() {
+
+						Vec2 bornPos{ pos.x+Random(-100,100),pos.y + 200};
+						Entity* tmp = new DropCorn{ bornPos,100 * Random(1.0) };
+						manager->add(tmp);
+						//summonListItigo << tmp;
+						DataManager::get().additiveEffect.add<ExplosionEffect>(bornPos, 60, Palette::Yellowgreen);
+					f = [&]() {};
+					f2 = [&]() {};
+					timer = 1;
+				};
+
+
+			}break;
+			case 3: {
+
+				character.addMotion(U"meirei");
+
+				if (not summonSnowLeft) {
+					Vec2 bornPos{ rect_size * 5,pos.y + 200 };
+
+					Entity* tmp = new Snowman{ bornPos };
+					manager->add(tmp);
+					summonSnowLeft = tmp;
+					DataManager::get().additiveEffect.add<ExplosionEffect>(bornPos, 60, Palette::Yellowgreen);
+
+					timer = 1.0;
+				}
+				else if (not summonSnowRight) {
+					Vec2 bornPos{ DataManager::get().stageSize.x - rect_size * 5,pos.y + 200 };
+
+					Entity* tmp = new Snowman{ bornPos };
+					manager->add(tmp);
+					summonSnowRight = tmp;
+					DataManager::get().additiveEffect.add<ExplosionEffect>(bornPos, 60, Palette::Yellowgreen);
+
+					timer = 1.0;
+				}
+				else {
+					f = [&]() {};
+					f2 = [&]() {};
+					timer = 0;
+				}
+
+			}break;
+
+			default:
+				break;
+			}
+		}
+
+		hitBox.physicsUpdate();
+		hitBox.update();
+
+		if (timer > 0)
+		{
+			timer -= Scene::DeltaTime();
+			f();
+			if (timer <= 0)
+			{
+				f2();
+			}
+		}
+
+		character.update(pos, left);
+	}
+
+	void lateUpdate() {
+		summonListItigo.remove_if([](Entity* entity) {return not entity->isActive(); });
+		if (summonSnowLeft and summonSnowLeft->isActive()) {
+			summonSnowLeft = nullptr;
+		}
+		if (summonSnowRight and summonSnowRight->isActive()) {
+			summonSnowRight = nullptr;
+		}
+
+		if (not isActive()) {
+			DataManager::get().table.emplace(U"Clear");
+			DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 200);
+			DataManager::get().additiveEffect.add<ExplosionEffect>(pos + Vec2{ 50,50 }, 100);
+			DataManager::get().additiveEffect.add<ExplosionEffect>(pos - Vec2{ 50,50 }, 100);
+		}
+	}
+
+	void draw()const override {
 		character.draw();
 	}
 };
