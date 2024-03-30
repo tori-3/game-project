@@ -1,0 +1,52 @@
+﻿{
+  "Body": {
+    "ago": {
+      "Parent": "kao",
+      "Position": "(0, 0)",
+      "RotateCenter": "(4.34014, -33.93187)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/sentyo/ago.png",
+      "Z": -30.0
+    },
+    "hige": {
+      "Parent": "ago",
+      "Position": "(0, 0)",
+      "RotateCenter": "(5.52378, 54.44898)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/sentyo/hige.png",
+      "Z": -40.0
+    },
+    "kao": {
+      "Parent": "__Main__",
+      "Position": "(600, 350)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/sentyo/kao.png",
+      "Z": -10.0
+    },
+    "kemuri": {
+      "Parent": "kao",
+      "Position": "(0, 0)",
+      "RotateCenter": "(107.31971, 39.45577)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/sentyo/kemuri.png",
+      "Z": 0.0
+    },
+    "me": {
+      "Parent": "kao",
+      "Position": "(0, 0)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/sentyo/me.png",
+      "Z": -18.0
+    },
+    "sirome": {
+      "Parent": "kao",
+      "Position": "(0, 0)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/sentyo/sirome.png",
+      "Z": -20.0
+    }
+  }
+}

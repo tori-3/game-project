@@ -17,12 +17,11 @@ public:
 		, character{ U"CharacterImages/Hadouken/Hadouken.json",U"CharacterImages/Hadouken/motion.txt",0.25,_pos,false }
 	{
 		character.addMotion(U"");
+		z = 100;
 	}
 
 	void update()override {
 		bool collisionFlg = false;
-
-		ClearPrint();
 
 		manager->stage->hit(&hitBox);
 
@@ -75,7 +74,7 @@ public:
 
 	bool left = false;
 
-	int32 itemCount = 10;
+	int32 itemCount = 0;
 
 	Vec2 force{};
 	Timer backTimer{ 0.2s };
@@ -378,7 +377,6 @@ public:
 				vel.y = -500.0;
 			},
 			.update = [&,h=summerHited](double t) {
-				Print << U"サマーソルトが当たった：" << *h;
 				if (attack(U"Enemy",Circle{ pos,70 },1,200)and (not *h)) {
 					AudioAsset{ U"サマーソルトヒット" }.playOneShot();
 					*h = true;
@@ -501,7 +499,7 @@ public:
 
 		actMan.add(U"Dead", {
 			.startCondition=[&](){
-				return hp <= 0 or DataManager::get().table.contains(U"Clear");
+				return hp <= 0;
 			},
 			.start = [&]() {
 				actMan.cancelAll({U"Dead"});
@@ -511,6 +509,22 @@ public:
 			},
 			.update = [&](double t) {
 				return t<4.0;
+			},
+			.end = [&]() {
+				DataManager::get().playerAlive = false;
+			}
+		});
+		actMan.add(U"Clear", {
+			.startCondition = [&]() {
+				return DataManager::get().table.contains(U"Clear");
+			},
+			.start = [&]() {
+				actMan.cancelAll({U"Clear"});
+				DataManager::get().effect.add<IrisOutEffect>(&pos,140);
+				character.clearMotion();
+			},
+			.update = [&](double t) {
+				return t < 4.0;
 			},
 			.end = [&]() {
 				DataManager::get().playerAlive = false;
@@ -577,7 +591,7 @@ public:
 			}
 		}
 
-		actMan.debugPrint();
+		//actMan.debugPrint();
 
 		character.update(pos, left);
 		character.character.touchGround(hitBox.Get_Box().boundingRect().bottomY());
@@ -625,10 +639,10 @@ public:
 
 	void draw()const override {
 
-		Circle{ pos,70 }.draw(Palette::Orange);
+		//Circle{ pos,70 }.draw(Palette::Orange);
 
-		tmp.draw(Palette::Red);
-		hitBox.draw(ColorF{Palette::Blue,0.5});
+		//tmp.draw(Palette::Red);
+		//hitBox.draw(ColorF{Palette::Blue,0.5});
 		character.draw();
 
 

@@ -56,8 +56,6 @@ public:
 
 		character.pos += pos - tmpPos;
 
-		Print << character.joint->pos;
-
 		character.update();
 		drawManager.update();
 

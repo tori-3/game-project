@@ -32,6 +32,8 @@ public:
 		table[U"SnowKnight"] = [](const Vec2& pos) {return new SnowKnight{ pos }; };
 		table[U"Zerosen"] = [](const Vec2& pos) {return new Zerosen{ pos }; };
 		table[U"SlaversCookie"] = [](const Vec2& pos) {return new SlaversCookie{ pos }; };
+		table[U"Captain"] = [](const Vec2& pos) {return new Captain{ pos }; };
+		table[U"Door"] = [](const Vec2& pos) {return new GoalDoor{ pos }; };
 	}
 
 	HashTable<String, std::function<Entity* (const Vec2&)>>table;
@@ -279,10 +281,6 @@ public:
 		Graphics2D::Flush();
 		rTexture.resolve();
 		rTexture.draw();
-
-		//マウス
-		Circle{ Cursor::Pos(),50 }.drawFrame(5, ColorF{ Palette::Red,0.3 });
-		Shape2D::Plus(80, 5, Cursor::Pos()).draw(ColorF{ Palette::Red,0.3 });
 
 		cookieDisplay(player->itemCount, DataManager::get().tame);
 		hpDisplay(player->hp);

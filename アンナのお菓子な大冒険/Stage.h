@@ -40,8 +40,8 @@ public:
 		{U"Zerosen",[]() {return new ZerosenBlock(); }},
 		{U"ThroughBlock",[]() {return new ThroughBlock(); }},
 		{U"SlaversCookie",[]() {return new SlaversCookieBlock(); }},
-		{U"PoleBlock",[]() {return new  PoleBlock(); }}
-
+		{U"PoleBlock",[]() {return new  PoleBlock(); }},
+		{U"CaptainBlock",[]() {return new CaptainBlock(); }}
 	};
 
 	~Stage() {

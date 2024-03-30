@@ -278,26 +278,38 @@ public:
 	}
 };
 
+//class Door :public Untouchable {
+//public:
+//
+//	Timer timer{ 1s };
+//
+//	void update(const Point& pos)override {
+//
+//		if (Rect{ pos * rect_size,rect_size * 2 }.intersects(DataManager::get().playerPos)) {
+//			timer.start();
+//			DataManager::get().table.emplace(U"Clear");
+//		}
+//	}
+//
+//	void draw(const Point& pos)const override {
+//		Rect{ pos * rect_size,rect_size * 2 }.draw(Palette::Black);
+//		double d = Sin(timer.sF() * 80_deg+10_deg);
+//		TextureAsset(U"Door").resized(rect_size * 2).scaled(d,1).draw(pos * rect_size);
+//		TextureAsset(U"Door").resized(rect_size * 2).scaled(d,1).mirrored().draw(pos * rect_size+Vec2::UnitX()*(1-d)*2* rect_size);
+//	}
+//
+//};
+
 class Door :public Untouchable {
 public:
-
-	Timer timer{ 1s };
+	bool bornFlg = false;
 
 	void update(const Point& pos)override {
-
-		if (Rect{ pos * rect_size,rect_size * 2 }.intersects(DataManager::get().playerPos)) {
-			timer.start();
-			DataManager::get().table.emplace(U"Clear");
+		if (not bornFlg) {
+			DataManager::get().addEntity(U"Door", pos * rect_size);
+			bornFlg = true;
 		}
 	}
-
-	void draw(const Point& pos)const override {
-		Rect{ pos * rect_size,rect_size * 2 }.draw(Palette::Black);
-		double d = Sin(timer.sF() * 80_deg+10_deg);
-		TextureAsset(U"Door").resized(rect_size * 2).scaled(d,1).draw(pos * rect_size);
-		TextureAsset(U"Door").resized(rect_size * 2).scaled(d,1).mirrored().draw(pos * rect_size+Vec2::UnitX()*(1-d)*2* rect_size);
-	}
-
 };
 
 class WeakWall:public Block {
@@ -536,4 +548,15 @@ class PoleBlock :public Block {
 
 };
 
+class CaptainBlock :public Untouchable {
+public:
+	bool bornFlg = false;
+
+	void update(const Point& pos)override {
+		if (not bornFlg) {
+			DataManager::get().addEntity(U"Captain", pos * rect_size + Vec2{ 0.5,0 }*rect_size);
+			bornFlg = true;
+		}
+	}
+};
 

@@ -1354,7 +1354,7 @@ public:
 	}
 
 	void draw()const override {
-		hitBox.Get_Box().draw(Palette::Red);
+		//hitBox.Get_Box().draw(Palette::Red);
 
 		character.draw();
 	}
@@ -1375,6 +1375,8 @@ public:
 	double timer;
 
 	CharacterSystem character;
+
+	size_t type=1;
 
 	SlaversCookie(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,0),50,100},cpos,{0,0},3 }
 		, character{ U"Characters/cookieDoreisho/model.json" ,U"Characters/cookieDoreisho/motion.txt" ,0.4,cpos,true,false }
@@ -1419,10 +1421,16 @@ public:
 
 		if (timer <= 0) {
 
-			size_t type = Random(0, 3);
+			if (type == 0) {
 
-			if (not summonListItigo) {
-				type = 1;
+				type = Random(1, 3);
+
+				if (not summonListItigo) {
+					type = 1;
+				}
+			}
+			else {
+				type = 0;
 			}
 
 			if (poleHit) {
@@ -1480,7 +1488,7 @@ public:
 						character.removeMotion(U"meirei");
 					};
 
-					timer = 5;
+					timer = 2;
 
 				}
 				else {
@@ -1528,7 +1536,7 @@ public:
 					summonSnowLeft = tmp;
 					DataManager::get().additiveEffect.add<ExplosionEffect>(bornPos, 60, Palette::Yellowgreen);
 
-					timer = 1.0;
+					timer += 1.0;
 				}
 				if (not summonSnowRight) {
 					Vec2 bornPos{ DataManager::get().stageSize.x - rect_size * 5,pos.y + 200 };
@@ -1538,7 +1546,7 @@ public:
 					summonSnowRight = tmp;
 					DataManager::get().additiveEffect.add<ExplosionEffect>(bornPos, 60, Palette::Yellowgreen);
 
-					timer = 1.0;
+					timer += 1.0;
 				}
 
 			}break;
@@ -1593,5 +1601,120 @@ public:
 
 	void draw()const override {
 		character.draw();
+	}
+};
+
+class Captain :public Entity {
+public:
+
+	Array<Entity*>summonListItigo;//召喚したリスト
+
+	bool left = true;
+
+	std::function<void()> f;
+	std::function<void()>f2;
+
+	double timer;
+
+	CharacterSystem character;
+
+	size_t type = 1;
+
+	Captain(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,-30),230,100},cpos,{0,0},3 }
+		, character{ U"Characters/sentyo/model.json" ,U"Characters/sentyo/motion.txt" ,1,cpos,true,false }
+	{
+		f = []() {};
+		f2 = []() {};
+		timer = 3;
+		character.addMotion(U"Mokumoku",true);
+	}
+
+	void update()override {
+
+		manager->stage->hit(&hitBox);
+
+		//目をプレイヤーに向ける
+		character.character.table[U"me"].joint.pos=(manager->get(U"Player")->pos-pos).setLength(15);
+
+
+
+
+		if (hitBox.touch(Direction::right))
+		{
+			left = true;
+		}
+		else if (hitBox.touch(Direction::left)) {
+			left = false;
+		}
+
+		if (timer <= 0) {
+
+			type = Random(0,0);
+
+			switch (type)
+			{
+			case 0: {
+
+			}break;
+			default:
+				break;
+			}
+		}
+
+		//hitBox.physicsUpdate();
+		hitBox.update();
+
+		if (timer > 0)
+		{
+			timer -= Scene::DeltaTime();
+			f();
+			if (timer <= 0)
+			{
+				f2();
+			}
+		}
+
+		character.update(pos, left);
+	}
+
+	void lateUpdate() {
+		summonListItigo.remove_if([](Entity* entity) {return not entity->isActive(); });
+
+		if (not isActive()) {
+			DataManager::get().table.emplace(U"Clear");
+			DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 200);
+			DataManager::get().additiveEffect.add<ExplosionEffect>(pos + Vec2{ 50,50 }, 100);
+			DataManager::get().additiveEffect.add<ExplosionEffect>(pos - Vec2{ 50,50 }, 100);
+		}
+	}
+
+	void draw()const override {
+		character.draw();
+		hitBox.Get_Box().drawFrame(5.0,Palette::Orange);
+	}
+};
+
+class GoalDoor:public Entity{
+public:
+
+	Timer timer{ 1s };
+
+	GoalDoor(const Vec2& pos) :Entity{ U"Door",RectF{0,0,0,0},pos,{0,0},1 } {
+		z = -100;
+	}
+
+	void update()override {
+		Print << pos;
+		if (RectF{ pos,rect_size * 2 }.intersects(DataManager::get().playerPos)) {
+			timer.start();
+			DataManager::get().table.emplace(U"Clear");
+		}
+	}
+
+	void draw()const override{
+		RectF{ pos,rect_size * 2 }.draw(Palette::Black);
+		double d = Sin(timer.sF() * 80_deg+10_deg);
+		TextureAsset(U"Door").resized(rect_size * 2).scaled(d,1).draw(pos);
+		TextureAsset(U"Door").resized(rect_size * 2).scaled(d,1).mirrored().draw(pos+Vec2::UnitX()*(1-d)*2* rect_size);
 	}
 };

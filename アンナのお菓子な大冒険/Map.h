@@ -12,7 +12,7 @@ public:
 
 	//画面下の四角形の情報
 	const int rect_size = 100;//四角形の大きさ
-	const int rect_num = 5;//四角形(ゲーム)の個数
+	const int rect_num = 6;//四角形(ゲーム)の個数
 	const int rect_gap = 20;//四角形の間隔
 
 	//アイコン画像
@@ -75,6 +75,10 @@ public:
 		//motion.add(new SetPos{ U"body",Vec2{ rect_x(index) ,640 },0 });
 		//character.character.addMotion(U"Move", motion);
 		//character.update({ rect_x(0) ,640 }, false);
+
+
+		AudioAsset::Register(U"WorldBGM",U"BGM/WorldMap2.mp3");
+		BGMManager::get().play(U"WorldBGM");
 	}
 
 	void update() override
@@ -137,7 +141,7 @@ public:
 				largeFlg = true;
 			}
 
-			character.update({ rect_x(0) ,640 }, left);
+			character.update({ rect_x(index) ,640 }, left);
 				
 
 		}
