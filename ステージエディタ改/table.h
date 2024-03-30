@@ -201,6 +201,10 @@ void SlaversCookie(Point pos) {
 	RectF{ pos * rect_size,rect_size,rect_size / 10 }.draw(Palette::Yellow);
 }
 
+void PoleBlock(Point pos) {
+	RectF{ pos * rect_size,rect_size }.draw(Palette::Darkgray);
+}
+
 struct Info {
 	String tag;
 	std::function<void(Point)>func;
@@ -244,7 +248,8 @@ Array<Info>list{
 	{U"Zerosen",Zerosen,U"零戦クッキー"},
 	{U"SnowKnight",SnowKnight,U"雪だるナイト"},
 	{U"ThroughBlock",ThroughBlock,U"すり抜ける床"},
-	{U"SlaversCookie",SlaversCookie,U"奴隷商クッキー"}
+	{U"SlaversCookie",SlaversCookie,U"奴隷商クッキー"},
+	{U"PoleBlock",PoleBlock,U"柱ブロック"}
 };
 
 HashTable<String, std::function<void(Point)>> table;

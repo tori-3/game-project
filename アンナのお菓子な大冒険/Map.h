@@ -12,7 +12,7 @@ public:
 
 	//画面下の四角形の情報
 	const int rect_size = 100;//四角形の大きさ
-	const int rect_num = 4;//四角形(ゲーム)の個数
+	const int rect_num = 5;//四角形(ゲーム)の個数
 	const int rect_gap = 20;//四角形の間隔
 
 	//アイコン画像
@@ -98,7 +98,13 @@ public:
 
 				//BGMの読み込み
 				if (path) {
-					AudioAsset::Register(U"Stage{}"_fmt(index + 1), path, Loop::Yes);
+					if (FileSystem::BaseName(path) == U"StageBossLast1") {
+						constexpr uint64 sampleRate = 44100;
+						AudioAsset::Register(U"Stage{}"_fmt(index + 1), path, Arg::loopBegin = 22.588* sampleRate);
+					}
+					else {
+						AudioAsset::Register(U"Stage{}"_fmt(index + 1), path, Loop::Yes);
+					}
 				}
 
 				changeScene(sceneNames[index]);

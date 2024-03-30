@@ -334,57 +334,51 @@ public:
 	void update()override {
 
 		manager->stage->hit(&hitBox);
+		if (not character.hasMotion(U"Muteki")) {
+			if (hitBox.touch(Direction::right))
+			{
+				left = true;
+			}
+			else if (hitBox.touch(Direction::left)) {
+				left = false;
+			}
 
-		if (hitBox.touch(Direction::right))
-		{
-			left = true;
-		}
-		else if (hitBox.touch(Direction::left)) {
-			left = false;
-		}
-
-		if (hitBox.touch(Direction::down)) {
-			if (left) {
-				if (not hitBox.leftFloor()) {
-					left = false;
+			if (hitBox.touch(Direction::down)) {
+				if (left) {
+					if (not hitBox.leftFloor()) {
+						left = false;
+					}
 				}
+				else {
+					if (not hitBox.rightFloor()) {
+						left = true;
+					}
+				}
+			}
+
+			if (left) {
+				vel.x = -100;
 			}
 			else {
-				if (not hitBox.rightFloor()) {
-					left = true;
-				}
+				vel.x = 100;
 			}
 		}
-
-		if (left) {
-			vel.x = -100;
-		}
-		else {
-			vel.x = 100;
-		}
-
 		hitBox.physicsUpdate();
 		hitBox.update();
 
-		//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-		//	if (pos.x < manager->get(U"Player")->pos.x) {
-		//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-		//	}
-		//	else {
-		//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-		//	}
-		//}
+		if (not character.hasMotion(U"Muteki")) {
 
-		attack(U"Player", hitBox.getFigure(), 1);
+			attack(U"Player", hitBox.getFigure(), 1);
 
-		if ((not character.hasMotion(U"attack"))&&manager->get(U"Player")->hitBox.Get_Box().intersects(hitBox.Get_Box().movedBy(left ? -60 : 60, 0))) {
-			attackTimer.restart();
-			character.addMotion(U"attack");
-		}
+			if ((not character.hasMotion(U"attack")) && manager->get(U"Player")->hitBox.Get_Box().intersects(hitBox.Get_Box().movedBy(left ? -60 : 60, 0))) {
+				attackTimer.restart();
+				character.addMotion(U"attack");
+			}
 
-		if (attackTimer.sF()==0) {
-			if (manager->get(U"Player")->hitBox.Get_Box().intersects(hitBox.Get_Box().movedBy(left ? -25 : 25, 0))) {
-				manager->get(U"Player")->damage(2, Vec2{ left ? -200 : 200,-20 });
+			if (attackTimer.sF() == 0) {
+				if (manager->get(U"Player")->hitBox.Get_Box().intersects(hitBox.Get_Box().movedBy(left ? -25 : 25, 0))) {
+					manager->get(U"Player")->damage(2, Vec2{ left ? -200 : 200,-20 });
+				}
 			}
 		}
 
@@ -395,6 +389,16 @@ public:
 		if (not isActive()) {
 			DataManager::get().effect.add<StarEffect>(pos, 0);
 			manager->add(new CookieItem{ pos });
+		}
+	}
+
+	virtual void damage(int32 n, const Vec2& force = {}) {
+		if (not character.hasMotion(U"Muteki")) {
+			character.removeMotion(U"attack");
+			hp -= n;
+			character.addMotion(U"Muteki");
+			vel.y = force.y;
+			vel.x = force.x * 1.5;
 		}
 	}
 
@@ -954,7 +958,6 @@ public:
 	}
 };
 
-
 class Zerosen :public Entity {
 public:
 
@@ -1361,7 +1364,6 @@ class SlaversCookie :public Entity {
 public:
 
 	Array<Entity*>summonListItigo;//召喚したリスト
-	Array<Entity*>summonListYukidaruma;//召喚したリスト
 	Entity* summonSnowLeft=nullptr;
 	Entity* summonSnowRight=nullptr;
 
@@ -1374,7 +1376,7 @@ public:
 
 	CharacterSystem character;
 
-	SlaversCookie(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,0),50,100},cpos,{0,0},1 }
+	SlaversCookie(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,0),50,100},cpos,{0,0},3 }
 		, character{ U"Characters/cookieDoreisho/model.json" ,U"Characters/cookieDoreisho/motion.txt" ,0.4,cpos,true,false }
 	{
 		f = []() {};
@@ -1407,12 +1409,24 @@ public:
 			}
 		}
 
+		bool poleHit = false;
+		if (DataManager::get().table.contains(U"PoleHit")) {
+			DataManager::get().table.erase(U"PoleHit");
+			poleHit = true;
+			timer = 0;
+		}
+
+
 		if (timer <= 0) {
 
 			size_t type = Random(0, 3);
 
 			if (not summonListItigo) {
 				type = 1;
+			}
+
+			if (poleHit) {
+				type = 4;
 			}
 
 			switch (type)
@@ -1466,7 +1480,7 @@ public:
 						character.removeMotion(U"meirei");
 					};
 
-					timer = 2;
+					timer = 5;
 
 				}
 				else {
@@ -1502,6 +1516,10 @@ public:
 
 				character.addMotion(U"meirei");
 
+				f = [&]() {};
+				f2 = [&]() {};
+				timer = 0;
+
 				if (not summonSnowLeft) {
 					Vec2 bornPos{ rect_size * 5,pos.y + 200 };
 
@@ -1512,7 +1530,7 @@ public:
 
 					timer = 1.0;
 				}
-				else if (not summonSnowRight) {
+				if (not summonSnowRight) {
 					Vec2 bornPos{ DataManager::get().stageSize.x - rect_size * 5,pos.y + 200 };
 
 					Entity* tmp = new Snowman{ bornPos };
@@ -1522,11 +1540,16 @@ public:
 
 					timer = 1.0;
 				}
-				else {
-					f = [&]() {};
-					f2 = [&]() {};
-					timer = 0;
-				}
+
+			}break;
+			case 4: {
+				character.clearMotion();
+				character.addMotion(U"shobon");
+				hp -= 1;
+
+				f = [&]() {};
+				f2 = [&]() {};
+				timer = 3;
 
 			}break;
 
@@ -1553,10 +1576,10 @@ public:
 
 	void lateUpdate() {
 		summonListItigo.remove_if([](Entity* entity) {return not entity->isActive(); });
-		if (summonSnowLeft and summonSnowLeft->isActive()) {
+		if (summonSnowLeft and not summonSnowLeft->isActive()) {
 			summonSnowLeft = nullptr;
 		}
-		if (summonSnowRight and summonSnowRight->isActive()) {
+		if (summonSnowRight and not summonSnowRight->isActive()) {
 			summonSnowRight = nullptr;
 		}
 

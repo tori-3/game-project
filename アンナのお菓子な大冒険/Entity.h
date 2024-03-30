@@ -28,6 +28,11 @@ public:
 		hp -= n;
 	}
 
+	bool alive = true;
+	void kill() {
+		alive = false;
+	}
+
 	virtual bool isActive() {
 
 		if (hitBox.touch(Direction::down) && hitBox.touch(Direction::up)) {
@@ -37,7 +42,7 @@ public:
 			hp = 0;
 		}
 
-		return 0<hp&& pos.y<2000;
+		return 0<hp&& pos.y<2000 and alive;
 	}
 
 	void setManager(EntityManager* _manager) {

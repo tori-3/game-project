@@ -28,8 +28,8 @@
     "Stage5": {
       "Picture": "example/windmill.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-5>\n",
-      "BGM": "BGM/StageSnow7.wav"
+      "Sentence": "<1-5>\nラスボステスト",
+      "BGM": "BGM/StageBossLast1.wav"
     },
     "Stage6": {
       "Picture": "example/windmill.png",

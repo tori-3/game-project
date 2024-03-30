@@ -8,6 +8,11 @@
 #include"BackGround.h"
 #include"BGMManager.hpp"
 
+inline Mat3x2 shakeMat(const Timer& timer, double amplitude = 20) {
+	constexpr double N = 2;//揺れの回数
+	return Mat3x2::Translate(amplitude * (Periodic::Sine0_1(timer.duration() / N, timer.sF()) - 1 / N), 0);
+}
+
 class EnemyAdder {
 public:
 
@@ -50,6 +55,8 @@ public:
 
 	double stageWidth = 0;
 
+	Timer shakeTimer{ 2s };//カメラの揺れ
+
 	void setPos(const Vec2& _pos) {
 		pos = _pos;
 	}
@@ -73,10 +80,15 @@ public:
 
 		pos.y = Clamp<double>(pos.y,0, stageHeight-Scene::Height());
 
+		if (DataManager::get().table.contains(U"ShakeCamera")) {
+			DataManager::get().table.erase(U"ShakeCamera");
+			shakeTimer.restart();
+		}
+
 	}
 
 	Mat3x2 getMat3x2()const {
-		return Mat3x2::Translate(-pos);
+		return Mat3x2::Translate(-pos)* shakeMat(shakeTimer, shakeTimer.sF()*50);
 	}
 };
 
@@ -210,6 +222,10 @@ public:
 
 			if (DataManager::get().table.contains(U"Clear")) {
 				EndGame(true);
+				for (const auto& enemy : manager.getArray(U"Enemy")) {
+					enemy->kill();
+				}
+
 			}
 			else {
 				EndGame(false);

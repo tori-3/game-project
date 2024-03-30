@@ -1,4 +1,5 @@
 #walk
+RotateTo,weapon,0,0.1
 RotateTo,lfoot,0,0
 RotateTo,rfoot,45,0
 Move,body,0,-3,0
@@ -23,6 +24,15 @@ Wait,0.2
 RotateTo,weapon,0,0.3
 
 wait 
+
+#Muteki
+ChangeColor,body,1,1,1,0,0.25
+
+ChangeColor,body,1,1,1,1,0.25
+
+ChangeColor,body,1,1,1,0,0.25
+
+ChangeColor,body,1,1,1,1,0.25
 
 #仕様
 〇ステータス

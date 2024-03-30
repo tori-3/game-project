@@ -512,3 +512,28 @@ public:
 		Rect{ pos * rect_size,rect_size,20 }.draw(Palette::Blue);
 	}
 };
+
+class PoleBlock :public Block {
+
+	void reaction(const Point& pos, PhysicsBox* box)override
+	{
+		RectF rect{ pos * rect_size ,rect_size };
+		if (box->lines(Direction::right).intersects(rect)and 600<box->vel->x) {
+			DataManager::get().table.emplace(U"PoleHit");
+			DataManager::get().table.emplace(U"ShakeCamera");
+		}
+		else if (box->lines(Direction::left).intersects(rect) and box->vel->x < -600) {
+			DataManager::get().table.emplace(U"PoleHit");
+			DataManager::get().table.emplace(U"ShakeCamera");
+		}
+
+		box->hit(rect);
+	}
+
+	void draw(const Point& pos)const override{
+		RectF{ pos * rect_size ,rect_size }.draw(Palette::Darkgray);
+	};
+
+};
+
+

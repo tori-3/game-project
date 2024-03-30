@@ -39,7 +39,9 @@ public:
 		{U"SnowKnight",[]() {return new SnowKnightBlock(); }},
 		{U"Zerosen",[]() {return new ZerosenBlock(); }},
 		{U"ThroughBlock",[]() {return new ThroughBlock(); }},
-		{U"SlaversCookie",[]() {return new SlaversCookieBlock(); }}
+		{U"SlaversCookie",[]() {return new SlaversCookieBlock(); }},
+		{U"PoleBlock",[]() {return new  PoleBlock(); }}
+
 	};
 
 	~Stage() {
