@@ -56,6 +56,8 @@ public:
 
 		character.pos += pos - tmpPos;
 
+		loader.param.update();
+
 		character.update();
 		drawManager.update();
 

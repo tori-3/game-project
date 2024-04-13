@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+#include"Common.h"
 #include"Entity.h"
 #include"Player.h"
 #include"MotionLoader.h"
@@ -416,9 +416,9 @@ public:
 
 	size_t type=Random(2);
 
-	Kompeito(const Vec2& cpos,double velX) :Entity{ U"Enemy", Circle{25},cpos,{0,0},1}, velX{velX}
+	Kompeito(const Vec2& cpos,double velX,double velY=-300) :Entity{ U"Enemy", Circle{25},cpos,{0,0},1}, velX{velX}
 	{
-		vel.y = -300;
+		vel.y = velY;
 		TextureAsset::Register(U"金平糖0",U"Characters/cloud/金平糖/konpeitou.png");
 		TextureAsset::Register(U"金平糖1", U"Characters/cloud/金平糖/konpeitouB.png");
 		TextureAsset::Register(U"金平糖2", U"Characters/cloud/金平糖/konpeitouR.png");
@@ -1607,9 +1607,15 @@ public:
 class Captain :public Entity {
 public:
 
-	Array<Entity*>summonListItigo;//召喚したリスト
+	double accumulatedTime = 0;
+
+	Array<Entity*>summonList;//召喚したリスト
 
 	bool left = true;
+
+	double center;
+
+	Vec2 r, l;
 
 	std::function<void()> f;
 	std::function<void()>f2;
@@ -1620,65 +1626,25 @@ public:
 
 	size_t type = 1;
 
-	Captain(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,-30),230,100},cpos,{0,0},3 }
+	Captain(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,-30),230,100},cpos,{0,0},30 }
 		, character{ U"Characters/sentyo/model.json" ,U"Characters/sentyo/motion.txt" ,1,cpos,true,false }
 	{
+		r = { pos.x + 400,pos.y};
+		l = { pos.x - 400,pos.y };
+		center = pos.x;
+
 		f = []() {};
 		f2 = []() {};
 		timer = 3;
 		character.addMotion(U"Mokumoku",true);
+
+		//pos.y = 500;
 	}
 
-	void update()override {
-
-		manager->stage->hit(&hitBox);
-
-		//目をプレイヤーに向ける
-		character.character.table[U"me"].joint.pos=(manager->get(U"Player")->pos-pos).setLength(15);
-
-
-
-
-		if (hitBox.touch(Direction::right))
-		{
-			left = true;
-		}
-		else if (hitBox.touch(Direction::left)) {
-			left = false;
-		}
-
-		if (timer <= 0) {
-
-			type = Random(0,0);
-
-			switch (type)
-			{
-			case 0: {
-
-			}break;
-			default:
-				break;
-			}
-		}
-
-		//hitBox.physicsUpdate();
-		hitBox.update();
-
-		if (timer > 0)
-		{
-			timer -= Scene::DeltaTime();
-			f();
-			if (timer <= 0)
-			{
-				f2();
-			}
-		}
-
-		character.update(pos, left);
-	}
+	void update()override;
 
 	void lateUpdate() {
-		summonListItigo.remove_if([](Entity* entity) {return not entity->isActive(); });
+		summonList.remove_if([](Entity* entity) {return not entity->isActive(); });
 
 		if (not isActive()) {
 			DataManager::get().table.emplace(U"Clear");
@@ -1692,6 +1658,15 @@ public:
 		character.draw();
 		hitBox.Get_Box().drawFrame(5.0,Palette::Orange);
 	}
+
+	void damage(int32 n, const Vec2& force = {})override {
+		if (not character.hasMotion(U"Muteki")) {
+			hp -= n;
+			character.addMotion(U"Muteki");
+			//vel.y = force.y;
+			//vel.x = force.x * 1.5;
+		}
+	}
 };
 
 class GoalDoor:public Entity{
@@ -1704,7 +1679,6 @@ public:
 	}
 
 	void update()override {
-		Print << pos;
 		if (RectF{ pos,rect_size * 2 }.intersects(DataManager::get().playerPos)) {
 			timer.start();
 			DataManager::get().table.emplace(U"Clear");

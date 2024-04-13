@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include<Siv3D.hpp>
 
 enum mode { Stage_Mode, Easy_Mode, Normal_Mode, Hard_Mode };
 

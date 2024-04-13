@@ -168,13 +168,7 @@
     <ClCompile Include="IMotionField.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Prg\Action.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Prg\Actions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Prg\Condition.cpp">
+    <ClCompile Include="Enemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -883,18 +877,6 @@
     </ClInclude>
     <ClInclude Include="IMotionField.h">
       <Filter>Header Files\MainGameScene\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Prg\Action.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Prg\Actions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Prg\Condition.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Prg\Init.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SimpleAction.h">
       <Filter>Header Files\MainGameScene</Filter>

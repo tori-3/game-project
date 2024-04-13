@@ -122,7 +122,7 @@ public:
 
 };
 
-Array<Entity*> Entity::attack(StringView target, const Figure& figure, double damage, double power, int32 kaisuu) {
+inline Array<Entity*> Entity::attack(StringView target, const Figure& figure, double damage, double power, int32 kaisuu) {
 
 	Array<Entity*>list;
 	for (auto& entity : manager->getArray(target)) {
@@ -147,7 +147,7 @@ Array<Entity*> Entity::attack(StringView target, const Figure& figure, double da
 	return list;
 }
 
-Array<Entity*> Entity::attackDamaged(StringView target, const Figure& figure, double damage, double power, int32 kaisuu) {
+inline Array<Entity*> Entity::attackDamaged(StringView target, const Figure& figure, double damage, double power, int32 kaisuu) {
 
 	Array<Entity*>list;
 	for (auto& entity : manager->getArray(target)) {

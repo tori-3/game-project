@@ -312,7 +312,7 @@ public:
 		Rect{ Scene::Size() }.draw(ColorF{ 0,0.7 });
 		RoundRect{ Arg::center = Scene::Center(),1150,750,10 }.draw(ColorF{ Palette::Skyblue,0.7});
 		FontAsset(U"TitleFont")(U"ポーズ").drawAt(Scene::Center().x, 100);
-		FontAsset(U"TitleFont")(U"Wキー：ジャンプ\nAキー：左\nDキー：右\nカーソル：標準を合わせる\n左クリック：波動拳\n右クリック：突進(クッキーが10個貯まったら)").drawAt(50,Scene::Center());
+		FontAsset(U"TitleFont")(U"Space or W：ジャンプ\nA：左\nD：右\S：しゃがむ\nEnter：技を発動\nEnter長押し：突進(クッキーが10個貯まったら)\n").drawAt(50,Scene::Center());
 		auto _=SimpleGUI::ButtonAt(U"ゲームに戻る", { Scene::Center().x,700 });
 	}
 

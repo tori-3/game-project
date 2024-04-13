@@ -59,6 +59,6 @@ public:
 	template<class T>
 	MotionField<T>& get(const String& name)
 	{
-		return *dynamic_cast<MotionField<T>*>(table[name]);
+		return *dynamic_cast<MotionField<T>*>(table[name].get());
 	}
 };
