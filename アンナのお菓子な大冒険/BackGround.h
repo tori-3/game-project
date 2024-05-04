@@ -21,6 +21,11 @@ public:
 
 };
 
+
+//追従の割合を指定(xとy)
+
+
+
 class Cloud {
 public:
 

@@ -164,6 +164,16 @@ public:
 
 	double startY = 0;
 
+
+
+	//テスト
+	StageBackGround stageBackGround{U"backGround.json"};
+
+
+	const RenderTexture backGroundTexture{ Scene::Size()};
+	const RenderTexture internalTexture{ backGroundTexture.size() };
+	const RenderTexture renderTexture{ backGroundTexture.size() };
+
 	void loadAudio() {
 
 		for (auto& path : FileSystem::DirectoryContents(U"Audio"))
@@ -174,6 +184,7 @@ public:
 		}
 
 		AudioAsset{ U"足音" }.setVolume(3);
+
 	}
 
 
@@ -199,11 +210,16 @@ public:
 		camera.update({ player->pos.x - draw_x,player->pos.y - draw_y });
 	}
 
+	bool bgmStart = false;
+
 	// 更新関数（オプション）
 	void gameUpdate() override
 	{
-		BGMManager::get().play(U"Stage{}"_fmt(getData().stage));
 
+		if (not bgmStart) {
+			BGMManager::get().play(U"Stage{}"_fmt(getData().stage));
+			bgmStart = true;
+		}
 		ClearPrint();
 		DataManager::get().playerPos = player->pos;
 
@@ -248,6 +264,9 @@ public:
 		else {
 			camera.update({ player->pos.x - draw_x,player->pos.y - draw_y });
 		}
+
+
+		stageBackGround.update(camera.pos);
 	}
 
 	// 描画関数（オプション）
@@ -259,7 +278,18 @@ public:
 		background.draw(camera.pos+Scene::Size()/2);
 		cloud.draw2();
 		Rect{ Scene::Size() }.draw(ColorF{ skyColor,0.4 });
-		background2.draw(camera.pos + Scene::Size() / 2);
+		//background2.draw(camera.pos + Scene::Size() / 2);
+
+		//{
+		//	ScopedRenderTarget2D target{ backGroundTexture.clear(skyColor) };
+
+		//	stageBackGround.draw(camera.pos);
+		//}
+		//Shader::GaussianBlur(backGroundTexture, internalTexture, renderTexture);
+		//renderTexture.draw();
+
+		stageBackGround.draw(camera.pos);
+
 		Rect{ Scene::Size() }.draw(ColorF{ skyColor,0.2 });
 
 		{

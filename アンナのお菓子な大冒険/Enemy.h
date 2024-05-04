@@ -96,6 +96,8 @@ public:
 		character.addMotion(U"",true);
 	}
 
+	double speed = 0;
+
 	void update()override {
 
 		manager->stage->hit(&hitBox);
@@ -104,13 +106,21 @@ public:
 
 			if (manager->get(U"Player")->pos.x < pos.x) {
 				left = true;
-				vel.x = -200;
+
+				speed -= 600 * Scene::DeltaTime();
 			}
 			else if (manager->get(U"Player")->pos.x >= pos.x) {
 				left = false;
-				vel.x = 200;
+				speed += 600 * Scene::DeltaTime();
 			}
 		}
+		else {
+			speed = 0;
+		}
+
+		speed = Clamp(speed, -200.0, 200.0);
+
+		vel.x = speed;
 
 		//プレイヤーに近すぎる場合
 		if (Abs(manager->get(U"Player")->pos.x - pos.x) < rect_size * 0.2) {
@@ -465,17 +475,24 @@ public:
 		, character{ U"Characters/cloud/cloud.json" ,U"Characters/cloud/motion.txt" ,0.5,cpos,true,false }
 	{
 		character.addMotion(U"walk", true);
+		startY = cpos.y;
+
+		time = Random(1.5, 2.5);
 	}
 
 	Timer attackTimer{ 0.5s };
 
 	double accumulatedTime = 0;
 
+	//double speed;
+
+	double startY = 0;
+
+	double time = 0;
+
 	void update()override {
 
 		//manager->stage->hit(&hitBox);
-
-		pos.x= Math::SmoothDamp(pos.x, manager->get(U"Player")->pos.x, vel.x, 1, 600);
 
 		hitBox.update();
 
@@ -487,6 +504,19 @@ public:
 		//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
 		//	}
 		//}
+
+		if (manager->get(U"Player")->pos.x < pos.x) {
+			vel.x -= 500 * Scene::DeltaTime();
+		}
+		else if (manager->get(U"Player")->pos.x >= pos.x) {
+			vel.x += 500 * Scene::DeltaTime();
+		}
+
+		vel.x = Clamp(vel.x, -200.0, 200.0);
+
+		pos.x += (vel.x + Periodic::Sine1_1(time, DataManager::get().time) * 100) * Scene::DeltaTime();
+
+		pos.y = startY+ Periodic::Sine1_1(time,DataManager::get().time)*30;
 
 		attack(U"Player", hitBox.getFigure(), 1);
 
@@ -975,20 +1005,20 @@ public:
 
 	void update()override {
 
-		//manager->stage->hit(&hitBox);
+		if (manager->get(U"Player")->pos.x < pos.x) {
+			vel.x -= 500 * Scene::DeltaTime();
+		}
+		else if (manager->get(U"Player")->pos.x >= pos.x) {
+			vel.x += 500 * Scene::DeltaTime();
+		}
 
-		pos.x = Math::SmoothDamp(pos.x, manager->get(U"Player")->pos.x, vel.x, 1, 600);
+		vel.x = Clamp(vel.x, -400.0, 400.0);
+
+		pos.x += vel.x*Scene::DeltaTime();
+
+
 
 		hitBox.update();
-
-		//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-		//	if (pos.x < manager->get(U"Player")->pos.x) {
-		//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-		//	}
-		//	else {
-		//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-		//	}
-		//}
 
 		attack(U"Player", hitBox.getFigure(), 1);
 
@@ -1378,38 +1408,44 @@ public:
 
 	size_t type=1;
 
+	double rx, lx;
+
 	SlaversCookie(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,0),50,100},cpos,{0,0},3 }
 		, character{ U"Characters/cookieDoreisho/model.json" ,U"Characters/cookieDoreisho/motion.txt" ,0.4,cpos,true,false }
 	{
 		f = []() {};
 		f2 = []() {};
 		timer = 3;
+
+		rx = pos.x + rect_size * 6.5;
+		lx = pos.x - rect_size * 6.5;
+
 	}
 
 	void update()override {
 
 		manager->stage->hit(&hitBox);
 
-		if (hitBox.touch(Direction::right))
+		if (rx<=pos.x)
 		{
 			left = true;
 		}
-		else if (hitBox.touch(Direction::left)) {
+		else if (pos.x<=lx) {
 			left = false;
 		}
 
-		if (hitBox.touch(Direction::down)) {
-			if (left) {
-				if (not hitBox.leftFloor()) {
-					left = false;
-				}
-			}
-			else {
-				if (not hitBox.rightFloor()) {
-					left = true;
-				}
-			}
-		}
+		//if (hitBox.touch(Direction::down)) {
+		//	if (left) {
+		//		if (not hitBox.leftFloor()) {
+		//			left = false;
+		//		}
+		//	}
+		//	else {
+		//		if (not hitBox.rightFloor()) {
+		//			left = true;
+		//		}
+		//	}
+		//}
 
 		bool poleHit = false;
 		if (DataManager::get().table.contains(U"PoleHit")) {

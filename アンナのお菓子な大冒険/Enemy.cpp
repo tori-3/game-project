@@ -51,7 +51,7 @@ void Captain::update() {
 		type = Random(0, 3);
 
 		if (type == 3) {
-			if (20<summonList.size()) {
+			if (5<summonList.size()) {
 				type = Random(0, 2);
 			}
 		}

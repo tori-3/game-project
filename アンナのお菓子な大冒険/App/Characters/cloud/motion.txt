@@ -2,7 +2,7 @@
 ChangeScale,body, 1.08, 1.08, 1
 MoveTo,stick,-2,-2,1
 
-ChangeScale,body, 0.95238095, 0.95238095, 1
+SetScale,body, 1, 1, 1
 MoveTo,stick,0,0,1
 
 #attack

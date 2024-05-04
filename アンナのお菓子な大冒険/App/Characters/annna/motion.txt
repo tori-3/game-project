@@ -542,6 +542,8 @@ ChangeColor,body,1,1,1,1,0.25
 #Yorokobu
 @time,0.12
 @time2,0.24
+Base,body
+
 ChangeTexture,normal,Characters/annna/hyoujou/smile!!.png
 
 RotateTo,head,-15,@time

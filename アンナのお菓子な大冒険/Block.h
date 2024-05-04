@@ -560,3 +560,48 @@ public:
 	}
 };
 
+
+//背景専門
+
+class IceCream :public Untouchable {
+public:
+	void draw(const Point& pos)const override {
+		TextureAsset(U"IceCream").resized(rect_size * 2).draw(pos * rect_size);
+	};
+};
+
+class Candle :public Untouchable {
+public:
+	void draw(const Point& pos)const override {
+		TextureAsset(U"Candle").resized(rect_size * 2).draw(pos * rect_size - Vec2::UnitX() * rect_size / 2);
+		TextureAsset(U"fire").resized(rect_size).draw(pos * rect_size - Vec2::UnitY() * rect_size / 2);
+	};
+};
+
+class Candy :public Untouchable {
+public:
+	void draw(const Point& pos)const override {
+		TextureAsset(U"Candy").resized(rect_size * 2.5).rotated(15_deg).draw(pos * rect_size);
+	};
+};
+
+class CandyStick :public Untouchable {
+public:
+	void draw(const Point& pos)const override {
+		TextureAsset(U"CandyStick").resized(rect_size * 2.2).draw(pos * rect_size);
+	};
+};
+
+class Cherries :public Untouchable {
+public:
+	void draw(const Point& pos)const override {
+		TextureAsset(U"Cherries").resized(rect_size * 1.3).draw(pos * rect_size);
+	};
+};
+
+class Blueberry :public Untouchable {
+public:
+	void draw(const Point& pos)const override {
+		TextureAsset(U"Blueberry").resized(rect_size * 1.3).draw(pos * rect_size);
+	};
+};

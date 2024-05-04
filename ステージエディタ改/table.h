@@ -83,9 +83,9 @@ void IceCream(Point pos) {
 	TextureAsset(U"IceCream").resized(rect_size * 2).draw(pos * rect_size);
 }
 
-void LightPinkBlock(Point pos) {
-	Rect{ pos * rect_size,rect_size }.draw(ColorF{ Palette::Lightpink }*1.2);
-}
+//void LightPinkBlock(Point pos) {
+//	Rect{ pos * rect_size,rect_size }.draw(ColorF{ Palette::Lightpink }*1.2);
+//}
 
 void Candle(Point pos) {
 	TextureAsset(U"Candle").resized(rect_size * 2).draw(pos * rect_size- Vec2::UnitX()*rect_size/2);
@@ -230,7 +230,7 @@ Array<Info>list{
 	{U"StrawberrySoldier",StrawberrySoldierBlock,U"イチゴの兵士"},
 	{U"CookieSoldier",CookieSoldierBlock,U"クッキーの兵士"},
 	{U"IceCream",IceCream,U"アイスクリーム"},
-	{U"LightPinkBlock",LightPinkBlock,U"薄ピンク"},
+	//{U"LightPinkBlock",LightPinkBlock,U"薄ピンク"},
 	{U"Candle",Candle,U"キャンドル"},
 	{U"Candy",Candy,U"キャンディー"},
 	{U"CandyStick",CandyStick,U"ステック"},

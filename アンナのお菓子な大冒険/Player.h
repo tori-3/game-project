@@ -3,6 +3,7 @@
 #include"Effect.h"
 #include"CharacterSystem.h"
 #include"SimpleAction.h"
+#include"BGMManager.hpp"
 
 class Hadouken:public Entity {
 public:
@@ -102,7 +103,10 @@ public:
 		character{ U"Characters/annna/annna.json",U"Characters/annna/motion.txt",0.25,cpos,false },
 		Entity{ U"Player",defaultBody ,cpos,{0,0},5}
 	{
-		
+
+		z = 100;
+
+
 		actMan.add(U"Walk", {
 			.startCondition = [&]() {
 				return hitBox.touch(Direction::down) and (not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer",U"HeadDropLanding",U"HeadDrop",U"Damage",U"Dead",U"Clear")) and (data->leftKey.pressed() or data->rightKey.pressed());
@@ -524,6 +528,9 @@ public:
 				character.clearMotion();
 
 				character.addMotion(U"Yorokobu");
+
+				BGMManager::get().play(U"ステージクリア");
+
 			},
 			.update = [&](double t) {
 				return t < 4.0;
@@ -556,10 +563,10 @@ public:
 				if (not hitBox.touch(Direction::right))vel.x = speed;
 			}
 		}
-		else if (actMan.hasActive(U"Damage",U"Dead",U"Clear")) {
+		else if (actMan.hasActive(U"Damage",U"Dead",U"Clear", U"HeadDrop")) {
 			//何もできない
 		}
-		else if (actMan.hasActive(U"Summer",U"HeadDrop",U"HeadDropLanding", U"Mirror{}"_fmt(character.mirrorCount - 1))) {
+		else if (actMan.hasActive(U"Summer",U"HeadDropLanding", U"Mirror{}"_fmt(character.mirrorCount - 1))) {
 			if (data->leftKey.pressed()) {
 				if (not hitBox.touch(Direction::left))vel.x = -speed;
 			}//左
@@ -645,6 +652,10 @@ public:
 
 		//tmp.draw(Palette::Red);
 		//hitBox.draw(ColorF{Palette::Blue,0.5});
+
+		
+
+
 		character.draw();
 
 

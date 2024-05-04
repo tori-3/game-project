@@ -41,7 +41,14 @@ public:
 		{U"ThroughBlock",[]() {return new ThroughBlock(); }},
 		{U"SlaversCookie",[]() {return new SlaversCookieBlock(); }},
 		{U"PoleBlock",[]() {return new  PoleBlock(); }},
-		{U"CaptainBlock",[]() {return new CaptainBlock(); }}
+		{U"CaptainBlock",[]() {return new CaptainBlock(); }},
+		{U"IceCream",[]() {return new IceCream(); }},
+		{U"Candle",[]() {return new Candle(); }},
+		{U"Candy",[]() {return new Candy(); }},
+		{U"CandyStick",[]() {return new CandyStick(); }},
+		{U"Cherries",[]() {return new Cherries(); }},
+		{U"Blueberry",[]() {return new Blueberry(); }},
+
 	};
 
 	~Stage() {
@@ -50,7 +57,7 @@ public:
 		}
 	}
 
-	Stage(String path) {
+	Stage(FilePathView path,bool backGround=false) {
 
 		//ステージの画像ファイルをTextureAssetに登録
 		for (const auto& path : FileSystem::DirectoryContents(U"StageTexture"))
@@ -81,9 +88,12 @@ public:
 				}
 			}
 
-			//もしプレイヤーの位置が設定されていなかったら
-			if (not hasPlayer) {
-				DataManager::get().addEntity(U"Player", (Vec2{3,5} + Vec2{0.5,1}) * rect_size);
+			if (not backGround) {
+
+				//もしプレイヤーの位置が設定されていなかったら
+				if (not hasPlayer) {
+					DataManager::get().addEntity(U"Player", (Vec2{ 3,5 } + Vec2{ 0.5,1 }) * rect_size);
+				}
 			}
 
 			//ステージサイズのmapを用意
@@ -120,29 +130,57 @@ public:
 		}
 	}
 
-	void update(const Vec2& vec) {
+	void update(const Vec2& vec,int32 left= range_left,int32 right= range_right) {
 
 		Point pos = vec.asPoint() / Point(rect_size, rect_size);//プレイヤーの座標をマップ番号に変換
 		for (int y = 0; y < map.height(); y++)
 		{
-			for (int x = Max(0, pos.x - range_left); x < Min((int)map.width(), pos.x + range_right); x++) {
+			for (int x = Max(0, pos.x - left); x < Min((int)map.width(), pos.x + right); x++) {
 				Point p(x, y);
 				if (map[p] != NULL)map[p]->update(p);
 			}
 		}
 	}
 
-	void draw(const Vec2& vec)const {
+	void draw(const Vec2& vec, int32 left = range_left, int32 right = range_right)const {
 		//ブロックの描写
 		Point pos = vec.asPoint() / Point(rect_size, rect_size);//プレイヤーの座標をマップ番号に変換
 		for (int y = 0; y < map.height(); y++)
 		{
-			for (int x = Max(0, pos.x - range_left); x < Min((int)map.width(), pos.x + range_right); x++) {
+			for (int x = Max(0, pos.x - left); x < Min((int)map.width(), pos.x + right); x++) {
 				Point p(x, y);
 				if (map[p] != NULL)map[p]->draw(p);
 			}
 		}
 	}
+
+	void updateAsBackGround(const Vec2& vec, int32 left = range_left, int32 right = range_right) {
+
+		Point pos = vec.asPoint() / Point(rect_size, rect_size);//プレイヤーの座標をマップ番号に変換
+		for (int y = 0; y < map.height(); y++)
+		{
+			for (int x = Max(0, pos.x - left); x < pos.x + right; x++) {
+				Point p(x % map.width(), y);
+				if (map[p] != NULL)map[p]->update(Point{ x,y });
+			}
+		}
+	}
+
+	void drawAsBackGround(const Vec2& vec, int32 left = range_left, int32 right = range_right)const {
+		//ブロックの描写
+		Point pos = vec.asPoint() / Point(rect_size, rect_size);//プレイヤーの座標をマップ番号に変換
+		for (int y = 0; y < map.height(); y++)
+		{
+			for (int x = Max(0, pos.x - left); x < pos.x + right; x++) {
+				Point p(x % map.width(), y);
+				if (map[p] != NULL)map[p]->draw(Point{x,y});
+			}
+		}
+	}
+
+
+
+
 
 	//消すかも
 	//Grid <Block*>* getMapP() { return &map; }
@@ -151,4 +189,37 @@ public:
 	size_t height() {
 		return map.height();
 	}
+};
+
+class StageBackGround {
+public:
+
+	Stage stage;
+
+	double rate = 0.7;
+
+
+	StageBackGround(FilePathView path) :stage{path,true} {
+
+	}
+
+	void update(const Vec2& pos) {
+		stage.updateAsBackGround(pos * rate,4, brockNum());
+	}
+
+	void draw(const Vec2& pos)const {
+		{
+			const Transformer2D transformer1{ Mat3x2::Scale(rate, Vec2{0,0}) };
+			const Transformer2D transformer2{ Mat3x2::Translate(Vec2{-pos * rate}) };
+			stage.drawAsBackGround(pos * rate, 4, brockNum());
+		}
+
+	}
+
+	int32 brockNum()const{
+		return int32(Scene::Width()/ (rect_size*0.7)+4.0);
+	}
+
+
+
 };

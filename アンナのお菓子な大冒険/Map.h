@@ -77,7 +77,7 @@ public:
 		//character.update({ rect_x(0) ,640 }, false);
 
 
-		AudioAsset::Register(U"WorldBGM",U"BGM/WorldMap2.mp3");
+		AudioAsset::Register(U"WorldBGM",U"BGM/WorldMap2.mp3",Loop::Yes);
 		BGMManager::get().play(U"WorldBGM");
 	}
 
