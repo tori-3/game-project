@@ -97,7 +97,7 @@ public:
 				getData().mini_mode = Stage_Mode;
 				getData().stage = index + 1;
 				getData().mini_clear = false;
-
+				getData().stageFile = json[U"StageData"][U"Stage{}"_fmt(index + 1)][U"MapFile"].getString();
 				String path = json[U"StageData"][U"Stage{}"_fmt(index + 1)][U"BGM"].getString();
 
 				//BGMの読み込み

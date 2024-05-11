@@ -23,7 +23,7 @@ struct GameData
 
 
 
-	String stageFile;
+	FilePath stageFile;
 };
 
 using App = SceneManager<String, GameData>;

@@ -139,13 +139,15 @@ public:
 
 	DataManagerStart start;
 
-	Stage stage{ U"s{}.json"_fmt(getData().stage)};
+	JSON json = JSON::Load(getData().stageFile);
+	Stage stage{ json };
+	StageBackGroundManager backgroundManager{ json };
 
 	MSRenderTexture rTexture{ Scene::Size(),ColorF{0,0} };
 
 	//Player player{ Point(500, 350 + 70) };
 	Background background{ U"背景.png" ,stage.width() };
-	Background background2{ U"お菓子の背景.png" ,stage.width(),2 };
+	//Background background2{ U"お菓子の背景.png" ,stage.width(),2 };
 
 	EntityManager manager;
 
@@ -166,8 +168,9 @@ public:
 
 
 
+
 	//テスト
-	StageBackGround stageBackGround{U"backGround.json"};
+	//StageBackGround stageBackGround{U"backGround.json"};
 
 
 	const RenderTexture backGroundTexture{ Scene::Size()};
@@ -266,7 +269,7 @@ public:
 		}
 
 
-		stageBackGround.update(camera.pos);
+		backgroundManager.update(camera.pos);
 	}
 
 	// 描画関数（オプション）
@@ -288,7 +291,7 @@ public:
 		//Shader::GaussianBlur(backGroundTexture, internalTexture, renderTexture);
 		//renderTexture.draw();
 
-		stageBackGround.draw(camera.pos);
+		backgroundManager.draw(camera.pos);
 
 		Rect{ Scene::Size() }.draw(ColorF{ skyColor,0.2 });
 

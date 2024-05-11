@@ -17,10 +17,8 @@ BlendState MakeBlendState()
 	return blendState;
 }
 
-Grid<String>Load(String path) {
+Grid<String>Load(const JSON& json) {
 
-
-	JSON json = JSON::Load(path);
 	if (not json)throw Error{ U"Failed to load `config.json`" };
 
 	Point stage_size = json[U"stage_size"].get<Point>();
@@ -46,6 +44,46 @@ Grid<String>Load(String path) {
 	return map;
 }
 
+class BackGround {
+public:
+
+	Grid<String>map;
+
+	FilePath path;
+
+	double rate=1.0;
+
+	BackGround(FilePath path) :path{path} {
+
+		JSON json=JSON::Load(path);
+		map = Load(json);
+		if (json.contains(U"Rate")) {
+			rate = json[U"Rate"].get<double>();
+		}
+	}
+
+	void update(const Mat3x2&mat) {
+
+		{
+			const Transformer2D transformer1{ mat };
+			const Transformer2D transformer2{ Mat3x2::Scale(rate, Vec2{0,0}) };
+
+			//draw
+			for (auto y : step(map.height()))
+			{
+				for (auto x : step(map.width())) {
+					Point pos(x, y);
+					if (map[pos] != U"")table[map[pos]](pos);
+				}
+			}
+
+		}
+		Scene::Rect().draw(ColorF{ Palette::Skyblue,0.2 });
+
+	}
+
+};
+
 
 void Main()
 {
@@ -61,7 +99,9 @@ void Main()
 
 	Window::Resize(1200, 800);
 
-	Grid<String>map = Load(path.value());
+	JSON json = JSON::Load(path.value());
+
+	Grid<String>map = Load(json);
 
 	Camera2D camera{ Vec2{ 400, 300 }, 1.0 ,CameraControl::Keyboard };
 
@@ -69,20 +109,41 @@ void Main()
 
 	String setting;
 
+	//背景の拡大率
+	TextEditState rateText;
+
+	if (json.contains(U"Rate")) {
+		rateText.text = U"{}"_fmt(json[U"Rate"].get<double>());
+	}
+	else {
+		rateText.text = U"1.0";
+	}
+
 	const Array<std::pair<String, Array<String>>> menus
 	{
 		{ U"ファイル", { U"保存",U"画像を出力"}},
+		{U"背景設定",{U"背景を追加",U"背景を全て削除",U"背景を更新"}},
 		{ U"ブロック", { U"ケーキの地表",U"ケーキのスポンジ",U"ケーキの右壁",U"ケーキの左壁",U"ケーキの右端",U"ケーキの左端",U"チョコレートの壁"}},
 		{U"特殊ブロック",{U"スライダー",U"横に動くチョコレート",U"縦に動くチョコレート",U"ばね",U"もろい壁",U"ベルトコンベア(→)",U"ベルトコンベア(←)",U"すり抜ける床",U"柱ブロック"}},
 		{U"敵",{U"イチゴの兵士",U"クッキーの兵士",U"雪だるま",U"イチゴスポナー",U"奴隷イチゴ",U"わたあめ",U"コーン",U"鞭クッキー",U"鞄クッキー",U"零戦クッキー",U"雪だるナイト",U"奴隷商クッキー",U"船長"}},
 		{U"設定ブロック",{U"プレイヤー"}},
 		{U"背景",{U"アイスクリーム",U"キャンドル",U"キャンディー",U"ステック",U"さくらんぼ",U"ブルーベリー"}},
-		{U"ギミック",{U"ドア",U"鷹"}}
+		{U"ギミック",{U"ドア",U"鷹"}},
 	};
+
+	Array<BackGround>backGrounds;
 
 	SimpleMenuBar menuBar{ menus };
 
 	bool UI_flag = false;
+
+	if (json.contains(U"BackGround")) {
+
+		for (const auto& elem : json[U"BackGround"].arrayView())
+		{
+			backGrounds << BackGround{ elem.getString() };
+		}
+	}
 
 	while (System::Update())
 	{
@@ -110,6 +171,17 @@ void Main()
 						}
 					}
 				}
+
+				Array<String>pathList;
+
+				for (auto& backGround : backGrounds) {
+					pathList << FileSystem::RelativePath(backGround.path);
+				}
+
+				json2[U"BackGround"]= pathList;
+
+				json2[U"Rate"] = Parse<double>(rateText.text);//拡大率
+
 				json2.save(path.value());
 			}
 			//背景画像として出力
@@ -158,7 +230,36 @@ void Main()
 				texture.readAsImage(image);
 				image.save(U"背景.png");
 			}		
-			else {
+			else if (item == MenuBarItemIndex{ 1, 0 })//背景を追加
+			{
+				Optional<FilePath> path = Dialog::OpenFile({ FileFilter::JSON() });
+
+				if (path) {
+					backGrounds << BackGround{ path.value()};
+				}
+
+
+			}
+			else if (item == MenuBarItemIndex{ 1, 1 })//背景を全て削除
+			{
+
+				backGrounds.clear();
+
+			}
+			else if (item == MenuBarItemIndex{ 1, 2 })//背景を更新
+			{
+
+				backGrounds.clear();
+				if (json.contains(U"BackGround")) {
+
+					for (const auto& elem : json[U"BackGround"].arrayView())
+					{
+						backGrounds << BackGround{ elem.getString() };
+					}
+				}
+
+			}
+			else{
 				setting = menus[item->menuIndex].second[item->itemIndex];
 			}
 		}
@@ -169,6 +270,12 @@ void Main()
 
 		//カメラの座標
 		{
+
+			//背景の描画
+			for (auto& backGround : backGrounds) {
+				backGround.update(camera.getMat3x2());
+			}
+
 			const auto t = camera.createTransformer();
 
 			Rect{ rect_size * map.size() }.drawFrame(0, 5, Palette::Red);
@@ -273,6 +380,12 @@ void Main()
 				}
 				map = tmp;
 			}
+
+			//Rate操作
+			SimpleGUI::Headline(U"背景時の倍率", Vec2{ Scene::Width() - 200, 40 });
+			SimpleGUI::TextBox(rateText, { Scene::Width() - 200+150, 40},50);
+
+
 
 			SimpleGUI::GetFont()(setting).drawAt(UI_rect.centerX(), 550);
 

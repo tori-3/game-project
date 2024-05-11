@@ -8,7 +8,7 @@ constexpr int range_left = 10;
 class Stage
 {
 public:
-	Grid<Block*>map;
+	Grid<std::unique_ptr<Block>>map;
 
 	HashTable<String, std::function<Block* (void)>> maker{
 		{U"CakeSurface",[]() {return new CakeSurface(); }},
@@ -24,7 +24,6 @@ public:
 		{U"Spring",[]() {return new Spring(); }},
 		{U"StrawberrySoldier",[]() {return new StrawberrySoldierBlock(); }},
 		{U"CookieSoldier",[]() {return new CookieSoldierBlock(); }},
-		{U"Hawk",[]() {return new Hawk(); }},
 		{U"Door",[]() {return new Door(); }},
 		{U"WeakWall",[]() {return new WeakWall(); }},
 		{U"BeltConveyorRight",[]() {return new BeltConveyorRight(); }},
@@ -51,13 +50,13 @@ public:
 
 	};
 
-	~Stage() {
-		for (auto& block : map) {
-			delete block;
-		}
-	}
+	//~Stage() {
+	//	for (auto& block : map) {
+	//		delete block;
+	//	}
+	//}
 
-	Stage(FilePathView path,bool backGround=false) {
+	Stage(const JSON& json,bool backGround=false) {
 
 		//ステージの画像ファイルをTextureAssetに登録
 		for (const auto& path : FileSystem::DirectoryContents(U"StageTexture"))
@@ -72,7 +71,7 @@ public:
 		//for (const auto& object : blocks)table.emplace(object->name, object);
 
 		//ファイルをロード
-		JSON json = JSON::Load(path);
+		//JSON json = JSON::Load(path);
 		if (not json)throw Error{ U"ファイルを読み込めませんでした。" };
 
 		{
@@ -96,25 +95,26 @@ public:
 				}
 			}
 
-			//ステージサイズのmapを用意
-			Grid<Block*>_map(json[U"stage_size"].get<Point>(),nullptr);
+			////ステージサイズのmapを用意
+			Grid<std::unique_ptr<Block>>_map(json[U"stage_size"].get<Point>());
 
 			//mapにファイルのデータを読み込む。
 			for (int i = 0; i < block_name.size(); i++) {
 
 				if (block_name[i] != U"Player") {
 					for (const auto& elem : json[U"Block"][block_name[i]].arrayView()) {
-						//_map[elem.get<Point>()] = table[block_name[i]];
-						_map[elem.get<Point>()] = maker[block_name[i]]();
+						_map[elem.get<Point>()] = std::unique_ptr<Block>(maker[block_name[i]]());
 					}
 				}
 			}
 
 			this->map = std::move(_map);
+
 		}
 
-
-		DataManager::get().stageSize = map.size() * rect_size;
+		if (not backGround) {
+			DataManager::get().stageSize = map.size() * rect_size;
+		}
 	}
 
 	void hit(HitBox* hitbox) {
@@ -178,12 +178,6 @@ public:
 		}
 	}
 
-
-
-
-
-	//消すかも
-	//Grid <Block*>* getMapP() { return &map; }
 	size_t width() { return map.width(); }
 
 	size_t height() {
@@ -191,20 +185,25 @@ public:
 	}
 };
 
+
 class StageBackGround {
 public:
 
 	Stage stage;
 
-	double rate = 0.7;
+	double rate;
 
 
-	StageBackGround(FilePathView path) :stage{path,true} {
+	StageBackGround(const JSON& json) :stage{ json,true }, rate{ json[U"Rate"].get<double>() } {
+
+		Print << json[U"Rate"].get<double>();
 
 	}
 
 	void update(const Vec2& pos) {
-		stage.updateAsBackGround(pos * rate,4, brockNum());
+		//stage.updateAsBackGround(pos * rate,4, brockNum());
+
+		Print << stage.width() << U"," << stage.height();
 	}
 
 	void draw(const Vec2& pos)const {
@@ -217,9 +216,36 @@ public:
 	}
 
 	int32 brockNum()const{
-		return int32(Scene::Width()/ (rect_size*0.7)+4.0);
+		return int32(Scene::Width()/ (rect_size*rate)+4.0);
+	}
+};
+
+class StageBackGroundManager {
+public:
+
+	Array<StageBackGround>backGrounds;
+
+	StageBackGroundManager(const JSON& json) {
+
+		for (const auto& elem : json[U"BackGround"].arrayView())
+		{
+			Print << elem.getString();
+			backGrounds << StageBackGround{ JSON::Load(elem.getString()) };
+		}
 	}
 
+	void update(const Vec2& pos) {
 
+		for (auto& backGround : backGrounds) {
+			backGround.update(pos);
+		}
+	}
 
+	void draw(const Vec2& pos)const {
+
+		for (auto& backGround : backGrounds) {
+			backGround.draw(pos);
+			Rect{ Scene::Size() }.draw(ColorF{ Palette::Skyblue,0.4 });
+		}
+	}
 };

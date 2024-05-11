@@ -250,33 +250,33 @@ public:
 
 };
 
-class Hawk :public Untouchable {
-public:
-	Hawk() {
-		TextureAsset::Register(U"Hawk", U"🦅"_emoji, TextureDesc::Mipped);
-	}
-
-	bool touchFlg = false;
-
-	void update(const Point& pos)override {
-		if (DataManager::get().playerPos.intersects(Circle{ (pos + Vec2::All(0.5)) * rect_size,rect_size * 2 })) {
-			DataManager::get().table.emplace(U"DoorOpen");
-			if (not touchFlg) {
-				touchFlg = true;
-				DataManager::get().talkWindow.addTalk(U"鷹", U"やあそこのお嬢さん。");
-				DataManager::get().talkWindow.addTalk(U"鷹", U"上の扉の鍵ならこの崖の向こうにありますよ。");
-				DataManager::get().talkWindow.addTalk(U"鷹", U"よければ取って来ましょうか？");
-				DataManager::get().talkWindow.addTalk(U"ゲーム", U"本当はここでミニゲームが始める");
-				DataManager::get().talkWindow.addTalk(U"ゲーム", U"扉が開きました。");
-			}
-		}
-	}
-
-	void draw(const Point& pos)const override {
-		Circle{ (pos + Vec2::All(0.5)) * rect_size,rect_size*2 }.drawFrame(2,Palette::Red);
-		TextureAsset(U"Hawk").resized(rect_size * 1.2).draw(pos * rect_size);
-	}
-};
+//class Hawk :public Untouchable {
+//public:
+//	Hawk() {
+//		TextureAsset::Register(U"Hawk", U"🦅"_emoji, TextureDesc::Mipped);
+//	}
+//
+//	bool touchFlg = false;
+//
+//	void update(const Point& pos)override {
+//		if (DataManager::get().playerPos.intersects(Circle{ (pos + Vec2::All(0.5)) * rect_size,rect_size * 2 })) {
+//			DataManager::get().table.emplace(U"DoorOpen");
+//			if (not touchFlg) {
+//				touchFlg = true;
+//				DataManager::get().talkWindow.addTalk(U"鷹", U"やあそこのお嬢さん。");
+//				DataManager::get().talkWindow.addTalk(U"鷹", U"上の扉の鍵ならこの崖の向こうにありますよ。");
+//				DataManager::get().talkWindow.addTalk(U"鷹", U"よければ取って来ましょうか？");
+//				DataManager::get().talkWindow.addTalk(U"ゲーム", U"本当はここでミニゲームが始める");
+//				DataManager::get().talkWindow.addTalk(U"ゲーム", U"扉が開きました。");
+//			}
+//		}
+//	}
+//
+//	void draw(const Point& pos)const override {
+//		Circle{ (pos + Vec2::All(0.5)) * rect_size,rect_size*2 }.drawFrame(2,Palette::Red);
+//		TextureAsset(U"Hawk").resized(rect_size * 1.2).draw(pos * rect_size);
+//	}
+//};
 
 //class Door :public Untouchable {
 //public:

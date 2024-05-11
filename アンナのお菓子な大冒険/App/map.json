@@ -5,43 +5,50 @@
       "BGM": "BGM/StageSnow7.wav",
       "Picture": "image1.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-1>\n冒険のはじまり"
+      "Sentence": "<1-1>\n冒険のはじまり",
+      "MapFile": "s1.json"
     },
     "Stage2": {
       "BGM": "BGM/StageSnow7.wav",
       "Picture": "image2.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-2>\nケーキのアスレチック"
+      "Sentence": "<1-2>\nケーキのアスレチック",
+      "MapFile": "s2.json"
     },
     "Stage3": {
       "BGM": "BGM/StageBoss6.wav",
       "Picture": "image3.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-3>\n雪だるナイト参上！"
+      "Sentence": "<1-3>\n雪だるナイト参上！",
+      "MapFile": "s3.json"
     },
     "Stage4": {
       "BGM": "BGM/StageBoss6.wav",
       "Picture": "image4.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-4>\n悪逆非道！奴隷商クッキー"
+      "Sentence": "<1-4>\n悪逆非道！奴隷商クッキー",
+      "MapFile": "s4.json"
     },
     "Stage5": {
       "BGM": "BGM/StageBossLast1.wav",
       "Picture": "noimage.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-5>\n作りかけ"
+      "Sentence": "<1-5>\n作りかけ",
+      "MapFile": "s5.json"
     },
     "Stage6": {
       "BGM": "BGM/StageBoss6.wav",
       "Picture": "noimage.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-6>\n作りかけ"
+      "Sentence": "<1-6>\n作りかけ",
+      "MapFile": "s6.json"
     },
     "Stage7": {
       "BGM": "BGM/StageSnow7.wav",
       "Picture": "example/windmill.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-7>\n"
+      "Sentence": "<1-7>\n",
+      "MapFile": "s7.json"
     }
   }
 }

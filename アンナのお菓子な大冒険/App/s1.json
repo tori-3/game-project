@@ -1,4 +1,7 @@
 ﻿{
+  "BackGround": [
+    "C:/Users/Torigoe/source/repos/game-project/アンナのお菓子な大冒険/App/backGround.json"
+  ],
   "Block": {
     "CakeGround": [
       "(97, 0)",
@@ -501,5 +504,6 @@
       "(50, 9)"
     ]
   },
+  "Rate": 0.5,
   "stage_size": "(115, 13)"
 }
