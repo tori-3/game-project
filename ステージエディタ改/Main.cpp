@@ -82,6 +82,16 @@ public:
 
 	}
 
+	void reload() {
+		rate = 1.0;
+
+		JSON json = JSON::Load(path);
+		map = Load(json);
+		if (json.contains(U"Rate")) {
+			rate = json[U"Rate"].get<double>();
+		}
+	}
+
 };
 
 
@@ -175,7 +185,7 @@ void Main()
 				Array<String>pathList;
 
 				for (auto& backGround : backGrounds) {
-					pathList << FileSystem::RelativePath(backGround.path);
+					pathList << backGround.path;
 				}
 
 				json2[U"BackGround"]= pathList;
@@ -249,13 +259,8 @@ void Main()
 			else if (item == MenuBarItemIndex{ 1, 2 })//背景を更新
 			{
 
-				backGrounds.clear();
-				if (json.contains(U"BackGround")) {
-
-					for (const auto& elem : json[U"BackGround"].arrayView())
-					{
-						backGrounds << BackGround{ elem.getString() };
-					}
+				for (auto& backGround : backGrounds) {
+					backGround.reload();
 				}
 
 			}

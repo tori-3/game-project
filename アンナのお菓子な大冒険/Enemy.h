@@ -56,16 +56,6 @@ public:
 		hitBox.physicsUpdate();
 		hitBox.update();
 
-		//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-		//	if (pos.x < manager->get(U"Player")->pos.x) {
-		//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-		//	}
-		//	else {
-		//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-		//	}
-
-		//}
-
 		attack(U"Player", hitBox.getFigure(), 1);
 
 		character.update(pos,left);
@@ -129,15 +119,6 @@ public:
 
 		hitBox.physicsUpdate();
 		hitBox.update();
-
-		//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-		//	if (pos.x < manager->get(U"Player")->pos.x) {
-		//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-		//	}
-		//	else {
-		//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-		//	}
-		//}
 
 		attack(U"Player", hitBox.getFigure(), 1);
 
@@ -275,7 +256,6 @@ public:
 
 				character.addMotion(U"Attack");
 				holdSnowBall = true;
-				//manager->add(new SnowBall{ pos,left });
 			}
 
 		}
@@ -293,16 +273,6 @@ public:
 			}
 
 		}
-
-		//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-		//	if (pos.x < manager->get(U"Player")->pos.x) {
-		//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-		//	}
-		//	else {
-		//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-		//	}
-
-		//}
 
 		attack(U"Player", hitBox.getFigure(), 1);
 
@@ -413,9 +383,6 @@ public:
 	}
 
 	void draw()const override {
-		//hitBox.Get_Box().movedBy(left ? -60 : 60, 0).draw();
-		//hitBox.Get_Box().movedBy(left?-25:25, 0).draw(Palette::Red);
-		//hitBox.draw(Palette::Orange);
 		character.draw();
 	}
 };
@@ -440,15 +407,6 @@ public:
 
 		hitBox.physicsUpdate();
 		hitBox.update();
-
-		//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-		//	if (pos.x < manager->get(U"Player")->pos.x) {
-		//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-		//	}
-		//	else {
-		//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-		//	}
-		//}
 
 		attack(U"Player", hitBox.getFigure(), 1);
 
@@ -484,26 +442,13 @@ public:
 
 	double accumulatedTime = 0;
 
-	//double speed;
-
 	double startY = 0;
 
 	double time = 0;
 
 	void update()override {
 
-		//manager->stage->hit(&hitBox);
-
 		hitBox.update();
-
-		//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-		//	if (pos.x < manager->get(U"Player")->pos.x) {
-		//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-		//	}
-		//	else {
-		//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-		//	}
-		//}
 
 		if (manager->get(U"Player")->pos.x < pos.x) {
 			vel.x -= 500 * Scene::DeltaTime();
@@ -651,15 +596,6 @@ public:
 			hitBox.physicsUpdate();
 			hitBox.update();
 
-			//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-			//	if (pos.x < manager->get(U"Player")->pos.x) {
-			//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-			//	}
-			//	else {
-			//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-			//	}
-
-			//}
 			attack(U"Player", hitBox.getFigure(), 1);
 
 		}
@@ -700,14 +636,11 @@ public:
 	CookieMuti(const Vec2& cpos) :Entity{ {U"Enemy"}, RectF{Arg::center(0,0),50,100},cpos,{0,0},1 },
 		character{ U"Characters/cookieMuti/cookieMuti.json",U"Characters/cookieMuti/motion.txt",0.4,cpos,true,false }
 	{
-		//character.addMotion(U"walk", true);
 	}
 
 	void update()override {
 
 		manager->stage->hit(&hitBox);
-
-		//if (Abs(manager->get(U"Player")->pos.x - pos.x) < rect_size * 5) {
 
 		if (manager->get(U"Player")->pos.x < pos.x) {
 			left = true;
@@ -717,7 +650,6 @@ public:
 			left = false;
 			vel.x = 200;
 		}
-		//}
 
 		//プレイヤーに近すぎる場合
 		if (Abs(manager->get(U"Player")->pos.x - pos.x) < rect_size * 0.2) {
@@ -739,29 +671,12 @@ public:
 
 		if (attackTimer.sF() == 0) {
 			attackTimer.reset();
-			//if (manager->get(U"Player")->hitBox.Get_Box().intersects(hitBox.Get_Box().movedBy(left ? -60 : 60, 0))) {
-			//	if (left) {
-			//		manager->get(U"Player")->damage(2, Vec2{ -100,-20 });
-			//	}
-			//	else {
-			//		manager->get(U"Player")->damage(2, Vec2{ 100,-20 });
-			//	}
-			//}
 			attack(U"Player", hitBox.Get_Box().movedBy(left ? -60 : 60, 0), 2);
 
 		}
 		else {
 			attack(U"Player", hitBox.getFigure(), 1);
 		}
-
-		//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-		//	if (pos.x < manager->get(U"Player")->pos.x) {
-		//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-		//	}
-		//	else {
-		//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-		//	}
-		//}
 
 		character.update(pos, left);
 	}
@@ -774,9 +689,6 @@ public:
 	}
 
 	void draw()const override {
-		//hitBox.Get_Box().movedBy(left ? -60 : 60, 0).scaled(3,1).draw();
-		//hitBox.Get_Box().movedBy(left ? -60 : 60, 0).draw(Palette::Orange);
-		//hitBox.draw(Palette::Red);
 		character.draw();
 	}
 };
@@ -793,14 +705,11 @@ public:
 	CookieKaban(const Vec2& cpos) :Entity{ {U"Enemy"}, RectF{Arg::center(0,0),50,100},cpos,{0,0},1 },
 		character{ U"Characters/cookieKaban/cookieKaban.json",U"Characters/cookieKaban/motion.txt",0.4,cpos,true,false }
 	{
-		//character.addMotion(U"walk", true);
 	}
 
 	void update()override {
 
 		manager->stage->hit(&hitBox);
-
-		//if (Abs(manager->get(U"Player")->pos.x - pos.x) < rect_size * 5) {
 
 		if (manager->get(U"Player")->pos.x < pos.x) {
 			left = true;
@@ -810,7 +719,6 @@ public:
 			left = false;
 			vel.x = 200;
 		}
-		//}
 
 		//プレイヤーに近すぎる場合
 		if (Abs(manager->get(U"Player")->pos.x - pos.x) < rect_size * 0.2) {
@@ -832,28 +740,11 @@ public:
 
 		if (attackTimer.sF() == 0) {
 			attackTimer.reset();
-			//if (manager->get(U"Player")->hitBox.Get_Box().intersects(hitBox.Get_Box())) {
-			//	if (left) {
-			//		manager->get(U"Player")->damage(2, Vec2{ -100,-20 });
-			//	}
-			//	else {
-			//		manager->get(U"Player")->damage(2, Vec2{ 100,-20 });
-			//	}
-			//}
 			attack(U"Player", hitBox.Get_Box(), 2);
 		}
 		else {
 			attack(U"Player", hitBox.Get_Box(), 1);
 		}
-
-		//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-		//	if (pos.x < manager->get(U"Player")->pos.x) {
-		//		manager->get(U"Player")->damage(1, Vec2{ 100,-20 });
-		//	}
-		//	else {
-		//		manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
-		//	}
-		//}
 
 
 		character.update(pos, left);
@@ -867,9 +758,6 @@ public:
 	}
 
 	void draw()const override {
-		//hitBox.Get_Box().movedBy(left ? -20 : 20, 0).draw();
-		//hitBox.Get_Box().movedBy(left ? -60 : 60, 0).draw(Palette::Orange);
-		//hitBox.draw(Palette::Red);
 		character.draw();
 	}
 };
@@ -1104,19 +992,8 @@ public:
 
 		manager->stage->hit(&hitBox);
 
-		//pos.x = Math::SmoothDamp(pos.x, manager->get(U"Player")->pos.x, vel.x, 1, 600);
-
 		hitBox.physicsUpdate();
 		hitBox.update();
-
-		//if (manager->get(U"Player")->hitBox.intersects(hitBox)) {
-		//	if (pos.x < manager->get(U"Player")->pos.x) {
-		//		manager->get(U"Player")->damage(1, Vec2{ 700,-300 });
-		//	}
-		//	else {
-		//		manager->get(U"Player")->damage(1, Vec2{ -700,-300 });
-		//	}
-		//}
 
 		attack(U"Player", hitBox.getFigure(), 1);
 
@@ -1434,19 +1311,6 @@ public:
 			left = false;
 		}
 
-		//if (hitBox.touch(Direction::down)) {
-		//	if (left) {
-		//		if (not hitBox.leftFloor()) {
-		//			left = false;
-		//		}
-		//	}
-		//	else {
-		//		if (not hitBox.rightFloor()) {
-		//			left = true;
-		//		}
-		//	}
-		//}
-
 		bool poleHit = false;
 		if (DataManager::get().table.contains(U"PoleHit")) {
 			DataManager::get().table.erase(U"PoleHit");
@@ -1699,8 +1563,6 @@ public:
 		if (not character.hasMotion(U"Muteki")) {
 			hp -= n;
 			character.addMotion(U"Muteki");
-			//vel.y = force.y;
-			//vel.x = force.x * 1.5;
 		}
 	}
 };

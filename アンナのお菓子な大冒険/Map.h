@@ -11,9 +11,9 @@ public:
 	const Font font{ 30 };
 
 	//画面下の四角形の情報
-	const int rect_size = 100;//四角形の大きさ
-	const int rect_num = 6;//四角形(ゲーム)の個数
-	const int rect_gap = 20;//四角形の間隔
+	const int rect_size = 70;//四角形の大きさ
+	const int rect_num = 12;//四角形(ゲーム)の個数
+	const int rect_gap = 10;//四角形の間隔
 
 	//アイコン画像
 	const Texture Lock_icon{ 0xf023_icon, 120 };//鍵の画像
@@ -111,6 +111,7 @@ public:
 					}
 				}
 
+				BGMManager::get().stop();
 				changeScene(sceneNames[index]);
 			};
 

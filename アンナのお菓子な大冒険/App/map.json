@@ -1,54 +1,89 @@
 ﻿{
-  "ClearStage": 6,
+  "ClearStage": 12,
   "StageData": {
     "Stage1": {
       "BGM": "BGM/StageSnow7.wav",
+      "MapFile": "s1.json",
       "Picture": "image1.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-1>\n冒険のはじまり",
-      "MapFile": "s1.json"
+      "Sentence": "<1-1>\n冒険のはじまり"
+    },
+    "Stage10": {
+      "BGM": "",
+      "MapFile": "",
+      "Picture": "MiniGameDisplay/まんじゅうラッシュ.png",
+      "SceneName": "ManjuRush",
+      "Sentence": "<まんじゅうラッシュ>\nジャンプ(↑)で迫りくるまんじゅうを\nよけるゲームです。"
+    },
+    "Stage11": {
+      "BGM": "",
+      "MapFile": "",
+      "Picture": "MiniGameDisplay/MAZE.png",
+      "SceneName": "Maze1",
+      "Sentence": "<MAZE>\n迷路です。\nクッキーをチョコレート(ゴール)まで\n導きましょう。"
+    },
+    "Stage12": {
+      "BGM": "",
+      "MapFile": "",
+      "Picture": "MiniGameDisplay/回転迷路.png",
+      "SceneName": "Maze2",
+      "Sentence": "<回転迷路>\n迷路を回転させてゴールを\n目指しましょう。"
     },
     "Stage2": {
-      "BGM": "BGM/StageSnow7.wav",
-      "Picture": "image2.png",
-      "SceneName": "MainGameScene",
-      "Sentence": "<1-2>\nケーキのアスレチック",
-      "MapFile": "s2.json"
+      "BGM": "",
+      "MapFile": "",
+      "Picture": "MiniGameDisplay/FallingAnna.png",
+      "SceneName": "FallingAnna",
+      "Sentence": "<FallingAnna>\n岩を破壊してスコアを稼ぎながら落下\nするゲームです。\n詳しくは写真を拡大してください。"
     },
     "Stage3": {
-      "BGM": "BGM/StageBoss6.wav",
-      "Picture": "image3.png",
+      "BGM": "BGM/StageSnow7.wav",
+      "MapFile": "s2.json",
+      "Picture": "image2.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-3>\n雪だるナイト参上！",
-      "MapFile": "s3.json"
+      "Sentence": "<1-2>\nケーキのアスレチック"
     },
     "Stage4": {
       "BGM": "BGM/StageBoss6.wav",
-      "Picture": "image4.png",
+      "MapFile": "s3.json",
+      "Picture": "image3.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-4>\n悪逆非道！奴隷商クッキー",
-      "MapFile": "s4.json"
+      "Sentence": "<1-3>\n雪だるナイト参上！"
     },
     "Stage5": {
-      "BGM": "BGM/StageBossLast1.wav",
-      "Picture": "noimage.png",
+      "BGM": "BGM/StageBoss6.wav",
+      "MapFile": "s4.json",
+      "Picture": "image4.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-5>\n作りかけ",
-      "MapFile": "s5.json"
+      "Sentence": "<1-4>\n悪逆非道！奴隷商クッキー"
     },
     "Stage6": {
-      "BGM": "BGM/StageBoss6.wav",
+      "BGM": "BGM/StageBossLast1.wav",
+      "MapFile": "s5.json",
       "Picture": "noimage.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-6>\n作りかけ",
-      "MapFile": "s6.json"
+      "Sentence": "<1-5>\n作りかけ"
     },
     "Stage7": {
-      "BGM": "BGM/StageSnow7.wav",
-      "Picture": "example/windmill.png",
+      "BGM": "BGM/StageBoss6.wav",
+      "MapFile": "s6.json",
+      "Picture": "noimage.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-7>\n",
-      "MapFile": "s7.json"
+      "Sentence": "<1-6>\n作りかけ"
+    },
+    "Stage8": {
+      "BGM": "BGM/StageSnow7.wav",
+      "MapFile": "s7.json",
+      "Picture": "noimage.png",
+      "SceneName": "MainGameScene",
+      "Sentence": "<1-7>\n"
+    },
+    "Stage9": {
+      "BGM": "",
+      "MapFile": "",
+      "Picture": "MiniGameDisplay/HawkDropOut.png",
+      "SceneName": "HawkDropOut",
+      "Sentence": "<HawkDropOut>\n地面に着かないように鷹を飛ばすゲーム\nです。\n上昇、加工ボタンを使って石をよけま\nしょう。\n肉を取るとアイテムをゲットできます。"
     }
   }
 }

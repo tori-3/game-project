@@ -31,6 +31,10 @@ public:
 		}	
 	}
 
+	void stop() {
+		AudioAsset{ m_name }.stop(0.5s);
+	}
+
 	void setVolume(double volume) {
 		if (m_name) {
 			AudioAsset{ m_name }.setVolume(volume);

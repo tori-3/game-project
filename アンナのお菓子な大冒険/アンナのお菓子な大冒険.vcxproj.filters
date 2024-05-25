@@ -154,6 +154,9 @@
     <Filter Include="Header Files\MainGameScene\Animation">
       <UniqueIdentifier>{172e6456-caff-441c-8805-6f05ff8a9b91}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\MiniGame">
+      <UniqueIdentifier>{ef690b7d-2904-42c3-834d-ab31c0d42426}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -169,6 +172,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -883,6 +892,21 @@
     </ClInclude>
     <ClInclude Include="BGMManager.hpp">
       <Filter>Header Files\MainGameScene\GameLib</Filter>
+    </ClInclude>
+    <ClInclude Include="FallingAnna.h">
+      <Filter>Header Files\MiniGame</Filter>
+    </ClInclude>
+    <ClInclude Include="HawkDropOut.h">
+      <Filter>Header Files\MiniGame</Filter>
+    </ClInclude>
+    <ClInclude Include="ManjuRush.h">
+      <Filter>Header Files\MiniGame</Filter>
+    </ClInclude>
+    <ClInclude Include="MAZE.h">
+      <Filter>Header Files\MiniGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Maze2.h">
+      <Filter>Header Files\MiniGame</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -245,7 +245,7 @@ public:
 
 		for (auto& backGround : backGrounds) {
 			backGround.draw(pos);
-			Rect{ Scene::Size() }.draw(ColorF{ Palette::Skyblue,0.4 });
+			Rect{ Scene::Size() }.draw(ColorF{ Palette::Skyblue,0.1 });
 		}
 	}
 };
