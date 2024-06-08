@@ -4,6 +4,7 @@
 #include"setting.h"
 #include"Pause.h"
 #include"Player.h"
+#include"LastBoss.h"
 #include"Spawner.h"
 #include"BackGround.h"
 #include"BGMManager.hpp"
@@ -34,6 +35,7 @@ public:
 		table[U"SlaversCookie"] = [](const Vec2& pos) {return new SlaversCookie{ pos }; };
 		table[U"Captain"] = [](const Vec2& pos) {return new Captain{ pos }; };
 		table[U"Door"] = [](const Vec2& pos) {return new GoalDoor{ pos }; };
+		table[U"LastBoss"] = [](const Vec2& pos) {return new LastBoss{ pos }; };
 	}
 
 	HashTable<String, std::function<Entity* (const Vec2&)>>table;
@@ -308,6 +310,7 @@ public:
 
 			{
 				const ScopedRenderTarget2D target{ rTexture.clear(ColorF{0.5,0}) };
+				const ScopedRenderStates2D blend{ MakeBlendState() };
 				DataManager::get().additiveEffect.update();
 			}
 		}

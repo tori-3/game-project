@@ -281,6 +281,13 @@ void CaptainBlock::update(const Point& pos){
 	}
 }
 
+void LastBossBlock::update(const Point& pos) {
+	if (not bornFlg) {
+		DataManager::get().addEntity(U"LastBoss", pos * rect_size + Vec2{ 0.5,0 }*rect_size);
+		bornFlg = true;
+	}
+}
+
 void IceCream::draw(const Point& pos)const {
 	TextureAsset(U"IceCream").resized(rect_size * 2).draw(pos * rect_size);
 };

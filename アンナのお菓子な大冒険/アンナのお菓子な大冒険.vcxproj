@@ -116,6 +116,7 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="IMotionField.cpp" />
+    <ClCompile Include="LastBoss.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Movements.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -334,6 +335,8 @@
     <ClInclude Include="HawkDropOut.h" />
     <ClInclude Include="HitBox.h" />
     <ClInclude Include="IMotionField.h" />
+    <ClInclude Include="LastBoss.h" />
+    <ClInclude Include="MagicEffect.h" />
     <ClInclude Include="MainGameScene.h" />
     <ClInclude Include="ManjuRush.h" />
     <ClInclude Include="Map.h" />

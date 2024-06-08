@@ -1,0 +1,20 @@
+﻿{
+  "Body": {
+    "e": {
+      "Parent": "umb",
+      "Position": "(0.6666, -2.66657)",
+      "RotateCenter": "(20.66668, -199.33333)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/bitter/e.png",
+      "Z": -11.0
+    },
+    "umb": {
+      "Parent": "__Main__",
+      "Position": "(368.00001, 370.6666)",
+      "RotateCenter": "(21.13529, -209.85993)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/bitter/closeUmb.png",
+      "Z": -10.0
+    }
+  }
+}

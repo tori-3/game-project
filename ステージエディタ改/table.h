@@ -209,6 +209,10 @@ void CaptainBlock(Point pos) {
 	RectF{ pos * rect_size,rect_size }.draw(Palette::Lightyellow);
 }
 
+void LastBossBlock(Point pos) {
+	RectF{ pos * rect_size,rect_size }.draw(Palette::Deeppink);
+}
+
 struct Info {
 	String tag;
 	std::function<void(Point)>func;
@@ -254,7 +258,8 @@ Array<Info>list{
 	{U"ThroughBlock",ThroughBlock,U"すり抜ける床"},
 	{U"SlaversCookie",SlaversCookie,U"奴隷商クッキー"},
 	{U"PoleBlock",PoleBlock,U"柱ブロック"},
-	{U"CaptainBlock",CaptainBlock,U"船長"}
+	{U"CaptainBlock",CaptainBlock,U"船長"},
+	{U"LastBossBlock",LastBossBlock,U"ラスボス"}
 };
 
 HashTable<String, std::function<void(Point)>> table;

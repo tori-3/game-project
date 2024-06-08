@@ -299,6 +299,13 @@ public:
 	void update(const Point& pos)override;
 };
 
+class LastBossBlock :public Untouchable {
+public:
+	bool bornFlg = false;
+
+	void update(const Point& pos)override;
+};
+
 
 //背景専門
 

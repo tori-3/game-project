@@ -47,6 +47,7 @@ public:
 		{U"CandyStick",[]() {return new CandyStick(); }},
 		{U"Cherries",[]() {return new Cherries(); }},
 		{U"Blueberry",[]() {return new Blueberry(); }},
+		{U"LastBossBlock",[]() {return new LastBossBlock(); }},
 
 	};
 

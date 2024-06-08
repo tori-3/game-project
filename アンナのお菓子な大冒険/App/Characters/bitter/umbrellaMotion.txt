@@ -1,0 +1,4 @@
+#close
+@t,0.4
+SetScale,umb,0.2,1.7,@t,false
+Move,e,-15,-146,@t
