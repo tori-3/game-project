@@ -64,6 +64,14 @@
       "TexturePath": "Characters/bitter/lbleg.png",
       "Z": -11.0
     },
+    "lfootTip": {
+      "Parent": "lbleg",
+      "Position": "(30, 240)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/bitter/lfootTip.png",
+      "Z": -10.0
+    },
     "lleg": {
       "Parent": "skirt",
       "Position": "(0, 0)",
@@ -112,12 +120,28 @@
       "TexturePath": "Characters/bitter/rbleg.png",
       "Z": -9.0
     },
+    "rfootTip": {
+      "Parent": "rbleg",
+      "Position": "(-30, 240)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/bitter/rfootTip.png",
+      "Z": -10.0
+    },
     "rleg": {
       "Parent": "skirt",
       "Position": "(0, 0)",
       "RotateCenter": "(-24.66675, -18.00002)",
       "Scale": 1.0,
       "TexturePath": "Characters/bitter/rleg.png",
+      "Z": -10.0
+    },
+    "saki": {
+      "Parent": "umb",
+      "Position": "(23, -237)",
+      "RotateCenter": "(-0.66663, 3.3333)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/bitter/saki.png",
       "Z": -10.0
     },
     "skirt": {

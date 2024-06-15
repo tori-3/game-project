@@ -917,5 +917,11 @@
     <ClInclude Include="MagicEffect.h">
       <Filter>Header Files\MainGameScene\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="LaserEffect.h">
+      <Filter>Header Files\MainGameScene\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="MagicCircle.h">
+      <Filter>Header Files\MainGameScene\GameLib</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

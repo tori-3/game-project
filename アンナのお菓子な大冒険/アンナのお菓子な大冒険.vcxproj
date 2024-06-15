@@ -335,7 +335,9 @@
     <ClInclude Include="HawkDropOut.h" />
     <ClInclude Include="HitBox.h" />
     <ClInclude Include="IMotionField.h" />
+    <ClInclude Include="LaserEffect.h" />
     <ClInclude Include="LastBoss.h" />
+    <ClInclude Include="MagicCircle.h" />
     <ClInclude Include="MagicEffect.h" />
     <ClInclude Include="MainGameScene.h" />
     <ClInclude Include="ManjuRush.h" />

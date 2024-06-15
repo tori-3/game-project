@@ -6,6 +6,8 @@
 #include"SimpleAction.h"
 #include"BGMManager.hpp"
 #include"MagicEffect.h"
+#include"MagicCircle.h"
+#include"LaserEffect.h"
 
 class ClosedUmbrella:public Entity {
 public:
@@ -72,9 +74,6 @@ public:
 
 };
 
-
-
-
 class LastBoss :public Entity {
 public:
 
@@ -87,13 +86,22 @@ public:
 
 	double timer;
 
-	int32 type=0;
+	bool floatFlg = false;
+
+	enum class State{kick,stand,attack1, masterSparkPreJump, masterSparkJump, masterSparkWait, masterSpark,} type=State::kick;
+
+	MagicCircle magicCircle;
+
+	static constexpr double eventInterval = 0.05;
+	double accumulatedTime = 0.0;
 
 	LastBoss(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,-5),40,150},cpos,{0,0},1 }
 		, character{ U"Characters/bitter/model1.json" ,U"Characters/bitter/motion1.txt" ,0.3,cpos,false,false }
 	{
-
-
+		TextureAsset::Register(U"MagicEffect0", 0xF810_icon, 50);
+		TextureAsset::Register(U"MagicEffect1", 0xF786_icon, 50);
+		TextureAsset::Register(U"MagicEffect2", 0xF563_icon, 50);
+		TextureAsset::Register(U"MagicEffect3", 0xF005_icon, 50);
 	}
 
 	bool kickFlg = false;
@@ -109,7 +117,7 @@ public:
 
 	void draw()const override {
 
-		//hitBox.draw(Palette::Orange);
+		magicCircle.draw();
 
 		character.draw();
 	}

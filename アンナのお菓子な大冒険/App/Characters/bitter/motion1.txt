@@ -296,6 +296,7 @@ RotateTo,rleg,0,@t
 RotateTo,rbleg,0,@t
 RotateTo,larm,50,@t
 RotateTo,lbarm,0,@t
+RotateTo,e,180,@t
 
 #MasupaShot
 @t,0.2

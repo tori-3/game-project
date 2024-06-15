@@ -13,6 +13,7 @@ RotateTo,lleg,-30,@t
 RotateTo,larm,-80,@t
 SetScale,lbleg,0.6,0,@t
 RotateTo,rleg,20,@t
+RotateTo,e,40,@t
 
 RotateTo,body,-40,@t1
 RotateTo,skirt,0,@t1
@@ -304,3 +305,8 @@ RotateTo,rleg,0,@t
 RotateTo,lleg,-10,@t
 RotateTo,rarm,20,@t
 RotateTo,larm,20,@t
+
+ChangeTexture,umb,Characters/bitter/closeUmb.png
+
+#aaa
+@t,1

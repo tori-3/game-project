@@ -6,17 +6,16 @@ void LastBoss::update() {
 	manager->stage->hit(&hitBox);
 
 
-	hitBox.physicsUpdate();
+	if(not floatFlg)hitBox.physicsUpdate();
 	hitBox.update();
 
 	left = (manager->get(U"Player")->pos.x < pos.x);
-
 
 	if (timer <= 0) {
 
 		switch (type)
 		{
-		case 0: {
+		case State::kick: {
 
 			timer = 1.0;
 			character.addMotion(U"kick1");
@@ -34,12 +33,12 @@ void LastBoss::update() {
 			};
 
 			endFunc = [&]() {
-				type = 1;
+				type = State::stand;
 				kickFlg = false;
 			};
 
 		}break;
-		case 1: {
+		case State::stand: {
 
 			timer = 0.5;
 			character.addMotion(U"Stand");
@@ -49,13 +48,20 @@ void LastBoss::update() {
 			};
 
 			endFunc = [&]() {
-				type = RandomBool() ? 0 : 2;
+				type = RandomBool() ? State::kick : State::attack1;
+
+				switch (Random(2,2)) {
+				case 0:type = State::kick; break;
+				case 1:type = State::attack1; break;
+				case 2:type = State::masterSparkPreJump; break;
+				}
+
 
 
 			};
 
 		}break;
-		case 2: {
+		case State::attack1: {
 			timer = 3.0;
 
 			character.addMotion(U"Skill4");
@@ -94,12 +100,114 @@ void LastBoss::update() {
 			};
 
 			endFunc = [&]() {
-				type = 1;
+				type = State::stand;
 
 
 			};
 
 		}break;
+		case State::masterSparkPreJump:{
+			character.addMotion(U"Jump1");
+
+			timer = 1.0;
+			updateFunc = [=]() {
+
+				if (timer < 0.5) {
+					this->accumulatedTime += Scene::DeltaTime();
+					if (eventInterval <= this->accumulatedTime)
+					{
+						DataManager::get().additiveEffect.add<MagicEffect>(pos, TextureAsset{ U"MagicEffect{}"_fmt(Random(0,3)) }, HSV{ 360 * 2 * Scene::Time() }, Random(360_deg),500);
+						this->accumulatedTime -= eventInterval;
+					}
+				}
+			};
+			endFunc = [=]() {
+				type = State::masterSparkJump;
+			};
+			
+		}break;
+		case State::masterSparkJump: {
+			//マスタースパーク前のジャンプ
+			character.addMotion(U"Fly");
+
+			constexpr double timeLim = 2.0;
+			timer = timeLim;
+
+			floatFlg = true;
+
+			accumulatedTime = 0;
+
+			double targetX = rect_size * 18;
+			double lenX = Abs(pos.x - targetX);
+			double targetY = rect_size * 3;
+			double lenY = Abs(pos.y - targetY);
+			updateFunc = [=]() {
+				pos.x = linerMove(pos.x, targetX, lenX / timeLim);
+				pos.y = linerMove(pos.y, targetY, lenY / timeLim);
+
+				this->accumulatedTime += Scene::DeltaTime();
+				if (eventInterval <= this->accumulatedTime)
+				{
+					const Vec2 rFootPos = Figure{ character.character.table[U"rfootTip"].joint.getQuad() }.center();
+					const Vec2 lFootPos = Figure{ character.character.table[U"lfootTip"].joint.getQuad() }.center();
+					DataManager::get().additiveEffect.add<MagicEffect>(rFootPos, TextureAsset{U"MagicEffect{}"_fmt(Random(0,3))}, HSV{360 * 2 * Scene::Time()});
+					DataManager::get().additiveEffect.add<MagicEffect>(lFootPos, TextureAsset{ U"MagicEffect{}"_fmt(Random(0,3)) }, HSV{ 360 * 2 * Scene::Time() });
+					this->accumulatedTime -= eventInterval;
+				}
+			};
+
+			endFunc = [&]() {
+				type = State::masterSparkWait;
+			};
+
+
+		}break;
+		case State::masterSparkWait: {
+
+			character.addMotion(U"MasupaPause");
+
+			timer = 3.0;
+			const Vec2 umbPos = Figure{ character.character.table[U"saki"].joint.getQuad() }.center();
+			magicCircle.start(umbPos, 100);
+
+			updateFunc = [=]() {
+				if (1.5<timer) {
+					magicCircle.rad = (manager->get(U"Player")->pos - pos).getAngle() - 90_deg;
+				}
+
+				character.character.table[U"rarm"].joint.angle = left ? 180_deg-magicCircle.rad - 120_deg : magicCircle.rad - 120_deg;
+			};
+
+			endFunc = [&]() {
+				type = State::masterSpark;
+			};
+
+		}break;
+		case State::masterSpark: {
+
+			character.addMotion(U"MasupaShot");
+
+			timer = 5.0;
+
+			//魔法陣の位置おかしい 原因不明
+			const Vec2 umbPos = Figure{ character.character.table[U"saki"].joint.getQuad() }.center();
+
+			DataManager::get().effect.add<LaserEffect>(RectF(Arg::leftCenter = umbPos, 1500, 150), magicCircle.rad, Palette::Pink);
+
+			updateFunc = [=]() {
+				attack(U"Player", RectF(Arg::leftCenter = pos, 1500, 100).rotatedAt(pos, magicCircle.rad), 1.0);
+				character.character.table[U"rarm"].joint.angle = left ? 180_deg -magicCircle.rad - 120_deg : magicCircle.rad - 120_deg;
+			};
+
+			endFunc = [&]() {
+				magicCircle.end();
+				type = State::stand;
+				floatFlg = false;
+
+			};
+
+		}break;
+
 		default:
 			break;
 		}
@@ -120,6 +228,8 @@ void LastBoss::update() {
 			endFunc();
 		}
 	}
+
+	magicCircle.update();
 
 	character.update(pos, left);
 }
