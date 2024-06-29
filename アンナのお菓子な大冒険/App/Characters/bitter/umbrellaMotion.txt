@@ -1,4 +1,13 @@
 #close
 @t,0.4
-SetScale,umb,0.2,1.7,@t,false
-Move,e,-15,-146,@t
+SetScale,umb,1,1,@t,false
+MoveTo,umb,-19,-50,@t
+
+ChangeTexture,umb,Characters/bitter/closeUmb1.png
+MoveTo,umb,-17.33333, -42.6667,0
+
+#open
+@t,0.4
+ChangeTexture,umb,Characters/bitter/umb1.png
+SetScale,umb,5.0,0.45,@t,false
+MoveTo,umb,-19,-120,@t

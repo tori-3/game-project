@@ -148,7 +148,7 @@ public:
 	MSRenderTexture rTexture{ Scene::Size(),ColorF{0,0} };
 
 	//Player player{ Point(500, 350 + 70) };
-	Background background{ U"背景.png" ,stage.width() };
+	Background background{ U"雪原背景.png" ,stage.width() };
 	//Background background2{ U"お菓子の背景.png" ,stage.width(),2 };
 
 	EntityManager manager;

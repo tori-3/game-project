@@ -6,9 +6,8 @@ public:
 
 	double rad;
 
-	void start(const Vec2& pos, double size)
+	void start(double size)
 	{
-		m_pos = pos;
 		m_size = size;
 		m_active = true;
 		m_t = 0;
@@ -17,6 +16,11 @@ public:
 	void end()
 	{
 		m_active = false;
+	}
+
+	void setPos(const Vec2& pos)
+	{
+		m_pos = pos;
 	}
 
 	void update()

@@ -182,6 +182,19 @@ public:
 		return Quad{ tl,tr,br,bl };
 	}
 
+	//最悪のコード
+	Quad getQuad2()const {
+
+		RectF rect{ Arg::topCenter = rotatePos,size };
+
+		auto tl = mat.transformPoint(rect.tl());
+		auto tr = mat.transformPoint(rect.tr());
+		auto br = mat.transformPoint(rect.br());
+		auto bl = mat.transformPoint(rect.bl());
+
+		return Quad{ tl,tr,br,bl };
+	}
+
 
 
 	Joint() {}

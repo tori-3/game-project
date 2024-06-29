@@ -124,7 +124,7 @@ public:
 		//physics = PhysicsBox{ pos, vel, Relative - Vec2{ rect.w / 2,rect.h / 2 }, rect.w, rect.h,hp };
 	}
 
-	Figure getFigure() {
+	Figure getFigure()const {
 		return hitbox;
 	}
 

@@ -9,8 +9,6 @@ void LastBoss::update() {
 	if(not floatFlg)hitBox.physicsUpdate();
 	hitBox.update();
 
-	left = (manager->get(U"Player")->pos.x < pos.x);
-
 	if (timer <= 0) {
 
 		switch (type)
@@ -20,10 +18,12 @@ void LastBoss::update() {
 			timer = 1.0;
 			character.addMotion(U"kick1");
 			updateFunc = [&]() {
+				changeDirection();
 
 				if ((not kickFlg) and timer < 1.0 - 0.4) {
 					kickFlg = true;
 					vel.x = left ? -600 : 600;
+					left = (manager->get(U"Player")->pos.x < pos.x);
 				}
 
 				if (timer < 0.4) {
@@ -43,21 +43,20 @@ void LastBoss::update() {
 			timer = 0.5;
 			character.addMotion(U"Stand");
 
-			updateFunc = []() {
-
+			updateFunc = [=]() {
+				changeDirection();
 			};
 
 			endFunc = [&]() {
 				type = RandomBool() ? State::kick : State::attack1;
 
-				switch (Random(2,2)) {
+				switch (Random(3,3)) {
 				case 0:type = State::kick; break;
 				case 1:type = State::attack1; break;
-				case 2:type = State::masterSparkPreJump; break;
+				case 2:type = State::attack2; break;
+				case 3:type = State::attack3; break;
+				case 4:type = State::masterSparkPreJump; break;
 				}
-
-
-
 			};
 
 		}break;
@@ -106,11 +105,63 @@ void LastBoss::update() {
 			};
 
 		}break;
+		case State::attack2: {
+			timer = 3.0;
+
+			for (int32 i = 0; i < 3; ++i) {
+
+				const Vec2 enemyPos = Vec2(Random(rect_size * 2.0, DataManager::get().stageSize.x - rect_size * 2.0), -Random(50,150));
+
+				StrawberrySoldier* soldier = new StrawberrySoldier{ enemyPos };
+				manager->add(soldier);
+				EnemyUmbrella* umbrella = new EnemyUmbrella{ enemyPos,soldier };
+				manager->add(umbrella);
+			}
+
+			updateFunc = [&]() {
+
+
+			};
+
+			endFunc = [&]() {
+				type = State::stand;
+
+
+			};
+
+		}break;
+		case State::attack3: {
+			timer = 5.0;
+
+			for (int32 i = 0; i < 10; ++i) {
+				const SizeF stageSize = DataManager::get().stageSize;
+
+				const Vec2 enemyPos = Vec2(stageSize.x + 300 * i, Random(rect_size * 5.0, stageSize.y - rect_size * 2.0));
+				ClosedUmbrella* umb = new ClosedUmbrella{ enemyPos,-90_deg,500 };
+				umb->effectFlg = true;
+				manager->add(umb);
+
+			}
+
+			updateFunc = [&]() {
+
+
+			};
+
+			endFunc = [&]() {
+				type = State::stand;
+
+
+			};
+
+		}break;
+
 		case State::masterSparkPreJump:{
 			character.addMotion(U"Jump1");
 
 			timer = 1.0;
 			updateFunc = [=]() {
+				changeDirection();
 
 				if (timer < 0.5) {
 					this->accumulatedTime += Scene::DeltaTime();
@@ -137,11 +188,17 @@ void LastBoss::update() {
 
 			accumulatedTime = 0;
 
-			double targetX = rect_size * 18;
+			const double stageWidth = DataManager::get().stageSize.x;
+
+			bool playerLeft = (manager->get(U"Player")->pos.x) < (stageWidth/ 2.0);
+
+			double targetX = playerLeft ? (stageWidth - rect_size * 2) : rect_size * 2;
 			double lenX = Abs(pos.x - targetX);
 			double targetY = rect_size * 3;
 			double lenY = Abs(pos.y - targetY);
 			updateFunc = [=]() {
+				changeDirection();
+
 				pos.x = linerMove(pos.x, targetX, lenX / timeLim);
 				pos.y = linerMove(pos.y, targetY, lenY / timeLim);
 
@@ -167,12 +224,17 @@ void LastBoss::update() {
 			character.addMotion(U"MasupaPause");
 
 			timer = 3.0;
-			const Vec2 umbPos = Figure{ character.character.table[U"saki"].joint.getQuad() }.center();
-			magicCircle.start(umbPos, 100);
+			magicCircle.start(100);
 
 			updateFunc = [=]() {
+
 				if (1.5<timer) {
-					magicCircle.rad = (manager->get(U"Player")->pos - pos).getAngle() - 90_deg;
+					changeDirection();
+
+					const Vec2 umbPos = Figure{ character.character.table[U"saki"].joint.getQuad() }.center();
+
+					magicCircle.rad = (manager->get(U"Player")->pos - pos).getAngle() - 90_deg;					
+					magicCircle.setPos(OffsetCircular{ umbPos,200,magicCircle.rad-90_deg });
 				}
 
 				character.character.table[U"rarm"].joint.angle = left ? 180_deg-magicCircle.rad - 120_deg : magicCircle.rad - 120_deg;
@@ -195,6 +257,8 @@ void LastBoss::update() {
 			DataManager::get().effect.add<LaserEffect>(RectF(Arg::leftCenter = umbPos, 1500, 150), magicCircle.rad, Palette::Pink);
 
 			updateFunc = [=]() {
+				//向きは変えない
+
 				attack(U"Player", RectF(Arg::leftCenter = pos, 1500, 100).rotatedAt(pos, magicCircle.rad), 1.0);
 				character.character.table[U"rarm"].joint.angle = left ? 180_deg -magicCircle.rad - 120_deg : magicCircle.rad - 120_deg;
 			};
