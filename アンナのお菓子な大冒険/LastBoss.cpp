@@ -50,7 +50,7 @@ void LastBoss::update() {
 			endFunc = [&]() {
 				type = RandomBool() ? State::kick : State::attack1;
 
-				switch (Random(3,3)) {
+				switch (Random(2,3)) {
 				case 0:type = State::kick; break;
 				case 1:type = State::attack1; break;
 				case 2:type = State::attack2; break;
@@ -77,6 +77,7 @@ void LastBoss::update() {
 			umbrellaFlg = false;
 
 			updateFunc = [&, umbs = umbrellas]() {
+				changeDirection();
 
 				if (timer < 3.0 - 0.8) {
 					if (not umbrellaFlg) {
@@ -108,6 +109,8 @@ void LastBoss::update() {
 		case State::attack2: {
 			timer = 3.0;
 
+			character.addMotion(U"UdeAgeru");
+
 			for (int32 i = 0; i < 3; ++i) {
 
 				const Vec2 enemyPos = Vec2(Random(rect_size * 2.0, DataManager::get().stageSize.x - rect_size * 2.0), -Random(50,150));
@@ -119,8 +122,7 @@ void LastBoss::update() {
 			}
 
 			updateFunc = [&]() {
-
-
+				changeDirection();
 			};
 
 			endFunc = [&]() {
@@ -131,20 +133,28 @@ void LastBoss::update() {
 
 		}break;
 		case State::attack3: {
-			timer = 5.0;
+			timer = 10.0;
+
+			character.addMotion(U"ごめんあそばせ");
 
 			for (int32 i = 0; i < 10; ++i) {
 				const SizeF stageSize = DataManager::get().stageSize;
 
-				const Vec2 enemyPos = Vec2(stageSize.x + 300 * i, Random(rect_size * 5.0, stageSize.y - rect_size * 2.0));
-				ClosedUmbrella* umb = new ClosedUmbrella{ enemyPos,-90_deg,500 };
+				const Vec2 enemyPos = Vec2(stageSize.x + 400 * i, Random(rect_size * 5.0, stageSize.y - rect_size * 2.0));
+				ClosedUmbrella* umb = new ClosedUmbrella{ enemyPos,-90_deg,400 };
 				umb->effectFlg = true;
 				manager->add(umb);
+
+				if (RandomBool(0.3)) {
+					umb = new ClosedUmbrella{ enemyPos + Vec2{100,Random(-50,50)},-90_deg,400 };
+					umb->effectFlg = true;
+					manager->add(umb);
+				}
 
 			}
 
 			updateFunc = [&]() {
-
+				changeDirection();
 
 			};
 
