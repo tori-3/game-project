@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#include<Siv3D.hpp>
-
 class Movable {
 public:
 	Vec2 pos;

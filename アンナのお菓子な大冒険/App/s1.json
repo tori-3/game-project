@@ -1,7 +1,7 @@
 ﻿{
   "BackGround": [
-    "C:/Users/Torigoe/source/repos/game-project/アンナのお菓子な大冒険/App/backGround2.json",
-    "C:/Users/Torigoe/source/repos/game-project/アンナのお菓子な大冒険/App/backGround1.json"
+    "backGround2.json",
+    "backGround1.json"
   ],
   "Block": {
     "CakeGround": [

@@ -1,5 +1,4 @@
-﻿# include <Siv3D.hpp>
-# include "table.h"
+﻿# include "table.h"
 
 
 bool check_range(Point pos, Point size) {
@@ -245,7 +244,8 @@ void Main()
 				Optional<FilePath> path = Dialog::OpenFile({ FileFilter::JSON() });
 
 				if (path) {
-					backGrounds << BackGround{ path.value()};
+          const FilePath rpath = FileSystem::RelativePath(path.value());
+					backGrounds << BackGround{ rpath };
 				}
 
 

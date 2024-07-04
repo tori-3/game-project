@@ -1,5 +1,4 @@
-﻿#include "stdafx.h"
-#include "Movements.h"
+﻿#include "Movements.h"
 #include"MotionLoader.h"
 
 

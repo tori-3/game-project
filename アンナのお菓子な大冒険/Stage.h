@@ -2,8 +2,8 @@
 #include"Block.h"
 
 //何ブロックまで描画するか
-constexpr int range_right = 15;
-constexpr int range_left = 10;
+constexpr static int range_right = 15;
+constexpr static int range_left = 10;
 
 class Stage
 {
