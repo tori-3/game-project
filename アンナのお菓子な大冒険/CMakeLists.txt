@@ -14,19 +14,13 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/App)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 add_executable(Annas_Candy_Adventrue
+  Block.cpp
+  Enemy.cpp
+  IMotionField.cpp
+  LastBoss.cpp
   Main.cpp
-  #../../Test/Siv3DTest.cpp
-  #../../Test/Siv3DTest_Array.cpp
-  #../../Test/Siv3DTest_BinaryReader.cpp
-  #../../Test/Siv3DTest_BinaryWriter.cpp
-  #../../Test/Siv3DTest_FileSystem.cpp
-  #../../Test/Siv3DTest_Image.cpp
-  #../../Test/Siv3DTest_Resource.cpp
-  #../../Test/Siv3DTest_Stopwatch.cpp
-  #../../Test/Siv3DTest_TextEncoding.cpp
-  #../../Test/Siv3DTest_TextReader.cpp
-  #../../Test/Siv3DTest_TextWriter.cpp
-  #../../Test/Siv3DTest_Timer.cpp
+  Movements.cpp
+  Player.cpp
   )
 
 target_precompile_headers(Annas_Candy_Adventrue PRIVATE stdafx.h)
