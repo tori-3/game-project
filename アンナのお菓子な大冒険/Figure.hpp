@@ -182,13 +182,13 @@ public:
 	}
 
 	[[nodiscard]]
-	constexpr Figure movedBy(const Vec2& vec)const noexcept
+	Figure movedBy(const Vec2& vec)const noexcept
 	{
 		return Figure{ shape }.moveBy(vec);
 	}
 
 	[[nodiscard]]
-	constexpr Figure movedBy(double x, double y)const noexcept
+	Figure movedBy(double x, double y)const noexcept
 	{
 		return movedBy(Vec2{ x,y });
 	}
@@ -247,13 +247,13 @@ public:
 	}
 
 	[[nodiscard]]
-	constexpr Figure scaledAt(const Vec2& pos, double x, double y)const noexcept
+	Figure scaledAt(const Vec2& pos, double x, double y)const noexcept
 	{
 		return Figure{ shape }.scaleAt(pos, x, y);
 	}
 
 	[[nodiscard]]
-	constexpr Figure scaledAt(const Vec2& pos, double s)const noexcept
+	Figure scaledAt(const Vec2& pos, double s)const noexcept
 	{
 		return scaledAt(pos, s, s);
 	}
@@ -269,13 +269,13 @@ public:
 	}
 
 	[[nodiscard]]
-	constexpr Figure scaled(double x, double y)const noexcept
+	Figure scaled(double x, double y)const noexcept
 	{
 		return Figure{ shape }.scale(x, y);
 	}
 
 	[[nodiscard]]
-	constexpr Figure scaled(double s)const noexcept
+	Figure scaled(double s)const noexcept
 	{
 		return scaled(s, s);
 	}
@@ -310,13 +310,13 @@ public:
 	}
 
 	[[nodiscard]]
-	constexpr Figure rotatedAt(const Vec2& pos, double angle)const noexcept
+	Figure rotatedAt(const Vec2& pos, double angle)const noexcept
 	{
 		return Figure{ shape }.rotateAt(pos, angle);
 	}
 
 	[[nodiscard]]
-	constexpr Figure rotatedAt(double x, double y, double angle)const noexcept
+	Figure rotatedAt(double x, double y, double angle)const noexcept
 	{
 		return rotatedAt(Vec2{ x,y }, angle);
 	}
@@ -327,13 +327,13 @@ public:
 	}
 
 	[[nodiscard]]
-	constexpr Figure rotated(double angle)const noexcept
+	Figure rotated(double angle)const noexcept
 	{
 		return Figure{ shape }.rotate(angle);
 	}
 
 	[[nodiscard]]
-	constexpr LineString outline()const
+	LineString outline()const
 	{
 		switch (shape.index())
 		{
