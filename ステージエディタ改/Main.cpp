@@ -244,7 +244,8 @@ void Main()
 				Optional<FilePath> path = Dialog::OpenFile({ FileFilter::JSON() });
 
 				if (path) {
-					backGrounds << BackGround{ path.value()};
+          const FilePath rpath = FileSystem::RelativePath(path.value());
+					backGrounds << BackGround{ rpath };
 				}
 
 
