@@ -1,5 +1,4 @@
 ﻿#pragma once
-# include <Siv3D.hpp>
 constexpr int32 rect_size = 70;
 
 //ここで画像の生成などをする

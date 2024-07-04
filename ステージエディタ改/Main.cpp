@@ -1,5 +1,4 @@
-﻿# include <Siv3D.hpp>
-# include "table.h"
+﻿# include "table.h"
 
 
 bool check_range(Point pos, Point size) {
