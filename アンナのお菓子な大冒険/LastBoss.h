@@ -80,6 +80,151 @@ public:
 
 };
 
+
+
+class ChaseUmbrella :public Entity {
+public:
+	CharacterSystem character;
+
+	double angle;
+
+	double targetAngle;
+
+	double speed;
+
+	double time = 0;
+
+	static constexpr double eventInterval = 0.05;
+	double accumulatedTime = 0.0;
+
+	bool rotateFlg = false;
+
+	static constexpr double timeLim = 10.0;
+
+	ChaseUmbrella(const Vec2& cpos,double angle, double speed) :Entity{ U"Umbrella", Circle{0,0,50},cpos,{0,0},1 }
+		, character{ U"Characters/bitter/umbrella2.json" ,U"Characters/bitter/umbrellaMotion.txt" ,0.3,cpos,false,false }, angle{ angle }, speed{ speed }
+	{
+		character.character.joint->angle = angle;
+		character.character.joint->color.a = 0.0;
+
+		TextureAsset::Register(U"MagicEffect0", 0xF810_icon, 50);
+		TextureAsset::Register(U"MagicEffect1", 0xF786_icon, 50);
+		TextureAsset::Register(U"MagicEffect2", 0xF563_icon, 50);
+		TextureAsset::Register(U"MagicEffect3", 0xF005_icon, 50);
+	}
+
+	void update()override {
+
+		time += Scene::DeltaTime();
+		
+		character.character.joint->angle = angle;
+
+		if (not rotateFlg) {
+			pos += Vec2{ OffsetCircular{ {0,0},speed,angle} }*Scene::DeltaTime();
+
+			accumulatedTime += Scene::DeltaTime();
+
+			if (eventInterval <= accumulatedTime)
+			{
+				DataManager::get().additiveEffect.add<MagicEffect>(Vec2{ pos }, TextureAsset{ U"MagicEffect{}"_fmt(Random(0,3)) }, HSV{ 360 * 2 * Scene::Time() });
+				accumulatedTime -= eventInterval;
+			}
+		}
+		
+
+		manager->stage->hit(&hitBox);
+		hitBox.update();
+
+		if (hitBox.touchAny()) {
+			targetAngle=(manager->get(U"Player")->pos-pos).getAngle();
+
+			constexpr double range = 15_deg;
+
+			if (InRange(targetAngle,90_deg- range,90_deg)) {
+				targetAngle = 90_deg - range;
+			}
+			else if (InRange(targetAngle, 90_deg, 90_deg + range)) {
+				targetAngle = 90_deg + range;
+			}
+			else if (InRange(targetAngle, -90_deg ,-90_deg + range)) {
+				targetAngle = -90_deg + range;
+			}
+			else if (InRange(targetAngle, -90_deg-range, -90_deg)) {
+				targetAngle = -90_deg - range;
+			}
+
+			rotateFlg = true;
+		}
+
+		if (rotateFlg) {
+			angle = linerMove(angle, targetAngle, 360_deg);
+
+
+			accumulatedTime += Scene::DeltaTime();
+
+			if (eventInterval <= accumulatedTime)
+			{
+				DataManager::get().additiveEffect.add<MagicEffect>(pos, TextureAsset{ U"MagicEffect{}"_fmt(Random(0,3)) }, HSV{ 360 * 2 * Scene::Time() }, Random(360_deg), 300);
+				accumulatedTime -= eventInterval;
+			}
+
+			if (angle == targetAngle) {
+				rotateFlg = false;
+			}
+
+		}
+
+		if (timeLim-1< time)
+		{
+			character.character.joint->color.a = timeLim-time;
+		}
+
+		attack(U"Player", character.character.table[U"umb"].joint.getQuad2(), 1);
+
+		character.update(pos, false);
+	}
+
+	void lateUpdate() {
+
+
+	}
+
+	bool isActive()override {
+		return time < timeLim;
+	}
+
+	void draw()const override {
+		character.draw();
+	}
+
+	double linerMove(double pos, double target, double speed, double dt = Scene::DeltaTime()) {
+
+		double d = speed * dt;
+
+		if (pos < target) {
+
+			if (target < pos + d) {
+				return target;
+			}
+			else {
+				return pos + d;
+			}
+		}
+		else {
+
+			if (pos - d < target) {
+				return target;
+			}
+			else {
+				return pos - d;
+			}
+		}
+	}
+
+};
+
+
+
 class EnemyUmbrella :public Entity {
 public:
 	CharacterSystem character;
@@ -146,11 +291,10 @@ public:
 
 	bool floatFlg = false;
 
-	enum class State{kick,stand,attack1,attack2,attack3, masterSparkPreJump, masterSparkJump, masterSparkWait, masterSpark,} type=State::kick;
+	enum class State{kick,stand,throwUmbrella, enemyFalls, umbrellaShot, reflectionUmbrella, kompeitoGalaxyJump, kompeitoGalaxy, masterSparkPreJump, masterSparkJump, masterSparkWait, masterSpark,} type=State::kick;
 
 	MagicCircle magicCircle;
 
-	static constexpr double eventInterval = 0.05;
 	double accumulatedTime = 0.0;
 
 	LastBoss(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,-5),40,150},cpos,{0,0},100 }
@@ -165,6 +309,13 @@ public:
 	bool kickFlg = false;
 
 	bool umbrellaFlg = false;
+
+	int32 throwUmbrellaCount = 0;
+
+	bool isLastSpart()
+	{
+		return hp<= 20;
+	}
 
 	void update()override;
 

@@ -422,7 +422,51 @@ public:
 	void draw()const override {
 		TextureAsset(U"金平糖{}"_fmt(type)).resized(100).drawAt(pos);
 	}
+
+	bool isActive()override {
+		return 0 < hp and pos.y < DataManager::get().stageSize.y + 200;
+	}
 };
+
+class DanmakuKompeito :public Entity {
+public:
+	size_t type = Random(2);
+
+	double time = 0;
+
+	DanmakuKompeito(const Vec2& cpos, const Vec2& vel) :Entity{ U"Enemy", Circle{25*0.8},cpos,vel,1 }
+	{
+		TextureAsset::Register(U"金平糖0", U"Characters/cloud/金平糖/konpeitou.png");
+		TextureAsset::Register(U"金平糖1", U"Characters/cloud/金平糖/konpeitouB.png");
+		TextureAsset::Register(U"金平糖2", U"Characters/cloud/金平糖/konpeitouR.png");
+	}
+
+	void update()override {
+
+		time += Scene::DeltaTime();
+
+		pos += vel * Scene::DeltaTime();
+		hitBox.update();
+
+		attack(U"Player", hitBox.getFigure(), 1);
+	}
+
+	void lateUpdate() {
+		constexpr ColorF colorList[] = { Palette::Yellow,Palette::Blue,Palette::Red };
+		if (not isActive()) {
+			DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 35, colorList[type]);
+		}
+	}
+
+	void draw()const override {
+		TextureAsset(U"金平糖{}"_fmt(type)).resized(100*0.8).rotated(time*360_deg).drawAt(pos);
+	}
+
+	bool isActive()override {
+		return 0 < hp and pos.y < DataManager::get().stageSize.y + 200;
+	}
+};
+
 
 class CloudEnemy :public Entity {
 public:

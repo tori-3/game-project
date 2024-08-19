@@ -26,8 +26,8 @@ void LastBoss::update() {
 					left = (manager->get(U"Player")->pos.x < pos.x);
 				}
 
-				if (timer < 0.4) {
-
+				if (timer < 0.4)
+				{
 					attack(U"Player", RectF{ Arg::center(pos + (left ? Vec2{-65,-10} : Vec2{65,-10})),65,20 }, 1);
 				}
 			};
@@ -40,99 +40,135 @@ void LastBoss::update() {
 		}break;
 		case State::stand: {
 
-			timer = 0.5;
+			timer = 2.0;
 			character.addMotion(U"Stand");
 
 			updateFunc = [=]() {
 				changeDirection();
+
+
+				if (manager->get(U"Player")->hitBox.getFigure().intersects(RectF{ Arg::center(pos + (left ? Vec2{-50,0} : Vec2{50,0})),100,140 }))
+				{
+					timer = 0;
+					type = State::kick;
+				}
 			};
 
-			endFunc = [&]() {
-				type = RandomBool() ? State::kick : State::attack1;
+			endFunc = [=]() {
 
-				switch (Random(2,3)) {
-				case 0:type = State::kick; break;
-				case 1:type = State::attack1; break;
-				case 2:type = State::attack2; break;
-				case 3:type = State::attack3; break;
-				case 4:type = State::masterSparkPreJump; break;
+				if (isLastSpart()) {
+					switch (Random(0, 4))
+					{
+					case 0:type = State::enemyFalls; break;
+					case 1:type = State::umbrellaShot; break;
+					case 2:type = State::reflectionUmbrella; break;
+					case 3:type = State::kompeitoGalaxyJump; break;
+					case 4:type = State::masterSparkPreJump; break;
+					}
+				}
+				else {
+					if (manager->get(U"Player")->hitBox.getFigure().intersects(RectF{ Arg::center(pos + (left ? Vec2{-50,0} : Vec2{50,0})),100,140 }))
+					{
+						type = State::kick;
+					}
+					else {
+						switch (Random(0, 4))
+						{
+						case 0:type = State::throwUmbrella; break;
+						case 1:type = State::enemyFalls; break;
+						case 2:type = State::umbrellaShot; break;
+						case 3:type = State::reflectionUmbrella; break;
+						}
+					}
 				}
 			};
 
 		}break;
-		case State::attack1: {
+		case State::throwUmbrella: {
+
 			timer = 3.0;
 
 			character.addMotion(U"Skill4");
 
 
-			Array<ClosedUmbrella*>umbrellas;
+			ClosedUmbrella* umbrella = nullptr;
 
-			for (int32 i = 0; i < 1; ++i) {
-				ClosedUmbrella* umbrella = new ClosedUmbrella{ pos + Vec2{(i - 0) * 30,0},0_deg,300 };
-				manager->add(umbrella);
-				umbrellas << umbrella;
-			}
+			umbrella = new ClosedUmbrella{ pos,0_deg,300 };
+			manager->add(umbrella);
 
 			umbrellaFlg = false;
 
-			updateFunc = [&, umbs = umbrellas]() {
+			updateFunc = [=]() {
 				changeDirection();
 
 				if (timer < 3.0 - 0.8) {
 					if (not umbrellaFlg) {
 
-						for (auto& umb : umbs) {
-							umb->speed = 800;
-							umb->effectFlg = true;
-							umbrellaFlg = true;
-						}
+						umbrella->speed = 800;
+						umbrella->effectFlg = true;
+						umbrellaFlg = true;
 					}
 				}
 				else if (timer < 3.0 - 0.4) {
-					for (auto& umb : umbs) {
-						umb->speed = 0;
-						umb->angle = linerMove(umb->angle, (manager->get(U"Player")->pos - umb->pos).getAngle(), 360_deg);
-					}
+					umbrella->speed = 0;
+					umbrella->angle = linerMove(umbrella->angle, (manager->get(U"Player")->pos - umbrella->pos).getAngle(), 360_deg);
 				}
-
-
 			};
 
 			endFunc = [&]() {
-				type = State::stand;
 
+				if (throwUmbrellaCount<2) {
+					++throwUmbrellaCount;
+					type = State::throwUmbrella;
+				}
+				else {
+					throwUmbrellaCount = 0;
+					type = State::stand;
+				}
 
 			};
 
 		}break;
-		case State::attack2: {
+		case State::enemyFalls: {
 			timer = 3.0;
 
 			character.addMotion(U"UdeAgeru");
 
 			for (int32 i = 0; i < 3; ++i) {
 
-				const Vec2 enemyPos = Vec2(Random(rect_size * 2.0, DataManager::get().stageSize.x - rect_size * 2.0), -Random(50,150));
+				const Vec2 enemyPos = Vec2(Random(rect_size * 2.0, DataManager::get().stageSize.x - rect_size * 2.0), rect_size*2);
 
-				StrawberrySoldier* soldier = new StrawberrySoldier{ enemyPos };
+				Entity* soldier = nullptr;
+
+				switch (Random(3))
+				{
+				case 0:soldier = new StrawberrySoldier{ enemyPos };  break;
+				case 1:soldier = new CookieSoldier{ enemyPos }; break;
+				case 2:soldier = new Snowman{ enemyPos }; break;
+				case 3:soldier = new ItigoSlave{ enemyPos }; break;
+				default:
+					break;
+				}
+
 				manager->add(soldier);
 				EnemyUmbrella* umbrella = new EnemyUmbrella{ enemyPos,soldier };
 				manager->add(umbrella);
+
+				DataManager::get().additiveEffect.add<ExplosionEffect>(enemyPos, 50, HSV{ 20,0.8,1 });
 			}
 
-			updateFunc = [&]() {
+			updateFunc = [&]()
+			{
 				changeDirection();
 			};
 
-			endFunc = [&]() {
+			endFunc = [&]()
+			{
 				type = State::stand;
-
-
 			};
 
 		}break;
-		case State::attack3: {
+		case State::umbrellaShot: {
 			timer = 10.0;
 
 			character.addMotion(U"ごめんあそばせ");
@@ -165,11 +201,113 @@ void LastBoss::update() {
 			};
 
 		}break;
+		case State::reflectionUmbrella: {
 
+			character.addMotion(U"ごめんあそばせ");
+
+			timer = 10.0;
+
+			for (int32 i = 0; i < 3; ++i) {
+				const SizeF stageSize = DataManager::get().stageSize;
+
+				ChaseUmbrella* umb = new ChaseUmbrella{ pos,30_deg*(i-1),Random(300.0,500.0)};
+				manager->add(umb);
+
+			}
+
+			updateFunc = [&]() {
+				changeDirection();
+
+			};
+
+			endFunc = [&]() {
+				type = State::stand;
+			};
+
+		}break;
+		case State::kompeitoGalaxyJump: {
+			//マスタースパーク前のジャンプ
+			character.addMotion(U"Fly");
+
+			constexpr double timeLim = 2.0;
+			timer = timeLim;
+
+			floatFlg = true;
+			constexpr double eventInterval = 0.05;
+
+			accumulatedTime = 0;
+
+			const double stageWidth = DataManager::get().stageSize.x;
+
+			bool playerLeft = (manager->get(U"Player")->pos.x) < (stageWidth / 2.0);
+
+			double targetX = playerLeft ? (stageWidth - rect_size * 2) : rect_size * 2;
+			double lenX = Abs(pos.x - targetX);
+			double targetY = rect_size * 3;
+			double lenY = Abs(pos.y - targetY);
+			updateFunc = [=]() {
+				changeDirection();
+
+				pos.x = linerMove(pos.x, targetX, lenX / timeLim);
+				pos.y = linerMove(pos.y, targetY, lenY / timeLim);
+
+				this->accumulatedTime += Scene::DeltaTime();
+				if (eventInterval <= this->accumulatedTime)
+				{
+					const Vec2 rFootPos = Figure{ character.character.table[U"rfootTip"].joint.getQuad() }.center();
+					const Vec2 lFootPos = Figure{ character.character.table[U"lfootTip"].joint.getQuad() }.center();
+					DataManager::get().additiveEffect.add<MagicEffect>(rFootPos, TextureAsset{ U"MagicEffect{}"_fmt(Random(0,3)) }, HSV{ 360 * 2 * Scene::Time() });
+					DataManager::get().additiveEffect.add<MagicEffect>(lFootPos, TextureAsset{ U"MagicEffect{}"_fmt(Random(0,3)) }, HSV{ 360 * 2 * Scene::Time() });
+					this->accumulatedTime -= eventInterval;
+				}
+			};
+
+			endFunc = [&]() {
+				type = State::kompeitoGalaxy;
+			};
+
+		}break;
+		case State::kompeitoGalaxy: {
+			timer = 20.0;
+			character.addMotion(U"KompeitoGalaxy");
+
+			constexpr double eventInterval = 0.1;
+			accumulatedTime = 0;
+			const double stageWidth = DataManager::get().stageSize.x;
+
+			updateFunc = [=]() {
+				changeDirection();
+
+				accumulatedTime += Scene::DeltaTime();
+				if (eventInterval <= accumulatedTime)
+				{
+					const Vec2 umbPos = Figure{ character.character.table[U"saki"].joint.getQuad() }.center();
+					DataManager::get().additiveEffect.add<ExplosionEffect>(umbPos, 35, HSV{ 60,0.8,1 });
+
+					double angle = Math::Sin(timer * 0.5) * 360_deg;
+					Vec2 konpeitoVel = OffsetCircular{ {0,0},Math::Cos(angle)*100+150,angle};
+
+					
+
+					manager->add(new DanmakuKompeito{ umbPos ,konpeitoVel });
+
+					accumulatedTime -= eventInterval;
+				}
+			};
+			endFunc = [=]() {
+				type = State::stand;
+				
+			};
+
+
+		}break;
 		case State::masterSparkPreJump:{
 			character.addMotion(U"Jump1");
 
 			timer = 1.0;
+			constexpr double eventInterval = 0.05;
+			accumulatedTime = 0;
+
 			updateFunc = [=]() {
 				changeDirection();
 
@@ -195,6 +333,7 @@ void LastBoss::update() {
 			timer = timeLim;
 
 			floatFlg = true;
+			constexpr double eventInterval = 0.05;
 
 			accumulatedTime = 0;
 
