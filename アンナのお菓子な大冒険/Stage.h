@@ -48,8 +48,10 @@ public:
 		{U"Cherries",[]() {return new Cherries(); }},
 		{U"Blueberry",[]() {return new Blueberry(); }},
 		{U"LastBossBlock",[]() {return new LastBossBlock(); }},
-
+		{U"FallingRocksBlock",[]() {return new FallingRocksBlock(); }},
+		{U"RollingRocksBlock",[]() {return new RollingRocksBlock(); }},
 	};
+
 
 	//~Stage() {
 	//	for (auto& block : map) {

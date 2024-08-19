@@ -338,3 +338,21 @@ class Blueberry :public Untouchable {
 public:
 	void draw(const Point& pos)const override;
 };
+
+class FallingRocksBlock :public Untouchable {
+public:
+
+	bool fallingFlg = false;
+
+	void update(const Point& pos)override;
+
+	void draw(const Point& pos)const override;
+};
+
+class RollingRocksBlock :public Untouchable {
+public:
+
+	bool bornFlg = false;
+
+	void update(const Point& pos)override;
+};

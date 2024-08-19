@@ -213,6 +213,15 @@ void LastBossBlock(Point pos) {
 	RectF{ pos * rect_size,rect_size }.draw(Palette::Deeppink);
 }
 
+void FallingRocksBlock(Point pos) {
+	RectF{ pos * rect_size,rect_size }.draw(Palette::Darkred);
+}
+
+void RollingRocksBlock(Point pos) {
+	Circle{(pos+Vec2{1,1})*rect_size,rect_size }.draw(Palette::Darkred);
+}
+
+
 struct Info {
 	String tag;
 	std::function<void(Point)>func;
@@ -259,7 +268,9 @@ Array<Info>list{
 	{U"SlaversCookie",SlaversCookie,U"奴隷商クッキー"},
 	{U"PoleBlock",PoleBlock,U"柱ブロック"},
 	{U"CaptainBlock",CaptainBlock,U"船長"},
-	{U"LastBossBlock",LastBossBlock,U"ラスボス"}
+	{U"LastBossBlock",LastBossBlock,U"ラスボス"},
+	{U"FallingRocksBlock",FallingRocksBlock,U"落石"},
+	{U"RollingRocksBlock",RollingRocksBlock,U"転がる岩"}
 };
 
 HashTable<String, std::function<void(Point)>> table;

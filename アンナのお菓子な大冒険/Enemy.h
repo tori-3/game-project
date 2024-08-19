@@ -1634,3 +1634,76 @@ public:
 		TextureAsset(U"Door").resized(rect_size * 2).scaled(d,1).mirrored().draw(pos+Vec2::UnitX()*(1-d)*2* rect_size);
 	}
 };
+
+class FallingRocks :public Entity {
+public:
+	FallingRocks(const Vec2& cpos) :Entity{ U"Rocks", Circle{ pos,rect_size / 2.0 },cpos,{0,0},1 }
+	{
+
+	}
+
+	void update()override {
+
+		hitBox.physicsUpdate();
+		hitBox.update();
+
+		attack(U"Player", hitBox.getFigure(), 1);
+	}
+
+	void lateUpdate() {
+
+	}
+
+	void draw()const override {
+		Circle{ pos,rect_size / 2.0 }.draw(Palette::Darkred);
+	}
+
+	bool isActive()override {
+		return pos.y < DataManager::get().stageSize.y + 200;
+	}
+};
+
+class RollingRocks :public Entity {
+public:
+
+	RollingRocks(const Vec2& cpos) :Entity{ U"Rocks", Circle{ pos,rect_size },cpos,{0,0},1 }
+	{
+
+	}
+
+	void update()override {
+
+		manager->stage->hit(&hitBox);
+
+		pos.x -= Scene::DeltaTime() * 200;
+
+		hitBox.physicsUpdate();
+		hitBox.update();
+
+		attack(U"Player", hitBox.getFigure(), 1);
+
+
+		if (hitBox.touch(Direction::left)) {
+			hp = 0;
+		}
+
+	}
+
+	void lateUpdate() {
+
+
+		if (not isActive())
+		{
+			DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 100, Palette::Darkgray);
+		}
+
+	}
+
+	void draw()const override {
+		Circle{ pos,rect_size }.draw(Palette::Darkred);
+	}
+
+	bool isActive()override {
+		return 0<hp and pos.y < DataManager::get().stageSize.y + 200;
+	}
+};

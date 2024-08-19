@@ -314,6 +314,36 @@ void Blueberry::draw(const Point& pos)const {
 };
 
 
+void FallingRocksBlock::update(const Point& pos) {
 
+	constexpr double range = 1 * rect_size;
 
+	const double blockX = pos.x * rect_size;
 
+	if (not fallingFlg) {
+
+		const double playerX = DataManager::get().playerPos.x;
+
+		if (InRange(playerX, blockX - range, blockX + range)) {
+			fallingFlg = true;
+
+			DataManager::get().addEntity(U"FallingRocks",(pos+Vec2{0.5,0.5})*rect_size);
+		}
+
+	}
+};
+
+void FallingRocksBlock::draw(const Point& pos)const {
+
+	if (not fallingFlg)
+	{
+		RectF{ pos * rect_size,rect_size }.draw(Palette::Darkred);
+	}
+};
+
+void RollingRocksBlock::update(const Point& pos) {
+	if (not bornFlg) {
+		DataManager::get().addEntity(U"RollingRocks", (pos+Vec2{1,1}) * rect_size);
+		bornFlg = true;
+	}
+}
