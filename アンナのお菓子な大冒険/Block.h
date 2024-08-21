@@ -154,8 +154,7 @@ public:
 	}
 
 	void draw(const Point& pos)const override {
-		RectF rect{ pos * rect_size + Vec2(0,spring.get() * rect_size),rect_size,rect_size * (1 - spring.get()) };
-		rect.draw();
+		TextureAsset{ U"Pudding" }.resized(rect_size, rect_size * (1 - spring.get())).draw(pos * rect_size + Vec2(0, spring.get() * rect_size));
 	}
 };
 

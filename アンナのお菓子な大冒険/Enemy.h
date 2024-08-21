@@ -1637,7 +1637,7 @@ public:
 
 class FallingRocks :public Entity {
 public:
-	FallingRocks(const Vec2& cpos) :Entity{ U"Rocks", Circle{ pos,rect_size / 2.0 },cpos,{0,0},1 }
+	FallingRocks(const Vec2& cpos) :Entity{ U"Rocks", RectF{ Arg::center(0,0),rect_size / 2.0 },cpos,{0,0},1 }
 	{
 
 	}
@@ -1655,7 +1655,9 @@ public:
 	}
 
 	void draw()const override {
-		Circle{ pos,rect_size / 2.0 }.draw(Palette::Darkred);
+
+
+		TextureAsset{ U"PointedCorn" }.resized(rect_size).drawAt(pos);
 	}
 
 	bool isActive()override {
@@ -1666,7 +1668,7 @@ public:
 class RollingRocks :public Entity {
 public:
 
-	RollingRocks(const Vec2& cpos) :Entity{ U"Rocks", Circle{ pos,rect_size },cpos,{0,0},1 }
+	RollingRocks(const Vec2& cpos) :Entity{ U"Rocks", Circle{ 0,0,rect_size },cpos,{0,0},1 }
 	{
 
 	}
@@ -1700,7 +1702,8 @@ public:
 	}
 
 	void draw()const override {
-		Circle{ pos,rect_size }.draw(Palette::Darkred);
+
+		TextureAsset{ U"Doughnut" }.resized(rect_size*2).rotated(-DataManager::get().time*120_deg).drawAt(pos);
 	}
 
 	bool isActive()override {

@@ -5,7 +5,7 @@ constexpr int32 rect_size = 70;
 //ここで画像の生成などをする
 void Constructor() {
 
-	for (const auto& path : FileSystem::DirectoryContents(U"StageTexture"))
+	for (const auto& path : FileSystem::DirectoryContents(U"../../アンナのお菓子な大冒険/App/StageTexture"))
 	{
 		TextureAsset::Register(FileSystem::BaseName(path), path, TextureDesc::Mipped);
 	}
@@ -67,8 +67,7 @@ void elevator(Point pos) {
 }
 
 void spring(Point pos) {
-	Rect rect{ pos * rect_size,rect_size };
-	rect.draw(Palette::White);
+	TextureAsset{ U"Pudding" }.resized(rect_size).draw(pos * rect_size);
 }
 
 void StrawberrySoldierBlock(Point pos) {
@@ -194,7 +193,7 @@ void SnowKnight(Point pos) {
 }
 
 void ThroughBlock(Point pos) {
-	RectF{ pos * rect_size,rect_size,rect_size / 10 }.draw(Palette::Blue);
+	TextureAsset{ U"SlippingFloors" }.resized(rect_size).draw(pos * rect_size);
 }
 
 void SlaversCookie(Point pos) {
@@ -214,11 +213,12 @@ void LastBossBlock(Point pos) {
 }
 
 void FallingRocksBlock(Point pos) {
-	RectF{ pos * rect_size,rect_size }.draw(Palette::Darkred);
+	TextureAsset(U"PointedCorn").resized(rect_size).draw(pos * rect_size);
 }
 
 void RollingRocksBlock(Point pos) {
-	Circle{(pos+Vec2{1,1})*rect_size,rect_size }.draw(Palette::Darkred);
+	TextureAsset{ U"Doughnut" }.resized(rect_size * 2).drawAt((pos + Vec2{ 1,1 }) * rect_size);
+
 }
 
 

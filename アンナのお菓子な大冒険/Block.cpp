@@ -252,7 +252,7 @@ void ThroughBlock::reaction(const Point& pos, PhysicsBox* box)
 
 void ThroughBlock::draw(const Point& pos)const {
 
-	Rect{ pos * rect_size,rect_size,20 }.draw(Palette::Blue);
+	TextureAsset{ U"SlippingFloors" }.resized(rect_size).draw(pos * rect_size);
 }
 
 void PoleBlock::reaction(const Point& pos, PhysicsBox* box)
@@ -337,7 +337,7 @@ void FallingRocksBlock::draw(const Point& pos)const {
 
 	if (not fallingFlg)
 	{
-		RectF{ pos * rect_size,rect_size }.draw(Palette::Darkred);
+		TextureAsset(U"PointedCorn").resized(rect_size).draw(pos * rect_size);
 	}
 };
 
