@@ -78,8 +78,6 @@ public:
 
 	void update(const Vec2& _pos) {
 
-		//pos.y = _pos.y;
-		//pos.x=Math::SmoothDamp(pos.x, _pos.x, vel, 0.01,800);
 		pos = _pos;
 
 		pos.x = Clamp<double>(pos.x, 0, stageWidth - Scene::Width());
@@ -106,7 +104,9 @@ class MainGameScene : public IPauseScene
 public:
 	void cookieDisplay(int32 count,double tame)const {
 
-		TextureAsset::Register(U"CookieItem", U"🍪"_emoji);
+		if (not TextureAsset::IsRegistered(U"CookieItem")) {
+			TextureAsset::Register(U"CookieItem", U"🍪"_emoji);
+		}
 
 		for (auto i : step(10)) {
 
@@ -129,7 +129,9 @@ public:
 
 	void hpDisplay(int32 count)const {
 
-		TextureAsset::Register(U"HP", U"❤"_emoji);
+		if (not TextureAsset::IsRegistered(U"HP")) {
+			TextureAsset::Register(U"HP", U"❤"_emoji);
+		}
 
 		for (auto i : step(5)) {
 			if (i < count) {
@@ -285,15 +287,6 @@ public:
 		background.draw(camera.pos+Scene::Size()/2);
 		cloud.draw2();
 		Rect{ Scene::Size() }.draw(ColorF{ skyColor,0.4 });
-		//background2.draw(camera.pos + Scene::Size() / 2);
-
-		//{
-		//	ScopedRenderTarget2D target{ backGroundTexture.clear(skyColor) };
-
-		//	stageBackGround.draw(camera.pos);
-		//}
-		//Shader::GaussianBlur(backGroundTexture, internalTexture, renderTexture);
-		//renderTexture.draw();
 
 		backgroundManager.draw(camera.pos);
 
@@ -301,10 +294,6 @@ public:
 
 		{
 			//座標変換
-			//double hieght = Scene::Size().y - draw_y;
-			////if (player.pos.y < change_hieght)hieght += change_hieght - player.pos.y;
-			//Mat3x2 mat = Mat3x2::Translate(Vec2{ draw_x - player->pos.x, hieght });
-			//const Transformer2D transformer{ mat, TransformCursor::Yes };
 			const Transformer2D t{ camera.getMat3x2() };
 			manager.draw();
 			stage.draw(camera.pos+Scene::Size() / 2);
@@ -330,12 +319,6 @@ public:
 
 		FontAsset(U"TitleFont")(U"Escで操作方法").draw(40,850,0,Palette::Orange);
 
-		//if (DataManager::get().table.contains(U"Clear")) {
-		//	Rect{ Scene::Size() }.draw(ColorF{ 0,0.5 });
-		//	FontAsset(U"TitleFont")(U"クリア！！").drawAt(100,Scene::Center());
-
-		//	FontAsset(U"TitleFont")(U"Enterキー：マップへ").drawAt(50, Scene::Center().x,600);
-		//}
 	}
 
 	//ポーズ画面

@@ -297,7 +297,12 @@ public:
 	}
 
 	void set(const String& name, const String& parentName, const Vec2& center, const Vec2& rotatePos, const String& textureName, double z, double scale) {
-		TextureAsset::Register(textureName, textureName, TextureDesc::Mipped);
+
+		if (not TextureAsset::IsRegistered(textureName))
+		{
+			TextureAsset::Register(textureName, textureName, TextureDesc::Mipped);
+		}
+
 		table[name] = Body{ Joint{center, rotatePos, textureName,z,scale},parentName };
 	}
 

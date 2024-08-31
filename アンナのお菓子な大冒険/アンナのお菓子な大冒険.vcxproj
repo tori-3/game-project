@@ -115,7 +115,6 @@
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="IMotionField.cpp" />
     <ClCompile Include="LastBoss.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Movements.cpp" />
@@ -337,6 +336,7 @@
     <ClInclude Include="IMotionField.h" />
     <ClInclude Include="LaserEffect.h" />
     <ClInclude Include="LastBoss.h" />
+    <ClInclude Include="LinerMove.h" />
     <ClInclude Include="MagicCircle.h" />
     <ClInclude Include="MagicEffect.h" />
     <ClInclude Include="MainGameScene.h" />

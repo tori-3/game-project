@@ -145,7 +145,10 @@ public:
 	ChangeTexture(const String& target, const String& path, double time = 0)
 		:TimeMove(time), target(target), path(path)
 	{
-		TextureAsset::Register(path, path);
+		if (not TextureAsset::IsRegistered(path))
+		{
+			TextureAsset::Register(path, path);
+		}
 	}
 
 	void start(Character* character)override

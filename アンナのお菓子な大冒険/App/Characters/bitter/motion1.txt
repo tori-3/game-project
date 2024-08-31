@@ -403,3 +403,20 @@ SetZ,larm,-20
 SetZ,lbarm,10
 
 Wait,@waitTime
+
+#Muteki
+ChangeColor,body,1,1,1,0,0.25
+
+ChangeColor,body,1,1,1,1,0.25
+
+ChangeColor,body,1,1,1,0,0.25
+
+ChangeColor,body,1,1,1,1,0.25
+
+ChangeColor,body,1,1,1,0,0.25
+
+ChangeColor,body,1,1,1,1,0.25
+
+ChangeColor,body,1,1,1,0,0.25
+
+ChangeColor,body,1,1,1,1,0.25

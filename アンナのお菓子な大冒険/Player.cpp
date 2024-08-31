@@ -2,7 +2,7 @@
 
 Player::Player(const Vec2& cpos) :
 	character{ U"Characters/annna/annna.json",U"Characters/annna/motion.txt",0.25,cpos,false },
-	Entity{ U"Player",defaultBody ,cpos,{0,0},5 }
+	Entity{ U"Player",defaultBody ,cpos,{0,0},5000 }
 {
 
 	z = 100;

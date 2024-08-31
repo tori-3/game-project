@@ -1,32 +1,5 @@
 ﻿#include"Enemy.h"
-
-double linerMove(double pos,double target,double speed,double dt=Scene::DeltaTime()) {
-
-	double d = speed * dt;
-
-	if (pos<target) {
-
-		if (target<pos+d) {
-			return target;
-		}
-		else {
-			return pos + d;
-		}
-	}
-	else {
-
-		if (pos - d<target) {
-			return target;
-		}
-		else {
-			return pos - d;
-		}
-	}
-}
-
-
-
-
+#include"LinerMove.h"
 
 void Captain::update() {
 
@@ -37,14 +10,6 @@ void Captain::update() {
 	if (character.hasMotion(U"Muteki")) {
 		character.character.table[U"me"].joint.pos = Vec2{ 0,-30 };
 	}
-
-	//if (hitBox.touch(Direction::right))
-	//{
-	//	left = true;
-	//}
-	//else if (hitBox.touch(Direction::left)) {
-	//	left = false;
-	//}
 
 	if (timer <= 0) {
 
@@ -112,9 +77,6 @@ void Captain::update() {
 			{
 				Print << left;
 
-
-
-				//pos.x += (d.x / 3.0) * Scene::DeltaTime();
 				pos.x = Periodic::Sine1_1(timeLim * 4, timeLim - timer) * d.x + x;
 				pos.y = (d.y / timeLim) * (timeLim - timer) + y + Periodic::Sine1_1(time, timer) * A;
 
@@ -357,7 +319,6 @@ void Captain::update() {
 		}
 	}
 
-	//hitBox.physicsUpdate();
 	hitBox.update();
 
 	if (timer > 0)

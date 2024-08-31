@@ -1,4 +1,5 @@
 ﻿{
+  "BackGround": [],
   "Block": {
     "ChocolateWall": [
       "(0, 0)",
@@ -89,5 +90,6 @@
       "(14, 7)"
     ]
   },
+  "Rate": 1.0,
   "stage_size": "(18, 12)"
 }

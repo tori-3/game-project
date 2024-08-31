@@ -396,9 +396,11 @@ public:
 	Kompeito(const Vec2& cpos,double velX,double velY=-300) :Entity{ U"Enemy", Circle{25},cpos,{0,0},1}, velX{velX}
 	{
 		vel.y = velY;
-		TextureAsset::Register(U"金平糖0",U"Characters/cloud/金平糖/konpeitou.png");
-		TextureAsset::Register(U"金平糖1", U"Characters/cloud/金平糖/konpeitouB.png");
-		TextureAsset::Register(U"金平糖2", U"Characters/cloud/金平糖/konpeitouR.png");
+		if (not TextureAsset::IsRegistered(U"金平糖0")) {
+			TextureAsset::Register(U"金平糖0", U"Characters/cloud/金平糖/konpeitou.png");
+			TextureAsset::Register(U"金平糖1", U"Characters/cloud/金平糖/konpeitouB.png");
+			TextureAsset::Register(U"金平糖2", U"Characters/cloud/金平糖/konpeitouR.png");
+		}
 	}
 
 	void update()override {
@@ -432,18 +434,20 @@ class DanmakuKompeito :public Entity {
 public:
 	size_t type = Random(2);
 
-	double time = 0;
+	double timer;
 
-	DanmakuKompeito(const Vec2& cpos, const Vec2& vel) :Entity{ U"Enemy", Circle{25*0.8},cpos,vel,1 }
+	DanmakuKompeito(const Vec2& cpos, const Vec2& vel,double timeLim=20) :Entity{ U"Enemy", Circle{25*0.8},cpos,vel,1 },timer{timeLim}
 	{
-		TextureAsset::Register(U"金平糖0", U"Characters/cloud/金平糖/konpeitou.png");
-		TextureAsset::Register(U"金平糖1", U"Characters/cloud/金平糖/konpeitouB.png");
-		TextureAsset::Register(U"金平糖2", U"Characters/cloud/金平糖/konpeitouR.png");
+		if (not TextureAsset::IsRegistered(U"金平糖0")) {
+			TextureAsset::Register(U"金平糖0", U"Characters/cloud/金平糖/konpeitou.png");
+			TextureAsset::Register(U"金平糖1", U"Characters/cloud/金平糖/konpeitouB.png");
+			TextureAsset::Register(U"金平糖2", U"Characters/cloud/金平糖/konpeitouR.png");
+		}
 	}
 
 	void update()override {
 
-		time += Scene::DeltaTime();
+		timer -= Scene::DeltaTime();
 
 		pos += vel * Scene::DeltaTime();
 		hitBox.update();
@@ -459,11 +463,11 @@ public:
 	}
 
 	void draw()const override {
-		TextureAsset(U"金平糖{}"_fmt(type)).resized(100*0.8).rotated(time*360_deg).drawAt(pos);
+		TextureAsset(U"金平糖{}"_fmt(type)).resized(100*0.8).rotated(timer*360_deg).drawAt(pos);
 	}
 
 	bool isActive()override {
-		return 0 < hp and pos.y < DataManager::get().stageSize.y + 200;
+		return 0 < hp and 0 < timer;
 	}
 };
 

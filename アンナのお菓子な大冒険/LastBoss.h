@@ -10,6 +10,8 @@
 #include"LaserEffect.h"
 #include"Enemy.h"
 
+#include"LinerMove.h"
+
 class ClosedUmbrella:public Entity {
 public:
 	CharacterSystem character;
@@ -31,11 +33,12 @@ public:
 		character.character.joint->angle = angle;
 		character.character.joint->color.a = 0.0;
 
-		TextureAsset::Register(U"MagicEffect0", 0xF810_icon, 50);
-		TextureAsset::Register(U"MagicEffect1", 0xF786_icon, 50);
-		TextureAsset::Register(U"MagicEffect2", 0xF563_icon, 50);
-		TextureAsset::Register(U"MagicEffect3", 0xF005_icon, 50);
-
+		if (not TextureAsset::IsRegistered(U"MagicEffect0")) {
+			TextureAsset::Register(U"MagicEffect0", 0xF810_icon, 50);
+			TextureAsset::Register(U"MagicEffect1", 0xF786_icon, 50);
+			TextureAsset::Register(U"MagicEffect2", 0xF563_icon, 50);
+			TextureAsset::Register(U"MagicEffect3", 0xF005_icon, 50);
+		}
 	}
 
 	void update()override {
@@ -99,18 +102,20 @@ public:
 
 	bool rotateFlg = false;
 
-	static constexpr double timeLim = 10.0;
+	double timeLim;
 
-	ChaseUmbrella(const Vec2& cpos,double angle, double speed) :Entity{ U"Umbrella", Circle{0,0,50},cpos,{0,0},1 }
-		, character{ U"Characters/bitter/umbrella2.json" ,U"Characters/bitter/umbrellaMotion.txt" ,0.3,cpos,false,false }, angle{ angle }, speed{ speed }
+	ChaseUmbrella(const Vec2& cpos,double angle, double speed,double time) :Entity{ U"Umbrella", Circle{0,0,50},cpos,{0,0},1 }
+		, character{ U"Characters/bitter/umbrella2.json" ,U"Characters/bitter/umbrellaMotion.txt" ,0.3,cpos,false,false }, angle{ angle }, speed{ speed }, timeLim{time}
 	{
 		character.character.joint->angle = angle;
 		character.character.joint->color.a = 0.0;
 
-		TextureAsset::Register(U"MagicEffect0", 0xF810_icon, 50);
-		TextureAsset::Register(U"MagicEffect1", 0xF786_icon, 50);
-		TextureAsset::Register(U"MagicEffect2", 0xF563_icon, 50);
-		TextureAsset::Register(U"MagicEffect3", 0xF005_icon, 50);
+		if (not TextureAsset::IsRegistered(U"MagicEffect0")) {
+			TextureAsset::Register(U"MagicEffect0", 0xF810_icon, 50);
+			TextureAsset::Register(U"MagicEffect1", 0xF786_icon, 50);
+			TextureAsset::Register(U"MagicEffect2", 0xF563_icon, 50);
+			TextureAsset::Register(U"MagicEffect3", 0xF005_icon, 50);
+		}
 	}
 
 	void update()override {
@@ -197,29 +202,6 @@ public:
 		character.draw();
 	}
 
-	double linerMove(double pos, double target, double speed, double dt = Scene::DeltaTime()) {
-
-		double d = speed * dt;
-
-		if (pos < target) {
-
-			if (target < pos + d) {
-				return target;
-			}
-			else {
-				return pos + d;
-			}
-		}
-		else {
-
-			if (pos - d < target) {
-				return target;
-			}
-			else {
-				return pos - d;
-			}
-		}
-	}
 
 };
 
@@ -291,19 +273,28 @@ public:
 
 	bool floatFlg = false;
 
-	enum class State{kick,stand,throwUmbrella, enemyFalls, umbrellaShot, reflectionUmbrella, kompeitoGalaxyJump, kompeitoGalaxy, masterSparkPreJump, masterSparkJump, masterSparkWait, masterSpark,} type=State::kick;
+	enum class State{kick,stand,throwUmbrella, enemyFalls, umbrellaShot, reflectionUmbrella, kompeitoGalaxyJump, kompeitoGalaxy, masterSparkPreJump, masterSparkJump, masterSparkWait, masterSpark, landing} type=State::stand;
 
 	MagicCircle magicCircle;
 
 	double accumulatedTime = 0.0;
 
+	bool damageFlg = false;
+
+
+	static constexpr double mutekiTime = 2;
+	double damageTimer = 0;
+
+
 	LastBoss(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,-5),40,150},cpos,{0,0},100 }
 		, character{ U"Characters/bitter/model1.json" ,U"Characters/bitter/motion1.txt" ,0.3,cpos,false,false }
 	{
-		TextureAsset::Register(U"MagicEffect0", 0xF810_icon, 50);
-		TextureAsset::Register(U"MagicEffect1", 0xF786_icon, 50);
-		TextureAsset::Register(U"MagicEffect2", 0xF563_icon, 50);
-		TextureAsset::Register(U"MagicEffect3", 0xF005_icon, 50);
+		if (not TextureAsset::IsRegistered(U"MagicEffect0")) {
+			TextureAsset::Register(U"MagicEffect0", 0xF810_icon, 50);
+			TextureAsset::Register(U"MagicEffect1", 0xF786_icon, 50);
+			TextureAsset::Register(U"MagicEffect2", 0xF563_icon, 50);
+			TextureAsset::Register(U"MagicEffect3", 0xF005_icon, 50);
+		}
 	}
 
 	bool kickFlg = false;
@@ -314,7 +305,8 @@ public:
 
 	bool isLastSpart()
 	{
-		return hp<= 20;
+		//return hp<= 20;
+		return true;
 	}
 
 	void update()override;
@@ -326,39 +318,32 @@ public:
 
 	void draw()const override {
 
+		RectF{ Arg::center(pos + (left ? Vec2{-65,-10} : Vec2{65,-10})),65,40 }.draw(Palette::Red);
+
 		magicCircle.draw();
 
 		character.draw();
+
+
 	}
 
 	void changeDirection() {
 		left = (manager->get(U"Player")->pos.x < pos.x);
-	}
+	}	
 
+	virtual void damage(int32 n, const Vec2& force = {})
+	{
 
-	double linerMove(double pos, double target, double speed, double dt = Scene::DeltaTime()) {
+		if (damageTimer<=0)
+		{
+			hp -= n;
+			damageTimer = mutekiTime;
+			damageFlg = true;
 
-		double d = speed * dt;
-
-		if (pos < target) {
-
-			if (target < pos + d) {
-				return target;
-			}
-			else {
-				return pos + d;
-			}
-		}
-		else {
-
-			if (pos - d < target) {
-				return target;
-			}
-			else {
-				return pos - d;
-			}
+			character.addMotion(U"Muteki");
 		}
 	}
+
 };
 
 

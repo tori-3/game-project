@@ -5,7 +5,10 @@ class CookieItem :public Entity {
 public:
 
 	CookieItem(const Vec2& cpos) :Entity{ U"Item", Circle{0,0,25},cpos,{0,0},1} {
-		TextureAsset::Register(U"CookieItem",U"🍪"_emoji);
+
+		if (not TextureAsset::IsRegistered(U"CookieItem")) {
+			TextureAsset::Register(U"CookieItem", U"🍪"_emoji);
+		}
 
 		AudioAsset{ U"ポップな死亡" }.playOneShot();
 	}
