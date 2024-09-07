@@ -2,7 +2,7 @@
 
 Player::Player(const Vec2& cpos) :
 	character{ U"Characters/annna/annna.json",U"Characters/annna/motion.txt",0.25,cpos,false },
-	Entity{ U"Player",defaultBody ,cpos,{0,0},5000 }
+	Entity{ U"Player",defaultBody ,cpos,{0,0},5 }
 {
 
 	z = 100;
@@ -408,7 +408,7 @@ Player::Player(const Vec2& cpos) :
 		},
 		.start = [&]() {
 			actMan.cancelAll({U"Dead"});
-			DataManager::get().effect.add<IrisOutEffect>(&pos,140);
+			DataManager::get().table.emplace(U"IrisOut");
 			character.clearMotion();
 			character.addMotion(U"Cry");
 		},
@@ -425,7 +425,8 @@ Player::Player(const Vec2& cpos) :
 		},
 		.start = [&]() {
 			actMan.cancelAll({U"Clear"});
-			DataManager::get().effect.add<IrisOutEffect>(&pos,140);
+			DataManager::get().table.emplace(U"IrisOut");
+
 			character.clearMotion();
 
 			character.addMotion(U"Yorokobu");

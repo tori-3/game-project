@@ -180,6 +180,9 @@
     <ClCompile Include="LastBoss.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -922,6 +925,15 @@
     </ClInclude>
     <ClInclude Include="LinerMove.h">
       <Filter>Header Files\MainGameScene\GameLib</Filter>
+    </ClInclude>
+    <ClInclude Include="IrisOut.h">
+      <Filter>Header Files\MainGameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>Header Files\MainGameScene\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="TalkManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

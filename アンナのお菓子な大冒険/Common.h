@@ -21,6 +21,7 @@ struct GameData
 	Input rightKey = s3d::KeyD;
 	Input downKey = s3d::KeyS;
 
+	String backgroundTexture;
 
 
 	FilePath stageFile;

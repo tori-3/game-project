@@ -5,27 +5,39 @@ class TalkWindow {
 
 	size_t lastLength = 0;
 
+
+public:
 	class TalkInfo {
 	public:
 		String name;
 		String text;
 	};
 
-public:
 	Array<TalkInfo>talks;
 	size_t index = 0;
 	TalkWindow() {
-		AudioAsset::Register(U"TalkAudio", GMInstrument::BassAndLead, PianoKey::C6, 0.05s, 0.3);
 		FontAsset::Register(U"WindowFont", 30);
 	}
 
-	//会話を追加：String 名前,String 会話文
-	void addTalk(const String& name, const String& text) {
-		talks << TalkInfo{ name,text };
+	void setTalk(const Array<TalkInfo>& list) {
+		talks = list;
+		accumlater = 0;
+		index = 0;
+		lastLength = 0;
+	}
+
+	void setTalk(Array<TalkInfo>&& list) {
+		talks = std::move(list);
+		accumlater = 0;
+		index = 0;
+		lastLength = 0;
 	}
 
 	//更新：bool 次に進むか,bool 音量
-	void update(bool nextFlg, double volume = 1.0) {
+	void update(double volume = 1.0) {
+
+		const bool backFlg = KeyA.down() || KeyLeft.down();
+		const bool nextFlg = KeyD.down() || KeyRight.down() || KeyEnter.down();
 
 		//確認
 		if (not isContinue())return;
@@ -35,9 +47,8 @@ public:
 		const size_t length = static_cast<size_t>(accumlater);
 		const String& text = talks[index].text;
 
-		if (length != lastLength && not nextFlg && not(text.size() < length || text[length] == U'\n'))AudioAsset{ U"TalkAudio" }.playOneShot(volume);
-
 		lastLength = length;
+
 
 		if (nextFlg) {
 			if (text.size() < length) {
@@ -50,10 +61,15 @@ public:
 				accumlater = (double)text.size();
 			}
 		}
+		else if (backFlg) {
+			back();
+		}
 	}
 
 	//描画：RectF 表示する位置を指定,SizeF 名前ウィンドウのサイズ
 	void draw(const RectF& rect, const SizeF& nameSize = { 250,50 })const {
+
+		if (not isContinue())return;
 
 		constexpr double thickness = 5;
 
@@ -63,7 +79,6 @@ public:
 		nameWindow.draw({ Palette::Black ,0.8 }).drawFrame(thickness, 0);
 
 		//確認
-		if (not isContinue())return;
 
 		const TalkInfo& talk = talks[index];
 
@@ -75,12 +90,22 @@ public:
 			Triangle{ window.rect.br().movedBy(-40, -40), 20, 180_deg }.draw(ColorF{ 1, Periodic::Sine0_1(2.0s) });
 		}
 
+		FontAsset(U"WindowFont")(U"←A 戻る　　次へ D→").drawBase(20, window.rect.bl() + Vec2{ 20,-20 });
 	}
 
 	//次に進む
 	void next() {
 		accumlater = 0;
-		index += 1;
+		++index;
+	}
+
+	//前に戻る
+	void back() {
+
+		if (0 < index) {
+			accumlater = 0;
+			--index;
+		}
 	}
 
 	//表示されている名前

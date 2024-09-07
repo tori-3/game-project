@@ -13,6 +13,15 @@ namespace HawkDropOut {
 		HawkDropOut(const InitData& init)
 			: IScene{ init }
 		{
+			if (not TextureAsset::IsRegistered(U"BackGroundTexture/雲背景.png")) {
+				TextureAsset::Register(U"BackGroundTexture/雲背景.png", U"BackGroundTexture/雲背景.png");
+			}
+
+
+
+
+
+
 			switch (getData().mini_mode)
 			{
 			case Stage_Mode:
@@ -55,10 +64,17 @@ namespace HawkDropOut {
 			return(enabled && !enemy);
 		}
 
+		double groundTime = 0;
+
 		void draw() const override
 		{
 			//背景画面
 			Scene::SetBackground(Palette::Blue);
+
+			//地面の描画
+			//Rect{ -100, 500, 1000, 100 }.draw(Palette::Green);
+
+			
 
 			//飛距離の表示
 			font(U"飛距離").draw(30, 10, 10, Palette::Black);
@@ -82,8 +98,31 @@ namespace HawkDropOut {
 
 		void update() override
 		{
-			//地面の描画
-			Rect{ -100, 500, 1000, 100 }.draw(Palette::Green);
+			TextureAsset{ U"BackGroundTexture/雲背景.png" }.resized(800).draw();
+
+			//雲を描画する
+			cloudEmoji.scaled(1).draw(Aclouddistance, 100);
+
+			cloudEmoji.scaled(1).draw(Bclouddistance, 250);
+
+			cloudEmoji.scaled(1).draw(Cclouddistance, 200);
+
+			cloudEmoji.scaled(1).draw(Dclouddistance, 50);
+
+			cloudEmoji.scaled(1).draw(Eclouddistance, 150);
+
+
+			groundTime += Scene::DeltaTime();
+
+			constexpr double groundSize = 50;
+
+			for (int32 i = -1; i < (800 / groundSize); ++i)
+			{
+				double pos = i * groundSize + Fmod(groundTime * 130, groundSize);
+				groundTexture.resized(groundSize).draw(pos, 500);
+			}
+
+
 
 			//鷲がアイテムを入手してアイテム保持数を増やす
 			if (cookieCircle.intersects(meatCircle)) {
@@ -141,17 +180,6 @@ namespace HawkDropOut {
 			d_enemyCircle.x += Scene::DeltaTime() * d_stownspeed;
 
 			e_enemyCircle.x += Scene::DeltaTime() * e_stownspeed;
-
-			//雲を描画する
-			cloudEmoji.scaled(1).draw(Aclouddistance, 100);
-
-			cloudEmoji.scaled(1).draw(Bclouddistance, 250);
-
-			cloudEmoji.scaled(1).draw(Cclouddistance, 200);
-
-			cloudEmoji.scaled(1).draw(Dclouddistance, 50);
-
-			cloudEmoji.scaled(1).draw(Eclouddistance, 150);
 
 			//雲が画面外に出たら座標を戻す
 			if (Aclouddistance >= 900) {
@@ -536,7 +564,7 @@ namespace HawkDropOut {
 		// タイマー
 		double timer = 0.0;
 
-		Image image{ U"HawkDropOut/ishi.png" };
+		Image image{ U"HawkDropOut/StrawberrySoldier.png" };
 
 		Texture ishi{ image };
 
@@ -546,7 +574,7 @@ namespace HawkDropOut {
 
 		Texture attackfunction{ U"💥"_emoji };
 
-		Texture meat{ U"🍖"_emoji };
+		Texture meat{ U"🍪"_emoji };
 
 		// クッキーの絵文字
 		Texture texture{ U"🦅"_emoji };
@@ -560,6 +588,8 @@ namespace HawkDropOut {
 		Texture downEmoji{ U"↙️"_emoji };
 
 		Texture cloudEmoji{ U"☁️"_emoji };
+
+		Texture groundTexture{ U"StageTexture/CakeSurface.png" };
 
 		// フォント
 		Font font{ FontMethod::MSDF, 48, Typeface::Bold };

@@ -1,4 +1,5 @@
 ﻿#include"Block.h"
+#include"TalkManager.h"
 
 void CakeSurface::draw(const Point& pos)const
 {
@@ -144,8 +145,8 @@ void BeltConveyorRight::draw(const Point& pos)const
 {
 	const double size = TextureAsset(U"ChocolateWall").size().x;
 	const double d = Periodic::Sawtooth0_1(0.5s, DataManager::get().time);
-	TextureAsset(U"ChocolateWall")(size - size * d, 0, size * d, size).resized(rect_size * d, rect_size).draw(pos * rect_size);
-	TextureAsset(U"ChocolateWall")(0, 0, size - size * d, size).resized(rect_size * (1 - d), rect_size).draw((pos + Vec2{ d,0 }) * rect_size);
+	TextureAsset(U"BeltConveyor")(size - size * d, 0, size * d, size).resized(rect_size * d, rect_size).draw(pos * rect_size);
+	TextureAsset(U"BeltConveyor")(0, 0, size - size * d, size).resized(rect_size * (1 - d), rect_size).draw((pos + Vec2{ d,0 }) * rect_size);
 }
 
 void BeltConveyorLeft::reaction(const Point& pos, PhysicsBox* box)
@@ -162,8 +163,8 @@ void BeltConveyorLeft::reaction(const Point& pos, PhysicsBox* box)
 void BeltConveyorLeft::draw(const Point& pos)const {
 	const double size = TextureAsset(U"ChocolateWall").size().x;
 	const double d = 1 - Periodic::Sawtooth0_1(0.5s, DataManager::get().time);
-	TextureAsset(U"ChocolateWall")(size - size * d, 0, size * d, size).resized(rect_size * d, rect_size).draw(pos * rect_size);
-	TextureAsset(U"ChocolateWall")(0, 0, size - size * d, size).resized(rect_size * (1 - d), rect_size).draw((pos + Vec2{ d,0 }) * rect_size);
+	TextureAsset(U"BeltConveyor")(size - size * d, 0, size * d, size).resized(rect_size * d, rect_size).draw(pos * rect_size);
+	TextureAsset(U"BeltConveyor")(0, 0, size - size * d, size).resized(rect_size * (1 - d), rect_size).draw((pos + Vec2{ d,0 }) * rect_size);
 }
 
 void SpawnerStrawberrySoldier::update(const Point& pos) {
@@ -345,5 +346,37 @@ void RollingRocksBlock::update(const Point& pos) {
 	if (not bornFlg) {
 		DataManager::get().addEntity(U"RollingRocks", (pos+Vec2{1,1}) * rect_size);
 		bornFlg = true;
+	}
+}
+
+SignboardBlock::SignboardBlock(const Array<TalkWindow::TalkInfo>&list_)
+	:list{ list_ } {}
+
+void  SignboardBlock::update(const Point& pos)
+{
+	if (DataManager::get().playerPos.intersects(RectF{ (pos-Vec2{1,1}) * rect_size,rect_size*3}))
+	{
+		if (KeyEnter.down()) {
+			TalkManager::get().talkWindow.setTalk(list);
+
+			KeyEnter.clearInput();
+		}
+
+	}
+}
+
+void SignboardBlock::draw(const Point& pos)const
+{
+	RectF{ pos * rect_size,rect_size }.draw(Palette::Burlywood);
+
+	if (DataManager::get().playerPos.intersects(RectF{ (pos - Vec2{1,1}) * rect_size,rect_size * 3 }))
+	{
+
+		constexpr double thickness = 5;
+
+		const RoundRect window{ RectF{ Arg::center((pos + Vec2{0.5,0.5-1}) * rect_size),rect_size*1.5,rect_size * 0.8},20 };
+		window.draw({ Palette::Black, 0.8 }).drawFrame(thickness, 0);
+
+		FontAsset(U"WindowFont")(U"Enter:読む").drawAt(15,window.center());
 	}
 }

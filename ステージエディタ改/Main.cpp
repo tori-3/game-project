@@ -138,7 +138,7 @@ void Main()
 		{U"敵",{U"イチゴの兵士",U"クッキーの兵士",U"雪だるま",U"イチゴスポナー",U"奴隷イチゴ",U"わたあめ",U"コーン",U"鞭クッキー",U"鞄クッキー",U"零戦クッキー",U"雪だるナイト",U"奴隷商クッキー",U"船長",U"ラスボス"}},
 		{U"設定ブロック",{U"プレイヤー"}},
 		{U"背景",{U"アイスクリーム",U"キャンドル",U"キャンディー",U"ステック",U"さくらんぼ",U"ブルーベリー"}},
-		{U"ギミック",{U"ドア",U"鷹"}},
+		{U"ギミック",{U"ドア",U"鷹",U"看板"}},
 	};
 
 	Array<BackGround>backGrounds;
@@ -191,6 +191,11 @@ void Main()
 				json2[U"BackGround"]= pathList;
 
 				json2[U"Rate"] = Parse<double>(rateText.text);//拡大率
+
+				if (json.contains(U"SignboardPath"))
+				{
+					json2[U"SignboardPath"] = json[U"SignboardPath"];
+				}
 
 				json2.save(path.value());
 			}
@@ -264,8 +269,10 @@ void Main()
 				}
 
 			}
-			else{
+			else
+			{
 				setting = menus[item->menuIndex].second[item->itemIndex];
+
 			}
 		}
 

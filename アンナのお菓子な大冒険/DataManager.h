@@ -10,7 +10,7 @@ public:
 	double time = 0;
 	Array<std::pair<String, Vec2>>list;
 	Vec2 playerPos{};
-	TalkWindow talkWindow;
+	//TalkWindow talkWindow;
 
 	bool playerAlive = true;
 

@@ -136,8 +136,8 @@ void BeltConveyorRight(Point pos) {
 void BeltConveyorLeft(Point pos) {
 	const double size = TextureAsset(U"ChocolateWall").size().x;
 	const double d = 1-Periodic::Sawtooth0_1(2s);
-	TextureAsset(U"ChocolateWall")(size - size * d, 0, size * d, size).resized(rect_size * d, rect_size).draw(pos * rect_size);
-	TextureAsset(U"ChocolateWall")(0, 0, size - size * d, size).resized(rect_size * (1 - d), rect_size).draw((pos + Vec2{ d,0 }) * rect_size);
+	TextureAsset(U"BeltConveyor")(size - size * d, 0, size * d, size).resized(rect_size * d, rect_size).draw(pos * rect_size);
+	TextureAsset(U"BeltConveyor")(0, 0, size - size * d, size).resized(rect_size * (1 - d), rect_size).draw((pos + Vec2{ d,0 }) * rect_size);
 }
 
 void SpawnerStrawberrySoldier(Point pos) {
@@ -218,7 +218,10 @@ void FallingRocksBlock(Point pos) {
 
 void RollingRocksBlock(Point pos) {
 	TextureAsset{ U"Doughnut" }.resized(rect_size * 2).drawAt((pos + Vec2{ 1,1 }) * rect_size);
+}
 
+void SignboardBlock(Point pos) {
+	RectF{ pos * rect_size,rect_size }.draw(Palette::Burlywood);
 }
 
 
@@ -270,7 +273,8 @@ Array<Info>list{
 	{U"CaptainBlock",CaptainBlock,U"船長"},
 	{U"LastBossBlock",LastBossBlock,U"ラスボス"},
 	{U"FallingRocksBlock",FallingRocksBlock,U"落石"},
-	{U"RollingRocksBlock",RollingRocksBlock,U"転がる岩"}
+	{U"RollingRocksBlock",RollingRocksBlock,U"転がる岩"},
+	{U"SignboardBlock",SignboardBlock,U"看板"}
 };
 
 HashTable<String, std::function<void(Point)>> table;

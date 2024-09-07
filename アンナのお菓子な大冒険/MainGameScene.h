@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include"Common.h"
 #include"Enemy.h"
+#include"Boss.h"
 #include"setting.h"
 #include"Pause.h"
 #include"Player.h"
@@ -8,6 +9,8 @@
 #include"Spawner.h"
 #include"BackGround.h"
 #include"BGMManager.hpp"
+#include"IrisOut.h"
+#include"TalkManager.h"
 
 inline Mat3x2 shakeMat(const Timer& timer, double amplitude = 20) {
 	constexpr double N = 2;//揺れの回数
@@ -152,36 +155,23 @@ public:
 	MSRenderTexture rTexture{ Scene::Size(),ColorF{0,0} };
 
 	//Player player{ Point(500, 350 + 70) };
-	Background background{ U"雪原背景.png" ,stage.width() };
+	Background background{ getData().backgroundTexture ,stage.width() };
 	//Background background2{ U"お菓子の背景.png" ,stage.width(),2 };
 
 	EntityManager manager;
 
 	EnemyAdder adder{ &manager };
 
-	//Player player{ Point(500, 350 + 70) };
 
 	CloudManager cloud;
 
-	//	ColorF skyColor{ 0.8, 0.9, 1.0};
 	ColorF skyColor{Palette::Skyblue};
 
 	Player* player=nullptr;
 
 	SmoothCamera camera;
 
-	double startY = 0;
-
-
-
-
-	//テスト
-	//StageBackGround stageBackGround{U"backGround.json"};
-
-
-	const RenderTexture backGroundTexture{ Scene::Size()};
-	const RenderTexture internalTexture{ backGroundTexture.size() };
-	const RenderTexture renderTexture{ backGroundTexture.size() };
+	IrisOut irisOut;
 
 	void loadAudio() {
 
@@ -211,7 +201,6 @@ public:
 		stage.update(player->pos);
 		adder.update();
 		manager.stage = &stage;
-		startY = player->pos.y;
 
 
 		camera.setStageWidth(stage.width() * rect_size);
@@ -225,6 +214,16 @@ public:
 	void gameUpdate() override
 	{
 
+		if (TalkManager::get().talkWindow.isContinue())
+		{
+			TalkManager::get().talkWindow.update();
+
+			return;
+		}
+
+		stage.update(player->pos);
+
+
 		if (not bgmStart) {
 			BGMManager::get().play(U"Stage{}"_fmt(getData().stage));
 			bgmStart = true;
@@ -235,14 +234,20 @@ public:
 		adder.update();
 
 		//座標変換(カーソルだけ)
-		//double hieght = Scene::Size().y - draw_y;
-		////if (player.pos.y < change_hieght)hieght += change_hieght - player.pos.y;
-		//Mat3x2 mat = Mat3x2::Translate(Vec2{ draw_x - player->pos.x, hieght });
-		//const Transformer2D transformer{ Mat3x2::Identity(),mat };
 		{
 			const Transformer2D t{ Mat3x2::Identity(),camera.getMat3x2() };
 			manager.update();
 		}
+
+		if (DataManager::get().table.contains(U"IrisOut")) {
+
+			if (not irisOut.isStart)
+			{
+				irisOut.start(&player->pos, 140);
+			}
+		}
+
+
 
 		////落下したらスタートに戻す。(デバッグ用)
 		if (not DataManager::get().playerAlive /* player->hp <= 0|| 1000 < player->pos.y*/) {
@@ -259,9 +264,8 @@ public:
 			}
 		}
 
-		stage.update(player->pos);
 
-		DataManager::get().talkWindow.update(MouseL.down());
+		//ステージupdate
 
 		cloud.update();
 
@@ -274,6 +278,7 @@ public:
 			camera.update({ player->pos.x - draw_x,player->pos.y - draw_y });
 		}
 
+		irisOut.update();
 
 		backgroundManager.update(camera.pos);
 	}
@@ -312,13 +317,14 @@ public:
 		cookieDisplay(player->itemCount, DataManager::get().tame);
 		hpDisplay(player->hp);
 
-		if (DataManager::get().talkWindow.isContinue()) {
-			DataManager::get().talkWindow.draw(RectF{ 0,500,Scene::Size().x,300});
-		}
-
+		TalkManager::get().talkWindow.draw(RectF{ 0,500,Scene::Size().x,300 });
 
 		FontAsset(U"TitleFont")(U"Escで操作方法").draw(40,850,0,Palette::Orange);
 
+		{
+			const Transformer2D t{ camera.getMat3x2() };
+			irisOut.draw();
+		}
 	}
 
 	//ポーズ画面

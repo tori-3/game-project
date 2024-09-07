@@ -355,3 +355,15 @@ public:
 
 	void update(const Point& pos)override;
 };
+
+class SignboardBlock :public Untouchable {
+public:
+
+	Array<TalkWindow::TalkInfo>list;
+
+	SignboardBlock(const Array<TalkWindow::TalkInfo>&list_);
+
+	void update(const Point& pos)override;
+
+	void draw(const Point& pos)const override;
+};

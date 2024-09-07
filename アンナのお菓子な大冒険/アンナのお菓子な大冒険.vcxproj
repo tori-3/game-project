@@ -114,6 +114,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="LastBoss.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -322,6 +323,7 @@
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="BGMManager.hpp" />
     <ClInclude Include="Block.h" />
+    <ClInclude Include="Boss.h" />
     <ClInclude Include="CharacterSystem.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="CookieItem.h" />
@@ -334,6 +336,7 @@
     <ClInclude Include="HawkDropOut.h" />
     <ClInclude Include="HitBox.h" />
     <ClInclude Include="IMotionField.h" />
+    <ClInclude Include="IrisOut.h" />
     <ClInclude Include="LaserEffect.h" />
     <ClInclude Include="LastBoss.h" />
     <ClInclude Include="LinerMove.h" />
@@ -355,6 +358,7 @@
     <ClInclude Include="Spawner.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Stage.h" />
+    <ClInclude Include="TalkManager.h" />
     <ClInclude Include="TalkWindow.h" />
   </ItemGroup>
   <ItemGroup>

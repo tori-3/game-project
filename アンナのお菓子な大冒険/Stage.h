@@ -50,14 +50,8 @@ public:
 		{U"LastBossBlock",[]() {return new LastBossBlock(); }},
 		{U"FallingRocksBlock",[]() {return new FallingRocksBlock(); }},
 		{U"RollingRocksBlock",[]() {return new RollingRocksBlock(); }},
+		//{U"SignboardBlock",[]() {return new SignboardBlock(); }},
 	};
-
-
-	//~Stage() {
-	//	for (auto& block : map) {
-	//		delete block;
-	//	}
-	//}
 
 	Stage(const JSON& json,bool backGround=false) {
 
@@ -67,14 +61,7 @@ public:
 			TextureAsset::Register(FileSystem::BaseName(path), path, TextureDesc::Mipped);
 		}
 
-
-
-		//辞書を作成
-		//HashTable<String, Block*> table;
-		//for (const auto& object : blocks)table.emplace(object->name, object);
-
 		//ファイルをロード
-		//JSON json = JSON::Load(path);
 		if (not json)throw Error{ U"ファイルを読み込めませんでした。" };
 
 		{
@@ -104,8 +91,36 @@ public:
 			//mapにファイルのデータを読み込む。
 			for (int i = 0; i < block_name.size(); i++) {
 
-				if (block_name[i] != U"Player") {
-					for (const auto& elem : json[U"Block"][block_name[i]].arrayView()) {
+				if (block_name[i] == U"SignboardBlock")
+				{
+					Array<String>pathList;
+
+					for (const auto& elem : json[U"SignboardPath"].arrayView())
+					{
+						pathList << elem.getString();
+					}
+
+					size_t count = 0;
+					for (const auto& elem : json[U"Block"][block_name[i]].arrayView())
+					{
+						Array<TalkWindow::TalkInfo>list;
+
+						const CSV csv{ pathList[count]};
+
+						for (size_t row = 0; row < csv.rows(); ++row)
+						{
+							list << TalkWindow::TalkInfo{ csv[row][0] ,csv[row][1] };
+						}
+
+						_map[elem.get<Point>()] = std::unique_ptr<Block>(new SignboardBlock(list));
+
+						++count;
+					}
+				}
+				else if (block_name[i] != U"Player")
+				{
+					for (const auto& elem : json[U"Block"][block_name[i]].arrayView())
+					{
 						_map[elem.get<Point>()] = std::unique_ptr<Block>(maker[block_name[i]]());
 					}
 				}
