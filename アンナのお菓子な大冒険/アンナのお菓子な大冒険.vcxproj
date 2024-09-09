@@ -349,6 +349,7 @@
     <ClInclude Include="Maze2.h" />
     <ClInclude Include="MotionLoader.h" />
     <ClInclude Include="Movements.h" />
+    <ClInclude Include="MyInput.h" />
     <ClInclude Include="Pause.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RingEffect.h" />

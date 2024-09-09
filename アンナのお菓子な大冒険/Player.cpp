@@ -10,14 +10,14 @@ Player::Player(const Vec2& cpos) :
 
 	actMan.add(U"Walk", {
 		.startCondition = [&]() {
-			return hitBox.touch(Direction::down) and (not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer",U"HeadDropLanding",U"HeadDrop",U"Damage",U"Dead",U"Clear")) and (data->leftKey.pressed() or data->rightKey.pressed());
+			return hitBox.touch(Direction::down) and (not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer",U"HeadDropLanding",U"HeadDrop",U"Damage",U"Dead",U"Clear")) and (leftKey.pressed() or rightKey.pressed());
 		},
 		.start = [&]() {
 			AudioAsset{U"足音"}.play();
 			character.addMotion(U"Walk",true);
 		},
 		.update = [&](double t) {
-			return not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"HeadDrop") and (data->leftKey.pressed() or data->rightKey.pressed());
+			return not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"HeadDrop") and (leftKey.pressed() or rightKey.pressed());
 		},
 		.end = [&]() {
 			AudioAsset{U"足音"}.stop(0.5s);
@@ -27,7 +27,7 @@ Player::Player(const Vec2& cpos) :
 
 	actMan.add(U"PreJump", {
 		.startCondition = [&]() {
-			return hitBox.touch(Direction::down) and data->jumpKey.down() and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Jump",U"Punch",U"Dead",U"Clear");
+			return hitBox.touch(Direction::down) and jumpKey.down() and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Jump",U"Punch",U"Dead",U"Clear");
 		},
 		.start = [&]() {
 			AudioAsset{U"ジャンプ"}.playOneShot();
@@ -56,7 +56,7 @@ Player::Player(const Vec2& cpos) :
 
 	actMan.add(U"Tame", {
 		.startCondition = [&]() {
-			return (0.2s < data->attackKey.pressedDuration()) && 10 <= itemCount;
+			return (0.2s < attackKey.pressedDuration()) && 10 <= itemCount;
 		},
 		.start = [&]() {
 
@@ -65,14 +65,14 @@ Player::Player(const Vec2& cpos) :
 
 			DataManager::get().tame = Min(t / 0.8, 1.0);
 
-			if (0.8 <= t && (not data->attackKey.pressed())) {
+			if (0.8 <= t && (not attackKey.pressed())) {
 				if (not actMan.hasActive(U"Sliding", U"Damage", U"Dead",U"Clear") and hitBox.touch(Direction::down)) {
 					actMan.start(U"Rush");
 				}
 				return false;
 			}
 			else {
-				return data->attackKey.pressed();
+				return attackKey.pressed();
 			}
 		},
 		.end = [&]() {
@@ -143,7 +143,7 @@ Player::Player(const Vec2& cpos) :
 		},
 		.end = [&]() {
 			character.removeMotion(U"Falling");
-			if (not data->downKey.pressed() && not actMan.hasActive(U"Dead",U"Clear")) {
+			if (not downKey.pressed() && not actMan.hasActive(U"Dead",U"Clear")) {
 				actMan.start(U"Landing");
 			}
 		}
@@ -158,13 +158,11 @@ Player::Player(const Vec2& cpos) :
 	.update = [&](double t) {
 		speed = 250;
 
-		//return character.hasMotion(U"Landing") and not data->jumpKey.down() and not data->downKey.pressed() and not actMan.hasActive(U"Rush");
-		return not data->jumpKey.down() and not data->downKey.pressed() and not actMan.hasActive(U"Rush") and t < 0.1;
+		return not jumpKey.down() and not downKey.pressed() and not actMan.hasActive(U"Rush") and t < 0.1;
 	},
 	.end = [&]() {
 		speed = 400;
 		character.removeMotion(U"Standing");
-		//character.removeMotion(U"Landing");
 	}
 	});
 
@@ -186,7 +184,7 @@ Player::Player(const Vec2& cpos) :
 
 	actMan.add(U"Shagamu", {
 		.startCondition = [&]() {
-			return data->downKey.pressed() and (not data->jumpKey.pressed()) and hitBox.touch(Direction::down) and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Landing",U"HeadDropLanding",U"HeadDrop",U"Punch",U"Jump",U"PreJump",U"Falling",U"Dead",U"Clear");
+			return downKey.pressed() and (not jumpKey.pressed()) and hitBox.touch(Direction::down) and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Landing",U"HeadDropLanding",U"HeadDrop",U"Punch",U"Jump",U"PreJump",U"Falling",U"Dead",U"Clear");
 		},
 		.start = [&]() {
 			character.addMotion(U"Shagamu");
@@ -194,7 +192,7 @@ Player::Player(const Vec2& cpos) :
 		},
 		.update = [&](double t) {
 			speed = 0;
-			return data->downKey.pressed() and not data->jumpKey.down() and not data->attackKey.pressed();
+			return downKey.pressed() and not jumpKey.down() and not attackKey.pressed();
 		},
 		.end = [&]() {
 			character.removeMotion(U"Shagamu");
@@ -203,7 +201,7 @@ Player::Player(const Vec2& cpos) :
 
 			hitBox.setFigure(defaultBody);
 
-			if (data->attackKey.pressed() and hitBox.touch(Direction::down) and not actMan.hasActive(U"PreJump",U"Punch")) {
+			if (attackKey.pressed() and hitBox.touch(Direction::down) and not actMan.hasActive(U"PreJump",U"Punch")) {
 				actMan.start(U"Sliding");
 			}
 		}
@@ -243,7 +241,7 @@ Player::Player(const Vec2& cpos) :
 
 	actMan.add(U"Punch", {
 		.startCondition = [&]() {
-			return data->attackKey.down() and actMan.hasActive(U"Standing",U"Walk") and (not actMan.hasActive(U"Summer",U"PreJump",U"Jump",U"Shagamu",U"Dead",U"Clear")) and hitBox.touch(Direction::down);
+			return attackKey.down() and actMan.hasActive(U"Standing",U"Walk") and (not actMan.hasActive(U"Summer",U"PreJump",U"Jump",U"Shagamu",U"Dead",U"Clear")) and hitBox.touch(Direction::down);
 		},
 		.start = [&]() {
 			character.addMotion(U"Punch");
@@ -261,7 +259,7 @@ Player::Player(const Vec2& cpos) :
 				}
 				return true;
 			}
-			return character.hasMotion(U"Punch") and not data->jumpKey.down();
+			return character.hasMotion(U"Punch") and not jumpKey.down();
 		},
 		.end = [&]() {
 			character.removeMotion(U"Punch");
@@ -273,7 +271,7 @@ Player::Player(const Vec2& cpos) :
 
 	actMan.add(U"Summer", {
 		.startCondition = [&]() {
-			return data->attackKey.down() and not hitBox.touch(Direction::down) and not actMan.hasActive(U"Punch",U"Shagamu",U"Sliding",U"Damage",U"Rush",U"HeadDrop",U"Dead",U"Clear") and canSummer;
+			return attackKey.down() and not hitBox.touch(Direction::down) and not actMan.hasActive(U"Punch",U"Shagamu",U"Sliding",U"Damage",U"Rush",U"HeadDrop",U"Dead",U"Clear") and canSummer;
 		},
 		.start = [&,h = summerHited]() {
 			AudioAsset{U"サマーソルト"}.playOneShot();
@@ -296,7 +294,7 @@ Player::Player(const Vec2& cpos) :
 
 	actMan.add(U"HeadDrop", {
 		.startCondition = [&]() {
-			return data->downKey.down() and not actMan.hasActive(U"Summer",U"Damage",U"Dead",U"Clear") and not hitBox.touch(Direction::down);
+			return downKey.down() and not actMan.hasActive(U"Summer",U"Damage",U"Dead",U"Clear") and not hitBox.touch(Direction::down);
 		},
 		.start = [&]() {
 			character.addMotion(U"HeadDrop");
@@ -463,19 +461,19 @@ void Player::update() {
 		//何もできない
 	}
 	else if (actMan.hasActive(U"Summer", U"HeadDropLanding", U"Mirror{}"_fmt(character.mirrorCount - 1))) {
-		if (data->leftKey.pressed()) {
+		if (leftKey.pressed()) {
 			if (not hitBox.touch(Direction::left))vel.x = -speed;
 		}//左
-		else if (data->rightKey.pressed()) {
+		else if (rightKey.pressed()) {
 			if (not hitBox.touch(Direction::right))vel.x = speed;
 		}//右
 	}
 	else {
-		if (data->leftKey.pressed()) {
+		if (leftKey.pressed()) {
 			if (not hitBox.touch(Direction::left))vel.x = -speed;
 			left = true;
 		}//左
-		else if (data->rightKey.pressed()) {
+		else if (rightKey.pressed()) {
 			if (not hitBox.touch(Direction::right))vel.x = speed;
 			left = false;
 		}//右

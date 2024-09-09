@@ -935,5 +935,8 @@
     <ClInclude Include="TalkManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MyInput.h">
+      <Filter>Header Files\MainGameScene</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

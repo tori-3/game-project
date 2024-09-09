@@ -6,6 +6,8 @@
 #include"SimpleAction.h"
 #include"BGMManager.hpp"
 
+#include"MyInput.h"
+
 class Hadouken:public Entity {
 public:
 
@@ -89,15 +91,24 @@ public:
 
 	static constexpr RectF defaultBody{ Arg::center(0,0),40,130 };
 
-	GameData* data=nullptr;
 
 
 	Vec2 lastTouchPos{};
 
 	Timer endTimer{ 4s };
 
-	void setDataP(GameData* _data) {
-		data = _data;
+	MyInput jumpKey;
+	MyInput rightKey;
+	MyInput leftKey;
+	MyInput downKey;
+	MyInput attackKey;
+
+	void setDataP(GameData* data) {
+		jumpKey.setKey(data->jumpKey);
+		rightKey.setKey(data->rightKey);
+		leftKey.setKey(data->leftKey);
+		downKey.setKey(data->downKey);
+		attackKey.setKey(data->attackKey);
 	}
 
 	Player(const Vec2& cpos);
@@ -112,8 +123,6 @@ public:
 
 	bool die = false;
 
-	Quad tmp;
-
 	void draw()const override;
 
 	void damage(int32 n, const Vec2& force = {})override;
@@ -125,5 +134,15 @@ public:
 	void stopRush() {
 		rushMode = false;
 	}
-};
 
+	void KeyUpdate(bool jump,bool down,bool left, bool right,bool attack)
+	{
+		jumpKey.update(jump);
+		downKey.update(down);
+		leftKey.update(left);
+		rightKey.update(right);
+		attackKey.update(attack);
+	}
+
+
+};
