@@ -309,9 +309,12 @@ public:
 		character.addMotion(U"walk", true);
 	}
 
-	Timer attackTimer{ 0.5s };
+	static constexpr double attackTime = 0.5;
+	double attackTimer= 0;
 
 	void update()override {
+
+		attackTimer -= Scene::DeltaTime();
 
 		manager->stage->hit(&hitBox);
 		if (not character.hasMotion(U"Muteki")) {
@@ -351,11 +354,11 @@ public:
 			attack(U"Player", hitBox.getFigure(), 1);
 
 			if ((not character.hasMotion(U"attack")) && manager->get(U"Player")->hitBox.Get_Box().intersects(hitBox.Get_Box().movedBy(left ? -60 : 60, 0))) {
-				attackTimer.restart();
+				attackTimer = attackTime;
 				character.addMotion(U"attack");
 			}
 
-			if (attackTimer.sF() == 0) {
+			if (attackTimer<= 0) {
 				if (manager->get(U"Player")->hitBox.Get_Box().intersects(hitBox.Get_Box().movedBy(left ? -25 : 25, 0))) {
 					manager->get(U"Player")->damage(2, Vec2{ left ? -200 : 200,-20 });
 				}
@@ -486,8 +489,6 @@ public:
 
 		time = Random(1.5, 2.5);
 	}
-
-	Timer attackTimer{ 0.5s };
 
 	double accumulatedTime = 0;
 
@@ -676,7 +677,8 @@ public:
 class CookieMuti :public Entity {
 public:
 
-	Timer attackTimer{ 0.4s };
+	static constexpr double attackInterval = 0.4;
+	double attackTimer=attackInterval;
 
 	bool left = false;
 
@@ -688,6 +690,8 @@ public:
 	}
 
 	void update()override {
+
+		attackTimer -= Scene::DeltaTime();
 
 		manager->stage->hit(&hitBox);
 
@@ -711,15 +715,15 @@ public:
 		if ((not character.hasMotion(U"attack")) && manager->get(U"Player")->hitBox.Get_Box().intersects(hitBox.Get_Box().movedBy(left ? -60 : 60, 0).scaled(3, 1))) {
 			character.removeMotion(U"walk");
 			character.addMotion(U"attack");
-			attackTimer.start();
+			attackTimer = attackInterval;
 		}
 
 		if (not character.hasMotion(U"attack") && not character.hasMotion(U"walk")) {
 			character.addMotion(U"walk");
 		}
 
-		if (attackTimer.sF() == 0) {
-			attackTimer.reset();
+		if (attackTimer<=0) {
+			attackTimer = attackInterval;
 			attack(U"Player", hitBox.Get_Box().movedBy(left ? -60 : 60, 0), 2);
 
 		}
@@ -745,7 +749,8 @@ public:
 class CookieKaban :public Entity {
 public:
 
-	Timer attackTimer{ 0.4s };
+	static constexpr double attackInterval = 0.4;
+	double attackTimer = 0;
 
 	bool left = false;
 
@@ -780,15 +785,15 @@ public:
 		if ((not character.hasMotion(U"attack")) && manager->get(U"Player")->hitBox.Get_Box().intersects(hitBox.Get_Box().movedBy(left ? -20 : 20, 0).scaled(3, 1))) {
 			character.removeMotion(U"walk");
 			character.addMotion(U"attack");
-			attackTimer.start();
+			attackTimer= attackInterval;
 		}
 
 		if (not character.hasMotion(U"attack") && not character.hasMotion(U"walk")) {
 			character.addMotion(U"walk");
 		}
 
-		if (attackTimer.sF() == 0) {
-			attackTimer.reset();
+		if (attackTimer<= 0) {
+			attackTimer = attackInterval;
 			attack(U"Player", hitBox.Get_Box(), 2);
 		}
 		else {
@@ -935,8 +940,6 @@ public:
 	{
 		character.addMotion(U"susumu");
 	}
-
-	Timer attackTimer{ 0.5s };
 
 	double accumulatedTime = 0;
 
@@ -1289,7 +1292,8 @@ public:
 class GoalDoor:public Entity{
 public:
 
-	Timer timer{ 1s };
+	bool timerStart = false;
+	double timer = 1 ;
 
 	GoalDoor(const Vec2& pos) :Entity{ U"Door",RectF{0,0,0,0},pos,{0,0},1 } {
 		z = -100;
@@ -1297,14 +1301,19 @@ public:
 
 	void update()override {
 		if (RectF{ pos,rect_size * 2 }.intersects(DataManager::get().playerPos)) {
-			timer.start();
+			timerStart = true;
 			DataManager::get().table.emplace(U"Clear");
+		}
+
+		if (timerStart) {
+			timer -= Scene::DeltaTime();
+			timer = Max(timer, 0.0);
 		}
 	}
 
 	void draw()const override{
 		RectF{ pos,rect_size * 2 }.draw(Palette::Black);
-		double d = Sin(timer.sF() * 80_deg+10_deg);
+		double d = Sin(timer * 80_deg+10_deg);
 		TextureAsset(U"Door").resized(rect_size * 2).scaled(d,1).draw(pos);
 		TextureAsset(U"Door").resized(rect_size * 2).scaled(d,1).mirrored().draw(pos+Vec2::UnitX()*(1-d)*2* rect_size);
 	}

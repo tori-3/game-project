@@ -513,8 +513,6 @@ void Player::update() {
 		actMan.start(U"Damage");
 		hp -= 1;
 	}
-
-	tmp = character.character.table.at(U"Hitbox").joint.getQuad();
 }
 
 void Player::draw()const{

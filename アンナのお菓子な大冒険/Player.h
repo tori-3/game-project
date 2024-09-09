@@ -13,7 +13,7 @@ public:
 
 	double angle = 0_deg;
 
-	Timer timer{ 0.4s,StartImmediately::Yes };
+	double timer = 0.4;
 
 	CharacterSystem character;
 
@@ -25,6 +25,9 @@ public:
 	}
 
 	void update()override {
+
+		timer -= Scene::DeltaTime();
+
 		bool collisionFlg = false;
 
 		manager->stage->hit(&hitBox);
@@ -33,7 +36,7 @@ public:
 			collisionFlg = true;
 		}
 
-		if (timer<=0s) {
+		if (timer<=0) {
 			hp = 0;
 		}
 
@@ -81,7 +84,6 @@ public:
 	int32 itemCount = 0;
 
 	Vec2 force{};
-	Timer backTimer{ 0.2s };
 
 	CharacterSystem character;
 
@@ -94,8 +96,6 @@ public:
 
 
 	Vec2 lastTouchPos{};
-
-	Timer endTimer{ 4s };
 
 	MyInput jumpKey;
 	MyInput rightKey;
