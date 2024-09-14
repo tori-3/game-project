@@ -10,10 +10,10 @@ struct GameData
 	mode mini_mode = Easy_Mode;
 	bool mini_clear = false;
 	bool boss_clear = false;
-	Input KeyUp = s3d::KeyUp;
-	Input KeyLeft = s3d::KeyLeft;
-	Input KeyDown = s3d::KeyDown;
-	Input KeyRight = s3d::KeyRight;
+	Input KeyUp = s3d::KeyW;
+	Input KeyLeft = s3d::KeyA;
+	Input KeyDown = s3d::KeyS;
+	Input KeyRight = s3d::KeyD;
 
 	InputGroup jumpKey=s3d::KeyW| s3d::KeySpace;
 	Input attackKey=s3d::KeyEnter;

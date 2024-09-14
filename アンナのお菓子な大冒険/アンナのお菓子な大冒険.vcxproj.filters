@@ -938,5 +938,8 @@
     <ClInclude Include="MyInput.h">
       <Filter>Header Files\MainGameScene</Filter>
     </ClInclude>
+    <ClInclude Include="AnnaMusicGame.h">
+      <Filter>Header Files\MiniGame</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

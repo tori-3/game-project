@@ -7,6 +7,7 @@
 #include"Maze2.h"
 #include"ManjuRush.h"
 #include"HawkDropOut.h"
+#include"AnnaMusicGame.h"
 
 void Main()
 {
@@ -28,6 +29,7 @@ void Main()
 	manager.add<Maze1::Game>(U"Game");
 	manager.add<Maze1::Clear>(U"Clear");
 	manager.add<Maze2::mazeGame>(U"Maze2");
+	manager.add<AnnaMusicGame::AnnaMusicGame>(U"AnnaMusicGame");
 
 
 	while (System::Update())

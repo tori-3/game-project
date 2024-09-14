@@ -45,10 +45,7 @@ namespace FallingAnna {
 			auto p = picture(X, Y, w, h, w * txp, h * typ, rad, opa
 				, map<string, Texture*>{ {"def", t}});
 
-			//Print << size<<U" *:wh: "<<t->height() ;
 			p.settxy(X, Y);
-			//Print << X;
-			//Print << p.x;
 			return p;
 		}
 		float getTX()const
@@ -77,7 +74,6 @@ namespace FallingAnna {
 			auto tx = gettx();
 			auto ty = getty();
 			rad = r;
-			//Print << rad;
 			rad = atan2f(sinf(rad), cosf(rad));
 			settxy(tx, ty);
 		}
@@ -133,9 +129,6 @@ namespace FallingAnna {
 		/// <param name="yy">セットするy座標</param>
 		void settxy(float xx, float yy)
 		{
-			//Print << xx;
-			//Print << -getTX() * cosf(rad)<<U" asd";
-			//Print << +getTY() * sinf(rad) << U" asdasdas";
 			x = xx - getTX() * cosf(rad) + getTY() * sinf(rad);
 			y = yy - getTX() * sinf(rad) - getTY() * cosf(rad);
 		}
@@ -341,7 +334,6 @@ namespace FallingAnna {
 
 		void generateRock()
 		{
-			//Print << U"generate rock";
 			float size = Random(rocksize, mrocksize);
 			rocks.push_back
 			(
@@ -352,15 +344,12 @@ namespace FallingAnna {
 		}
 		void generateToge()
 		{
-			//	Print << U"generate toge";
-
 			toges.push_back(Vec2(Random<float>(0, ww * 2), wh + togesize));
 		}
 		void generateCloud()
 		{
 			//ここで雲のサイズを定義
 			auto size = Random<float>(45, 180);
-			//	Print << U"generate cloud";
 			clouds.push_back(Vec2(Random<float>(0, ww * 2), wh + size));
 			cloudsizes.push_back(size);
 		}
@@ -517,8 +506,6 @@ namespace FallingAnna {
 				, 0.5, 0.5, Math::Pi * Random(0.0, 2.0), batopa, annas.x + annaw / 2.0 * Random(-1.0, 1.0)
 					, annas.y + annah / 2.0 * Random(-1.0, 1.0));
 				bats.push_back(p);
-				//Print << p.x;
-				//Print << annas.x;
 				batspeeds.push_back(Vec2(batspeed * Random(-1.0, 1.0)
 					, -nowspy + batspeed * Random(-1.0, 0.0)));
 				eftime += effnaga;
@@ -718,7 +705,6 @@ namespace FallingAnna {
 			while (x > ww * (hi))x -= (float)(ww * (hi));
 			while (x < 0)x += (float)(ww * (hi));
 			auto isou = x / (ww * hi);
-			//Print << isou<<U" asfka "<<x<<U" == "<<ww/(ww*hi);
 
 			auto a1 = tower(0, 0, tower.width() * isou, tower.height()).resized(x, wh);
 			auto a2 = tower(tower.width() * isou, 0, tower.width() - tower.width() * isou, tower.height()).resized(ww * (hi)-x, wh);

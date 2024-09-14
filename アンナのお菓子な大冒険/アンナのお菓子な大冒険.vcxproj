@@ -320,6 +320,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationSystem.h" />
+    <ClInclude Include="AnnaMusicGame.h" />
     <ClInclude Include="BackGround.h" />
     <ClInclude Include="BGMManager.hpp" />
     <ClInclude Include="Block.h" />

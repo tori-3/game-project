@@ -313,7 +313,9 @@ public:
 
 	void lateUpdate() {
 
-
+		if (not isActive()) {
+			DataManager::get().table.emplace(U"Clear");
+		}
 	}
 
 	void draw()const override {

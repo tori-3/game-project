@@ -17,7 +17,6 @@ namespace ManjuRush {
 			for (auto& v : m_v) {
 				v = RandomVec2(1.0) * Random(40) * Vec2(2.5, 1);
 			}
-			//Print << m_pos[0];
 		}
 
 		bool update(double t) override
@@ -106,10 +105,8 @@ namespace ManjuRush {
 		void update() override
 		{
 			if (flag == false) {
-				//Print << stopwatch;
 				if (stopwatch < 2s) {
 					font(U"3").draw(600, 200);
-					//Print << stopwatch;
 				}
 				else if (stopwatch < 3s) {
 					font(U"2").draw(600, 200);
@@ -129,13 +126,11 @@ namespace ManjuRush {
 					BGM.play();
 				}
 
-				//Print << score;
 				if (score > 900 || getData().mini_mode == Hard_Mode) {
 					level = 3;
 				}
 				else if (score > 500 || getData().mini_mode == Normal_Mode) {
 					level = 2;
-					//Print << level;
 				}
 
 
@@ -180,7 +175,6 @@ namespace ManjuRush {
 						jumptime.restart();
 
 					}
-					//Print << jumptime;
 					//上昇
 					if (0s < jumptime && jumptime < 0.4s && 0 < v && getData().KeyUp.pressed()) {
 						jump = true;
@@ -280,6 +274,7 @@ namespace ManjuRush {
 
 			for (int i = 0; i < 20; i++) {
 				renga.scaled(0.25).draw(-100 + 100 * i, 600);
+				renga.scaled(0.25).draw(-100 + 100 * i, 700);
 			}
 
 			effect.update();
@@ -305,7 +300,6 @@ namespace ManjuRush {
 			else {
 				anna2_d.scaled(0.2).draw(player.x - 10, player.y);
 			}
-			//Print << enemys[1].y;
 			manju.scaled(0.8).draw(enemys[0].x - 10, enemys[0].y);
 			manju.scaled(0.8).rotatedAt(Vec2{ enemys[0].w / 2 + 10,enemys[0].h / 2 }, rad1).draw(enemys[1].x - 10, enemys[1].y);
 

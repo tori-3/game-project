@@ -163,7 +163,7 @@ public:
 	EnemyAdder adder{ &manager };
 
 
-	CloudManager cloud;
+	//CloudManager cloud;
 
 	ColorF skyColor{Palette::Skyblue};
 
@@ -267,7 +267,7 @@ public:
 
 		//ステージupdate
 
-		cloud.update();
+		//cloud.update();
 
 		if (KeyEscape.down())goPause();
 
@@ -288,10 +288,10 @@ public:
 	{
 		Scene::SetBackground(skyColor);
 
-		cloud.draw1();
+		//cloud.draw1();
 		background.draw(camera.pos+Scene::Size()/2);
-		cloud.draw2();
-		Rect{ Scene::Size() }.draw(ColorF{ skyColor,0.4 });
+		//cloud.draw2();
+		//Rect{ Scene::Size() }.draw(ColorF{ skyColor,0.4 });
 
 		backgroundManager.draw(camera.pos);
 

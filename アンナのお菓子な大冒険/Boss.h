@@ -50,3 +50,66 @@ public:
 
 	void draw()const override;
 };
+
+class SlaversCookie :public Entity {
+public:
+
+	Array<Entity*>summonListItigo;//召喚したリスト
+	Entity* summonSnowLeft = nullptr;
+	Entity* summonSnowRight = nullptr;
+
+	bool left = true;
+
+	std::function<void()> f;
+	std::function<void()>f2;
+
+	double timer;
+
+	CharacterSystem character;
+
+	size_t type = 1;
+
+	double rx, lx;
+
+	SlaversCookie(const Vec2& cpos);
+
+	void update()override;
+
+	void lateUpdate()override;
+
+	void draw()const override;
+};
+
+
+class Captain :public Entity {
+public:
+
+	double accumulatedTime = 0;
+
+	Array<Entity*>summonList;//召喚したリスト
+
+	bool left = true;
+
+	double center;
+
+	Vec2 r, l;
+
+	std::function<void()> f;
+	std::function<void()>f2;
+
+	double timer;
+
+	CharacterSystem character;
+
+	size_t type = 1;
+
+	Captain(const Vec2& cpos);
+
+	void update()override;
+
+	void lateUpdate()override;
+
+	void draw()const override;
+
+	void damage(int32 n, const Vec2& force = {})override;
+};

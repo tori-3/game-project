@@ -1,4 +1,5 @@
 ﻿{
+  "BackGround": [],
   "Block": {
     "CaptainBlock": [
       "(9, 5)"
@@ -99,5 +100,6 @@
       "(15, 9)"
     ]
   },
+  "Rate": 1.0,
   "stage_size": "(19, 14)"
 }

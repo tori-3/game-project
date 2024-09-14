@@ -82,7 +82,6 @@ public:
 	Stage* stage = nullptr;
 
 	void update() {
-		Console << entitys.size();
 
 		for (auto i : step(entitys.size())) {
 			entitys[i]->update();

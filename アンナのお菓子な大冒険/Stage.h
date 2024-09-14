@@ -214,14 +214,10 @@ public:
 
 	StageBackGround(const JSON& json) :stage{ json,true }, rate{ json[U"Rate"].get<double>() } {
 
-		Print << json[U"Rate"].get<double>();
-
 	}
 
 	void update(const Vec2& pos) {
 		//stage.updateAsBackGround(pos * rate,4, brockNum());
-
-		Print << stage.width() << U"," << stage.height();
 	}
 
 	void draw(const Vec2& pos)const {
@@ -247,7 +243,6 @@ public:
 
 		for (const auto& elem : json[U"BackGround"].arrayView())
 		{
-			Print << elem.getString();
 			backGrounds << StageBackGround{ JSON::Load(elem.getString()) };
 		}
 	}

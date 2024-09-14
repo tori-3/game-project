@@ -13,8 +13,8 @@ namespace HawkDropOut {
 		HawkDropOut(const InitData& init)
 			: IScene{ init }
 		{
-			if (not TextureAsset::IsRegistered(U"BackGroundTexture/雲背景.png")) {
-				TextureAsset::Register(U"BackGroundTexture/雲背景.png", U"BackGroundTexture/雲背景.png");
+			if (not TextureAsset::IsRegistered(U"BackGroundTexture/雪原背景.png")) {
+				TextureAsset::Register(U"BackGroundTexture/雪原背景.png", U"BackGroundTexture/雪原背景.png");
 			}
 
 
@@ -98,7 +98,7 @@ namespace HawkDropOut {
 
 		void update() override
 		{
-			TextureAsset{ U"BackGroundTexture/雲背景.png" }.resized(800).draw();
+			TextureAsset{ U"BackGroundTexture/雪原背景.png" }.resized(800).draw();
 
 			//雲を描画する
 			cloudEmoji.scaled(1).draw(Aclouddistance, 100);
@@ -136,8 +136,6 @@ namespace HawkDropOut {
 				meatCircle.y = Random(100, 400);
 			}
 
-			//アイテム保持数表示
-			//Print << numofmeat;
 
 			//飛距離を加算する
 			FlyDistance += Scene::DeltaTime() * 100;
@@ -270,8 +268,6 @@ namespace HawkDropOut {
 				j = 1;
 			}
 
-			//攻撃しているか
-			//Print << attack;
 
 			//攻撃が障害物に当たった場合に障害物の座標を戻す
 			if (attackball.intersects(a_enemyCircle)) {
@@ -492,7 +488,6 @@ namespace HawkDropOut {
 				Deltadistance = 0;
 			}
 
-			//Print << plasdropspeed;
 		}
 
 
