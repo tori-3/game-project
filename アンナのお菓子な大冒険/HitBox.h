@@ -18,6 +18,8 @@ public:
 
 	bool leftFloor=false, rightFloor=false;
 
+	bool canRespawnOn = false;
+
 	PhysicsBox(Vec2* pos, Vec2* vel, Vec2 delta, double width, double height, int32* hp) :pos(pos), vel(vel), delta(delta), width(width), height(height), hp{hp} {}
 
 	//それぞれの方向のshift関数を呼び出す
@@ -37,6 +39,13 @@ public:
 
 	}
 
+	template<typename T>void hitCanNotRespawn(T rect)
+	{
+		bool oldcanRespawnOn = canRespawnOn;
+		hit(rect);
+		canRespawnOn = oldcanRespawnOn;
+	}
+
 	//図形の埋め込みを解消する
 	template<typename T>void shift(T rect, Direction num, Vec2 vec)
 	{
@@ -44,6 +53,11 @@ public:
 		while (rect.intersects(lines(num)))*pos += vec;//Lineと当たらなくなるまで移動
 		*pos -= vec;//少し戻す（これをしないと、ブロックと当たる、離れるを繰り返してしまう。）
 		touch_flag[(int32)num] = true;//その方向の
+
+		if (Direction::down==num)
+		{
+			canRespawnOn = true;
+		}
 	}
 
 	//それぞれの方向のLineを返す
@@ -65,6 +79,7 @@ public:
 	void resetFlg() {
 		touch_flag[0] = touch_flag[1] = touch_flag[2] = touch_flag[3] = 0;
 		leftFloor = rightFloor = false;
+		canRespawnOn = false;
 	}
 
 	void physicsUpdate() {
@@ -176,7 +191,9 @@ public:
 		return physics.rightFloor;
 	}
 
-	
+	bool canRespawnOn()const {
+		return physics.canRespawnOn;
+	}
 
 	//ステージから影響を受ける
 	template<typename T>void hit(T figure) { physics.hit(figure); }

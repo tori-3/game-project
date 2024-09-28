@@ -10,6 +10,7 @@ class SnowKnight :public Entity
 {
 public:
 
+	int32 attackCount = 0;
 
 	static constexpr int32 maxHp = 3;
 

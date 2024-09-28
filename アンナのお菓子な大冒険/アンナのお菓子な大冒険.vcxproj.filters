@@ -947,5 +947,8 @@
     <ClInclude Include="GrapesHPBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FadeUpEffect.h">
+      <Filter>Header Files\MainGameScene\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

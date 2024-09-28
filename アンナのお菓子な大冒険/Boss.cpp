@@ -1,6 +1,9 @@
 ﻿#include"Boss.h"
 #include"Enemy.h"
 #include"LinerMove.h"
+#include"TalkManager.h"
+#include"FadeUpEffect.h"
+#include"Player.h"
 
 SnowKnight::SnowKnight(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(-20,40),70 * 1,70 * 4 - 30 },cpos,{0,0},maxHp }
 , character{ U"Characters/yukidarunaito/yukidarunaito.json" ,U"Characters/yukidarunaito/motion.txt" ,0.2,cpos,true,false }
@@ -237,10 +240,6 @@ void SnowKnight::lateUpdate() {
 		DataManager::get().additiveEffect.add<ExplosionEffect>(pos + Vec2{ 50,50 }, 100);
 		DataManager::get().additiveEffect.add<ExplosionEffect>(pos - Vec2{ 50,50 }, 100);
 	}
-	/*if (not isActive()) {
-		DataManager::get().effect.add<StarEffect>(pos, 0);
-		manager->add(new CookieItem{ pos });
-	}*/
 }
 
 void SnowKnight::damage(int32 n, const Vec2& _force) {
@@ -252,6 +251,58 @@ void SnowKnight::damage(int32 n, const Vec2& _force) {
 			if (5 <= n) {
 				yoroi -= 1;
 			}
+			else {
+
+				String text;
+
+				if (attackCount < 3)
+				{
+					text = U"むてき！";
+				}
+				else if (attackCount < 4)
+				{
+					text = U"むてきだってば！";
+				}
+				else if (attackCount < 5)
+				{
+					text = U"よろいさいきょう！";
+				}
+				else if (attackCount < 6)
+				{
+					text = U"きかないね！";
+				}
+				else if (attackCount < 7)
+				{
+					text = U"とっしんしてみな！";
+				}
+				else
+				{
+					if (IsOdd(attackCount))
+					{
+						if (10 <= dynamic_cast<Player*>(manager->get(U"Player"))->itemCount)
+						{
+							text = U"Enter長押し！";
+						}
+						else
+						{
+							text = U"クッキーを取ろう！";
+						}
+					}
+					else
+					{
+						text = U"むてき！";
+					}
+				}
+
+
+				DataManager::get().effect.add<FadeUpEffect>(pos,text, FontAsset(U"TitleFont"),Palette::Blue);
+
+				++attackCount;
+			}
+
+
+
+
 			if (yoroi <= 0) {
 				character.addMotion(U"Nugeru");
 			}

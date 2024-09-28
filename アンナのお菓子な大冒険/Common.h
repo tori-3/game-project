@@ -10,6 +10,12 @@ struct GameData
 	mode mini_mode = Easy_Mode;
 	bool mini_clear = false;
 	bool boss_clear = false;
+
+	bool backFromMainGameScene = false;
+
+	int32 maxHP = 5;
+
+
 	Input KeyUp = s3d::KeyW;
 	Input KeyLeft = s3d::KeyA;
 	Input KeyDown = s3d::KeyS;

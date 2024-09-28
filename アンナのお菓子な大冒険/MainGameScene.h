@@ -133,20 +133,37 @@ public:
 		}
 	}
 
-	void hpDisplay(int32 count)const {
+	void hpDisplay(int32 count,int32 maxHP)const {
 
 		if (not TextureAsset::IsRegistered(U"HP")) {
 			TextureAsset::Register(U"HP", U"❤"_emoji);
 		}
 
-		for (auto i : step(5)) {
-			if (i < count) {
-				TextureAsset(U"HP").resized(40).drawAt(25 + i * 40, 25);
+		if (10 < count)
+		{
+			for (auto i : step(10)) {
+				if (i < count) {
+					TextureAsset(U"HP").resized(40).drawAt(25 + i * 40, 25);
+				}
+				else {
+					TextureAsset(U"HP").resized(40).drawAt(25 + i * 40, 25, ColorF{ 1,0.3 });
+				}
 			}
-			else {
-				TextureAsset(U"HP").resized(40).drawAt(25 + i * 40, 25, ColorF{ 1,0.3 });
+
+			FontAsset(U"TitleFont")(U"＋{}"_fmt(count-10)).draw(35, 25 + 10 * 40 - 10, 0);
+		}
+		else
+		{
+			for (auto i : step(maxHP)) {
+				if (i < count) {
+					TextureAsset(U"HP").resized(40).drawAt(25 + i * 40, 25);
+				}
+				else {
+					TextureAsset(U"HP").resized(40).drawAt(25 + i * 40, 25, ColorF{ 1,0.3 });
+				}
 			}
 		}
+
 	}
 
 	DataManagerStart start;
@@ -197,6 +214,9 @@ public:
 	MainGameScene(const InitData& init)
 		: IPauseScene{ init }
 	{
+		DataManager::get().maxHP = getData().maxHP;
+
+
 		loadAudio();
 
 		adder.update();
@@ -325,7 +345,7 @@ public:
 		rTexture.draw();
 
 		cookieDisplay(player->itemCount, DataManager::get().tame);
-		hpDisplay(player->hp);
+		hpDisplay(player->hp, DataManager::get().maxHP);
 
 		TalkManager::get().talkWindow.draw(RectF{ 0,500,Scene::Size().x,300 });
 
@@ -362,6 +382,7 @@ public:
 	void EndGame(bool clear) {
 		getData().mini_clear = clear;//クリア状況保存
 		changeScene(U"Map",0s);
+		getData().backFromMainGameScene = true;
 	}
 
 	void drawFadeIn(double t) const override

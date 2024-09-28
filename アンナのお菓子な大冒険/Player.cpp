@@ -2,7 +2,7 @@
 
 Player::Player(const Vec2& cpos) :
 	character{ U"Characters/annna/annna.json",U"Characters/annna/motion.txt",0.25,cpos,false },
-	Entity{ U"Player",defaultBody ,cpos,{0,0},5 }
+	Entity{ U"Player",defaultBody ,cpos,{0,0},DataManager::get().maxHP }
 {
 
 	z = 100;
@@ -497,7 +497,7 @@ void Player::update() {
 	character.update(pos, left);
 	character.character.touchGround(hitBox.Get_Box().boundingRect().bottomY());
 
-	if (hitBox.touch(Direction::down) && hitBox.rightFloor() && hitBox.leftFloor()) {
+	if (hitBox.canRespawnOn() && hitBox.rightFloor() && hitBox.leftFloor()) {
 		lastTouchPos = pos;
 	}
 

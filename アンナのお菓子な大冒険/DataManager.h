@@ -16,6 +16,9 @@ public:
 
 	double tame = 0;
 
+
+	int32 maxHP = 5;
+
 	//noneのときはプレイヤーに追従
 	Optional<Vec2>cameraPos{};
 

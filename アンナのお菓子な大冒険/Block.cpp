@@ -55,11 +55,11 @@ void Moving::reaction(const Point& pos, PhysicsBox* box)
 {
 	RectF rect{ pos * rect_size,rect_size };
 	rect.x += Periodic::Triangle0_1(3s, DataManager::get().time) * rect_size * 3;
-	if (box->lines(Direction::down).center().intersects(rect)) {
+	if (box->lines(Direction::down).center().movedBy(0,1).intersects(rect)) {
 		if (Periodic::Square0_1(3s, DataManager::get().time))box->pos->x += Scene::DeltaTime() / 1.5 * rect_size * 3;
 		else box->pos->x -= Scene::DeltaTime() / 1.5 * rect_size * 3;
 	}
-	box->hit(rect);
+	box->hitCanNotRespawn(rect);
 }
 
 void Moving::draw(const Point& pos)const
@@ -74,7 +74,7 @@ void Elevator::reaction(const Point& pos, PhysicsBox* box)
 	Rect rect{ pos * rect_size,rect_size };
 	rect.y += rect_size * 3;
 	rect.y -= (int32)(Periodic::Triangle0_1(6s, DataManager::get().time) * rect_size * 5);
-	box->hit(rect);
+	box->hitCanNotRespawn(rect);
 
 	if (box->lines(Direction::down).intersects(rect) && not Periodic::Square0_1(6s, DataManager::get().time)) {
 		box->pos->y += (rect_size * 5) * Scene::DeltaTime() / 3 + 0.2;
@@ -121,7 +121,7 @@ void WeakWall::reaction(const Point& pos, PhysicsBox* box)
 				return;
 			}
 		}
-		box->hit(rect);
+		box->hitCanNotRespawn(rect);
 	}
 }
 

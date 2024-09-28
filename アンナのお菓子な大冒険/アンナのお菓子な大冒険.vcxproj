@@ -333,6 +333,7 @@
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="FadeUpEffect.h" />
     <ClInclude Include="FallingAnna.h" />
     <ClInclude Include="Figure.hpp" />
     <ClInclude Include="GrapesHPBar.h" />

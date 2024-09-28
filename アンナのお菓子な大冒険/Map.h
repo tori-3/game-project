@@ -12,7 +12,7 @@ public:
 
 	//画面下の四角形の情報
 	const int rect_size = 70;//四角形の大きさ
-	const int rect_num = 16;//四角形(ゲーム)の個数
+	const int rect_num = 17;//四角形(ゲーム)の個数
 	const int rect_gap = 5;//四角形の間隔
 
 	//アイコン画像
@@ -59,6 +59,24 @@ public:
 			clearStage = getData().stage;
 		}
 
+
+		if (getData().backFromMainGameScene)
+		{
+			if (getData().mini_clear)
+			{
+				json[U"StageData"][U"Stage{}"_fmt(getData().stage)][U"MaxHP"] = 5;				
+
+			}
+			else
+			{
+				json[U"StageData"][U"Stage{}"_fmt(getData().stage)][U"MaxHP"] = getData().maxHP + 2;
+			}
+
+			json.save(U"map.json");
+		}
+
+
+
 		index = getData().stage - 1;
 
 		for (int i = 0; i < rect_num; i++) {
@@ -99,6 +117,10 @@ public:
 				getData().mini_clear = false;
 				getData().stageFile = json[U"StageData"][U"Stage{}"_fmt(index + 1)][U"MapFile"].getString();
 				getData().backgroundTexture = json[U"StageData"][U"Stage{}"_fmt(index + 1)][U"BackgroundTexture"].getString();
+				getData().maxHP = json[U"StageData"][U"Stage{}"_fmt(index + 1)][U"MaxHP"].get<int32>();
+
+
+				getData().backFromMainGameScene = false;
 
 				if (not TextureAsset::IsRegistered(getData().backgroundTexture))
 				{
