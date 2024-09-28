@@ -2,7 +2,7 @@
 #include"Enemy.h"
 #include"LinerMove.h"
 
-SnowKnight::SnowKnight(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(-20,40),70 * 1,70 * 4 - 30 },cpos,{0,0},10 }
+SnowKnight::SnowKnight(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(-20,40),70 * 1,70 * 4 - 30 },cpos,{0,0},maxHp }
 , character{ U"Characters/yukidarunaito/yukidarunaito.json" ,U"Characters/yukidarunaito/motion.txt" ,0.2,cpos,true,false }
 {
 	centerX = pos.x;
@@ -226,6 +226,9 @@ void SnowKnight::update() {
 }
 
 void SnowKnight::lateUpdate() {
+
+	DataManager::get().bossHPRate = hp / double(maxHp);
+
 	summonList.remove_if([](Entity* entity) {return not entity->isActive(); });
 
 	if (not isActive()) {
@@ -297,7 +300,7 @@ void SnowKnight::draw()const {
 }
 
 
-SlaversCookie::SlaversCookie(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,0),50,100},cpos,{0,0},3 }
+SlaversCookie::SlaversCookie(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,0),50,100},cpos,{0,0},maxHp }
 , character{ U"Characters/cookieDoreisho/model.json" ,U"Characters/cookieDoreisho/motion.txt" ,0.4,cpos,true,false }
 {
 	f = []() {};
@@ -493,6 +496,9 @@ void SlaversCookie::update() {
 }
 
 void SlaversCookie::lateUpdate() {
+
+	DataManager::get().bossHPRate = hp / double(maxHp);
+
 	summonListItigo.remove_if([](Entity* entity) {return not entity->isActive(); });
 	if (summonSnowLeft and not summonSnowLeft->isActive()) {
 		summonSnowLeft = nullptr;
@@ -516,7 +522,7 @@ void SlaversCookie::draw()const {
 
 
 
-Captain::Captain(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,-30),230,100},cpos,{0,0},30 }
+Captain::Captain(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,-30),230,100},cpos,{0,0},maxHp }
 , character{ U"Characters/sentyo/model.json" ,U"Characters/sentyo/motion.txt" ,1,cpos,true,false }
 {
 	r = { pos.x + 400,pos.y };
@@ -865,6 +871,9 @@ void Captain::update() {
 }
 
 void Captain::lateUpdate() {
+
+	DataManager::get().bossHPRate = hp / double(maxHp);
+
 	summonList.remove_if([](Entity* entity) {return not entity->isActive(); });
 
 	if (not isActive()) {

@@ -116,6 +116,7 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="GrapesHPBar.cpp" />
     <ClCompile Include="LastBoss.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Movements.cpp" />
@@ -334,6 +335,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="FallingAnna.h" />
     <ClInclude Include="Figure.hpp" />
+    <ClInclude Include="GrapesHPBar.h" />
     <ClInclude Include="HawkDropOut.h" />
     <ClInclude Include="HitBox.h" />
     <ClInclude Include="IMotionField.h" />

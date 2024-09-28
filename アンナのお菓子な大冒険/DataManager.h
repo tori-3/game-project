@@ -21,6 +21,8 @@ public:
 
 	SizeF stageSize{};
 
+	Optional<double> bossHPRate = none;
+
 	void addEntity(const String& name, const Vec2& pos) {
 		list << std::pair<String, Vec2>{name,pos};
 	}

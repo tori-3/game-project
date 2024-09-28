@@ -183,6 +183,9 @@
     <ClCompile Include="Boss.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GrapesHPBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -940,6 +943,9 @@
     </ClInclude>
     <ClInclude Include="AnnaMusicGame.h">
       <Filter>Header Files\MiniGame</Filter>
+    </ClInclude>
+    <ClInclude Include="GrapesHPBar.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

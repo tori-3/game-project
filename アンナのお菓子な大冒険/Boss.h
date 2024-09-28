@@ -9,6 +9,10 @@
 class SnowKnight :public Entity
 {
 public:
+
+
+	static constexpr int32 maxHp = 3;
+
 	CharacterSystem character;
 
 	//右と左の定位置
@@ -54,6 +58,8 @@ public:
 class SlaversCookie :public Entity {
 public:
 
+	static constexpr int32 maxHp = 3;
+
 	Array<Entity*>summonListItigo;//召喚したリスト
 	Entity* summonSnowLeft = nullptr;
 	Entity* summonSnowRight = nullptr;
@@ -83,6 +89,8 @@ public:
 
 class Captain :public Entity {
 public:
+
+	static constexpr int32 maxHp = 30;
 
 	double accumulatedTime = 0;
 

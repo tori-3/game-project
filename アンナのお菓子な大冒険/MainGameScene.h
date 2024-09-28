@@ -12,7 +12,10 @@
 #include"IrisOut.h"
 #include"TalkManager.h"
 
-inline Mat3x2 shakeMat(const Timer& timer, double amplitude = 20) {
+#include"GrapesHPBar.h"
+
+inline Mat3x2 shakeMat(const Timer& timer, double amplitude = 20)
+{
 	constexpr double N = 2;//揺れの回数
 	return Mat3x2::Translate(amplitude * (Periodic::Sine0_1(timer.duration() / N, timer.sF()) - 1 / N), 0);
 }
@@ -173,6 +176,8 @@ public:
 
 	IrisOut irisOut;
 
+	GrapesHPBar hpBar{ Rect{Arg::center(Scene::Center().x,50),300,40} };
+
 	void loadAudio() {
 
 		for (auto& path : FileSystem::DirectoryContents(U"Audio"))
@@ -281,6 +286,11 @@ public:
 		irisOut.update();
 
 		backgroundManager.update(camera.pos);
+
+		if (DataManager::get().bossHPRate)
+		{
+			hpBar.update(DataManager::get().bossHPRate.value());
+		}
 	}
 
 	// 描画関数（オプション）
@@ -320,6 +330,12 @@ public:
 		TalkManager::get().talkWindow.draw(RectF{ 0,500,Scene::Size().x,300 });
 
 		FontAsset(U"TitleFont")(U"Escで操作方法").draw(40,850,0,Palette::Orange);
+
+		if (DataManager::get().bossHPRate)
+		{
+			hpBar.draw(Palette::Purple, Palette::Red);
+		}
+
 
 		{
 			const Transformer2D t{ camera.getMat3x2() };
