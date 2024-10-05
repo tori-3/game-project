@@ -8,7 +8,7 @@
       "MaxHP": 5,
       "Picture": "BackgroundTexture/雪原背景.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-1>\n冒険のはじまり"
+      "Sentence": "<1-1>冒険のはじまり\nアンナちゃんが落ちた先には\nお菓子の世界が広がっていました。\nどんなお菓子が待ち受けているのか、\nわくわくしながら\nアンナちゃんは進みます。"
     },
     "Stage10": {
       "BGM": "",
@@ -26,7 +26,7 @@
       "MaxHP": 5,
       "Picture": "BackgroundTexture/洞窟背景.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<2-Boss>\n悪逆非道！奴隷商クッキー\n壁に突進せよ！"
+      "Sentence": "<2-Boss>悪逆非道！奴隷監督クッキー\n手下をこき使う悪い長。\nひきょう者の奴隷監督クッキーは\n手下を使ってアンナちゃんを襲います。\n必殺技を使ってどうにか倒しましょう！"
     },
     "Stage12": {
       "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
@@ -35,7 +35,7 @@
       "MaxHP": 5,
       "Picture": "BackgroundTexture/雲背景.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<3-1>\n雲1"
+      "Sentence": "<3-1>綿菓子スカイ\n鉱山から山頂に出たアンナちゃん。\nなんと、この世界の雲は綿菓子でした！\nアンナちゃんはよだれが止まりません。\nでも、空から攻撃してくる敵たちに\n気を付けてアンナちゃん！"
     },
     "Stage13": {
       "BGM": "",
@@ -53,7 +53,7 @@
       "MaxHP": 5,
       "Picture": "BackgroundTexture/雲背景.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<3-2>\n雲2"
+      "Sentence": "<3-2>綿菓子の雲に飛び乗って\nだんだん陽が暮れてきました。\n雲海の先に見えるのは、\nお菓子のお城でしょうか。\nお城を目指して、\nアンナちゃんは港に向かいました。"
     },
     "Stage15": {
       "BGM": "BGM/StageBoss6.wav",
@@ -62,7 +62,7 @@
       "MaxHP": 5,
       "Picture": "BackgroundTexture/雲背景.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<3-Boss>\nヘビースモーカーの綿菓子船長"
+      "Sentence": "<3-Boss>泣く子も黙る綿菓子船長\nお菓子のお城に行きたいのに\n船に乗せてくれません。\n船長を倒して船を奪おう！\nおヒゲは綿あめだけど、\nおいしそうには思えない..."
     },
     "Stage16": {
       "BGM": "",
@@ -80,7 +80,7 @@
       "MaxHP": 7,
       "Picture": "背景.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<LastBoss>\nラスボス"
+      "Sentence": "<LastBoss>お菓子大好きな魔女\n\t\tビター・ヴァイオレット\nこの世界を支配し、お菓子を独り占めしようとする\nワガママな女の子。\nお菓子は我のもの！と、アンナちゃんは\nお菓子をかけた最後の戦いに挑みます。"
     },
     "Stage2": {
       "BGM": "",
@@ -98,7 +98,7 @@
       "MaxHP": 5,
       "Picture": "BackgroundTexture/雪原背景.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-2>\nケーキのアスレチック"
+      "Sentence": "<1-2>プリンのトランポリン\nプリンでとびはねるイチゴちゃん。\n楽しそうなので、アンナちゃんも\n混ざります。\n（お菓子で遊んではいけません。）"
     },
     "Stage4": {
       "BGM": "BGM/StageSnow7.wav",
@@ -107,7 +107,7 @@
       "MaxHP": 5,
       "Picture": "BackgroundTexture/雪原背景.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-3>"
+      "Sentence": "<1-3>ゆきだるまの布陣\nこの先には行かせないぞ！\n意気込んだゆきだるまたちが\nアンナちゃんの行く手を阻みます。"
     },
     "Stage5": {
       "BGM": "",
@@ -125,7 +125,7 @@
       "MaxHP": 5,
       "Picture": "BackgroundTexture/雪原背景.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-Boss>\n雪だるナイト参上！\n鎧に突進せよ！"
+      "Sentence": "<1-Boss>雪だるナイト参上！\nクリーム雪原を治める雪だるまの長。\n鎧はあらゆる攻撃を防ぎます。\n雪だるナイトを倒すには\nアンナちゃんとっておきの\n必殺技を食らわせよう！"
     },
     "Stage7": {
       "BGM": "BGM/StageChoco21.mp3",
@@ -134,7 +134,7 @@
       "MaxHP": 5,
       "Picture": "BackgroundTexture/洞窟背景.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<2-1>\n洞窟1"
+      "Sentence": "<2-1>チョコ鉱山の入口\nクリームに飽きたアンナちゃん。\n今度はチョコマウンテンに訪れました。\nでも、アンナちゃんは山登りよりも\n洞窟探検がしたいみたいです。\nアンナちゃんはウキウキしながら\n鉱山に入っていきました。"
     },
     "Stage8": {
       "BGM": "",
@@ -152,7 +152,7 @@
       "MaxHP": 5,
       "Picture": "BackgroundTexture/洞窟背景.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<2-2>\n洞窟2"
+      "Sentence": "<2-2>チョコ鉱山\n鉱山を掘り進める奴隷イチゴ、\nコーンを使って爆破させたり、\n洞窟の中は意外と賑やかです。\nどうやらこの先に、手下をこき使う\n悪いボスがいるみたい..."
     }
   }
 }
