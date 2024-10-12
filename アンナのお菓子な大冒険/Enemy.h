@@ -61,7 +61,7 @@ public:
 		character.update(pos,left);
 	}
 
-	void lateUpdate() {
+	void lateUpdate()override {
 		if (not isActive()) {
 			DataManager::get().effect.add<StarEffect>(pos, 0);
 			manager->add(new CookieItem{ pos });
@@ -360,7 +360,7 @@ public:
 
 			if (attackTimer<= 0) {
 				if (manager->get(U"Player")->hitBox.Get_Box().intersects(hitBox.Get_Box().movedBy(left ? -25 : 25, 0))) {
-					manager->get(U"Player")->damage(2, Vec2{ left ? -200 : 200,-20 });
+					manager->get(U"Player")->damage(2, Vec2{ left ? -200 : 200,-20 },DamageType::UnBrakable);
 				}
 			}
 		}
@@ -368,14 +368,14 @@ public:
 		character.update(pos, left);
 	}
 
-	void lateUpdate() {
+	void lateUpdate()override {
 		if (not isActive()) {
 			DataManager::get().effect.add<StarEffect>(pos, 0);
 			manager->add(new CookieItem{ pos });
 		}
 	}
 
-	virtual void damage(int32 n, const Vec2& force = {}) {
+	void damage(int32 n, const Vec2& force, DamageType damageType)override {
 		if (not character.hasMotion(U"Muteki")) {
 			character.removeMotion(U"attack");
 			hp -= n;
@@ -418,7 +418,7 @@ public:
 
 	}
 
-	void lateUpdate() {
+	void lateUpdate()override {
 		constexpr ColorF colorList[] = {Palette::Yellow,Palette::Blue,Palette::Red};
 		if (not isActive()) {
 			DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 35, colorList[type]);
@@ -459,7 +459,7 @@ public:
 		attack(U"Player", hitBox.getFigure(), 1);
 	}
 
-	void lateUpdate() {
+	void lateUpdate()override {
 		constexpr ColorF colorList[] = { Palette::Yellow,Palette::Blue,Palette::Red };
 		if (not isActive()) {
 			DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 35, colorList[type]);
@@ -531,7 +531,7 @@ public:
 		character.update(pos, 0<vel.x);
 	}
 
-	void lateUpdate() {
+	void lateUpdate()override {
 		if (not isActive()) {
 			DataManager::get().effect.add<StarEffect>(pos, 0);
 			manager->add(new CookieItem{ pos });
@@ -582,10 +582,10 @@ public:
 					DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 200, HSV{ 20,1,1 });
 					if ((manager->get(U"Player")->pos - pos).length() < 70 * 2) {
 						if (pos.x < manager->get(U"Player")->pos.x) {
-							manager->get(U"Player")->damage(1, Vec2{ 100,-20 });							
+							manager->get(U"Player")->damage(1, Vec2{ 100,-20 }, DamageType::UnBrakable);
 						}
 						else {
-							manager->get(U"Player")->damage(1, Vec2{ -100,-20 });
+							manager->get(U"Player")->damage(1, Vec2{ -100,-20 }, DamageType::UnBrakable);
 						}
 					}
 
@@ -724,7 +724,7 @@ public:
 
 		if (attackTimer<=0) {
 			attackTimer = attackInterval;
-			attack(U"Player", hitBox.Get_Box().movedBy(left ? -60 : 60, 0), 2);
+			attack(U"Player", hitBox.Get_Box().movedBy(left ? -60 : 60, 0), 2, DamageType::UnBrakable);
 
 		}
 		else {
@@ -794,7 +794,7 @@ public:
 
 		if (attackTimer<= 0) {
 			attackTimer = attackInterval;
-			attack(U"Player", hitBox.Get_Box(), 2);
+			attack(U"Player", hitBox.Get_Box(), 2, DamageType::UnBrakable);
 		}
 		else {
 			attack(U"Player", hitBox.Get_Box(), 1);
@@ -977,7 +977,7 @@ public:
 		character.update(pos, 0 < vel.x);
 	}
 
-	void lateUpdate() {
+	void lateUpdate()override {
 		if (not isActive()) {
 			DataManager::get().effect.add<StarEffect>(pos, 0);
 			manager->add(new CookieItem{ pos });
@@ -1031,10 +1031,10 @@ public:
 		hitBox.physicsUpdate();
 		hitBox.update();
 
-		attack(U"Player", hitBox.getFigure(), 1);
+		attack(U"Player", hitBox.getFigure(), 1,DamageType::UnBrakable);
 	}
 
-	void lateUpdate() {
+	void lateUpdate()override {
 
 	}
 
@@ -1075,7 +1075,7 @@ public:
 
 	}
 
-	void lateUpdate() {
+	void lateUpdate()override {
 
 
 		if (not isActive())

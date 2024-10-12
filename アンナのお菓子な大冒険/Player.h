@@ -125,7 +125,7 @@ public:
 
 	void draw()const override;
 
-	void damage(int32 n, const Vec2& force = {})override;
+	void damage(int32 n, const Vec2& force = {}, DamageType damageType = DamageType::Brakable)override;
 
 	bool isActive()override {
 		return true;

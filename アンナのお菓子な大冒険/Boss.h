@@ -51,7 +51,7 @@ public:
 
 	void lateUpdate() override;
 
-	void damage(int32 n, const Vec2& _force = {}) override;
+	void damage(int32 n, const Vec2& _force, DamageType damageType) override;
 
 	void draw()const override;
 };
@@ -120,5 +120,5 @@ public:
 
 	void draw()const override;
 
-	void damage(int32 n, const Vec2& force = {})override;
+	void damage(int32 n, const Vec2& force,DamageType damageType)override;
 };

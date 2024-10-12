@@ -94,7 +94,7 @@ void SnowKnight::update() {
 				{
 					const Quad ken = character.character.table[U"kenbox"].joint.getQuad();
 
-					attack(U"Player", ken, 1);
+					attack(U"Player", ken, 1,DamageType::UnBrakable);
 
 					if (not kenFlg) {
 						AudioAsset{ U"剣を振る" }.play();
@@ -242,7 +242,7 @@ void SnowKnight::lateUpdate() {
 	}
 }
 
-void SnowKnight::damage(int32 n, const Vec2& _force) {
+void SnowKnight::damage(int32 n, const Vec2& _force, DamageType damageType) {
 
 	if (not character.hasMotion(U"Muteki") and not character.hasMotion(U"YoroiMuteki")) {
 
@@ -939,7 +939,8 @@ void Captain::draw()const{
 	character.draw();
 }
 
-void Captain::damage(int32 n, const Vec2& force){
+void Captain::damage(int32 n, const Vec2& force, DamageType damageType)
+{
 	if (not character.hasMotion(U"Muteki")) {
 		hp -= n;
 		character.addMotion(U"Muteki");

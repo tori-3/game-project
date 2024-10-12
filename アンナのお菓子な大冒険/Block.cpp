@@ -127,8 +127,7 @@ void WeakWall::reaction(const Point& pos, PhysicsBox* box)
 
 void WeakWall::draw(const Point& pos)const {
 	if (not breaked) {
-		TextureAsset(U"ChocolateWall").resized(rect_size).draw(pos * rect_size);
-		Rect{ pos * rect_size,rect_size }.draw(ColorF{ Palette::Red,0.3 });
+		TextureAsset(U"WeakWall").resized(rect_size).draw(pos * rect_size);
 	}
 }
 

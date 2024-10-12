@@ -61,12 +61,12 @@ public:
 			}
 		}
 
-		attack(U"Player", character.character.table[U"umb"].joint.getQuad2(), 1);
+		attack(U"Player", character.character.table[U"umb"].joint.getQuad2(), 1,DamageType::UnBrakable);
 
 		character.update(pos, false);
 	}
 
-	void lateUpdate() {
+	void lateUpdate()override {
 
 
 	}
@@ -184,12 +184,12 @@ public:
 			character.character.joint->color.a = timeLim-time;
 		}
 
-		attack(U"Player", character.character.table[U"umb"].joint.getQuad2(), 1);
+		attack(U"Player", character.character.table[U"umb"].joint.getQuad2(), 1, DamageType::UnBrakable);
 
 		character.update(pos, false);
 	}
 
-	void lateUpdate() {
+	void lateUpdate()override {
 
 
 	}
@@ -262,6 +262,8 @@ public:
 class LastBoss :public Entity {
 public:
 
+	static constexpr int32 maxHp = 80;
+
 	bool left = true;
 
 	CharacterSystem character;
@@ -286,7 +288,7 @@ public:
 	double damageTimer = 0;
 
 
-	LastBoss(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,-5),40,150},cpos,{0,0},100 }
+	LastBoss(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,-5),40,150},cpos,{0,0},maxHp }
 		, character{ U"Characters/bitter/model1.json" ,U"Characters/bitter/motion1.txt" ,0.3,cpos,false,false }
 	{
 		if (not TextureAsset::IsRegistered(U"MagicEffect0")) {
@@ -305,13 +307,14 @@ public:
 
 	bool isLastSpart()
 	{
-		//return hp<= 20;
-		return true;
+		return hp<= 40;
 	}
 
 	void update()override;
 
 	void lateUpdate() {
+
+		DataManager::get().bossHPRate = hp / double(maxHp);
 
 		if (not isActive()) {
 			DataManager::get().table.emplace(U"Clear");
@@ -320,7 +323,7 @@ public:
 
 	void draw()const override {
 
-		RectF{ Arg::center(pos + (left ? Vec2{-65,-10} : Vec2{65,-10})),65,40 }.draw(Palette::Red);
+		//RectF{ Arg::center(pos + (left ? Vec2{-65,-10} : Vec2{65,-10})),65,40 }.draw(Palette::Red);
 
 		magicCircle.draw();
 
@@ -333,7 +336,7 @@ public:
 		left = (manager->get(U"Player")->pos.x < pos.x);
 	}	
 
-	virtual void damage(int32 n, const Vec2& force = {})
+	void damage(int32 n, const Vec2& force, DamageType damageType)override
 	{
 
 		if (damageTimer<=0)

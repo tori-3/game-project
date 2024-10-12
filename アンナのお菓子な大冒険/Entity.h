@@ -6,6 +6,9 @@
 
 class EntityManager;
 
+
+enum class DamageType { Brakable, UnBrakable };
+
 class Entity {
 public:
 	EntityManager* manager = nullptr;
@@ -24,7 +27,7 @@ public:
 
 	virtual void draw()const = 0;
 
-	virtual void damage(int32 n,const Vec2& force={}) {
+	virtual void damage(int32 n,const Vec2& force={},DamageType damageType=DamageType::Brakable) {
 		hp -= n;
 	}
 
@@ -59,7 +62,12 @@ public:
 
 	double z = 0;
 
-	Array<Entity*> attack(StringView target, const Figure& figure, double damage, double power=200, int32 kaisuu = -1);
+	Array<Entity*> attack(StringView target, const Figure& figure, double damage, double power=200, DamageType damageType=DamageType::Brakable, int32 kaisuu = -1);
+
+	Array<Entity*> attack(StringView target, const Figure& figure, double damage, DamageType damageType, int32 kaisuu = -1) {
+		return attack(target,figure,damage,200,damageType,kaisuu);
+
+	}
 
 	//ダメージを受けたEntityのみを返す
 	Array<Entity*> attackDamaged(StringView target, const Figure& figure, double damage, double power = 200, int32 kaisuu = -1);
@@ -123,17 +131,17 @@ public:
 
 };
 
-inline Array<Entity*> Entity::attack(StringView target, const Figure& figure, double damage, double power, int32 kaisuu) {
+inline Array<Entity*> Entity::attack(StringView target, const Figure& figure, double damage, double power, DamageType damageType, int32 kaisuu) {
 
 	Array<Entity*>list;
 	for (auto& entity : manager->getArray(target)) {
 		if (entity->hitBox.getFigure().intersects(figure)) {
 
 			if (entity->pos.x < pos.x) {
-				entity->damage(damage, {-power,-200});
+				entity->damage(damage, {-power,-200}, damageType);
 			}
 			else {
-				entity->damage(damage, { power,-200 });
+				entity->damage(damage, { power,-200 }, damageType);
 			}
 
 			list << entity;

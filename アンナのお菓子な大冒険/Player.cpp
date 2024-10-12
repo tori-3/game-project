@@ -519,19 +519,23 @@ void Player::draw()const{
 	character.draw();
 }
 
-void Player::damage(int32 n, const Vec2& force){
+void Player::damage(int32 n, const Vec2& force, DamageType damageType)
+{
 
 	if (0 < hp) {
 
-		if (not actMan.hasActive(U"Rush", U"Muteki", U"HeadDrop", U"HeadDropMuteki", U"Summer", U"Dead", U"Clear")) {
+		if (not actMan.hasActive(U"Rush", U"Muteki", U"Summer", U"Dead", U"Clear")) {
 
-			this->force = force;
+			if (not actMan.hasActive(U"HeadDrop", U"HeadDropMuteki") or damageType == DamageType::UnBrakable) {
 
-			actMan.start(U"Damage");
+				this->force = force;
 
-			hp -= n;
+				actMan.start(U"Damage");
 
-			AudioAsset{ U"アンナダメージ" }.playOneShot();
+				hp -= n;
+
+				AudioAsset{ U"アンナダメージ" }.playOneShot();
+			}
 		}
 	}
 }

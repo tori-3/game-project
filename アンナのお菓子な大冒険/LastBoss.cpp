@@ -22,12 +22,28 @@ void LastBoss::update() {
 
 			updateFunc = [&]() {
 
-				if ((not kickFlg) and timer < timeLim - 0.4) {
+				if ((not kickFlg) and timer < timeLim - 0.4)
+				{
 					kickFlg = true;
 					left = (manager->get(U"Player")->pos.x < pos.x);
+
+					if (left) {
+
+						if (pos.x<rect_size * 2)
+						{
+							left = false;
+						}
+					}
+					else {
+						if (DataManager::get().stageSize.x-rect_size*2<pos.x)
+						{
+							left = true;
+						}
+					}
 				}
 
-				if (kickFlg) {
+				if (kickFlg)
+				{
 					pos.x += left ? -500 * Scene::DeltaTime() : 500 * Scene::DeltaTime();
 				}
 
@@ -425,7 +441,7 @@ void LastBoss::update() {
 			updateFunc = [=]() {
 				//向きは変えない
 
-				attack(U"Player", RectF(Arg::leftCenter = pos, 1500, 100).rotatedAt(pos, magicCircle.rad), 1.0);
+				attack(U"Player", RectF(Arg::leftCenter = pos, 1500, 100).rotatedAt(pos, magicCircle.rad), 1.0, DamageType::UnBrakable);
 				character.character.table[U"rarm"].joint.angle = left ? 180_deg -magicCircle.rad - 120_deg : magicCircle.rad - 120_deg;
 			};
 

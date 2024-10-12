@@ -20,6 +20,8 @@ Rotate,body,15,@time
 Move,body,0,@y,@time
 
 #huru
+MoveTo,body,0,0,0
+
 RotateTo,whip,120,0.05
 
 Wait,0.1
@@ -27,6 +29,8 @@ Wait,0.1
 RotateTo,whip,0,0.05
 
 #meirei
+MoveTo,body,0,0,0
+
 int,time,2
 Move,body,0,-30,0.125
 
@@ -39,6 +43,8 @@ StartMotion,huru,true,1,d(0.2*time)
 RotateTo,whip,0,0
 
 #nageire
+MoveTo,body,0,0,0
+
 SetScale,body,0,1,0.1
 
 ChangeTexture,body,Characters/cookieDoreisho/back.png,0
@@ -64,6 +70,8 @@ Rotate,body,-15,0.1
 Move,body,0,80,0.1
 
 #yorokobi
+MoveTo,body,0,0,0
+
 SetScale,body,0,1,0.1
 
 ChangeTexture,body,Characters/cookieDoreisho/back.png,0
@@ -88,6 +96,8 @@ Wait,0.5
 ChangeTexture,kao,Characters/cookieDoreisho/kao.png,0
 
 #okoru
+MoveTo,body,0,0,0
+
 ChangeTexture,kao,Characters/cookieDoreisho/oko.png,0
 RotateTo,body,-20,0.1
 Move,body,0,-80,0.1
@@ -124,5 +134,7 @@ RotateTo,body,0,0.1
 ChangeTexture,kao,Characters/cookieDoreisho/kao.png,0
 
 #yarareta
+MoveTo,body,0,0,0
+
 RotateTo,body,70,0.15
 ChangeTexture,kao,Characters/cookieDoreisho/shobo.png,0
