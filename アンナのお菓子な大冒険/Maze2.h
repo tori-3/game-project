@@ -271,6 +271,11 @@ namespace Maze2 {
 		mazeGame(const InitData& init)//名前を変更してください
 			: IScene{ init }
 		{
+			if (not TextureAsset::IsRegistered(U"BackGroundTexture/洞窟背景.png")) {
+				TextureAsset::Register(U"BackGroundTexture/洞窟背景.png", U"BackGroundTexture/洞窟背景.png");
+			}
+
+
 			//変数などの初期化
 
 			if (getData().mini_mode == Stage_Mode) {
@@ -313,6 +318,8 @@ namespace Maze2 {
 
 		void draw() const override
 		{
+			TextureAsset{ U"BackGroundTexture/洞窟背景.png" }.draw();
+
 			//描画(draw関数内ではifの使用、変数の代入などができない)
 			maze.draw(rotate);
 			player.draw(rotate);

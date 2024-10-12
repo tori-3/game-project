@@ -177,7 +177,7 @@ namespace FallingAnna {
 		const Texture kasokuanna{ U"tex/rakkaanna.png" };
 		const Texture sippaianna{ U"tex/sippai.png" };
 		const Texture clearanna{ U"tex/clear.png" };
-		Texture rock{ U"tex/rockball.png" };
+		Texture rock{ /*U"tex/rockball.png"*/  U"🍪"_emoji};
 		const Texture toge{ U"tex/thunderbolt.png" };
 		const Array<Texture> cloud{ Texture(U"☁"_emoji),Texture(U"tex/cloud0.png"),Texture(U"tex/cloud1.png") };
 		const Texture jimen{ U"tex/ground.bmp" };

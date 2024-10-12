@@ -86,7 +86,7 @@
       "BGM": "BGM/StageBossLast1.wav",
       "BackgroundTexture": "BackgroundTexture/ラスボス背景.png",
       "MapFile": "s5.json",
-      "MaxHP": 15,
+      "MaxHP": 19,
       "Picture": "BackgroundTexture/ラスボス背景.png",
       "SceneName": "MainGameScene",
       "Sentence": "<LastBoss>お菓子大好きな魔女\n\t\tビター・ヴァイオレット\nこの世界を支配し、お菓子を独り占めしようとする\nワガママな女の子。\nお菓子は我のもの！と、アンナちゃんは\nお菓子をかけた最後の戦いに挑みます。"

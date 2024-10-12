@@ -366,7 +366,7 @@ void  SignboardBlock::update(const Point& pos)
 
 void SignboardBlock::draw(const Point& pos)const
 {
-	RectF{ pos * rect_size,rect_size }.draw(Palette::Burlywood);
+	TextureAsset(U"Signboard").resized(rect_size).draw(pos * rect_size);
 
 	if (DataManager::get().playerPos.intersects(RectF{ (pos - Vec2{1,1}) * rect_size,rect_size * 3 }))
 	{
