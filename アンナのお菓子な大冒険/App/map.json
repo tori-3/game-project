@@ -1,5 +1,5 @@
 ﻿{
-  "ClearStage": 16,
+  "ClearStage": 17,
   "StageData": {
     "Stage1": {
       "BGM": "BGM/StageSnow7.wav",
@@ -11,6 +11,15 @@
       "Sentence": "<1-1>\n冒険のはじまり"
     },
     "Stage10": {
+      "BGM": "BGM/StageChoco21.mp3",
+      "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
+      "MapFile": "caveStage2.json",
+      "MaxHP": 5,
+      "Picture": "BackgroundTexture/洞窟背景.png",
+      "SceneName": "MainGameScene",
+      "Sentence": "<2-3>\n洞窟3"
+    },
+    "Stage11": {
       "BGM": "",
       "BackgroundTexture": "",
       "MapFile": "",
@@ -19,7 +28,7 @@
       "SceneName": "Maze2",
       "Sentence": "<ミニゲーム-回転迷路>\n迷路を回転させてゴールを\n目指しましょう。"
     },
-    "Stage11": {
+    "Stage12": {
       "BGM": "BGM/StageBoss6.wav",
       "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
       "MapFile": "s4.json",
@@ -28,7 +37,7 @@
       "SceneName": "MainGameScene",
       "Sentence": "<2-Boss>\n悪逆非道！奴隷商クッキー\n壁に突進せよ！"
     },
-    "Stage12": {
+    "Stage13": {
       "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
       "BackgroundTexture": "BackgroundTexture/雲背景.png",
       "MapFile": "cloudStage1.json",
@@ -37,7 +46,7 @@
       "SceneName": "MainGameScene",
       "Sentence": "<3-1>\n雲1"
     },
-    "Stage13": {
+    "Stage14": {
       "BGM": "",
       "BackgroundTexture": "",
       "MapFile": "",
@@ -46,7 +55,7 @@
       "SceneName": "AnnaMusicGame",
       "Sentence": "<ミニゲーム-AnnaMusicGame>\n音ゲーです"
     },
-    "Stage14": {
+    "Stage15": {
       "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
       "BackgroundTexture": "BackgroundTexture/雲背景.png",
       "MapFile": "cloudStage2.json",
@@ -55,7 +64,7 @@
       "SceneName": "MainGameScene",
       "Sentence": "<3-2>\n雲2"
     },
-    "Stage15": {
+    "Stage16": {
       "BGM": "BGM/StageBoss6.wav",
       "BackgroundTexture": "BackgroundTexture/雲背景.png",
       "MapFile": "s6.json",
@@ -64,7 +73,7 @@
       "SceneName": "MainGameScene",
       "Sentence": "<3-Boss>\nヘビースモーカーの綿菓子船長"
     },
-    "Stage16": {
+    "Stage17": {
       "BGM": "",
       "BackgroundTexture": "",
       "MapFile": "",
@@ -73,12 +82,12 @@
       "SceneName": "FallingAnna",
       "Sentence": "<ミニゲーム-FallingAnna>\n岩を破壊してスコアを稼ぎながら落下\nするゲームです。\n詳しくは写真を拡大してください。"
     },
-    "Stage17": {
+    "Stage18": {
       "BGM": "BGM/StageBossLast1.wav",
-      "BackgroundTexture": "背景.png",
+      "BackgroundTexture": "BackgroundTexture/ラスボス背景.png",
       "MapFile": "s5.json",
-      "MaxHP": 7,
-      "Picture": "背景.png",
+      "MaxHP": 9,
+      "Picture": "BackgroundTexture/ラスボス背景.png",
       "SceneName": "MainGameScene",
       "Sentence": "<LastBoss>\nラスボス"
     },
@@ -130,13 +139,22 @@
     "Stage7": {
       "BGM": "BGM/StageChoco21.mp3",
       "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
-      "MapFile": "caveStage1.json",
+      "MapFile": "caveStage0.json",
       "MaxHP": 5,
       "Picture": "BackgroundTexture/洞窟背景.png",
       "SceneName": "MainGameScene",
       "Sentence": "<2-1>\n洞窟1"
     },
     "Stage8": {
+      "BGM": "BGM/StageChoco21.mp3",
+      "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
+      "MapFile": "caveStage1.json",
+      "MaxHP": 5,
+      "Picture": "BackgroundTexture/洞窟背景.png",
+      "SceneName": "MainGameScene",
+      "Sentence": "<2-2>\n洞窟2"
+    },
+    "Stage9": {
       "BGM": "",
       "BackgroundTexture": "",
       "MapFile": "",
@@ -144,15 +162,6 @@
       "Picture": "MiniGameDisplay/MAZE.png",
       "SceneName": "Maze1",
       "Sentence": "<ミニゲーム-迷路>\nクッキーをチョコレート(ゴール)まで\n導きましょう。"
-    },
-    "Stage9": {
-      "BGM": "BGM/StageChoco21.mp3",
-      "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
-      "MapFile": "caveStage2.json",
-      "MaxHP": 5,
-      "Picture": "BackgroundTexture/洞窟背景.png",
-      "SceneName": "MainGameScene",
-      "Sentence": "<2-2>\n洞窟2"
     }
   }
 }
