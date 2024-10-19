@@ -441,6 +441,8 @@ void LastBoss::update() {
 
 			DataManager::get().effect.add<LaserEffect>(RectF(Arg::leftCenter = umbPos, 1500, 150), magicCircle.rad, Palette::Pink);
 
+			AudioAsset{ U"ビーム" }.playOneShot();
+
 			updateFunc = [=]() {
 				//向きは変えない
 

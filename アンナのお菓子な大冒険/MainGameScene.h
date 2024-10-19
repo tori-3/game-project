@@ -14,6 +14,8 @@
 
 #include"GrapesHPBar.h"
 
+#include"CookieButton.h"
+
 inline Mat3x2 shakeMat(const Timer& timer, double amplitude = 20)
 {
 	constexpr double N = 2;//揺れの回数
@@ -375,11 +377,23 @@ public:
 		}
 	}
 
+
+
+
+	CookieButton gameButton{ RectF{Arg::center(Scene::Center().x-200,700),300,60},U"ゲームに戻る" };
+	CookieButton mapButton{ RectF{Arg::center(Scene::Center().x+200,700),300,60},U"マップに戻る" };
+
 	//ポーズ画面
 	void pauseUpdate()override {
 
-		if (SimpleGUI::ButtonAt(U"ゲームに戻る", { Scene::Center().x,700 })) {
+		if (gameButton.update())
+		{
 			goGame();
+		}
+
+		if(mapButton.update())
+		{
+			EndGame(false);
 		}
 	}
 
@@ -388,7 +402,8 @@ public:
 		RoundRect{ Arg::center = Scene::Center(),1150,750,10 }.draw(ColorF{ Palette::Skyblue,0.7});
 		FontAsset(U"TitleFont")(U"ポーズ").drawAt(Scene::Center().x, 100);
 		FontAsset(U"TitleFont")(U"Space or W：ジャンプ\nA：左\nD：右\S：しゃがむ\nEnter：技を発動\nEnter長押し：突進(クッキーが10個貯まったら)\n").drawAt(50,Scene::Center());
-		auto _=SimpleGUI::ButtonAt(U"ゲームに戻る", { Scene::Center().x,700 });
+		gameButton.draw();
+		mapButton.draw();
 	}
 
 	void EndGame(bool clear) {

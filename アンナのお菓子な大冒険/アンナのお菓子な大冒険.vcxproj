@@ -115,6 +115,7 @@
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="CookieButton.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GrapesHPBar.cpp" />
     <ClCompile Include="LastBoss.cpp" />
@@ -328,6 +329,7 @@
     <ClInclude Include="Boss.h" />
     <ClInclude Include="CharacterSystem.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="CookieButton.h" />
     <ClInclude Include="CookieItem.h" />
     <ClInclude Include="DataManager.h" />
     <ClInclude Include="Effect.h" />
@@ -365,6 +367,7 @@
     <ClInclude Include="Stage.h" />
     <ClInclude Include="TalkManager.h" />
     <ClInclude Include="TalkWindow.h" />
+    <ClInclude Include="Title.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App\example\obj\blacksmith.obj">

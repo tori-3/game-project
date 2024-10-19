@@ -5,7 +5,7 @@
       "BGM": "BGM/StageSnow7.wav",
       "BackgroundTexture": "BackgroundTexture/雪原背景.png",
       "MapFile": "snowStage1.json",
-      "MaxHP": 7,
+      "MaxHP": 11,
       "Picture": "BackgroundTexture/雪原背景.png",
       "SceneName": "MainGameScene",
       "Sentence": "<1-1>冒険のはじまり\nアンナちゃんが落ちた先には\nお菓子の世界が広がっていました。\nどんなお菓子が待ち受けているのか、\nわくわくしながら\nアンナちゃんは進みます。"
@@ -47,6 +47,15 @@
       "Sentence": "<3-1>綿菓子スカイ\n鉱山から山頂に出たアンナちゃん。\nなんと、この世界の雲は綿菓子でした！\nアンナちゃんはよだれが止まりません。\nでも、空から攻撃してくる敵たちに\n気を付けてアンナちゃん！"
     },
     "Stage14": {
+      "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
+      "BackgroundTexture": "BackgroundTexture/雲背景.png",
+      "MapFile": "cloudStage2.json",
+      "MaxHP": 5,
+      "Picture": "BackgroundTexture/雲背景.png",
+      "SceneName": "MainGameScene",
+      "Sentence": "<3-2>"
+    },
+    "Stage15": {
       "BGM": "",
       "BackgroundTexture": "",
       "MapFile": "",
@@ -55,7 +64,7 @@
       "SceneName": "AnnaMusicGame",
       "Sentence": "<ミニゲーム-AnnaMusicGame>\n音ゲーです"
     },
-    "Stage15": {
+    "Stage16": {
       "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
       "BackgroundTexture": "BackgroundTexture/雲背景.png",
       "MapFile": "cloudStage2.json",
@@ -64,7 +73,7 @@
       "SceneName": "MainGameScene",
       "Sentence": "<3-2>綿菓子の雲に飛び乗って\nだんだん陽が暮れてきました。\n雲海の先に見えるのは、\nお菓子のお城でしょうか。\nお城を目指して、\nアンナちゃんは港に向かいました。"
     },
-    "Stage16": {
+    "Stage17": {
       "BGM": "BGM/StageBoss6.wav",
       "BackgroundTexture": "BackgroundTexture/雲背景.png",
       "MapFile": "s6.json",
@@ -73,7 +82,7 @@
       "SceneName": "MainGameScene",
       "Sentence": "<3-Boss>泣く子も黙る綿菓子船長\nお菓子のお城に行きたいのに\n船に乗せてくれません。\n船長を倒して船を奪おう！\nおヒゲは綿あめだけど、\nおいしそうには思えない..."
     },
-    "Stage17": {
+    "Stage18": {
       "BGM": "",
       "BackgroundTexture": "",
       "MapFile": "",
@@ -82,7 +91,7 @@
       "SceneName": "FallingAnna",
       "Sentence": "<ミニゲーム-FallingAnna>\n岩を破壊してスコアを稼ぎながら落下\nするゲームです。\n詳しくは写真を拡大してください。"
     },
-    "Stage18": {
+    "Stage19": {
       "BGM": "BGM/StageBossLast1.wav",
       "BackgroundTexture": "BackgroundTexture/ラスボス背景.png",
       "MapFile": "s5.json",
