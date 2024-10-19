@@ -1,26 +1,26 @@
 ﻿#pragma once
 #include"setting.h"
 
-class Background
-{
-public:
-	String texture;
-	double r, rate;
-	uint32 num;
-
-	Background(const String& pass, int x, uint32 n = 1) :texture{ pass } {
-		
-		r = Scene::Size().y / (double)TextureAsset { texture }.height();//倍率
-		rate = (TextureAsset{ texture }.width() * r * n - Scene::Size().x) / (rect_size * x);//画像を進める速度
-		num = n;
-	}
-	void draw(const Vec2& vec)const {
-		for (auto n : step(num)) {
-			TextureAsset{ texture }.scaled(r).draw(-vec.x * rate + (TextureAsset{ texture }.width() * r) * n, 0);
-		}
-	}
-
-};
+//class Background
+//{
+//public:
+//	String texture;
+//	double r, rate;
+//	uint32 num;
+//
+//	Background(const String& pass, int x, uint32 n = 1) :texture{ pass } {
+//		
+//		r = Scene::Size().y / (double)TextureAsset { texture }.height();//倍率
+//		rate = (TextureAsset{ texture }.width() * r * n - Scene::Size().x) / (rect_size * x);//画像を進める速度
+//		num = n;
+//	}
+//	void draw(const Vec2& vec)const {
+//		for (auto n : step(num)) {
+//			TextureAsset{ texture }.scaled(r).draw(-vec.x * rate + (TextureAsset{ texture }.width() * r) * n, 0);
+//		}
+//	}
+//
+//};
 
 
 //追従の割合を指定(xとy)

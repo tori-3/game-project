@@ -262,7 +262,7 @@ public:
 class LastBoss :public Entity {
 public:
 
-	static constexpr int32 maxHp = 80;
+	static constexpr int32 maxHp = 50;
 
 	bool left = true;
 
@@ -297,6 +297,9 @@ public:
 			TextureAsset::Register(U"MagicEffect2", 0xF563_icon, 50);
 			TextureAsset::Register(U"MagicEffect3", 0xF005_icon, 50);
 		}
+
+		//カメラの設定のため
+		DataManager::get().table.insert(U"LastBoss");
 	}
 
 	bool kickFlg = false;
@@ -307,7 +310,8 @@ public:
 
 	bool isLastSpart()
 	{
-		return hp<= 40;
+		return true;
+	//	return hp<= 25;
 	}
 
 	void update()override;

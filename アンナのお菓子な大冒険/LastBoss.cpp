@@ -185,7 +185,7 @@ void LastBoss::update() {
 
 		}break;
 		case State::umbrellaShot: {
-			timer = 5.0;
+			timer = 10.0;
 
 			character.addMotion(U"ごめんあそばせ");
 
@@ -212,8 +212,6 @@ void LastBoss::update() {
 
 			endFunc = [&]() {
 				type = State::stand;
-
-
 			};
 
 		}break;
@@ -298,7 +296,12 @@ void LastBoss::update() {
 
 			double randomX=Random(double(rect_size*1.5),stageWidth-rect_size*1.5);
 
-			updateFunc = [=]() {
+			double theata = 0;
+
+			updateFunc = [=]()mutable{
+
+				theata += Scene::DeltaTime() * 0.5;
+				pos.y = rect_size * 3+ Periodic::Sine0_1(1s, theata)*rect_size*1.5;
 
 				if (timer < 18.1) {
 

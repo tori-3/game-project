@@ -105,12 +105,20 @@ Player::Player(const Vec2& cpos) :
 				AudioAsset{ U"突進衝突" }.playOneShot();
 			}
 			if (hitBox.touch(Direction::left)) {
+
+				//すり抜け防止
+				manager->stage->hit(&hitBox);
+
 				force = Vec2{ 300,-400 };
 				actMan.start(U"Damage");
 
 				return false;
 			}
 			else if (hitBox.touch(Direction::right)) {
+
+				//すり抜け防止
+				manager->stage->hit(&hitBox);
+
 				force = Vec2{ -300,-400 };
 				actMan.start(U"Damage");
 				return false;
@@ -184,7 +192,7 @@ Player::Player(const Vec2& cpos) :
 
 	actMan.add(U"Shagamu", {
 		.startCondition = [&]() {
-			return downKey.pressed() and (not jumpKey.pressed()) and hitBox.touch(Direction::down) and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Landing",U"HeadDropLanding",U"HeadDrop",U"Punch",U"Jump",U"PreJump",U"Falling",U"Dead",U"Clear");
+			return downKey.pressed() and (not jumpKey.pressed()) and hitBox.touch(Direction::down) and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Landing",U"HeadDropLanding",U"HeadDrop",U"Punch",U"Jump",U"PreJump",U"Falling",U"Dead",U"Clear",U"Rush");
 		},
 		.start = [&]() {
 			character.addMotion(U"Shagamu");
@@ -294,7 +302,7 @@ Player::Player(const Vec2& cpos) :
 
 	actMan.add(U"HeadDrop", {
 		.startCondition = [&]() {
-			return downKey.down() and not actMan.hasActive(U"Summer",U"Damage",U"Dead",U"Clear") and not hitBox.touch(Direction::down);
+			return downKey.down() and not actMan.hasActive(U"Summer",U"Damage",U"Dead",U"Clear",U"Rush") and not hitBox.touch(Direction::down);
 		},
 		.start = [&]() {
 			character.addMotion(U"HeadDrop");
@@ -508,6 +516,7 @@ void Player::update() {
 	//落下したら
 	if (DataManager::get().stageSize.y + 200 < pos.y) {
 		vel = Vec2{};
+		force = Vec2{};
 		pos = lastTouchPos;
 		//脱法ダメージ
 		actMan.start(U"Damage");

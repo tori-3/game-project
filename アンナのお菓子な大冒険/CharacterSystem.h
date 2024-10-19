@@ -42,17 +42,17 @@ public:
 	int32 mirrorCount = 0;
 	void update(const Vec2& pos,bool left) {
 
-		if (left != tmpLeft) {
-			Motion m;
-			m.add(new Mirror{ 0,720_deg });
-			character.addMotion(U"Mirror{}"_fmt(mirrorCount), m);
-			//character.addMotion(U"Mirror", m);
-			tmpLeft = left;
-			mirrorCount++;
-		}
+		if (left != tmpLeft)
+		{
+			if(not character.hasMotion(U"Mirror"))
+			{
+				Motion m;
+				m.add(new Mirror{ 0,720_deg });
+				character.addMotion(U"Mirror", m);
 
-		//character.joint->pos += pos - tmpPos;
-		//character.base->joint->pos += pos - tmpPos;
+				tmpLeft = left;
+			}
+		}
 
 		character.pos += pos - tmpPos;
 

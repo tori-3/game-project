@@ -98,7 +98,15 @@ public:
 	}
 
 	Mat3x2 getMat3x2()const {
-		return Mat3x2::Translate(-pos)* shakeMat(shakeTimer, shakeTimer.sF()*50);
+
+		if (DataManager::get().table.contains(U"LastBoss"))
+		{
+			return Mat3x2::Translate(5-rect_size, -rect_size) * shakeMat(shakeTimer, shakeTimer.sF() * 50);
+		}
+		else
+		{
+			return Mat3x2::Translate(-pos) * shakeMat(shakeTimer, shakeTimer.sF() * 50);
+		}
 	}
 };
 
@@ -175,7 +183,7 @@ public:
 	MSRenderTexture rTexture{ Scene::Size(),ColorF{0,0} };
 
 	//Player player{ Point(500, 350 + 70) };
-	Background background{ getData().backgroundTexture ,stage.width() };
+	Texture background{ getData().backgroundTexture };
 	//Background background2{ U"お菓子の背景.png" ,stage.width(),2 };
 
 	EntityManager manager;
@@ -318,10 +326,14 @@ public:
 	{
 		Scene::SetBackground(skyColor);
 
-		//cloud.draw1();
-		background.draw(camera.pos+Scene::Size()/2);
-		//cloud.draw2();
-		//Rect{ Scene::Size() }.draw(ColorF{ skyColor,0.4 });
+		if (DataManager::get().table.contains(U"LastBoss"))
+		{
+			background.resized(Scene::Size()).draw(0,-30);
+		}
+		else
+		{
+			background.resized(Scene::Size()).draw();
+		}
 
 		backgroundManager.draw(camera.pos);
 

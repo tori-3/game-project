@@ -118,6 +118,7 @@ void WeakWall::reaction(const Point& pos, PhysicsBox* box)
 		if (box->lines(Direction::left).intersects(rect) || box->lines(Direction::right).intersects(rect)) {
 			if (Abs(box->vel->x) > 500) {
 				breaked = true;
+				AudioAsset{ U"突進衝突" }.playOneShot();
 				return;
 			}
 		}
@@ -271,7 +272,18 @@ void PoleBlock::reaction(const Point& pos, PhysicsBox* box)
 }
 
 void PoleBlock::draw(const Point& pos)const{
-	RectF{ pos * rect_size ,rect_size }.draw(Palette::Darkgray);
+
+	if(pos.x==0)
+	{
+		TextureAsset{ U"moroiHashiraL" }.resized(rect_size).draw(pos * rect_size);
+	}
+	else
+	{
+		TextureAsset{ U"moroiHashiraR" }.resized(rect_size).draw(pos * rect_size);
+	}
+
+
+	//RectF{ pos * rect_size ,rect_size }.draw(Palette::Darkgray);
 };
 
 void CaptainBlock::update(const Point& pos){

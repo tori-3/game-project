@@ -2,8 +2,8 @@
 #include"Block.h"
 
 //何ブロックまで描画するか
-constexpr int range_right = 15;
-constexpr int range_left = 10;
+constexpr int32 range_right = 15;
+constexpr int32 range_left = 12;
 
 class Stage
 {
@@ -196,7 +196,7 @@ public:
 		}
 	}
 
-	size_t width() { return map.width(); }
+	size_t width()const { return map.width(); }
 
 	size_t height() {
 		return map.height();
