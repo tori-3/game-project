@@ -310,8 +310,7 @@ public:
 
 	bool isLastSpart()
 	{
-		return true;
-	//	return hp<= 25;
+		return hp<= 25;
 	}
 
 	void update()override;
