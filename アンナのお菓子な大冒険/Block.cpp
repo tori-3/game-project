@@ -281,9 +281,6 @@ void PoleBlock::draw(const Point& pos)const{
 	{
 		TextureAsset{ U"moroiHashiraR" }.resized(rect_size).draw(pos * rect_size);
 	}
-
-
-	//RectF{ pos * rect_size ,rect_size }.draw(Palette::Darkgray);
 };
 
 void CaptainBlock::update(const Point& pos){

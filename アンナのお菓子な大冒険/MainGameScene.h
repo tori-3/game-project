@@ -7,7 +7,6 @@
 #include"Player.h"
 #include"LastBoss.h"
 #include"Spawner.h"
-#include"BackGround.h"
 #include"BGMManager.hpp"
 #include"IrisOut.h"
 #include"TalkManager.h"
@@ -184,16 +183,11 @@ public:
 
 	MSRenderTexture rTexture{ Scene::Size(),ColorF{0,0} };
 
-	//Player player{ Point(500, 350 + 70) };
 	Texture background{ getData().backgroundTexture };
-	//Background background2{ U"お菓子の背景.png" ,stage.width(),2 };
 
 	EntityManager manager;
 
 	EnemyAdder adder{ &manager };
-
-
-	//CloudManager cloud;
 
 	ColorF skyColor{Palette::Skyblue};
 
@@ -205,29 +199,11 @@ public:
 
 	GrapesHPBar hpBar{ Rect{Arg::center(Scene::Center().x,50),300,40} };
 
-	void loadAudio() {
-
-		for (auto& path : FileSystem::DirectoryContents(U"Audio"))
-		{
-			String name = FileSystem::BaseName(path);
-			AudioAsset::Register(name, path);
-			AudioAsset::LoadAsync(name);
-		}
-
-		AudioAsset{ U"足音" }.setVolume(3);
-
-	}
-
-
-
 	// コンストラクタ（必ず実装）
 	MainGameScene(const InitData& init)
 		: IPauseScene{ init }
 	{
 		DataManager::get().maxHP = getData().maxHP;
-
-
-		loadAudio();
 
 		adder.update();
 		player = dynamic_cast<Player*>(manager.get(U"Player"));
@@ -260,7 +236,7 @@ public:
 
 
 		if (not bgmStart) {
-			BGMManager::get().play(U"Stage{}"_fmt(getData().stage));
+			BGMManager::get().play(getData().BGMPath);
 			bgmStart = true;
 		}
 		ClearPrint();
@@ -283,9 +259,7 @@ public:
 		}
 
 
-
-		////落下したらスタートに戻す。(デバッグ用)
-		if (not DataManager::get().playerAlive /* player->hp <= 0|| 1000 < player->pos.y*/) {
+		if (not DataManager::get().playerAlive) {
 
 			if (DataManager::get().table.contains(U"Clear")) {
 				EndGame(true);
@@ -301,8 +275,6 @@ public:
 
 
 		//ステージupdate
-
-		//cloud.update();
 
 		if (KeyEscape.down())goPause();
 

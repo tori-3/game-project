@@ -14,9 +14,9 @@ public:
 		box->hit(Rect{ pos * rect_size,rect_size });
 	}
 
-	virtual void update(const Point& pos){}
+	virtual void update([[maybe_unused]] const Point& pos){}
 
-	virtual void draw(const Point& pos)const {};
+	virtual void draw([[maybe_unused]] const Point& pos)const {};
 };
 
 class Untouchable: public Block {
@@ -148,7 +148,7 @@ public:
 
 	}
 
-	void update(const Point& pos)override {
+	void update(const Point&)override {
 		spring.update(flg);
 		flg = false;
 	}

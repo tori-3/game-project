@@ -34,7 +34,7 @@ inline double sign(double A) {
 }
 
 class RotateTo :public Rotate {
-	int32 direction;
+	int32 direction = 0;
 	int32 baseDirection;
 	double baseRad;
 public:
@@ -54,7 +54,6 @@ public:
 		rad = baseRad;
 		direction = baseDirection;
 
-		//character->get(target)->angle = rad;
 		if (character->get(target) == nullptr)return;
 
 		if (timelim == 0)character->get(target)->angle = rad;
@@ -112,8 +111,8 @@ class SetPos :public TimeMove
 public:
 	String target;
 	const Vec2 pos;
-	Vec2 firstPos;
-	SetPos(const String& target, Vec2 pos, double time)
+	Vec2 firstPos{};
+	SetPos(const String& target,const Vec2& pos, double time)
 		:TimeMove(time), target(target), pos(pos)
 	{}
 
@@ -178,8 +177,6 @@ public:
 		:TimeMove(time), color(color), target(target), following(following)
 	{}
 
-	//ChangeColor(const String& target,String )
-
 	void start(Character* character)override
 	{
 		TimeMove::start(character);
@@ -223,8 +220,6 @@ public:
 		:TimeMove(time), scale(SizeF{ x_scale,y_scale }), target(target), following(following)
 	{}
 
-	//ChangeColor(const String& target,String )
-
 	void start(Character* character)override
 	{
 		TimeMove::start(character);
@@ -252,7 +247,6 @@ public:
 		else
 			d_position[targets[0]] = targets[0]->rotatePos - targets[0]->rotatePos * scale;
 
-		//d_position[targets[0]] = { 0,0 };
 		if (timelim == 0)
 		{
 			for (auto& joint_scale : d_scale)
@@ -400,7 +394,7 @@ class LerpZ :public TimeMove
 public:
 	const String target;
 	const bool following;
-	double dz, z;
+	double dz=0, z;
 	Array<Joint*>joints{};
 	LerpZ(String target, double z, double time, bool following = true)
 		:TimeMove(time), target(target), z(z), following(following)
@@ -440,8 +434,6 @@ public:
 	{
 		TimeMove::start(character);
 
-		//Vec2 parentPos = character->joint->pos;
-
 		for (auto& move : m_movements)
 		{
 			delete move;
@@ -471,8 +463,6 @@ public:
 		}
 
 		m_movements.each([=](TimeMove* move) {move->start(character); });
-
-		//character->joint->pos = parentPos;
 	}
 
 	void update(Character* character, double dt = Scene::DeltaTime())override
@@ -499,8 +489,6 @@ public:
 
 			character->get(name)->size = baseJoint->size;
 			character->get(name)->angle = baseJoint->angle;
-			//character->get(name)->pos = baseJoint->pos;
-			//character->get(name)->rotatePos = baseJoint->rotatePos;
 			character->get(name)->textureName = baseJoint->textureName;
 			character->get(name)->z = baseJoint->z;
 		}

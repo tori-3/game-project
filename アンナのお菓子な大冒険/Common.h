@@ -29,6 +29,7 @@ struct GameData
 
 	String backgroundTexture;
 
+	String BGMPath;
 
 	FilePath stageFile;
 };

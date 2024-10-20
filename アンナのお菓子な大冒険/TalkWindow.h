@@ -34,7 +34,7 @@ public:
 	}
 
 	//更新：bool 次に進むか,bool 音量
-	void update(double volume = 1.0) {
+	void update() {
 
 		const bool backFlg = KeyA.down() || KeyLeft.down();
 		const bool nextFlg = KeyD.down() || KeyRight.down() || KeyEnter.down();

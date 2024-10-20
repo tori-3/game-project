@@ -66,11 +66,6 @@ public:
 		character.update(pos, false);
 	}
 
-	void lateUpdate()override {
-
-
-	}
-
 	bool isActive()override {
 		return time < 30;
 	}
@@ -78,9 +73,6 @@ public:
 	void draw()const override {
 		character.draw();
 	}
-
-
-
 };
 
 
@@ -91,7 +83,7 @@ public:
 
 	double angle;
 
-	double targetAngle;
+	double targetAngle = 0;
 
 	double speed;
 
@@ -189,11 +181,6 @@ public:
 		character.update(pos, false);
 	}
 
-	void lateUpdate()override {
-
-
-	}
-
 	bool isActive()override {
 		return time < timeLim;
 	}
@@ -271,7 +258,7 @@ public:
 	std::function<void()> updateFunc;
 	std::function<void()> endFunc;
 
-	double timer;
+	double timer = 0;
 
 	bool floatFlg = false;
 
@@ -325,8 +312,6 @@ public:
 	}
 
 	void draw()const override {
-
-		//RectF{ Arg::center(pos + (left ? Vec2{-65,-10} : Vec2{65,-10})),65,40 }.draw(Palette::Red);
 
 		magicCircle.draw();
 

@@ -22,8 +22,6 @@ public:
 		:character{ JSON::Load(jsonPath),scale }, loader{ CSV{motionPath} },tmpPos{pos},tmpLeft{left}
 	{
 		character.setDrawManager(&drawManager);
-		//character.joint->pos = pos;
-		//character.base->joint->pos = pos;
 
 		character.joint->pos = {0,0};
 		character.base->joint->pos = {0,0};
@@ -82,8 +80,6 @@ public:
 		table[motionName].loop = loop;
 		character.addMotion(motionName,table[motionName]);
 
-		//うーん
-		//character.joint->pos = tmpPos;
 	}
 
 	void removeMotion(const String& motionName) {

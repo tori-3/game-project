@@ -475,7 +475,6 @@ void SlaversCookie::update() {
 				Vec2 bornPos{ pos.x + Random(-100,100),pos.y + 200 };
 				Entity* tmp = new DropCorn{ bornPos,100 * Random(1.0) };
 				manager->add(tmp);
-				//summonListItigo << tmp;
 				DataManager::get().additiveEffect.add<ExplosionEffect>(bornPos, 60, Palette::Yellowgreen);
 				f = [&]() {};
 				f2 = [&]() {};

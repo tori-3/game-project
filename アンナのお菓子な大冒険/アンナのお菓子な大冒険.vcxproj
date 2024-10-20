@@ -119,6 +119,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GrapesHPBar.cpp" />
     <ClCompile Include="LastBoss.cpp" />
+    <ClCompile Include="LoadAsset.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Movements.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -323,7 +324,6 @@
   <ItemGroup>
     <ClInclude Include="AnimationSystem.h" />
     <ClInclude Include="AnnaMusicGame.h" />
-    <ClInclude Include="BackGround.h" />
     <ClInclude Include="BGMManager.hpp" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="Boss.h" />
@@ -346,6 +346,7 @@
     <ClInclude Include="LaserEffect.h" />
     <ClInclude Include="LastBoss.h" />
     <ClInclude Include="LinerMove.h" />
+    <ClInclude Include="LoadAsset.h" />
     <ClInclude Include="MagicCircle.h" />
     <ClInclude Include="MagicEffect.h" />
     <ClInclude Include="MainGameScene.h" />
@@ -367,7 +368,7 @@
     <ClInclude Include="Stage.h" />
     <ClInclude Include="TalkManager.h" />
     <ClInclude Include="TalkWindow.h" />
-    <ClInclude Include="Title.h" />
+    <ClInclude Include="TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App\example\obj\blacksmith.obj">

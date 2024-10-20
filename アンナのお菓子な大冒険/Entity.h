@@ -21,6 +21,8 @@ public:
 
 	Entity(const String& tag,const Figure& figure, const Vec2& _pos, const Vec2& _vel,int32 _hp) :tag{ tag },pos{_pos}, vel{_vel}, hp{_hp}, hitBox{&pos, &vel, figure, &hp} {}
 
+	virtual ~Entity() = default;
+
 	virtual void update() = 0;
 
 	virtual void lateUpdate(){}

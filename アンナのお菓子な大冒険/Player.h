@@ -123,6 +123,8 @@ public:
 
 	bool die = false;
 
+	bool summerHited = false;
+
 	void draw()const override;
 
 	void damage(int32 n, const Vec2& force = {}, DamageType damageType = DamageType::Brakable)override;

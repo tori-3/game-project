@@ -669,7 +669,6 @@ public:
 	}
 
 	void draw()const override {
-		//hitBox.draw(Palette::Orange);
 		character.draw();
 	}
 };
@@ -925,7 +924,6 @@ public:
 	}
 
 	void draw()const override {
-		//hitBox.draw(Palette::Orange);
 		character.draw();
 	}
 };
@@ -1032,10 +1030,6 @@ public:
 		hitBox.update();
 
 		attack(U"Player", hitBox.getFigure(), 1,DamageType::UnBrakable);
-	}
-
-	void lateUpdate()override {
-
 	}
 
 	void draw()const override {

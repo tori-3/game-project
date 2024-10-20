@@ -14,6 +14,10 @@ public:
 	{
 		//フォントを登録
 		FontAsset::Register(U"ButtonFont", FontMethod::MSDF, 50, Typeface::Bold);
+
+
+
+
 	}
 
 	bool update();

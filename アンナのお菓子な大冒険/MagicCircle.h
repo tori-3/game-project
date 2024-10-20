@@ -34,7 +34,7 @@ public:
 	void draw()const
 	{
 		const Transformer2D transformer0{ Mat3x2::Scale(0.6,1.0, m_pos).rotated(rad,m_pos) };
-		const Vec2 center = m_pos;// +Vec2{ -m_size / 2.0,0 };
+		const Vec2 center = m_pos;
 		{
 			const Transformer2D transformer1{ Mat3x2::Rotate(m_t,  center) };
 			MagicCircleDraw(Circle{ center, m_sizeTransition.value() * m_size * 3.6 * 0.5 }, HSV{ 0 });
@@ -50,11 +50,11 @@ public:
 	}
 
 private:
-	double m_size;
+	double m_size = 0;
 
 	bool m_active = false;
 
-	double m_t;
+	double m_t = 0;
 
 	Vec2 m_pos{};
 

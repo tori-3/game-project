@@ -4,18 +4,18 @@
 
 class Movable {
 public:
-	Vec2 pos;
-	SizeF size;
-	double angle;
-	double z;
-	Vec2 rotatePos;
-	ColorF color;
-	bool mirror;
+	Vec2 pos{};
+	SizeF size{};
+	double angle = 0;
+	double z = 0;
+	Vec2 rotatePos{};
+	ColorF color{};
+	bool mirror = false;
 
 	Movable(const Vec2& pos, const SizeF& size, const Vec2& rotatePos = {}, double angle = 0_deg, double z = 0, const ColorF& color = ColorF{ 1 }, bool mirror = false)
 		:pos{ pos }, size{ size }, angle{ angle }, z{ z }, rotatePos{ rotatePos }, color{ color }, mirror{ mirror } {}
 
-	Movable() {}
+	Movable() = default;
 
 	virtual void draw()const = 0;
 
@@ -29,13 +29,13 @@ class Move {
 public:
 	Move() {}
 
-	virtual void start(Character* character) {};
+	virtual void start([[maybe_unused]] Character* character) {};
 
 	virtual void update(Character* character, double t = Scene::DeltaTime()) = 0;
 
 	virtual bool isActive() = 0;
 
-	virtual void finalize(Character* character) {};
+	virtual void finalize([[maybe_unused]] Character* character) {};
 };
 
 class Motion :public Move {
@@ -182,7 +182,6 @@ public:
 		return Quad{ tl,tr,br,bl };
 	}
 
-	//最悪のコード
 	Quad getQuad2()const {
 
 		RectF rect{ Arg::topCenter = rotatePos,size };
@@ -220,7 +219,7 @@ public:
 	//Moveのあと
 	void update() {
 		const Transformer2D t1{ Mat3x2::Translate(pos) };//中心をずらす
-		const Transformer2D t2 = Transformer2D{ Mat3x2::Rotate(angle,rotatePos) };// { Mat3x2::Identity() };
+		const Transformer2D t2 = Transformer2D{ Mat3x2::Rotate(angle,rotatePos) };
 		mat = Graphics2D::GetLocalTransform();//変換行列を保存
 		for (auto& joint : joints) {
 			joint->update();
@@ -268,14 +267,11 @@ public:
 		Body() {}
 	};
 
-	//Array<Motion>motions;
-
 	HashTable<String, Motion>motionTable;
 
 	double angle = 0_deg;
 	bool mirror = false;
 	double scale = 1.0;
-	//first->name second->joint,parentName
 	HashTable<String, Body>table;
 
 	Joint* joint = nullptr;

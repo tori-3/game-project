@@ -126,8 +126,6 @@ Player::Player(const Vec2& cpos) :
 			else {
 				return true;
 			}
-
-			//return not (hitBox.touch(Direction::left) || hitBox.touch(Direction::right));
 		},
 		.end = [&]() {
 			character.removeMotion(U"Tosshin");
@@ -159,7 +157,6 @@ Player::Player(const Vec2& cpos) :
 
 	actMan.add(U"Landing", {
 		.start = [&]() {
-		//character.addMotion(U"Landing");
 		character.addMotion(U"Standing");
 		AudioAsset{ U"着地" }.playOneShot();
 	},
@@ -219,7 +216,6 @@ Player::Player(const Vec2& cpos) :
 	actMan.add(U"Sliding", {
 		.start = [&]() {
 			character.addMotion(U"Sliding");
-			//hitBox.setFigure(RectF{ Arg::center(0,130 / 4.0),60,130 / 2.0 });
 			hitBox.setFigure(RectF{ Arg::center(0,defaultBody.h / 4),defaultBody.w,defaultBody.h / 2 });
 			AudioAsset{ U"スライディング" }.playOneShot();
 		},
@@ -275,22 +271,21 @@ Player::Player(const Vec2& cpos) :
 		}
 	});
 
-	auto summerHited = std::shared_ptr<bool>(new bool(false));
 
 	actMan.add(U"Summer", {
 		.startCondition = [&]() {
 			return attackKey.down() and not hitBox.touch(Direction::down) and not actMan.hasActive(U"Punch",U"Shagamu",U"Sliding",U"Damage",U"Rush",U"HeadDrop",U"Dead",U"Clear") and canSummer;
 		},
-		.start = [&,h = summerHited]() {
+		.start = [&]() {
 			AudioAsset{U"サマーソルト"}.playOneShot();
 			character.addMotion(U"Summer");
-			*h = false;
+			summerHited = false;
 			vel.y = -500.0;
 		},
-		.update = [&,h = summerHited](double t) {
-			if (attack(U"Enemy",Circle{ pos,70 },1,200) and (not *h)) {
+		.update = [&](double t) {
+			if (attack(U"Enemy",Circle{ pos,70 },1,200) and (not summerHited)) {
 				AudioAsset{ U"サマーソルトヒット" }.playOneShot();
-				*h = true;
+				summerHited = true;
 			}
 			return character.hasMotion(U"Summer");
 		},
@@ -392,7 +387,6 @@ Player::Player(const Vec2& cpos) :
 		},
 		.end = [&]() {
 			character.removeMotion(U"Knockback");
-			//character.removeMotion(U"HeadDropLanding");
 		}
 	});
 

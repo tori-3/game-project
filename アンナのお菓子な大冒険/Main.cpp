@@ -9,6 +9,10 @@
 #include"HawkDropOut.h"
 #include"AnnaMusicGame.h"
 
+#include"TitleScene.h"
+
+#include"LoadAsset.h"
+
 void Main()
 {
 
@@ -20,6 +24,7 @@ void Main()
 
 	App manager;
 
+	manager.add<TitleScene>(U"TitleScene");
 	manager.add<Map>(U"Map");
 	manager.add<MainGameScene>(U"MainGameScene");
 	manager.add<FallingAnna::FallingAnna>(U"FallingAnna");
@@ -31,6 +36,8 @@ void Main()
 	manager.add<Maze2::mazeGame>(U"Maze2");
 	manager.add<AnnaMusicGame::AnnaMusicGame>(U"AnnaMusicGame");
 
+
+	LoadAsset::LoadAudio();
 
 	while (System::Update())
 	{

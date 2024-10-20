@@ -50,7 +50,6 @@ public:
 		{U"LastBossBlock",[]() {return new LastBossBlock(); }},
 		{U"FallingRocksBlock",[]() {return new FallingRocksBlock(); }},
 		{U"RollingRocksBlock",[]() {return new RollingRocksBlock(); }},
-		//{U"SignboardBlock",[]() {return new SignboardBlock(); }},
 	};
 
 	Stage(const JSON& json,bool backGround=false) {
