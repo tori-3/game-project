@@ -104,6 +104,10 @@ namespace ManjuRush {
 
 		void update() override
 		{
+			ClearPrint();
+			Print << U"jump:" << jump;
+			Print << U"KeyW:" << KeyW.pressed();
+
 			if (flag == false) {
 				if (stopwatch < 2s) {
 					font(U"3").draw(600, 200);
@@ -126,7 +130,7 @@ namespace ManjuRush {
 					BGM.play();
 				}
 
-				if (score > 900 || getData().mini_mode == Hard_Mode) {
+				if (score > 1300 || getData().mini_mode == Hard_Mode) {
 					level = 3;
 				}
 				else if (score > 500 || getData().mini_mode == Normal_Mode) {
@@ -180,7 +184,7 @@ namespace ManjuRush {
 						jump = true;
 						player.y -= v;
 					}
-					else if (0 < v && player.y < 500) {
+					else if (0 < v && player.y <= 500) {
 						//下降
 						if (getData().KeyDown.pressed()) {
 							player.y += 5;

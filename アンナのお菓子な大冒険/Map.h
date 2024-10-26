@@ -30,6 +30,7 @@ public:
 	Array<Texture>pictures;//各ゲームの大きい画像
 	Array<String>sentences;//各ゲームの説明文
 	Array<String>sceneNames;
+	Array<Point>stagePosList;
 
 	//どのゲームを選択しているか
 	int index = 0;
@@ -47,6 +48,9 @@ public:
 
 	Map(const InitData& init) : IScene{ init } {
 		Scene::SetBackground(Palette::Skyblue);
+
+
+
 
 
 		clearStage = saveDatajson[U"ClearStage"].get<int32>();
@@ -81,10 +85,11 @@ public:
 			pictures << Texture{ json[U"StageData"][str][U"Picture"].get<String>() };
 			sentences << json[U"StageData"][str][U"Sentence"].get<String>();
 			sceneNames << json[U"StageData"][str][U"SceneName"].get<String>();
+			stagePosList << json[U"StageData"][str][U"StagePos"].get<Point>();
 		}
 
 		character.addMotion(U"Walk");
-		character.update({ rect_x(0) ,640 }, false);
+		character.update(stagePosList[0]-Point{ 0 ,60 }, false);
 
 
 		AudioAsset::Register(U"WorldBGM",U"BGM/WorldMap2.mp3",Loop::Yes);
@@ -149,7 +154,7 @@ public:
 				largeFlg = true;
 			}
 
-			character.update({ rect_x(index) ,640 }, left);
+			character.update(stagePosList[index]-Point{ 0,60 }, left);
 				
 
 		}
@@ -174,22 +179,22 @@ public:
 		for (int i = 0; i < rect_num; i++) {
 			if (i == clearStage) {
 				if (i == index) {
-					Circle{ Arg::center(rect_x(i), 700) ,rect_size / 3 }.draw(Palette::Red).drawFrame(5);
+					Circle{ Arg::center(stagePosList[i]) ,rect_size / 3 }.draw(Palette::Red).drawFrame(5);
 				}
 				else {
-					Circle{ Arg::center(rect_x(i), 700) ,rect_size / 4 }.draw(Palette::Red).drawFrame(5);
+					Circle{ Arg::center(stagePosList[i]) ,rect_size / 4 }.draw(Palette::Red).drawFrame(5);
 				}
 			}
 			else if (i<=clearStage) {
 				if (i == index) {
-					Circle{ Arg::center(rect_x(i), 700) ,rect_size / 3 }.draw(Palette::Blue).drawFrame(5);
+					Circle{ Arg::center(stagePosList[i]) ,rect_size / 3 }.draw(Palette::Blue).drawFrame(5);
 				}
 				else {
-					Circle{ Arg::center(rect_x(i), 700) ,rect_size / 4 }.draw(Palette::Blue).drawFrame(5);
+					Circle{ Arg::center(stagePosList[i]) ,rect_size / 4 }.draw(Palette::Blue).drawFrame(5);
 				}
 			}
 			else {
-					Circle{ Arg::center(rect_x(i), 700) ,rect_size / 4 }.draw(Palette::Black).drawFrame(5);
+					Circle{ Arg::center(stagePosList[i]) ,rect_size / 4}.draw(Palette::Black).drawFrame(5);
 			}
 		}
 
@@ -202,8 +207,8 @@ public:
 	}
 
 private:
-	int rect_x(int i)const {
-		int gap = rect_size + rect_gap;
-		return  600 - (rect_num - 1) * gap / 2 + i * gap;
-	}
+	//int rect_x(int i)const {
+	//	int gap = rect_size + rect_gap;
+	//	return  600 - (rect_num - 1) * gap / 2 + i * gap;
+	//}
 };
