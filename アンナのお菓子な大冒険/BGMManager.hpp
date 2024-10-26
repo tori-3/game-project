@@ -33,6 +33,7 @@ public:
 
 	void stop() {
 		AudioAsset{ m_name }.stop(0.5s);
+		m_name = {};
 	}
 
 	void setVolume(double volume) {

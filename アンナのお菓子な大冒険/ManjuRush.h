@@ -58,7 +58,7 @@ namespace ManjuRush {
 
 		double vo_b = getData().BGM_volume;
 		double vo_e = getData().Effect_volume;
-		Audio BGM{ U"まんじゅうラッシュ素材/まんじゅうゲームの曲.wav" };
+		Audio BGM{ U"BGM/MiniGameBGM.wav" };
 		Audio Clear{ U"まんじゅうラッシュ素材/クリア2.wav" };
 		Audio Touch{ U"まんじゅうラッシュ素材/8bitダメージ8.mp3" };
 		Audio Defeat{ U"まんじゅうラッシュ素材/やられた.wav" };

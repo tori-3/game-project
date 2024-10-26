@@ -40,21 +40,20 @@ Wait,1
 ChangeTexture,yoroi,Characters/yukidarunaito/yoroi.png,0
 Base,mbody,1
 
-
 #Muteki
-ChangeColor,mbody,1,1,1,0,0.25
+ChangeColor,mbody,1.5,0.5,0.5,1,0.25
 
 ChangeColor,mbody,1,1,1,1,0.25
 
-ChangeColor,mbody,1,1,1,0,0.25
+ChangeColor,mbody,1.5,0.5,0.5,1,0.25
 
 ChangeColor,mbody,1,1,1,1,0.25
 
-ChangeColor,mbody,1,1,1,0,0.25
+ChangeColor,mbody,1.5,0.5,0.5,1,0.25
 
 ChangeColor,mbody,1,1,1,1,0.25
 
-ChangeColor,mbody,1,1,1,0,0.25
+ChangeColor,mbody,1.5,0.5,0.5,1,0.25
 
 ChangeColor,mbody,1,1,1,1,0.25
 

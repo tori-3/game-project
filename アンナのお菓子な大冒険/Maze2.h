@@ -275,6 +275,9 @@ namespace Maze2 {
 				TextureAsset::Register(U"BackGroundTexture/洞窟背景.png", U"BackGroundTexture/洞窟背景.png");
 			}
 
+			AudioAsset::Register(U"MiniGameBGM", U"BGM/MiniGameBGM.wav", Loop::Yes);
+			BGMManager::get().play(U"MiniGameBGM");
+
 
 			//変数などの初期化
 

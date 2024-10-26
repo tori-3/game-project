@@ -367,3 +367,17 @@ public:
 
 	void draw(const Point& pos)const override;
 };
+
+
+class CloudBlock :public Block
+{
+public:
+	void draw(const Point& pos)const override;
+};
+
+class CloudSurfaceBlock :public Block
+{
+public:
+	void draw(const Point& pos)const override;
+};
+

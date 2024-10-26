@@ -388,3 +388,13 @@ void SignboardBlock::draw(const Point& pos)const
 		FontAsset(U"WindowFont")(U"Enter:読む").drawAt(15,window.center());
 	}
 }
+
+
+void CloudBlock::draw(const Point& pos)const {
+	TextureAsset(U"Cloud").resized(rect_size).draw(pos * rect_size);
+}
+
+
+void CloudSurfaceBlock::draw(const Point& pos)const {
+	TextureAsset{ U"CloudSurface" }.resized(rect_size * 2).draw((pos + Point{ 0,-1 }) * rect_size);
+}

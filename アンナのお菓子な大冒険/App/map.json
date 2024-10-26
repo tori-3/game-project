@@ -123,10 +123,10 @@
     "Stage16": {
       "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
       "BackgroundTexture": "BackgroundTexture/雲背景.png",
-      "MapFile": "cloudStage2.json",
+      "MapFile": "cloudStage3.json",
       "Picture": "BackgroundTexture/雲背景.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<3-2>綿菓子の雲に飛び乗って\nだんだん陽が暮れてきました。\n雲海の先に見えるのは、\nお菓子のお城でしょうか。\nお城を目指して、\nアンナちゃんは港に向かいました。"
+      "Sentence": "<3-3>綿菓子の雲に飛び乗って\nだんだん陽が暮れてきました。\n雲海の先に見えるのは、\nお菓子のお城でしょうか。\nお城を目指して、\nアンナちゃんは港に向かいました。"
     },
     "Stage17": {
       "BGM": "BGM/StageBoss6.wav",

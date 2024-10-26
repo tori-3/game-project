@@ -224,6 +224,14 @@ void SignboardBlock(Point pos) {
 	RectF{ pos * rect_size,rect_size }.draw(Palette::Burlywood);
 }
 
+void CloudBlock(Point pos) {
+	TextureAsset{ U"Cloud" }.resized(rect_size).draw(pos * rect_size);
+}
+
+void CloudSurfaceBlock(Point pos) {
+	TextureAsset{ U"CloudSurface" }.resized(rect_size*2).draw((pos+Point{0,-1}) * rect_size);
+}
+
 
 struct Info {
 	String tag;
@@ -274,7 +282,10 @@ Array<Info>list{
 	{U"LastBossBlock",LastBossBlock,U"ラスボス"},
 	{U"FallingRocksBlock",FallingRocksBlock,U"落石"},
 	{U"RollingRocksBlock",RollingRocksBlock,U"転がる岩"},
-	{U"SignboardBlock",SignboardBlock,U"看板"}
+	{U"SignboardBlock",SignboardBlock,U"看板"},
+	{U"CloudBlock",CloudBlock,U"雲"},
+	{U"CloudSurfaceBlock",CloudSurfaceBlock,U"雲の地表"}
+
 };
 
 HashTable<String, std::function<void(Point)>> table;

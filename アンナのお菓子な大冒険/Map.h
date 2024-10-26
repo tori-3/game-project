@@ -103,7 +103,7 @@ public:
 				changeScene(U"Start");
 			}
 
-			if (start.leftClicked() && index<=clearStage) {
+			if ((start.leftClicked()||KeyEnter.down()) && index<=clearStage) {
 				getData().mini_mode = Stage_Mode;
 				getData().stage = index + 1;
 				getData().mini_clear = false;

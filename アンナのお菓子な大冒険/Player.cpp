@@ -450,6 +450,11 @@ void Player::update() {
 
 	actMan.update();
 
+	if(not actMan.hasActive(U"HeadDrop"))
+	{
+		vel.y = Min(vel.y, 800.0);
+	}
+
 	if (actMan.hasActive(U"Sliding", U"Rush")) {
 
 		if (left) {
@@ -512,6 +517,7 @@ void Player::update() {
 		vel = Vec2{};
 		force = Vec2{};
 		pos = lastTouchPos;
+		actMan.cancelAll();
 		//脱法ダメージ
 		actMan.start(U"Damage");
 		hp -= 1;

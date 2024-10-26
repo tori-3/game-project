@@ -17,6 +17,8 @@ namespace HawkDropOut {
 				TextureAsset::Register(U"BackGroundTexture/雪原背景.png", U"BackGroundTexture/雪原背景.png");
 			}
 
+			AudioAsset::Register(U"MiniGameBGM", U"BGM/MiniGameBGM.wav", Loop::Yes);
+			BGMManager::get().play(U"MiniGameBGM");
 
 
 

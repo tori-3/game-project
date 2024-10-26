@@ -259,6 +259,10 @@ public:
 			}
 
 		}
+		else
+		{
+			attackAccumlater = 1.5;
+		}
 
 		if (holdSnowBall) {
 

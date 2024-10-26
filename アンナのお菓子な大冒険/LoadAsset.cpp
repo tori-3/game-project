@@ -11,6 +11,8 @@ void LoadAsset::LoadAudio()
 	}
 
 	AudioAsset{ U"足音" }.setVolume(3);
+
+	AudioAsset{ U"ビーム" }.setVolume(3);
 }
 
 void LoadAsset::RegisterTexture(StringView path)
