@@ -1,6 +1,5 @@
 ﻿{
   "BackGround": [],
-  "SignboardPath": [ "SignboardText/看板0.txt", "SignboardText/看板1.txt", "SignboardText/看板2.txt", "SignboardText/看板3.txt", "SignboardText/看板4.txt", "SignboardText/看板5.txt", "SignboardText/看板6.txt", "SignboardText/看板7.txt" ],
   "Block": {
     "CakeGround": [
       "(60, 0)",
@@ -776,18 +775,17 @@
       "(0, 6)"
     ],
     "SignboardBlock": [
+      "(79, 5)",
       "(1, 7)",
       "(13, 7)",
       "(38, 7)",
-      "(43, 10)",
+      "(124, 7)",
       "(61, 9)",
-      "(79, 5)",
       "(99, 9)",
-      "(124, 7)"
+      "(43, 10)"
     ],
     "SpawnerStrawberrySoldier": [
-      "(132, 7)",
-      "(142, 8)"
+      "(138, 8)"
     ],
     "StrawberrySoldier": [
       "(31, 7)",
@@ -831,5 +829,15 @@
     ]
   },
   "Rate": 1.0,
+  "SignboardPath": [
+    "SignboardText/看板0.txt",
+    "SignboardText/看板1.txt",
+    "SignboardText/看板2.txt",
+    "SignboardText/看板3.txt",
+    "SignboardText/看板4.txt",
+    "SignboardText/看板5.txt",
+    "SignboardText/看板6.txt",
+    "SignboardText/看板7.txt"
+  ],
   "stage_size": "(188, 12)"
 }

@@ -3,7 +3,7 @@
     "Stage1": {
       "BGM": "BGM/StageSnow7.wav",
       "BackgroundTexture": "BackgroundTexture/雪原背景.png",
-      "MapFile": "snowStage1.json",
+      "MapFile": "snowStage4.json",
       "Picture": "BackgroundTexture/雪原背景.png",
       "SceneName": "MainGameScene",
       "Sentence": "<1-1>冒険のはじまり\nアンナちゃんが落ちた先には\nお菓子の世界が広がっていました。\nどんなお菓子が待ち受けているのか、\nわくわくしながら\nアンナちゃんは進みます。",
@@ -87,7 +87,7 @@
       "MapFile": "caveStage3.json",
       "Picture": "BackgroundTexture/洞窟背景.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<2-3>\n洞窟3",
+      "Sentence": "<2-3>チョコ鉱山\n天井のとんがりコーンは崩れ落ち、\n巨大なドーナッツは坂を転がります。\nなんて危険な洞窟なのでしょう...\nチョコとスリルを味わいながら、\nアンナちゃんは奥へ奥へと、\n進んでゆきました。",
       "StagePos": "(200,700)"
     },
     "Stage11": {
@@ -123,7 +123,7 @@
       "MapFile": "cloudStage2.json",
       "Picture": "BackgroundTexture/雲背景.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<3-2>",
+      "Sentence": "<3-2> あっちこっち大空襲\nたいへん！\n空から大量のおかしたちが、\n押し寄せてきた！\nゆっくりお菓子を食べてるヒマは、\nもうありません！\nにげて、にげて、アンナちゃん！",
       "StagePos": "(280,700)"
     },
     "Stage15": {
@@ -168,7 +168,7 @@
       "MapFile": "LastBoss.json",
       "Picture": "BackgroundTexture/ラスボス背景.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<LastBoss>\n大魔女ビター・ヴァイオレット\nお菓子を独り占めしようとするワガママな\n女の子。\nお菓子は我のものなのじゃ！と、\nアンナちゃんは\nお菓子をかけた最後の戦いに挑みます。",
+      "Sentence": "<LastBoss>\n大魔女ビター・ヴァイオレット\nお菓子を独り占めしようとする\nワガママな女の子。\nお菓子は我のものなのじゃ！と、\nアンナちゃんは\nお菓子をかけた最後の戦いに挑みます。",
       "StagePos": "(380,700)"
     }
   }

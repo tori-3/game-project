@@ -29,7 +29,7 @@ public:
 	EnemyAdder(EntityManager* manager) :manager{manager} {
 		table[U"StrawberrySoldier"] = [](const Vec2& pos) {return new StrawberrySoldier{ pos }; };
 		table[U"CookieSoldier"] = [](const Vec2& pos) {return new CookieSoldier{ pos }; };
-		table[U"SpawnerStrawberrySoldier"] = [](const Vec2& pos) {return new Spawner{ pos,new StrawberrySoldier{pos} }; };
+		table[U"SpawnerStrawberrySoldier"] = [](const Vec2& pos) {return new ItigoSpawnerEntity{ pos }; };
 		table[U"Player"] = [](const Vec2& pos) {return new Player{ pos }; };
 		table[U"Snowman"] = [](const Vec2& pos) {return new Snowman{ pos }; };
 		table[U"ItigoSlave"] = [](const Vec2& pos) {return new ItigoSlave{ pos }; };

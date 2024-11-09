@@ -173,6 +173,7 @@ public:
 	void lateUpdate()override {
 		if (not isActive()) {
 			DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 35, Palette::White);
+			AudioAsset{ U"雪玉壊れる" }.playOneShot();
 		}
 	}
 
@@ -364,7 +365,7 @@ public:
 
 			if (attackTimer<= 0) {
 				if (manager->get(U"Player")->hitBox.Get_Box().intersects(hitBox.Get_Box().movedBy(left ? -25 : 25, 0))) {
-					manager->get(U"Player")->damage(2, Vec2{ left ? -200 : 200,-20 },DamageType::UnBrakable);
+					manager->get(U"Player")->damage(2, Vec2{ left ? -200 : 200,-20 });
 				}
 			}
 		}
@@ -584,6 +585,8 @@ public:
 				if (not character.hasMotion(U"explode")) {
 					character.addMotion(U"change");
 					DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 200, HSV{ 20,1,1 });
+					AudioAsset{ U"ポップコーン爆発" }.playOneShot();
+
 					if ((manager->get(U"Player")->pos - pos).length() < 70 * 2) {
 						if (pos.x < manager->get(U"Player")->pos.x) {
 							manager->get(U"Player")->damage(1, Vec2{ 100,-20 }, DamageType::UnBrakable);
@@ -851,6 +854,8 @@ public:
 			if (hitBox.touch(Direction::down)|| damaged) {
 				character.addMotion(U"change");
 				DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 200, HSV{ 20,1,1 });
+				AudioAsset{ U"ポップコーン爆発" }.playOneShot();
+
 
 				attack(U"Player", Circle{pos,70*2}, 1);
 

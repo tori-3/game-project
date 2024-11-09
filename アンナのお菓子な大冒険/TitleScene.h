@@ -32,7 +32,7 @@ public:
 	Timer timer{ 10s,StartImmediately::Yes };
 
 	CookieButton mapButton{ RectF{Arg::center(Scene::Center().x-250,600),300,80},U"マップ" };
-	CookieButton minigameButton{ RectF{Arg::center(Scene::Center().x+250,600),300,80},U"ミニゲーム" };
+	CookieButton minigameButton{ RectF{Arg::center(Scene::Center().x+250,600),300,80},U"ミニゲーム",false };
 
 	double time = 0;
 

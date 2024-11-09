@@ -13,6 +13,8 @@ void LoadAsset::LoadAudio()
 	AudioAsset{ U"足音" }.setVolume(3);
 
 	AudioAsset{ U"ビーム" }.setVolume(3);
+
+	AudioAsset{ U"雪玉壊れる" }.setVolume(5);
 }
 
 void LoadAsset::RegisterTexture(StringView path)

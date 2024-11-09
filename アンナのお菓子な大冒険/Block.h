@@ -209,7 +209,7 @@ public:
 class SpawnerStrawberrySoldier :public Untouchable {
 public:
 
-	double accumlater = 0;
+	bool bornFlg = false;
 
 	void update(const Point& pos)override;
 };

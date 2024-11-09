@@ -169,13 +169,9 @@ void BeltConveyorLeft::draw(const Point& pos)const {
 
 void SpawnerStrawberrySoldier::update(const Point& pos) {
 
-	if (not Rect{ Arg::center(pos * rect_size),rect_size * 5,9999 }.intersects(DataManager::get().playerPos)) {
-
-		constexpr double spawn = 1.0;
-
-		for (accumlater += Scene::DeltaTime(); spawn <= accumlater; accumlater -= spawn) {
-			DataManager::get().addEntity(U"SpawnerStrawberrySoldier", pos * rect_size + Vec2{ 0.5,0.5 }*rect_size);
-		}
+	if (not bornFlg) {
+		DataManager::get().addEntity(U"SpawnerStrawberrySoldier", pos * rect_size + Vec2{ 0.5,0.5 }*rect_size);
+		bornFlg = true;
 	}
 }
 

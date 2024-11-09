@@ -14,7 +14,7 @@ public:
 	//画面下の四角形の情報
 	const int rect_size = 60;//四角形の大きさ
 	const int rect_num = 19;//四角形(ゲーム)の個数
-	const int rect_gap = 5;//四角形の間隔
+	const int rect_gap = 3;//四角形の間隔
 
 	//ボタンの座標(戻る、戻る、開始)
 	const Point back_pos{ 35, 35 };
@@ -85,7 +85,8 @@ public:
 			pictures << Texture{ json[U"StageData"][str][U"Picture"].get<String>() };
 			sentences << json[U"StageData"][str][U"Sentence"].get<String>();
 			sceneNames << json[U"StageData"][str][U"SceneName"].get<String>();
-			stagePosList << json[U"StageData"][str][U"StagePos"].get<Point>();
+			Point pos = json[U"StageData"][str][U"StagePos"].get<Point>();
+			stagePosList << Point{rect_x(i),pos.y};
 		}
 
 		character.addMotion(U"Walk");
@@ -207,8 +208,8 @@ public:
 	}
 
 private:
-	//int rect_x(int i)const {
-	//	int gap = rect_size + rect_gap;
-	//	return  600 - (rect_num - 1) * gap / 2 + i * gap;
-	//}
+	int rect_x(int i)const {
+		int gap = rect_size + rect_gap;
+		return  600 - (rect_num - 1) * gap / 2 + i * gap;
+	}
 };
