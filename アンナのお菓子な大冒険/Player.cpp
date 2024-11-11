@@ -508,12 +508,23 @@ void Player::update() {
 		lastTouchPos = pos;
 	}
 
-	if ((hitBox.touch(Direction::down) && hitBox.touch(Direction::up)) or (hitBox.touch(Direction::left) && hitBox.touch(Direction::right))) {
-		damage(1);
+	const bool horizontalCrushed = hitBox.touch(Direction::left) and hitBox.touch(Direction::right);
+	const bool verticalCrushed = hitBox.touch(Direction::down) and hitBox.touch(Direction::up);
+
+	if (horizontalCrushed or verticalCrushed)
+	{
+		crushedTimer += Scene::DeltaTime();
+	}
+	else
+	{
+		crushedTimer = 0;
 	}
 
-	//落下したら
-	if (DataManager::get().stageSize.y + 200 < pos.y) {
+	const bool isDrop = DataManager::get().stageSize.y + 200 < pos.y;
+	const bool isCrushed = 0.2 < crushedTimer;
+
+	//落下した or 潰された
+	if (isDrop or isCrushed) {
 		vel = Vec2{};
 		force = Vec2{};
 		pos = lastTouchPos;
@@ -521,6 +532,8 @@ void Player::update() {
 		//脱法ダメージ
 		actMan.start(U"Damage");
 		hp -= 1;
+
+		crushedTimer = 0;
 	}
 }
 

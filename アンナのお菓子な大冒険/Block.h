@@ -381,3 +381,8 @@ public:
 	void draw(const Point& pos)const override;
 };
 
+class ChocolateWallCanNotRespawn :public ChocolateWall
+{
+public:
+	void reaction(const Point& pos, PhysicsBox* box)override;
+};

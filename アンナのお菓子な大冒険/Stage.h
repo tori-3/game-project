@@ -52,6 +52,7 @@ public:
 		{U"RollingRocksBlock",[]() {return new RollingRocksBlock(); }},
 		{U"CloudBlock",[]() {return new CloudBlock(); }},
 		{U"CloudSurfaceBlock",[]() {return new CloudSurfaceBlock(); }},
+		{U"ChocolateWallCanNotRespawn",[]() {return new ChocolateWallCanNotRespawn(); }},
 	};
 
 	Stage(const JSON& json,bool backGround=false) {

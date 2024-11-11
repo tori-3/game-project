@@ -232,6 +232,11 @@ void CloudSurfaceBlock(Point pos) {
 	TextureAsset{ U"CloudSurface" }.resized(rect_size*2).draw((pos+Point{0,-1}) * rect_size);
 }
 
+void ChocolateWallCanNotRespawn(Point pos) {
+	TextureAsset(U"ChocolateWall").resized(rect_size).draw(pos * rect_size);
+	Rect{ pos * rect_size,rect_size }.drawFrame(5, 0,Palette::Red);
+}
+
 
 struct Info {
 	String tag;
@@ -284,7 +289,8 @@ Array<Info>list{
 	{U"RollingRocksBlock",RollingRocksBlock,U"転がる岩"},
 	{U"SignboardBlock",SignboardBlock,U"看板"},
 	{U"CloudBlock",CloudBlock,U"雲"},
-	{U"CloudSurfaceBlock",CloudSurfaceBlock,U"雲の地表"}
+	{U"CloudSurfaceBlock",CloudSurfaceBlock,U"雲の地表"},
+	{U"ChocolateWallCanNotRespawn",ChocolateWallCanNotRespawn,U"チョコレートの壁(リスポーン不可)"}
 
 };
 

@@ -830,14 +830,14 @@
   },
   "Rate": 1.0,
   "SignboardPath": [
-    "SignboardText/看板0.txt",
-    "SignboardText/看板1.txt",
-    "SignboardText/看板2.txt",
-    "SignboardText/看板3.txt",
-    "SignboardText/看板4.txt",
-    "SignboardText/看板5.txt",
-    "SignboardText/看板6.txt",
-    "SignboardText/看板7.txt"
+    "SignboardText/1-1/看板0.txt",
+    "SignboardText/1-1/看板1.txt",
+    "SignboardText/1-1/看板2.txt",
+    "SignboardText/1-1/看板3.txt",
+    "SignboardText/1-1/看板4.txt",
+    "SignboardText/1-1/看板5.txt",
+    "SignboardText/1-1/看板6.txt",
+    "SignboardText/1-1/看板7.txt"
   ],
   "stage_size": "(188, 12)"
 }

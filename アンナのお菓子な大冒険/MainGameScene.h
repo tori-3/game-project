@@ -386,13 +386,12 @@ public:
 
 	void drawFadeIn(double t) const override
 	{
-		draw();		
-		Circle circle = Circle{player->pos,0}.lerp(Circle{ player->pos ,Scene::Size().length() },t);
+		draw();
 
-		for (const auto& polygon : Geometry2D::Subtract(RectF{ Arg::center = player->pos,Scene::Size() * 2 }, circle.asPolygon()))
 		{
-			polygon.draw(Palette::Black);
+			const Transformer2D _{ camera.getMat3x2() };
+			Circle{ player->pos,0 }.lerp(Circle{ player->pos ,Scene::Size().length() }, t)
+				.drawFrame(0, Scene::Size().length(), Palette::Black);
 		}
-
 	}
 };

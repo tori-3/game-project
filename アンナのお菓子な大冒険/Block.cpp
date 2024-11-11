@@ -138,7 +138,7 @@ void BeltConveyorRight::reaction(const Point& pos, PhysicsBox* box)
 	if (rect.stretched(0, 0.1).intersects(box->lines(Direction::down).begin)) {
 		box->pos->x += Scene::DeltaTime() * rect_size / 0.5;
 	}
-	box->hit(rect);
+	box->hitCanNotRespawn(rect);
 }
 
 void BeltConveyorRight::draw(const Point& pos)const
@@ -157,7 +157,7 @@ void BeltConveyorLeft::reaction(const Point& pos, PhysicsBox* box)
 		box->pos->x -= Scene::DeltaTime() * rect_size / 0.5;
 	}
 
-	box->hit(rect);
+	box->hitCanNotRespawn(rect);
 }
 
 void BeltConveyorLeft::draw(const Point& pos)const {
@@ -393,4 +393,11 @@ void CloudBlock::draw(const Point& pos)const {
 
 void CloudSurfaceBlock::draw(const Point& pos)const {
 	TextureAsset{ U"CloudSurface" }.resized(rect_size * 2).draw((pos + Point{ 0,-1 }) * rect_size);
+}
+
+
+
+void ChocolateWallCanNotRespawn::reaction(const Point& pos, PhysicsBox* box)
+{
+	box->hitCanNotRespawn(Rect{ pos * rect_size,rect_size });
 }

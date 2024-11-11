@@ -93,6 +93,7 @@ public:
 
 	static constexpr RectF defaultBody{ Arg::center(0,0),40,130 };
 
+	double crushedTimer = 0;
 
 
 	Vec2 lastTouchPos{};
