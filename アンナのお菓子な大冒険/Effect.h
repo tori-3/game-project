@@ -19,7 +19,7 @@ struct ExplosionEffect : IEffect
 	explicit ExplosionEffect(const Vec2& pos, double size = 100, const ColorF& color = HSV{ 20,0.8,1 }) {
 		if (not TextureAsset::IsRegistered(U"particle"))
 		{
-			TextureAsset::Register(U"particle", U"example/particle.png");
+			TextureAsset::Register(U"particle", U"particle.png");
 		}
 		CircleEmitter2D emitter;
 		emitter.r = size * 0.35;

@@ -149,6 +149,8 @@ void LastBoss::update() {
 
 			character.addMotion(U"UdeAgeru");
 
+			AudioAsset{ U"召喚" }.playOneShot();
+
 			for (int32 i = 0; i < (isLastSpart()?5:3) ; ++i) {
 
 				const Vec2 enemyPos = Vec2(Random(rect_size * 2.0, DataManager::get().stageSize.x - rect_size * 2.0), rect_size*2);

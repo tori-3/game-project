@@ -12,6 +12,7 @@
 
 #include"LinerMove.h"
 
+
 class ClosedUmbrella:public Entity {
 public:
 	CharacterSystem character;
@@ -39,9 +40,18 @@ public:
 			TextureAsset::Register(U"MagicEffect2", 0xF563_icon, 50);
 			TextureAsset::Register(U"MagicEffect3", 0xF005_icon, 50);
 		}
+
 	}
 
-	void update()override {
+	bool audioStartFlg = false;
+
+	void update()override
+	{
+		if ((not audioStartFlg) and hitBox.getFigure().intersects(RectF{DataManager::get().stageSize}) and effectFlg)
+		{
+			AudioAsset{ U"傘の音" }.playOneShot();
+			audioStartFlg = true;
+		}
 
 		time += Scene::DeltaTime()*2;
 		character.character.joint->color.a = Min(time, 1.0);
@@ -108,9 +118,12 @@ public:
 			TextureAsset::Register(U"MagicEffect2", 0xF563_icon, 50);
 			TextureAsset::Register(U"MagicEffect3", 0xF005_icon, 50);
 		}
+
+		AudioAsset{ U"傘の音" }.playOneShot(0.3);
 	}
 
-	void update()override {
+	void update()override
+	{
 
 		time += Scene::DeltaTime();
 		
@@ -132,7 +145,10 @@ public:
 		manager->stage->hit(&hitBox);
 		hitBox.update();
 
-		if (hitBox.touchAny()) {
+		if ((not rotateFlg) and hitBox.touchAny()) {
+
+			AudioAsset{ U"傘の音" }.playOneShot(0.3);
+
 			targetAngle=(manager->get(U"Player")->pos-pos).getAngle();
 
 			constexpr double range = 15_deg;

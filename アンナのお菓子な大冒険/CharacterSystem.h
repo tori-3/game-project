@@ -68,7 +68,18 @@ public:
 	}
 
 	void clearMotion() {
-		character.clearMotion();
+
+		for(auto it=character.motionTable.begin();it!=character.motionTable.end();)
+		{
+			if(it->first== U"Mirror")
+			{
+				++it;
+			}
+			else
+			{
+				it = character.motionTable.erase(it);
+			}
+		}
 	}
 
 	void addMotion(const String& motionName,bool loop=false) {

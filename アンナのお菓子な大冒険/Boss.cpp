@@ -154,6 +154,8 @@ void SnowKnight::update() {
 
 			f2 = [=]
 			{
+				AudioAsset{ U"召喚" }.playOneShot();
+
 				for (auto i : step(5)) {
 					Vec2 bornPos{ centerX + Random(-400,400),200 };
 
@@ -426,6 +428,9 @@ void SlaversCookie::update() {
 		case 1: {
 
 			if (summonListItigo.size() < 10) {
+
+				AudioAsset{ U"召喚" }.playOneShot();
+
 				for (auto i : step(2)) {
 					Vec2 bornPos{};
 
@@ -500,6 +505,8 @@ void SlaversCookie::update() {
 				DataManager::get().additiveEffect.add<ExplosionEffect>(bornPos, 60, Palette::Yellowgreen);
 
 				timer += 1.0;
+
+				AudioAsset{ U"召喚" }.playOneShot();
 			}
 			if (not summonSnowRight) {
 				Vec2 bornPos{ DataManager::get().stageSize.x - rect_size * 5,pos.y + 200 };
@@ -510,6 +517,8 @@ void SlaversCookie::update() {
 				DataManager::get().additiveEffect.add<ExplosionEffect>(bornPos, 60, Palette::Yellowgreen);
 
 				timer += 1.0;
+
+				AudioAsset{ U"召喚" }.playOneShot();
 			}
 
 		}break;
@@ -837,6 +846,8 @@ void Captain::update() {
 				constexpr double eventInterval = 0.5;
 				if (eventInterval <= accumulatedTime)
 				{
+					AudioAsset{ U"召喚" }.playOneShot();
+
 					const Array<std::function<Entity* (Vec2)>> options =
 					{
 						[&](Vec2 pos) {

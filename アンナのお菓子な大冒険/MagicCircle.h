@@ -4,7 +4,7 @@ class MagicCircle
 {
 public:
 
-	double rad;
+	double rad = 0;
 
 	void start(double size)
 	{

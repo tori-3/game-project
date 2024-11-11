@@ -3,7 +3,7 @@
     "Stage1": {
       "BGM": "BGM/StageSnow7.wav",
       "BackgroundTexture": "BackgroundTexture/雪原背景.png",
-      "MapFile": "cloudStage4.json",
+      "MapFile": "snowStage1.json",
       "Picture": "BackgroundTexture/雪原背景.png",
       "SceneName": "MainGameScene",
       "Sentence": "<1-1>冒険のはじまり\nアンナちゃんが落ちた先には\nお菓子の世界が広がっていました。\nどんなお菓子が待ち受けているのか、\nわくわくしながら\nアンナちゃんは進みます。",

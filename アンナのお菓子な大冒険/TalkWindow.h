@@ -42,7 +42,7 @@ public:
 		//確認
 		if (not isContinue())return;
 
-		accumlater += Scene::DeltaTime() / 0.1;
+		accumlater += Scene::DeltaTime()/0.05;
 
 		const size_t length = static_cast<size_t>(accumlater);
 		const String& text = talks[index].text;
