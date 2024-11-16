@@ -20,7 +20,7 @@ public:
 };
 
 class Untouchable: public Block {
-	void reaction(const Point& pos, PhysicsBox* box)override{}
+	void reaction(const Point&, PhysicsBox*)override{}
 };
 
 class CakeSurface :public Block
@@ -143,7 +143,9 @@ public:
 
 			DataManager::get().effect.add<RingEffect>(rect.center());
 
-			AudioAsset{ U"ボヨン" }.playOneShot();
+			//適当
+			const double volume = Clamp((15*rect_size - Abs(DataManager::get().playerPos.x - pos.x * rect_size)), 0.0, 1.0);
+			AudioAsset{ U"ボヨン" }.playOneShot(volume);
 		}
 
 	}

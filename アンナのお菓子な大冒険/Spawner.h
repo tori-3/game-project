@@ -48,7 +48,7 @@ public:
 	{
 		if (entityList.size() < 5)
 		{
-			if (not RectF{ Arg::center(pos),rect_size * 7,9999 }.intersects(DataManager::get().playerPos))
+			if (not RectF{ Arg::center(pos),rect_size * 2,9999 }.intersects(DataManager::get().playerPos))
 			{
 				for (accumlater += Scene::DeltaTime(); spawn <= accumlater; accumlater -= spawn)
 				{

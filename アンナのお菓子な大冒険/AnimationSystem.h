@@ -27,7 +27,9 @@ class Character;
 
 class Move {
 public:
-	Move() {}
+	Move() = default;
+
+	virtual ~Move() = default;
 
 	virtual void start([[maybe_unused]] Character* character) {};
 
@@ -122,7 +124,7 @@ private:
 	size_t index = 0;
 	bool active = true;
 
-	bool checkIndex() {
+	bool checkIndex()const {
 		return index < list.size();
 	}
 };
@@ -237,7 +239,7 @@ public:
 		RectF{ Arg::center(0,0),size }.drawFrame(1, Palette::Red);
 	}
 
-	double getMaxY() {
+	double getMaxY()const {
 		RectF rect{ Arg::center(0,0),size };
 		double max = -Math::Inf;
 		for (auto i : step(4)) {
@@ -372,7 +374,7 @@ public:
 		motionTable.erase(name);
 	}
 
-	bool hasMotion(const String& name) {
+	bool hasMotion(const String& name)const {
 		return motionTable.contains(name);
 	}
 

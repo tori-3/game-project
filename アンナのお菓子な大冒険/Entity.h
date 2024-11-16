@@ -29,7 +29,7 @@ public:
 
 	virtual void draw()const = 0;
 
-	virtual void damage(int32 n,const Vec2& force={},DamageType damageType=DamageType::Brakable) {
+	virtual void damage(int32 n, [[maybe_unused]] const Vec2& force={}, [[maybe_unused]] DamageType damageType=DamageType::Brakable) {
 		hp -= n;
 	}
 
@@ -64,9 +64,9 @@ public:
 
 	double z = 0;
 
-	Array<Entity*> attack(StringView target, const Figure& figure, double damage, double power=200, DamageType damageType=DamageType::Brakable, int32 kaisuu = -1);
+	Array<Entity*> attack(StringView target, const Figure& figure, int32 damage, double power=200, DamageType damageType=DamageType::Brakable, int32 kaisuu = -1);
 
-	Array<Entity*> attack(StringView target, const Figure& figure, double damage, DamageType damageType, int32 kaisuu = -1) {
+	Array<Entity*> attack(StringView target, const Figure& figure, int32 damage, DamageType damageType, int32 kaisuu = -1) {
 		return attack(target,figure,damage,200,damageType,kaisuu);
 
 	}
@@ -133,7 +133,7 @@ public:
 
 };
 
-inline Array<Entity*> Entity::attack(StringView target, const Figure& figure, double damage, double power, DamageType damageType, int32 kaisuu) {
+inline Array<Entity*> Entity::attack(StringView target, const Figure& figure, int32 damage, double power, DamageType damageType, int32 kaisuu) {
 
 	Array<Entity*>list;
 	for (auto& entity : manager->getArray(target)) {

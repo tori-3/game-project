@@ -949,7 +949,7 @@ void Captain::draw()const{
 	character.draw();
 }
 
-void Captain::damage(int32 n, const Vec2& force, DamageType damageType)
+void Captain::damage(int32 n, const Vec2&, DamageType)
 {
 	if (not character.hasMotion(U"Muteki")) {
 		hp -= n;

@@ -15,6 +15,8 @@
 
 #include"CookieButton.h"
 
+#include"Spotlight.hpp"
+
 inline Mat3x2 shakeMat(const Timer& timer, double amplitude = 20)
 {
 	constexpr double N = 2;//揺れの回数
@@ -60,7 +62,7 @@ public:
 class SmoothCamera {
 public:
 
-	Vec2 pos;
+	Vec2 pos{};
 
 	double vel=0;
 
@@ -199,6 +201,8 @@ public:
 
 	GrapesHPBar hpBar{ Rect{Arg::center(Scene::Center().x,50),300,40} };
 
+	Spotlight* light = nullptr;
+
 	// コンストラクタ（必ず実装）
 	MainGameScene(const InitData& init)
 		: IPauseScene{ init }
@@ -217,6 +221,12 @@ public:
 		camera.setStageWidth(stage.width() * rect_size);
 		camera.setStageHeight(stage.height()*rect_size);
 		camera.update({ player->pos.x - draw_x,player->pos.y - draw_y });
+
+
+		if(getData().backgroundTexture==U"BackgroundTexture/洞窟背景.png")
+		{
+			light = new Spotlight{ Scene::Size() };
+		}
 	}
 
 	bool bgmStart = false;
@@ -287,8 +297,6 @@ public:
 
 		irisOut.update();
 
-		backgroundManager.update(camera.pos);
-
 		if (DataManager::get().bossHPRate)
 		{
 			hpBar.update(DataManager::get().bossHPRate.value());
@@ -300,6 +308,7 @@ public:
 	{
 		Scene::SetBackground(skyColor);
 
+		//ラスボスの時の背景位置
 		if (DataManager::get().table.contains(U"LastBoss"))
 		{
 			background.resized(Scene::Size()).draw(0,-30);
@@ -326,6 +335,20 @@ public:
 				DataManager::get().additiveEffect.update();
 			}
 		}
+
+		if(light)
+		{
+			{
+				//ライトを描く
+				ScopedSpotlight target{ *light,ColorF{0.3} };
+				const Transformer2D t{ camera.getMat3x2() };
+
+				Circle{ player->pos,500 }.draw(ColorF{1.0 },ColorF{ 0.0 });				
+			}
+
+			light->draw();
+		}
+
 		Graphics2D::Flush();
 		rTexture.resolve();
 		rTexture.draw();

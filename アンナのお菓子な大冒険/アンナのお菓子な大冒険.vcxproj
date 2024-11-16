@@ -364,6 +364,7 @@
     <ClInclude Include="SimpleAction.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Spawner.h" />
+    <ClInclude Include="Spotlight.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="TalkManager.h" />

@@ -340,7 +340,7 @@ public:
 		left = (manager->get(U"Player")->pos.x < pos.x);
 	}	
 
-	void damage(int32 n, const Vec2& force, DamageType damageType)override
+	void damage(int32 n, const Vec2&, DamageType)override
 	{
 
 		if (damageTimer<=0)

@@ -380,7 +380,7 @@ public:
 		}
 	}
 
-	void damage(int32 n, const Vec2& force, DamageType damageType)override {
+	void damage(int32 n, const Vec2& force, DamageType)override {
 		if (not character.hasMotion(U"Muteki")) {
 			character.removeMotion(U"attack");
 			hp -= n;

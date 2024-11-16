@@ -30,7 +30,7 @@
     "Stage4": {
       "BGM": "BGM/StageSnow7.wav",
       "BackgroundTexture": "BackgroundTexture/雪原背景.png",
-      "MapFile": "cloudStage4.json",
+      "MapFile": "snowStage3.json",
       "Picture": "BackgroundTexture/雪原背景.png",
       "SceneName": "MainGameScene",
       "Sentence": "<1-3>",

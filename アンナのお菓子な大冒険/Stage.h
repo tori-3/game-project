@@ -218,10 +218,6 @@ public:
 
 	}
 
-	void update(const Vec2& pos) {
-		//stage.updateAsBackGround(pos * rate,4, brockNum());
-	}
-
 	void draw(const Vec2& pos)const {
 		{
 			const Transformer2D transformer1{ Mat3x2::Scale(rate, Vec2{0,0}) };
@@ -246,13 +242,6 @@ public:
 		for (const auto& elem : json[U"BackGround"].arrayView())
 		{
 			backGrounds << StageBackGround{ JSON::Load(elem.getString()) };
-		}
-	}
-
-	void update(const Vec2& pos) {
-
-		for (auto& backGround : backGrounds) {
-			backGround.update(pos);
 		}
 	}
 

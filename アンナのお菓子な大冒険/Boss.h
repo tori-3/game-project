@@ -26,8 +26,6 @@ public:
 	bool left = false;
 	double timer;
 
-	HitBox* kenHitbox;
-
 	Array<Entity*>summonList;//召喚したリスト
 
 	SnowKnight(const Vec2& cpos);
