@@ -86,7 +86,7 @@ public:
 			sentences << json[U"StageData"][str][U"Sentence"].get<String>();
 			sceneNames << json[U"StageData"][str][U"SceneName"].get<String>();
 			Point pos = json[U"StageData"][str][U"StagePos"].get<Point>();
-			stagePosList << Point{rect_x(i),pos.y};
+			stagePosList << pos;
 		}
 
 		character.addMotion(U"Walk");
@@ -99,6 +99,13 @@ public:
 
 	void update() override
 	{
+
+		if(KeyR.down())
+		{
+			changeScene(U"Map");
+		}
+
+
 
 		if (not largeFlg) {
 
@@ -208,8 +215,8 @@ public:
 	}
 
 private:
-	int rect_x(int i)const {
-		int gap = rect_size + rect_gap;
-		return  600 - (rect_num - 1) * gap / 2 + i * gap;
-	}
+	//int rect_x(int i)const {
+	//	int gap = rect_size + rect_gap;
+	//	return  600 - (rect_num - 1) * gap / 2 + i * gap;
+	//}
 };
