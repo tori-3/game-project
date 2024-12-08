@@ -93,7 +93,8 @@ public:
 
 		pos.y = Clamp<double>(pos.y,0, stageHeight-Scene::Height());
 
-		if (DataManager::get().table.contains(U"ShakeCamera")) {
+		if (DataManager::get().table.contains(U"ShakeCamera"))
+		{
 			DataManager::get().table.erase(U"ShakeCamera");
 			shakeTimer.restart();
 		}
@@ -165,7 +166,7 @@ public:
 		}
 		else
 		{
-			for (auto i : step(maxHP)) {
+			for (auto i : step(Min(maxHP,10))) {
 				if (i < count) {
 					TextureAsset(U"HP").resized(40).drawAt(25 + i * 40, 25);
 				}
@@ -388,6 +389,7 @@ public:
 
 		if(mapButton.update())
 		{
+			getData().quitStage = true;
 			EndGame(false);
 		}
 	}

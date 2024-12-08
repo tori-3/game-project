@@ -334,7 +334,7 @@ namespace AnnaMusicGame {
 
 
 
-			Cursor::RequestStyle(CursorStyle::Hidden);
+			//Cursor::RequestStyle(CursorStyle::Hidden);
 			Scene::SetBackground(Palette::Pink);
 			//判定マーカー
 			C0.draw(ColorF{ 0,255,0,0.0 });
@@ -357,7 +357,7 @@ namespace AnnaMusicGame {
 			{
 				music.play();
 			}
-			if (KeyD.down() or KeyF.down() or KeyJ.down() or KeyK.down())
+			if (KeyD.down() or KeyA.down() or KeyLeft.down() or KeyRight.down())
 			{
 				effect.add<Judge>(2, 2);
 				t = stopwatch.ms() + 490;
@@ -378,8 +378,10 @@ namespace AnnaMusicGame {
 
 					candyr.drawAt(rc);
 
+					Line{ rc + Vec2{20,0},rc + Vec2{-20,0} }.drawArrow(10,SizeF{15,15});
+
 					//判定
-					if (KeyF.down() or KeyJ.down())
+					if (KeyA.down() or KeyLeft.down())
 					{
 
 
@@ -432,8 +434,10 @@ namespace AnnaMusicGame {
 
 					candyg.drawAt(gc);
 
+					Line{ gc + Vec2{-20,0},gc + Vec2{20,0} }.drawArrow(10, SizeF{ 15,15 });
+
 					//判定
-					if (KeyD.down() or KeyK.down())
+					if (KeyD.down() or KeyRight.down())
 					{
 
 
@@ -476,9 +480,9 @@ namespace AnnaMusicGame {
 			}
 
 			//削除
-			rcs.remove_if([&](const OffsetCircular rc) {return((KeyF.down() or KeyJ.down()) and C0.intersects(Circle{ rc,30 }) and rc.theta > 0); });
+			rcs.remove_if([&](const OffsetCircular rc) {return((KeyA.down() or KeyLeft.down()) and C0.intersects(Circle{ rc,30 }) and rc.theta > 0); });
 			rcs.remove_if([&](const OffsetCircular rc) {return(C3.contains(Circle{ rc,30 }) and rc.theta > 0); });
-			gcs.remove_if([&](const OffsetCircular gc) {return((KeyD.down() or KeyK.down()) and C0.intersects(Circle{ gc,30 }) and gc.theta > 0); });
+			gcs.remove_if([&](const OffsetCircular gc) {return((KeyD.down() or KeyRight.down()) and C0.intersects(Circle{ gc,30 }) and gc.theta > 0); });
 			gcs.remove_if([&](const OffsetCircular gc) {return(C3.contains(Circle{ gc,30 }) and gc.theta > 0); });
 
 			//終了
@@ -512,8 +516,8 @@ namespace AnnaMusicGame {
 
 		void draw() const override
 		{
-			font(U"赤はFJキー").draw(40, 700, 50, Palette::Red);
-			font(U"黄緑はDKキー").draw(40, 700, 90, Palette::Yellowgreen);
+			font(U"赤は←[A]キー").draw(40, 700, 50, Palette::Red);
+			font(U"黄緑は→[D]キー").draw(40, 700, 90, Palette::Yellowgreen);
 			font(U"をタイミング良く押そう！！\nMiss9以下でクリア").draw(40, 700, 130, Palette::Skyblue);
 			font(U"{}"_fmt(credit)).draw(30, 5, 750, Palette::Skyblue);
 			font(U"Combo{}"_fmt(combo)).draw(60, 650, 380, Palette::Yellowgreen);

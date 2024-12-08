@@ -13,6 +13,9 @@ struct GameData
 
 	bool backFromMainGameScene = false;
 
+	//ゲームをやめるでMapに戻ってきたか
+	bool quitStage = false;
+
 	int32 maxHP = 5;
 
 

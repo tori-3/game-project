@@ -33,7 +33,7 @@
       "MapFile": "snowStage3.json",
       "Picture": "BackgroundTexture/雪原背景.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<1-3>",
+      "Sentence": "<1-3>いちごラッシュ！\nいちごの軍団が行く手を阻む！\n全力で駆け抜けよう！",
       "StagePos": "(185,720)"
     },
     "Stage5": {
@@ -96,7 +96,7 @@
       "MapFile": "caveStage3.json",
       "Picture": "BackgroundTexture/洞窟背景.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<2-3>",
+      "Sentence": "<2-3>チョコ鉱山\n迫りくる天井！\nつぶされないように駆け抜けよう！",
       "StagePos": "(430,580)"
     },
     "Stage12": {
@@ -150,7 +150,7 @@
       "MapFile": "",
       "Picture": "MiniGameDisplay/音ゲー.png",
       "SceneName": "AnnaMusicGame",
-      "Sentence": "<ミニゲーム-AnnaMusicGame>\n音ゲーです",
+      "Sentence": "<ミニゲーム-AnnaMusicGame>\n音ゲーです。\nタイミングよく←[A]と→[D]を\n押してください。",
       "StagePos": "(780,450)"
     },
     "Stage18": {
@@ -159,7 +159,7 @@
       "MapFile": "cloudStage3.json",
       "Picture": "BackgroundTexture/雲背景.png",
       "SceneName": "MainGameScene",
-      "Sentence": "<3-3>",
+      "Sentence": "<3-3>大ジャンプ！！\nそこには大きな穴が開いた雲が\n頑張っても届きそうにない…",
       "StagePos": "(830,490)"
     },
     "Stage19": {

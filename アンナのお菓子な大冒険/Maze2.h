@@ -307,7 +307,7 @@ namespace Maze2 {
 				//player.mazeUpdate(maze.data,maze);
 			}
 			//player.vel = Vec2(KeyRight.pressed()-KeyLeft.pressed(), -KeyUp.pressed()+ KeyDown.pressed())/10;
-			rotate.angle_vel = 0.02 * (KeyRight.pressed() - KeyLeft.pressed());
+			rotate.angle_vel = 0.02 * ((KeyRight|KeyD).pressed() - (KeyLeft|KeyA).pressed());
 			if (MouseL.pressed()) {
 				rotate.angle_vel = Cursor::DeltaF().x / 100.0;
 			}
