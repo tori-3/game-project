@@ -52,6 +52,17 @@ public:
 		{U"RollingRocksBlock",[]() {return new RollingRocksBlock(); }},
 		{U"CloudBlock",[]() {return new CloudBlock(); }},
 		{U"CloudSurfaceBlock",[]() {return new CloudSurfaceBlock(); }},
+		{U"CloudBlock",[]() {return new CloudBlock(); }},
+		{U"CloudBLBlock",[]() {return new CloudBLBlock(); }},
+		{U"CloudBRBlock",[]() {return new CloudBRBlock(); }},
+		{U"CloudTLBlock",[]() {return new CloudTLBlock(); }},
+		{U"CloudTRBlock",[]() {return new CloudTRBlock(); }},
+		{U"CloudConcaveBLBlock",[]() {return new CloudConcaveBLBlock(); }},
+		{U"CloudConcaveBRBlock",[]() {return new CloudConcaveBRBlock(); }},
+		{U"CloudConcaveTLBlock",[]() {return new CloudConcaveTLBlock(); }},
+		{U"CloudConcaveTRBlock",[]() {return new CloudConcaveTRBlock(); }},
+		{U"CloudLBlock",[]() {return new CloudLBlock(); }},
+		{U"CloudRBlock",[]() {return new CloudRBlock(); }},
 		{U"ChocolateWallCanNotRespawn",[]() {return new ChocolateWallCanNotRespawn(); }},
 	};
 

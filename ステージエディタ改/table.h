@@ -232,6 +232,67 @@ void CloudSurfaceBlock(Point pos) {
 	TextureAsset{ U"CloudSurface" }.resized(rect_size*2).draw((pos+Point{0,-1}) * rect_size);
 }
 
+void CloudBLBlock(Point pos) {
+	const Vec2 center=Rect{ pos * rect_size,rect_size }.center();
+
+	TextureAsset{ U"CloudBL" }.resized(368/300.0*70).drawAt(center);
+}
+
+void CloudBRBlock(Point pos) {
+	const Vec2 center = Rect{ pos * rect_size,rect_size }.center();
+
+	TextureAsset{ U"CloudBR" }.resized(368 / 300.0 * 70).drawAt(center);
+}
+
+void CloudTLBlock(Point pos) {
+	const Vec2 center = Rect{ pos * rect_size,rect_size }.center();
+
+	TextureAsset{ U"CloudTL" }.resized(368/ 300.0 * 70).drawAt(center);
+}
+
+void CloudTRBlock(Point pos) {
+	const Vec2 center = Rect{ pos * rect_size,rect_size }.center();
+
+	TextureAsset{ U"CloudTR" }.resized(368 / 300.0 * 70).drawAt(center);
+}
+
+void CloudConcaveBLBlock(Point pos) {
+	const Vec2 center = Rect{ pos * rect_size,rect_size }.center();
+
+	TextureAsset{ U"CloudConcaveBL" }.resized(368/ 300.0 * 70).drawAt(center);
+}
+
+void CloudConcaveBRBlock(Point pos) {
+	const Vec2 center = Rect{ pos * rect_size,rect_size }.center();
+
+	TextureAsset{ U"CloudConcaveBR" }.resized(368 / 300.0 * 70).drawAt(center);
+}
+
+void CloudConcaveTLBlock(Point pos) {
+	const Vec2 center = Rect{ pos * rect_size,rect_size }.center();
+
+	TextureAsset{ U"CloudConcaveTL" }.resized(368 / 300.0 * 70).drawAt(center);
+}
+
+void CloudConcaveTRBlock(Point pos) {
+	const Vec2 center = Rect{ pos * rect_size,rect_size }.center();
+
+	TextureAsset{ U"CloudConcaveTR" }.resized(368 / 300.0 * 70).drawAt(center);
+}
+
+void CloudLBlock(Point pos) {
+	const Vec2 center = Rect{ pos * rect_size,rect_size }.center();
+
+	TextureAsset{ U"CloudL" }.resized(368 / 300.0 * 70).drawAt(center);
+}
+
+void CloudRBlock(Point pos) {
+	TextureAsset{ U"CloudR" }.resized(368 / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
+
+}
+
+
+
 void ChocolateWallCanNotRespawn(Point pos) {
 	TextureAsset(U"ChocolateWall").resized(rect_size).draw(pos * rect_size);
 	Rect{ pos * rect_size,rect_size }.drawFrame(5, 0,Palette::Red);
@@ -290,8 +351,17 @@ Array<Info>list{
 	{U"SignboardBlock",SignboardBlock,U"看板"},
 	{U"CloudBlock",CloudBlock,U"雲"},
 	{U"CloudSurfaceBlock",CloudSurfaceBlock,U"雲の地表"},
-	{U"ChocolateWallCanNotRespawn",ChocolateWallCanNotRespawn,U"チョコレートの壁(リスポーン不可)"}
-
+	{U"ChocolateWallCanNotRespawn",ChocolateWallCanNotRespawn,U"チョコレートの壁(リスポーン不可)"},
+	{U"CloudBLBlock",CloudBLBlock,U"雲左下"},
+	{U"CloudBRBlock",CloudBRBlock,U"雲右下"},
+	{U"CloudTLBlock",CloudTLBlock,U"雲左上"},
+	{U"CloudTRBlock",CloudTRBlock,U"雲右上"},
+	{U"CloudConcaveBLBlock",CloudConcaveBLBlock,U"雲端左下"},
+	{U"CloudConcaveBRBlock",CloudConcaveBRBlock,U"雲端右下"},
+	{U"CloudConcaveTLBlock",CloudConcaveTLBlock,U"雲端左上"},
+	{U"CloudConcaveTRBlock",CloudConcaveTRBlock,U"雲端右上"},
+	{U"CloudLBlock",CloudLBlock,U"雲左"},
+	{U"CloudRBlock",CloudRBlock,U"雲右"},
 };
 
 HashTable<String, std::function<void(Point)>> table;

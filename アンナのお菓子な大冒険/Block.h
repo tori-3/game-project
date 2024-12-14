@@ -388,3 +388,63 @@ class ChocolateWallCanNotRespawn :public ChocolateWall
 public:
 	void reaction(const Point& pos, PhysicsBox* box)override;
 };
+
+class CloudBLBlock :public Block
+{
+public:
+	void draw(const Point& pos)const override;
+};
+
+class CloudBRBlock :public Block
+{
+public:
+	void draw(const Point& pos)const override;
+};
+
+class CloudTLBlock :public Block
+{
+public:
+	void draw(const Point& pos)const override;
+};
+
+class CloudTRBlock :public Block
+{
+public:
+	void draw(const Point& pos)const override;
+};
+
+class CloudConcaveBLBlock :public Block
+{
+public:
+	void draw(const Point& pos)const override;
+};
+
+class CloudConcaveBRBlock :public Block
+{
+public:
+	void draw(const Point& pos)const override;
+};
+
+class CloudConcaveTLBlock :public Block
+{
+public:
+	void draw(const Point& pos)const override;
+};
+
+class CloudConcaveTRBlock :public Block
+{
+public:
+	void draw(const Point& pos)const override;
+};
+
+class CloudLBlock :public Block
+{
+public:
+	void draw(const Point& pos)const override;
+};
+
+class CloudRBlock :public Block
+{
+public:
+	void draw(const Point& pos)const override;
+};

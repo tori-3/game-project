@@ -69,6 +69,8 @@ public:
 	Vec2 playerPos{};
 
 
+	Texture battle{ U"battle.png" };
+
 	void updatePos()
 	{
 		Vec2 vec{};
@@ -153,10 +155,8 @@ public:
 
 		if (not largeFlg) {
 
-			if (backButton.leftClicked()) {
-				getData().mini_mode = Stage_Mode;//念のため
-				getData().stage = 1;//念のため
-				getData().mini_clear = false;//念のため
+			if (backButton.leftClicked())
+			{
 				changeScene(U"TitleScene");
 			}
 
@@ -248,7 +248,8 @@ public:
 
 				if(stageList[i])
 				{
-					Circle{ Arg::center(stagePosList[i]) ,r }.draw(color).drawFrame(3);
+					//Circle{ Arg::center(stagePosList[i]) ,r }.draw(color).drawFrame(3);
+					battle.resized(r*2).drawAt(stagePosList[i]);
 				}
 				else
 				{
@@ -278,12 +279,14 @@ public:
 			font(title[index]).drawAt(Scene::Center() + Vec2{0,-300});
 			font(U"← [A]              [Enter]              [D] →").drawAt(Scene::Center() + Vec2{0,-250});
 
-			if(backButton.mouseOver())
-			{
-				Cursor::RequestStyle(CursorStyle::Hand);
-			}
-			homeIcon.drawAt(backButton.center, backButton.mouseOver() ? Palette::Gray : Palette::White);
 		}
+
+		if (backButton.mouseOver())
+		{
+			Cursor::RequestStyle(CursorStyle::Hand);
+		}
+		homeIcon.drawAt(backButton.center, backButton.mouseOver() ? Palette::Gray : Palette::White);
+
 
 		if (largeFlg) {
 			Rect{ Scene::Size() }.draw(ColorF(0, 0.6));

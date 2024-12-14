@@ -401,3 +401,44 @@ void ChocolateWallCanNotRespawn::reaction(const Point& pos, PhysicsBox* box)
 {
 	box->hitCanNotRespawn(Rect{ pos * rect_size,rect_size });
 }
+
+
+void CloudBLBlock::draw(const Point& pos)const {
+	TextureAsset{ U"CloudBL" }.resized(70 + (368 - 300) / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
+}
+
+void CloudBRBlock::draw(const Point& pos)const {
+	TextureAsset{ U"CloudBR" }.resized(70 + (368 - 300) / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
+}
+
+void CloudTLBlock::draw(const Point& pos)const {
+	TextureAsset{ U"CloudTL" }.resized(70 + (368 - 300) / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
+}
+
+void CloudTRBlock::draw(const Point& pos)const {
+	TextureAsset{ U"CloudTR" }.resized(70 + (368 - 300) / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
+}
+
+void CloudConcaveBLBlock::draw(const Point& pos)const {
+	TextureAsset{ U"CloudConcaveBL" }.resized(70 + (368 - 300) / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
+}
+
+void CloudConcaveBRBlock::draw(const Point& pos)const {
+	TextureAsset{ U"CloudConcaveBR" }.resized(70 + (368 - 300) / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
+}
+
+void CloudConcaveTLBlock::draw(const Point& pos)const {
+	TextureAsset{ U"CloudConcaveTL" }.resized(70 + (368 - 300) / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
+}
+
+void CloudConcaveTRBlock::draw(const Point& pos)const {
+	TextureAsset{ U"CloudConcaveTR" }.resized(70 + (368 - 300) / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
+}
+
+void CloudLBlock::draw(const Point& pos)const {
+	TextureAsset{ U"CloudL" }.resized(70 + (368 - 300) / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
+}
+
+void CloudRBlock::draw(const Point& pos)const {
+	TextureAsset{ U"CloudR" }.resized(70 + (368 - 300) / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
+}

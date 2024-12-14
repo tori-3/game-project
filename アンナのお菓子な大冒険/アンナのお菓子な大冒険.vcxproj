@@ -354,6 +354,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="MAZE.h" />
     <ClInclude Include="Maze2.h" />
+    <ClInclude Include="MiniGameSelect.h" />
     <ClInclude Include="MotionLoader.h" />
     <ClInclude Include="Movements.h" />
     <ClInclude Include="MyInput.h" />

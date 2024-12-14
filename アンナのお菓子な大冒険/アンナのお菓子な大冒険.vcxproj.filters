@@ -965,5 +965,8 @@
     <ClInclude Include="Spotlight.hpp">
       <Filter>Header Files\MainGameScene\GameLib</Filter>
     </ClInclude>
+    <ClInclude Include="MiniGameSelect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

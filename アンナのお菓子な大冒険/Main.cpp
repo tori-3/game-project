@@ -8,6 +8,7 @@
 #include"ManjuRush.h"
 #include"HawkDropOut.h"
 #include"AnnaMusicGame.h"
+#include"MiniGameSelect.h"
 
 #include"TitleScene.h"
 
@@ -27,6 +28,7 @@ void Main()
 	manager.add<TitleScene>(U"TitleScene");
 	manager.add<Map>(U"Map");
 	manager.add<MainGameScene>(U"MainGameScene");
+	manager.add<MiniGameSelect>(U"MiniGameSelect");
 	manager.add<FallingAnna::FallingAnna>(U"FallingAnna");
 	manager.add<HawkDropOut::HawkDropOut>(U"HawkDropOut");
 	manager.add<ManjuRush::ManjuRush>(U"ManjuRush");
@@ -41,8 +43,6 @@ void Main()
 
 	while (System::Update())
 	{
-		// 現在のシーンを実行
-		// シーンに実装した .update() と .draw() が実行される
 		if (not manager.update())
 		{
 			break;
