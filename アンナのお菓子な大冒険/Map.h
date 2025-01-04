@@ -18,6 +18,11 @@ class Map : public App::Scene
 {
 public:
 
+	enum class StageType {
+		Stage,Boss,MiniGame
+	};
+
+
 	Texture background{U"BackGroundTexture/ステージセレクト.png"};
 
 	Texture homeIcon{ 0xf015_icon,40 };
@@ -46,6 +51,7 @@ public:
 	Array<Point>stagePosList;
 	Array<String>title;
 	Array<String>stageList;
+	Array<StageType>typeList;
 
 	//どのゲームを選択しているか
 	int index = 0;
@@ -69,7 +75,10 @@ public:
 	Vec2 playerPos{};
 
 
-	Texture battle{ U"battle.png" };
+	Texture stageFrame{ U"StageImage/stageFrame.png", TextureDesc::Mipped };
+	Texture stageBattle{ U"StageImage/stageBattle.png", TextureDesc::Mipped };
+	Texture stageColor{ U"StageImage/stageColor.png", TextureDesc::Mipped };
+	Texture stageGame{ U"StageImage/stageGame.png", TextureDesc::Mipped };
 
 	void updatePos()
 	{
@@ -138,6 +147,19 @@ public:
 			stageList << json[U"StageData"][str][U"MapFile"].getString();
 
 			title << sentences[i].split_lines()[0];
+
+			if (json[U"StageData"][str][U"Type"] == U"Boss")
+			{
+				typeList << StageType::Boss;
+			}
+			else if (json[U"StageData"][str][U"Type"] == U"MiniGame")
+			{
+				typeList << StageType::MiniGame;
+			}
+			else
+			{
+				typeList << StageType::Stage;
+			}
 		}
 
 		playerPos = stagePosList[index];
@@ -237,23 +259,34 @@ public:
 				ColorF color = Palette::Red;
 				if (i < clearStage)
 				{
-					color = Palette::Blue;
+					color = ColorF{ 0.3,0.3,1.0 };
 				}
 				else if (clearStage<i)
 				{
-					color = Palette::Black;
+					color = Palette::Gray;
 				}
 
-				double r = (i == index)?rect_size / 3.0: rect_size / 4.0;
+				double r = (i == index)?rect_size / 2.0: rect_size / 2.5;
 
-				if(stageList[i])
+				constexpr Vec2 supplementary{0,-5};
+
+				Vec2 pos = stagePosList[i] + supplementary;
+
+				stageFrame.resized(r * 2).drawAt(pos);
+				stageColor.resized(r * 2).drawAt(pos, color);
+
+				switch (typeList[i])
 				{
-					//Circle{ Arg::center(stagePosList[i]) ,r }.draw(color).drawFrame(3);
-					battle.resized(r*2).drawAt(stagePosList[i]);
-				}
-				else
-				{
-					RectF{Arg::center(stagePosList[i]),r*1.8}.draw(color).drawFrame(3);
+				case StageType::Stage:
+					break;
+				case StageType::Boss:
+					stageBattle.resized(r * 2).drawAt(pos);
+					break;
+				case StageType::MiniGame:
+					stageGame.resized(r * 2).drawAt(pos);
+					break;
+				default:
+					break;
 				}
 			}
 			character.draw();
@@ -292,6 +325,5 @@ public:
 			Rect{ Scene::Size() }.draw(ColorF(0, 0.6));
 			pictures[index].resized(1000).drawAt(Scene::Center());
 		}
-
 	}
 };

@@ -1,0 +1,44 @@
+﻿{
+  "Body": {
+    "body": {
+      "Parent": "__Main__",
+      "Position": "(600, 350)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/yousei1/body.png",
+      "Z": 60.0
+    },
+    "lFeather": {
+      "Parent": "body",
+      "Position": "(0, 0)",
+      "RotateCenter": "(6.66676, 18.00002)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/yousei1/lFeather.png",
+      "Z": -10.0
+    },
+    "larm": {
+      "Parent": "body",
+      "Position": "(0, 0)",
+      "RotateCenter": "(-30.66666, 9.33336)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/yousei1/larm.png",
+      "Z": 30.0
+    },
+    "rFeather": {
+      "Parent": "body",
+      "Position": "(0, 0)",
+      "RotateCenter": "(7.33338, 20.6667)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/yousei1/rFeather.png",
+      "Z": 10.0
+    },
+    "rarm": {
+      "Parent": "body",
+      "Position": "(0, 0)",
+      "RotateCenter": "(26.66679, 7.99999)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/yousei1/rarm.png",
+      "Z": 100.0
+    }
+  }
+}

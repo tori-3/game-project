@@ -71,16 +71,28 @@ public:
 
 		if (not isContinue())return;
 
+		const TalkInfo& talk = talks[index];
+
 		constexpr double thickness = 5;
+
+		ColorF frameColor = Palette::White;
+
+		if(talk.name==U"アンナ")
+		{
+			frameColor = Palette::Pink;
+		}
+		else if (talk.name == U"妖精")
+		{
+			frameColor = Palette::Greenyellow;
+		}
 
 		const RoundRect window{ rect,20 };
 		const RoundRect nameWindow{ rect.pos - Vec2::Down(nameSize.y - thickness),nameSize ,20 };
-		window.draw({ Palette::Black, 0.8 }).drawFrame(thickness, 0);
-		nameWindow.draw({ Palette::Black ,0.8 }).drawFrame(thickness, 0);
+		window.draw({ Palette::Black, 0.8 }).drawFrame(thickness, 0, frameColor);
+		nameWindow.draw({ Palette::Black ,0.8 }).drawFrame(thickness, 0, frameColor);
 
 		//確認
 
-		const TalkInfo& talk = talks[index];
 
 		const size_t length = static_cast<size_t>(accumlater);
 		FontAsset(U"WindowFont")(talk.text.substr(0, length)).draw(window.rect.stretched(-20));

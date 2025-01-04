@@ -64,6 +64,7 @@ public:
 		{U"CloudLBlock",[]() {return new CloudLBlock(); }},
 		{U"CloudRBlock",[]() {return new CloudRBlock(); }},
 		{U"ChocolateWallCanNotRespawn",[]() {return new ChocolateWallCanNotRespawn(); }},
+		{U"FairyBlock",[]() {return new FairyBlock(); }}
 	};
 
 	Stage(const JSON& json,bool backGround=false) {

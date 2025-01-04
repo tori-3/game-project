@@ -3,6 +3,8 @@
 #include"DataManager.h"
 #include"setting.h"
 
+#include"CharacterSystem.h"
+
 #include"RingEffect.h"
 
 
@@ -446,5 +448,18 @@ public:
 class CloudRBlock :public Block
 {
 public:
+	void draw(const Point& pos)const override;
+};
+
+class FairyBlock :public Untouchable
+{
+public:
+
+	CharacterSystem character{ U"Characters/yousei1/yousei.json",U"Characters/yousei1/motion.txt",0.25,{},true };
+
+	FairyBlock();
+
+	void update(const Point& pos)override;
+
 	void draw(const Point& pos)const override;
 };

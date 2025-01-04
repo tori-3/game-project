@@ -338,6 +338,7 @@
     <ClInclude Include="FadeUpEffect.h" />
     <ClInclude Include="FallingAnna.h" />
     <ClInclude Include="Figure.hpp" />
+    <ClInclude Include="Fire.hpp" />
     <ClInclude Include="GrapesHPBar.h" />
     <ClInclude Include="HawkDropOut.h" />
     <ClInclude Include="HitBox.h" />

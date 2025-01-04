@@ -4,11 +4,12 @@
         "Stage1": {
             "BGM": "BGM/StageSnow7.wav",
             "BackgroundTexture": "BackgroundTexture/雪原背景.png",
-            "MapFile": "snowStage1.json",
+            "MapFile": "startStage.json",
             "Picture": "BackgroundTexture/雪原背景.png",
             "SceneName": "MainGameScene",
             "Sentence": "<1-1>冒険のはじまり\nアンナちゃんが落ちた先には\nお菓子の世界が広がっていました。\nどんなお菓子が待ち受けているのか、\nわくわくしながら\nアンナちゃんは進みます。",
-            "StagePos": "(50,700)"
+            "StagePos": "(50,700)",
+            "Type": "Stage"
         },
         "Stage2": {
             "BGM": "BGM/StageSnow7.wav",
@@ -17,7 +18,8 @@
             "Picture": "BackgroundTexture/雪原背景.png",
             "SceneName": "MainGameScene",
             "Sentence": "<1-2>プリンのトランポリン\nプリンでとびはねるイチゴちゃん。\n楽しそうなので、アンナちゃんも\n混ざります。\n（お菓子で遊んではいけません。）",
-            "StagePos": "(100,700)"
+            "StagePos": "(100,700)",
+            "Type": "Stage"
         },
         "Stage3": {
             "BGM": "",
@@ -26,7 +28,8 @@
             "Picture": "MiniGameDisplay/HawkDropOut.png",
             "SceneName": "HawkDropOut",
             "Sentence": "<ミニゲーム-HawkDropOut>\n地面に着かないように鷹を飛ばすゲーム\nです。\n上昇、下降ボタンを使って石をよけま\nしょう。\n肉を取るとアイテムをゲットできます。",
-            "StagePos": "(150,700)"
+            "StagePos": "(150,700)",
+            "Type": "MiniGame"
         },
         "Stage4": {
             "BGM": "BGM/StageSnow7.wav",
@@ -35,7 +38,8 @@
             "Picture": "BackgroundTexture/雪原背景.png",
             "SceneName": "MainGameScene",
             "Sentence": "<1-3>いちごラッシュ！\nいちごの軍団が行く手を阻む！\n全力で駆け抜けよう！",
-            "StagePos": "(185,720)"
+            "StagePos": "(185,720)",
+            "Type": "Stage"
         },
         "Stage5": {
             "BGM": "BGM/StageSnow7.wav",
@@ -44,7 +48,8 @@
             "Picture": "BackgroundTexture/雪原背景.png",
             "SceneName": "MainGameScene",
             "Sentence": "<1-4>ゆきだるまの布陣\nこの先には行かせないぞ！\n意気込んだゆきだるまたちが\nアンナちゃんの行く手を阻みます。",
-            "StagePos": "(220,700)"
+            "StagePos": "(220,700)",
+            "Type": "Stage"
         },
         "Stage6": {
             "BGM": "BGM/StageBoss6.wav",
@@ -53,7 +58,8 @@
             "Picture": "BackgroundTexture/雪原背景.png",
             "SceneName": "MainGameScene",
             "Sentence": "<1-Boss>雪だるナイト参上！\nクリーム雪原を治める雪だるまの長。\n鎧はあらゆる攻撃を防ぎます。\n雪だるナイトを倒すには\nアンナちゃんとっておきの\n必殺技を食らわせよう！",
-            "StagePos": "(233,610)"
+            "StagePos": "(233,610)",
+            "Type": "Boss"
         },
         "Stage7": {
             "BGM": "",
@@ -62,7 +68,8 @@
             "Picture": "MiniGameDisplay/MAZE.png",
             "SceneName": "Maze1",
             "Sentence": "<ミニゲーム-迷路>\n迷路",
-            "StagePos": "(300,680)"
+            "StagePos": "(300,680)",
+            "Type": "MiniGame"
         },
         "Stage8": {
             "BGM": "BGM/StageChoco21.mp3",
@@ -71,7 +78,8 @@
             "Picture": "BackgroundTexture/洞窟背景.png",
             "SceneName": "MainGameScene",
             "Sentence": "<2-1>チョコ鉱山の入口\nクリームに飽きたアンナちゃん。\n今度はチョコマウンテンに訪れました。\nでも、アンナちゃんは山登りよりも\n洞窟探検がしたいみたいです。\nアンナちゃんはウキウキしながら\n鉱山に入っていきました。",
-            "StagePos": "(350,660)"
+            "StagePos": "(350,660)",
+            "Type": "Stage"
         },
         "Stage9": {
             "BGM": "BGM/StageChoco21.mp3",
@@ -80,7 +88,8 @@
             "Picture": "BackgroundTexture/洞窟背景.png",
             "SceneName": "MainGameScene",
             "Sentence": "<2-2>チョコ鉱山\n鉱山を掘り進める奴隷イチゴ、\nコーンを使って爆破させたり、\n洞窟の中は意外と賑やかです。\nどうやらこの先に、手下をこき使う\n悪いボスがいるみたい...",
-            "StagePos": "(400,680)"
+            "StagePos": "(400,680)",
+            "Type": "Stage"
         },
         "Stage10": {
             "BGM": "",
@@ -89,7 +98,8 @@
             "Picture": "MiniGameDisplay/回転迷路.png",
             "SceneName": "Maze2",
             "Sentence": "<ミニゲーム-回転迷路>\n迷路を回転させてゴールを\n目指しましょう。",
-            "StagePos": "(415,630)"
+            "StagePos": "(415,630)",
+            "Type": "MiniGame"
         },
         "Stage11": {
             "BGM": "BGM/StageChoco21.mp3",
@@ -98,7 +108,8 @@
             "Picture": "BackgroundTexture/洞窟背景.png",
             "SceneName": "MainGameScene",
             "Sentence": "<2-3>チョコ鉱山\n迫りくる天井！\nつぶされないように駆け抜けよう！",
-            "StagePos": "(430,580)"
+            "StagePos": "(430,580)",
+            "Type": "Stage"
         },
         "Stage12": {
             "BGM": "BGM/StageChoco21.mp3",
@@ -107,7 +118,8 @@
             "Picture": "BackgroundTexture/洞窟背景.png",
             "SceneName": "MainGameScene",
             "Sentence": "<2-4>チョコ鉱山\n天井のとんがりコーンは崩れ落ち、\n巨大なドーナッツは坂を転がります。\nなんて危険な洞窟なのでしょう...\nチョコとスリルを味わいながら、\nアンナちゃんは奥へ奥へと、\n進んでゆきました。",
-            "StagePos": "(445,530)"
+            "StagePos": "(445,530)",
+            "Type": "Stage"
         },
         "Stage13": {
             "BGM": "BGM/StageBoss6.wav",
@@ -116,7 +128,8 @@
             "Picture": "BackgroundTexture/洞窟背景.png",
             "SceneName": "MainGameScene",
             "Sentence": "<2-Boss>悪逆非道！奴隷監督クッキー\n手下をこき使う悪い長。\nひきょう者の奴隷監督クッキーは\n手下を使ってアンナちゃんを襲います。\n必殺技を使ってどうにか倒しましょう！",
-            "StagePos": "(460,480)"
+            "StagePos": "(460,480)",
+            "Type": "Boss"
         },
         "Stage14": {
             "BGM": "",
@@ -125,7 +138,8 @@
             "Picture": "MiniGameDisplay/まんじゅうラッシュ.png",
             "SceneName": "ManjuRush",
             "Sentence": "<ミニゲーム-まんじゅうラッシュ>\nジャンプ(↑)で迫りくるまんじゅうを\nよけるゲームです。",
-            "StagePos": "(590,510)"
+            "StagePos": "(590,510)",
+            "Type": "MiniGame"
         },
         "Stage15": {
             "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
@@ -134,7 +148,8 @@
             "Picture": "BackgroundTexture/雲背景.png",
             "SceneName": "MainGameScene",
             "Sentence": "<3-1>綿菓子スカイ\n鉱山から山頂に出たアンナちゃん。\nなんと、この世界の雲は綿菓子でした！\nアンナちゃんはよだれが止まりません。\nでも、空から攻撃してくる敵たちに\n気を付けてアンナちゃん！",
-            "StagePos": "(650,480)"
+            "StagePos": "(650,480)",
+            "Type": "Stage"
         },
         "Stage16": {
             "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
@@ -143,7 +158,8 @@
             "Picture": "BackgroundTexture/雲背景.png",
             "SceneName": "MainGameScene",
             "Sentence": "<3-2> あっちこっち大空襲\nたいへん！\n空から大量のおかしたちが、\n押し寄せてきた！\nゆっくりお菓子を食べてるヒマは、\nもうありません！\nにげて、にげて、アンナちゃん！",
-            "StagePos": "(730,490)"
+            "StagePos": "(730,490)",
+            "Type": "Stage"
         },
         "Stage17": {
             "BGM": "",
@@ -152,7 +168,8 @@
             "Picture": "MiniGameDisplay/音ゲー.png",
             "SceneName": "AnnaMusicGame",
             "Sentence": "<ミニゲーム-AnnaMusicGame>\n音ゲーです。\nタイミングよく←[A]と→[D]を\n押してください。",
-            "StagePos": "(780,450)"
+            "StagePos": "(780,450)",
+            "Type": "MiniGame"
         },
         "Stage18": {
             "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
@@ -161,7 +178,8 @@
             "Picture": "BackgroundTexture/雲背景.png",
             "SceneName": "MainGameScene",
             "Sentence": "<3-3>大ジャンプ！！\nそこには大きな穴が開いた雲が\n頑張っても届きそうにない…",
-            "StagePos": "(830,490)"
+            "StagePos": "(830,490)",
+            "Type": "Stage"
         },
         "Stage19": {
             "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
@@ -179,7 +197,8 @@
             "Picture": "BackgroundTexture/雲背景.png",
             "SceneName": "MainGameScene",
             "Sentence": "<3-Boss>泣く子も黙る綿菓子船長\nお菓子のお城に行きたいのに\n船に乗せてくれません。\n船長を倒して船を奪おう！\nおヒゲは綿あめだけど、\nおいしそうには思えない...",
-            "StagePos": "(930,490)"
+            "StagePos": "(930,490)",
+            "Type": "Boss"
         },
         "Stage21": {
             "BGM": "",
@@ -188,7 +207,8 @@
             "Picture": "MiniGameDisplay/FallingAnna.png",
             "SceneName": "FallingAnna",
             "Sentence": "<ミニゲーム-FallingAnna>\n岩を破壊してスコアを稼ぎながら落下\nするゲームです。\n詳しくは写真を拡大してください。",
-            "StagePos": "(950,430)"
+            "StagePos": "(950,430)",
+            "Type": "MiniGame"
         },
         "Stage22": {
             "BGM": "BGM/StageBossLast1.wav",
@@ -197,7 +217,8 @@
             "Picture": "BackgroundTexture/ラスボス背景.png",
             "SceneName": "MainGameScene",
             "Sentence": "<LastBoss>\n大魔女ビター・ヴァイオレット\nお菓子を独り占めしようとする\nワガママな女の子。\nお菓子は我のものなのじゃ！と、\nアンナちゃんは\nお菓子をかけた最後の戦いに挑みます。",
-            "StagePos": "(1050,300)"
+            "StagePos": "(1050,300)",
+            "Type": "Boss"
         }
     }
 }

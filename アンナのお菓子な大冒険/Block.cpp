@@ -442,3 +442,18 @@ void CloudLBlock::draw(const Point& pos)const {
 void CloudRBlock::draw(const Point& pos)const {
 	TextureAsset{ U"CloudR" }.resized(70 + (368 - 300) / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
 }
+
+FairyBlock::FairyBlock()
+{
+	character.addMotion(U"Floating",true);
+}
+
+void FairyBlock::update(const Point& pos)
+{
+	character.update((pos + Vec2{ 0.5,0.5 }) * rect_size, DataManager::get().playerPos.x < pos.x * rect_size);
+}
+
+void FairyBlock::draw(const Point& pos)const
+{
+	character.draw();
+}

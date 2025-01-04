@@ -1,0 +1,8 @@
+#Floating
+Move,body,0,-20,1
+RotateTo,lFeather,-15,1
+RotateTo,rFeather,15,1
+RotateTo,rarm,-10,1
+RotateTo,larm,10,1
+
+Base,body,1

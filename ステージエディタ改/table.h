@@ -298,6 +298,10 @@ void ChocolateWallCanNotRespawn(Point pos) {
 	Rect{ pos * rect_size,rect_size }.drawFrame(5, 0,Palette::Red);
 }
 
+void FairyBlock(Point pos) {
+	Rect{ pos * rect_size,rect_size }.draw(Palette::Greenyellow);
+}
+
 
 struct Info {
 	String tag;
@@ -362,6 +366,7 @@ Array<Info>list{
 	{U"CloudConcaveTRBlock",CloudConcaveTRBlock,U"雲端右上"},
 	{U"CloudLBlock",CloudLBlock,U"雲左"},
 	{U"CloudRBlock",CloudRBlock,U"雲右"},
+	{U"FairyBlock",FairyBlock,U"妖精"}
 };
 
 HashTable<String, std::function<void(Point)>> table;

@@ -19,7 +19,7 @@ BlendState MakeBlendState()
 
 Grid<String>Load(const JSON& json) {
 
-	if (not json)throw Error{ U"Failed to load `config.json`" };
+	if (not json)throw Error{ U"Failed to load json" };
 
 	Point stage_size = json[U"stage_size"].get<Point>();
 
@@ -138,7 +138,7 @@ void Main()
 		{U"敵",{U"イチゴの兵士",U"クッキーの兵士",U"雪だるま",U"イチゴスポナー",U"奴隷イチゴ",U"わたあめ",U"コーン",U"鞭クッキー",U"鞄クッキー",U"零戦クッキー",U"雪だるナイト",U"奴隷商クッキー",U"船長",U"ラスボス"}},
 		{U"設定ブロック",{U"プレイヤー"}},
 		{U"背景",{U"アイスクリーム",U"キャンドル",U"キャンディー",U"ステック",U"さくらんぼ",U"ブルーベリー"}},
-		{U"ギミック",{U"ドア",U"鷹",U"看板"}},
+		{U"ギミック",{U"ドア",U"鷹",U"看板",U"妖精"}},
 	};
 
 	Array<BackGround>backGrounds;
