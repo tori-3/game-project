@@ -18,21 +18,21 @@ public:
 
 public:
 
-	void play(AssetNameView name) {
+	void play(AssetNameView name,Duration fadeinTime=0.2s, Duration fadeoutTime = 0.1s) {
 
 		if (m_name != name) {
 			if (m_name) {
-				AudioAsset{ m_name }.stop(0.1s);
+				AudioAsset{ m_name }.stop(fadeoutTime);
 			}
 			if (name) {
-				AudioAsset{ name }.play(0.2s);
+				AudioAsset{ name }.play(fadeinTime);
 			}
 			m_name = name;
 		}	
 	}
 
-	void stop() {
-		AudioAsset{ m_name }.stop(0.5s);
+	void stop(Duration fadeoutTime = 0.5s) {
+		AudioAsset{ m_name }.stop(fadeoutTime);
 		m_name = {};
 	}
 

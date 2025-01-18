@@ -333,6 +333,7 @@
     <ClInclude Include="CookieItem.h" />
     <ClInclude Include="DataManager.h" />
     <ClInclude Include="Effect.h" />
+    <ClInclude Include="EndRollScene.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="FadeUpEffect.h" />

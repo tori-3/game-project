@@ -9,6 +9,7 @@
 #include"HawkDropOut.h"
 #include"AnnaMusicGame.h"
 #include"MiniGameSelect.h"
+#include"EndRollScene.h"
 
 #include"TitleScene.h"
 
@@ -37,7 +38,9 @@ void Main()
 	manager.add<Maze1::Clear>(U"Clear");
 	manager.add<Maze2::mazeGame>(U"Maze2");
 	manager.add<AnnaMusicGame::AnnaMusicGame>(U"AnnaMusicGame");
+	manager.add<EndRollScene>(U"EndRollScene");
 
+	//manager.init(U"EndRollScene");
 
 	LoadAsset::LoadAudio();
 

@@ -971,5 +971,8 @@
     <ClInclude Include="Fire.hpp">
       <Filter>Header Files\MainGameScene\GameLib</Filter>
     </ClInclude>
+    <ClInclude Include="EndRollScene.h">
+      <Filter>Header Files\MiniGame</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
