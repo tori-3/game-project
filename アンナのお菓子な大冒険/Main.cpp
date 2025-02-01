@@ -40,7 +40,7 @@ void Main()
 	manager.add<AnnaMusicGame::AnnaMusicGame>(U"AnnaMusicGame");
 	manager.add<EndRollScene>(U"EndRollScene");
 
-	//manager.init(U"EndRollScene");
+	manager.init(U"EndRollScene");
 
 	LoadAsset::LoadAudio();
 

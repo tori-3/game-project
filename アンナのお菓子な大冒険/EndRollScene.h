@@ -4,7 +4,7 @@
 #include"BGMManager.hpp"
 
 static constexpr double endRollTime = 2;
-
+static constexpr double endRollTimeLong = 3;
 
 class EndRoll1 :public App::Scene
 {
@@ -66,12 +66,41 @@ public:
 	}
 };
 
+//class EndRoll3 :public App::Scene
+//{
+//public:
+//	double t = 0;
+//
+//	Texture texture{ U"EndRoll/突撃アンナ.png" };
+//
+//	EndRoll3(const InitData& init) : IScene{ init } {}
+//
+//	void update()override
+//	{
+//		t += Scene::DeltaTime();
+//
+//		if (endRollTime < t)
+//		{
+//			changeScene(U"EndRoll4");
+//		}
+//	}
+//
+//	void draw()const override
+//	{
+//		Scene::SetBackground(Palette::Black);
+//
+//		FontAsset{ U"EndRollFont" }(U"アンナちゃんのママ兼パパ\nりゅーの").draw(50, 50);
+//
+//		texture.mirrored().resized(300).draw(Arg::bottomRight(Scene::Size() - Vec2{ 50,50 }));
+//	}
+//};
+
 class EndRoll3 :public App::Scene
 {
 public:
 	double t = 0;
 
-	Texture texture{ U"EndRoll/突撃アンナ.png" };
+	Texture texture{ U"EndRoll/with.png" };
 
 	EndRoll3(const InitData& init) : IScene{ init } {}
 
@@ -89,9 +118,9 @@ public:
 	{
 		Scene::SetBackground(Palette::Black);
 
-		FontAsset{ U"EndRollFont" }(U"アンナちゃんのママ兼パパ\nりゅーの").draw(50, 50);
+		FontAsset{ U"EndRollFont" }(U"ディレクション\nWith Ball").draw(50, 50);
 
-		texture.mirrored().draw(Arg::bottomRight(Scene::Size() - Vec2{ 50,50 }));
+		texture.mirrored().draw(Arg::bottomRight(Scene::Size()-Vec2{0,50}));
 	}
 };
 
@@ -100,7 +129,7 @@ class EndRoll4 :public App::Scene
 public:
 	double t = 0;
 
-	Texture texture{ U"EndRoll/with.png" };
+	Texture texture{ U"EndRoll/まる.png" };
 
 	EndRoll4(const InitData& init) : IScene{ init } {}
 
@@ -118,9 +147,9 @@ public:
 	{
 		Scene::SetBackground(Palette::Black);
 
-		FontAsset{ U"EndRollFont" }(U"ディレクション\nWith Ball").draw(50, 50);
+		FontAsset{ U"EndRollFont" }(U"レベルデザイン\nまる\nとりさん").draw(50, 50);
 
-		texture.mirrored().draw(Arg::bottomRight(Scene::Size()-Vec2{0,50}));
+		texture.resized(300).draw(Arg::bottomRight(Scene::Size() - Vec2{ 50,50 }));
 	}
 };
 
@@ -129,36 +158,7 @@ class EndRoll5 :public App::Scene
 public:
 	double t = 0;
 
-	Texture texture{ U"EndRoll/まる.png" };
-
 	EndRoll5(const InitData& init) : IScene{ init } {}
-
-	void update()override
-	{
-		t += Scene::DeltaTime();
-
-		if (endRollTime < t)
-		{
-			changeScene(U"EndRoll6");
-		}
-	}
-
-	void draw()const override
-	{
-		Scene::SetBackground(Palette::Black);
-
-		FontAsset{ U"EndRollFont" }(U"レベルデザイン\nまる\nとりさん").draw(50, 50);
-
-		texture.resized(300).draw(Arg::bottomRight(Scene::Size() - Vec2{ 50,50 }));
-	}
-};
-
-class EndRoll6 :public App::Scene
-{
-public:
-	double t = 0;
-
-	EndRoll6(const InitData& init) : IScene{ init } {}
 
 	static constexpr double time = 6;
 
@@ -180,7 +180,7 @@ public:
 
 		if (time < t)
 		{
-			changeScene(U"EndRoll7");
+			changeScene(U"EndRoll6");
 		}
 	}
 
@@ -206,7 +206,7 @@ public:
 };
 
 
-class EndRoll7 :public App::Scene
+class EndRoll6 :public App::Scene
 {
 public:
 
@@ -219,7 +219,7 @@ public:
 
 	double t = 0;
 
-	EndRoll7(const InitData& init) : IScene{ init }
+	EndRoll6(const InitData& init) : IScene{ init }
 	{
 		characterAnnna.addMotion(U"Summer");
 		characterItigo.addMotion(U"",true);
@@ -229,9 +229,9 @@ public:
 	{
 		t += Scene::DeltaTime();
 
-		if (endRollTime < t)
+		if (endRollTimeLong < t)
 		{
-			changeScene(U"EndRoll8",4s);
+			changeScene(U"EndRoll7",4s);
 			BGMManager::get().stop(2s);
 		}
 
@@ -251,14 +251,14 @@ public:
 	}
 };
 
-class EndRoll8 :public App::Scene
+class EndRoll7 :public App::Scene
 {
 public:
 	double t = 0;
 
-	Texture texture{U"BackGroundTexture/雪原背景.png"};
+	Texture texture{U"EndRoll/雪原.png"};
 
-	EndRoll8(const InitData& init) : IScene{ init }
+	EndRoll7(const InitData& init) : IScene{ init }
 	{
 		LoadAsset::RegisterAudio(U"BGM/StageCloud_Pxtone5.2.mp3", Loop::Yes);
 		BGMManager::get().play(U"BGM/StageCloud_Pxtone5.2.mp3", 2s);
@@ -269,9 +269,9 @@ public:
 
 		t += Scene::DeltaTime();
 
-		if (3 < t)
+		if (endRollTimeLong < t)
 		{
-			changeScene(U"EndRoll9");
+			changeScene(U"EndRoll8");
 		}
 	}
 
@@ -285,30 +285,28 @@ public:
 
 		const double height = FontAsset{ U"EndRollFont" }.height();
 
-		FontAsset{ U"EndRollFont" }(U"BGM 効果音\nまる").draw(50, 50);
-		FontAsset{ U"EndRollFont" }(U"効果音素材\n効果音ラボ\nOn - Jin ～音人～\nザ・マッチメイカァズ").draw(50, 50 + height * 3, AlphaF(Clamp(t - 1, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"BGM・効果音\nまる").draw(50, 50);
+		FontAsset{ U"EndRollFont" }(U"効果音素材\n効果音ラボ\nOn - Jin ～音人～\nザ・マッチメイカァズ").draw(50, 50 + height * 3.5, AlphaF(Clamp(t - 1, 0.0, 1.0)));
 	}
 };
 
-class EndRoll9 :public App::Scene
+class EndRoll8 :public App::Scene
 {
 public:
 	double t = 0;
 
-	Texture texture{ U"BackGroundTexture/洞窟背景.png" };
+	Texture texture{ U"EndRoll/洞窟.png" };
 
-	EndRoll9(const InitData& init) : IScene{ init }
-	{
-	}
+	EndRoll8(const InitData& init) : IScene{ init }{}
 
 	void update()override
 	{
 
 		t += Scene::DeltaTime();
 
-		if (endRollTime < t)
+		if (endRollTimeLong < t)
 		{
-			changeScene(U"EndRoll10");
+			changeScene(U"EndRoll9");
 		}
 	}
 
@@ -326,25 +324,23 @@ public:
 	}
 };
 
-class EndRoll10 :public App::Scene
+class EndRoll9 :public App::Scene
 {
 public:
 	double t = 0;
 
-	Texture texture{ U"BackGroundTexture/雲背景.png" };
+	Texture texture{ U"EndRoll/雲.png" };
 
-	EndRoll10(const InitData& init) : IScene{ init }
-	{
-	}
+	EndRoll9(const InitData& init) : IScene{ init }{}
 
 	void update()override
 	{
-
 		t += Scene::DeltaTime();
 
-		if (endRollTime < t)
+		if (endRollTimeLong < t)
 		{
-			changeScene(U"EndRoll11");
+			changeScene(U"EndRoll10", 4s);
+			BGMManager::get().stop(2s);
 		}
 	}
 
@@ -362,7 +358,7 @@ public:
 	}
 };
 
-class EndRoll11 :public App::Scene
+class EndRoll10 :public App::Scene
 {
 public:
 	double t = 0;
@@ -376,18 +372,22 @@ public:
 	Texture{U"MiniGameDisplay/FallingAnna.png"},
 	};
 
-	EndRoll11(const InitData& init) : IScene{ init }
+	EndRoll10(const InitData& init) : IScene{ init }
 	{
+		LoadAsset::RegisterAudio(U"BGM/MiniGameBGM.wav", Loop::Yes);
+		BGMManager::get().play(U"BGM/MiniGameBGM.wav",2s);
 	}
 
 	void update()override
 	{
 
-		t += Scene::DeltaTime();
+		t += Scene::DeltaTime()/2.0;
 
-		if (endRollTime < t)
+		if (7*1.5 < t)
 		{
-			changeScene(U"EndRoll12");
+			changeScene(U"EndRoll11", 4s);
+			BGMManager::get().stop(2s);
+
 		}
 	}
 
@@ -397,21 +397,218 @@ public:
 
 		const double height = FontAsset{ U"EndRollFont" }.height();
 
-		FontAsset{ U"EndRollFont" }(U"ミニゲーム").draw(50, 50);
-		FontAsset{ U"EndRollFont" }(U"ぺってぃー").draw(50, 50 + height, AlphaF(Clamp(t, 0.0, 1.0)));
-		FontAsset{ U"EndRollFont" }(U"まる").draw(50, 50 + height * 2, AlphaF(Clamp(t - 1, 0.0, 1.0)));
-		FontAsset{ U"EndRollFont" }(U"ひー").draw(50, 50 + height * 3, AlphaF(Clamp(t - 2, 0.0, 1.0)));
-		FontAsset{ U"EndRollFont" }(U"なかこう").draw(50, 50 + height * 4, AlphaF(Clamp(t - 3, 0.0, 1.0)));
-		FontAsset{ U"EndRollFont" }(U"ゆーれい").draw(50, 50 + height * 5, AlphaF(Clamp(t - 4, 0.0, 1.0)));
-		FontAsset{ U"EndRollFont" }(U"With Ball").draw(50, 50 + height * 6, AlphaF(Clamp(t - 5, 0.0, 1.0)));
-
 		for (size_t i = 0; i < textureList.size(); ++i)
 		{
-			textureList[i].resized(Scene::Width()).draw(AlphaF(Clamp(t - i, 0.0, 1.0)));
+			textureList[i].resized(Scene::Width()).draw(AlphaF(Clamp(t - i*1.5, 0.0, 1.0)));
 		}
+
+		Scene::Rect().draw(ColorF{ 0,0.4 });
+
+		FontAsset{ U"EndRollFont" }(U"ミニゲーム").draw(50, 50);
+		FontAsset{ U"EndRollFont" }(U"ぺってぃー").draw(50, 50 + height, AlphaF(Clamp(t, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"まる").draw(50, 50 + height * 2, AlphaF(Clamp(t - 1*1.5, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"ひー").draw(50, 50 + height * 3, AlphaF(Clamp(t - 2 * 1.5, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"なかこう").draw(50, 50 + height * 4, AlphaF(Clamp(t - 3 * 1.5, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"ゆーれい").draw(50, 50 + height * 5, AlphaF(Clamp(t - 4 * 1.5, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"With Ball").draw(50, 50 + height * 6, AlphaF(Clamp(t - 5 * 1.5, 0.0, 1.0)));
 	}
 };
 
+class EndRoll11 :public App::Scene
+{
+public:
+	double t = 0;
+
+	Texture texture{ U"EndRoll/雪原ボス.png" };
+
+	EndRoll11(const InitData& init) : IScene{ init }
+	{
+		LoadAsset::RegisterAudio(U"BGM/StageBoss6.wav", Loop::Yes);
+		BGMManager::get().play(U"BGM/StageBoss6.wav", 2s);
+	}
+
+	void update()override
+	{
+		t += Scene::DeltaTime();
+
+		if (endRollTimeLong < t)
+		{
+			changeScene(U"EndRoll12");
+		}
+	}
+
+	void draw()const override
+	{
+		Scene::SetBackground(Palette::Black);
+
+		texture.resized(Scene::Width()).draw();
+
+		Scene::Rect().draw(ColorF{ 0,0.3 });
+
+		FontAsset{ U"EndRollFont" }(U"アンナちゃんのママ兼パパ\nりゅーの").draw(50, 50);
+	}
+};
+
+class EndRoll12 :public App::Scene
+{
+public:
+	double t = 0;
+
+	Texture texture{ U"EndRoll/洞窟ボス.png" };
+
+	EndRoll12(const InitData& init) : IScene{ init }
+	{
+		LoadAsset::RegisterAudio(U"BGM/StageBoss6.wav", Loop::Yes);
+		BGMManager::get().play(U"BGM/StageBoss6.wav", 2s);
+	}
+
+	void update()override
+	{
+		t += Scene::DeltaTime();
+
+		if (endRollTimeLong < t)
+		{
+			changeScene(U"EndRoll13");
+		}
+	}
+
+	void draw()const override
+	{
+		Scene::SetBackground(Palette::Black);
+
+		texture.resized(Scene::Width()).draw();
+
+		Scene::Rect().draw(ColorF{ 0,0.3 });
+
+		FontAsset{ U"EndRollFont" }(U"開発環境\nSiv3D/C++\nVisual Studio").draw(50, 50);
+	}
+};
+
+class EndRoll13 :public App::Scene
+{
+public:
+	double t = 0;
+
+	Texture texture{ U"EndRoll/雲ボス.png" };
+
+	Texture rogo{ U"EndRoll/ロゴ.png" };
+
+	EndRoll13(const InitData& init) : IScene{ init } {}
+
+	void update()override
+	{
+		t += Scene::DeltaTime();
+
+		if (5 < t)
+		{
+			changeScene(U"EndRoll14");
+		}
+	}
+
+	void draw()const override
+	{
+		Scene::SetBackground(Palette::Black);
+
+		texture.resized(Scene::Width()).draw();
+		Scene::Rect().draw(ColorF{ 0,0.3 });
+
+		rogo.resized(600).drawAt(Scene::Center(), AlphaF(Clamp(t - 0.5, 0.0, 1.0)));
+	}
+};
+
+class EndRoll14 :public App::Scene
+{
+public:
+	double t = 0;
+
+	Texture texture{ U"EndRoll/ラスボス.png" };
+
+	EndRoll14(const InitData& init) : IScene{ init } {}
+
+	void update()override
+	{
+		t += Scene::DeltaTime();
+
+		if (10 < t)
+		{
+			changeScene(U"EndRoll15",3s, CrossFade::Yes);
+			BGMManager::get().stop(2s);
+		}
+	}
+
+	void draw()const override
+	{
+		Scene::SetBackground(Palette::Black);
+		
+		const double centerX = Scene::Center().x;
+		const double height = FontAsset{ U"EndRollFont" }.height();
+
+		texture.resized(Scene::Width()).draw();
+		Scene::Rect().draw(ColorF{ 0,0.3 });
+
+		FontAsset{ U"EndRollFont" }(U"スペシャルサンクス").drawAt(centerX, 250, AlphaF(Clamp(t, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"CTRL部員").drawAt(centerX, 250+height, AlphaF(Clamp(t-1*1.5, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"学園祭で遊んでくれた方々").drawAt(centerX, 250+height*2, AlphaF(Clamp(t-2*1.5, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"and You").drawAt(120,centerX, 250+height*3.5, AlphaF(Clamp((t-4*1.5)/3.0, 0.0, 1.0)));
+	}
+
+	void drawFadeOut(double t) const override
+	{
+		Rect{ Scene::Size() }.draw(Palette::Black);
+		draw();
+	}
+};
+
+class EndRoll15 :public App::Scene
+{
+public:
+	double t = 0;
+
+	Texture texture{ U"EndRoll/ハッピーエンド.png" };
+
+	EndRoll15(const InitData& init) : IScene{ init }{}
+
+	void update()override
+	{
+		t += Scene::DeltaTime();
+
+		if (10 < t)
+		{
+			changeScene(U"EndRoll16",2s);			
+		}
+	}
+
+	void draw()const override
+	{
+		Scene::SetBackground(Palette::Black);
+
+		texture.resized(Scene::Width()).draw();
+		FontAsset{ U"EndRollFont" }(U"End").draw(TextStyle::Outline(0.2, ColorF{0,Clamp(t - 3, 0.0, 1.0) }), 200, Arg::bottomRight(Scene::Size() - Vec2{30,0}), AlphaF(Clamp(t - 3, 0.0, 1.0)));
+	}
+
+	void drawFadeIn(double t) const override
+	{
+		ScopedColorMul2D mul{ AlphaF(t) };
+		Rect{ Scene::Size() }.draw(Palette::Black);
+		draw();
+	}
+};
+
+class EndRoll16 :public App::Scene
+{
+public:
+	EndRoll16(const InitData& init) : IScene{ init } {}
+
+	void update()override
+	{
+		notifyError();
+	}
+
+	void draw()const override
+	{
+		Scene::SetBackground(Palette::Black);
+	}
+};
 
 class EndRollScene :public App::Scene
 {
@@ -421,7 +618,7 @@ public:
 	EndRollScene(const InitData& init)
 		: IScene{ init }
 	{
-		FontAsset::Register(U"EndRollFont", 60, Typeface::Heavy);
+		FontAsset::Register(U"EndRollFont", FontMethod::MSDF, 60, Typeface::Heavy);
 
 		manager.add<EndRoll1>(U"EndRoll1");
 		manager.add<EndRoll2>(U"EndRoll2");
@@ -434,13 +631,21 @@ public:
 		manager.add<EndRoll9>(U"EndRoll9");
 		manager.add<EndRoll10>(U"EndRoll10");
 		manager.add<EndRoll11>(U"EndRoll11");
+		manager.add<EndRoll12>(U"EndRoll12");
+		manager.add<EndRoll13>(U"EndRoll13");
+		manager.add<EndRoll14>(U"EndRoll14");
+		manager.add<EndRoll15>(U"EndRoll15");
+		manager.add<EndRoll16>(U"EndRoll16");
 
-		manager.init(U"EndRoll8");
+		//manager.init(U"EndRoll13");
 	}
 
 	void update()override
 	{
-		manager.updateScene();
+		if(not manager.updateScene())
+		{
+			changeScene(U"TitleScene",2s);
+		}
 	}
 
 	void draw()const override
@@ -448,9 +653,3 @@ public:
 		manager.drawScene();
 	}
 };
-
-
-
-
-
-

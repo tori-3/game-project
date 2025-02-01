@@ -354,17 +354,17 @@ public:
 		rTexture.resolve();
 		rTexture.draw();
 
-		cookieDisplay(player->itemCount, DataManager::get().tame);
-		hpDisplay(player->hp, DataManager::get().maxHP);
+		//cookieDisplay(player->itemCount, DataManager::get().tame);
+		//hpDisplay(player->hp, DataManager::get().maxHP);
 
 		TalkManager::get().talkWindow.draw(RectF{ 0,500,Scene::Size().x,300 });
 
-		FontAsset(U"TitleFont")(U"Escで操作方法").draw(40,850,0,Palette::Orange);
+		//FontAsset(U"TitleFont")(U"Escで操作方法").draw(40,850,0,Palette::Orange);
 
-		if (DataManager::get().bossHPRate)
-		{
-			hpBar.draw(Palette::Purple, Palette::Red);
-		}
+		//if (DataManager::get().bossHPRate)
+		//{
+		//	hpBar.draw(Palette::Purple, Palette::Red);
+		//}
 
 
 		{
