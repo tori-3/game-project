@@ -34,13 +34,12 @@ void Main()
 	manager.add<HawkDropOut::HawkDropOut>(U"HawkDropOut");
 	manager.add<ManjuRush::ManjuRush>(U"ManjuRush");
 	manager.add<Maze1::MAZE>(U"Maze1");
-	manager.add<Maze1::Game>(U"Game");
 	manager.add<Maze1::Clear>(U"Clear");
 	manager.add<Maze2::mazeGame>(U"Maze2");
 	manager.add<AnnaMusicGame::AnnaMusicGame>(U"AnnaMusicGame");
 	manager.add<EndRollScene>(U"EndRollScene");
 
-	manager.init(U"EndRollScene");
+	//manager.init(U"EndRollScene");
 
 	LoadAsset::LoadAudio();
 

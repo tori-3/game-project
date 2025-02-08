@@ -45,7 +45,12 @@ namespace HawkDropOut {
 
 		}
 
-		bool Button(const Rect& rect, double scale, int32 xdistance, int32 ydistance, const Texture& texture, const Font& font, int32 count, bool enabled, bool enemy, bool att)
+		bool ButtonUpdate(const Rect& rect, double scale, int32 xdistance, int32 ydistance, const Texture& texture, const Font& font, int32 count, bool enabled, bool enemy, bool att)
+		{
+			return(enabled && !enemy);
+		}
+
+		void ButtonDraw(const Rect& rect, double scale, int32 xdistance, int32 ydistance, const Texture& texture, const Font& font, int32 count, bool enabled, bool enemy, bool att)const
 		{
 			if (enabled && !enemy && att)
 			{
@@ -62,9 +67,8 @@ namespace HawkDropOut {
 
 				rect.drawFrame(2, 2, ColorF(0.5));
 			}
-
-			return(enabled && !enemy);
 		}
+
 
 		double groundTime = 0;
 
@@ -73,10 +77,42 @@ namespace HawkDropOut {
 			//背景画面
 			Scene::SetBackground(Palette::Blue);
 
+			TextureAsset{ U"BackGroundTexture/雪原背景.png" }.resized(800).draw();
+
+			//雲を描画する
+			cloudEmoji.scaled(1).draw(Aclouddistance, 100);
+
+			cloudEmoji.scaled(1).draw(Bclouddistance, 250);
+
+			cloudEmoji.scaled(1).draw(Cclouddistance, 200);
+
+			cloudEmoji.scaled(1).draw(Dclouddistance, 50);
+
+			cloudEmoji.scaled(1).draw(Eclouddistance, 150);
+
+			constexpr double groundSize = 50;
+
+			for (int32 i = -1; i < (800 / groundSize); ++i)
+			{
+				double pos = i * groundSize + Fmod(groundTime * 130, groundSize);
+				groundTexture.resized(groundSize).draw(pos, 500);
+			}
+
+
 			//地面の描画
 			//Rect{ -100, 500, 1000, 100 }.draw(Palette::Green);
 
-			
+			ButtonDraw(Rect{ 650, 180, 60, 60 }, 0.5, 30, 30, upEmoji, font, farmCount, upTime < 10.0, enemy, true);
+			ButtonDraw(Rect{ 650, 250, 60, 60 }, 0.5, 30, 30, attackfunction, font, farmCount, numofmeat >= 1, enemy, j < 1);
+			ButtonDraw(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, numofmeat >= 2, enemy, true);
+			ButtonDraw(Rect{ 650, 320, 60, 60 }, 0.5, 30, 30, downEmoji, font, factoryCount, true, enemy, true);
+
+			if (10 > upTime) {
+				font(U"上昇可能時間: {:.2f} 秒"_fmt(10 - upTime)).draw(30, 0, 500, Palette::Black);
+			}
+			else {
+				font(U"上昇不可能時間: {:.2f} 秒"_fmt(20 - upTime)).draw(30, 0, 500, Palette::Red);
+			}
 
 			//飛距離の表示
 			font(U"飛距離").draw(30, 10, 10, Palette::Black);
@@ -96,34 +132,27 @@ namespace HawkDropOut {
 
 			//アイテムの画像を描画する
 			meat.scaled(0.5).draw(meatCircle.x - 30, meatCircle.y - 30);
+
+			if (cookieCircle.intersects(a_enemyCircle) || cookieCircle.intersects(b_enemyCircle) || cookieCircle.intersects(c_enemyCircle) || cookieCircle.intersects(d_enemyCircle) || cookieCircle.intersects(e_enemyCircle) || receive) {
+
+				texture.scaled(cookieScale).rotated(-angle).drawAt(cookieCircle.x, cookieCircle.y);
+			}
+			else {
+
+				//鷲が障害物に当たっていない場合の描画
+				texture.scaled(cookieScale).drawAt(cookieCircle.x, cookieCircle.y);
+			}
+
+
+			if (attack) {
+				wing.scaled(0.25).draw(attackball.x - 40, attackball.y - 40);
+			}
+
 		}
 
 		void update() override
 		{
-			TextureAsset{ U"BackGroundTexture/雪原背景.png" }.resized(800).draw();
-
-			//雲を描画する
-			cloudEmoji.scaled(1).draw(Aclouddistance, 100);
-
-			cloudEmoji.scaled(1).draw(Bclouddistance, 250);
-
-			cloudEmoji.scaled(1).draw(Cclouddistance, 200);
-
-			cloudEmoji.scaled(1).draw(Dclouddistance, 50);
-
-			cloudEmoji.scaled(1).draw(Eclouddistance, 150);
-
-
 			groundTime += Scene::DeltaTime();
-
-			constexpr double groundSize = 50;
-
-			for (int32 i = -1; i < (800 / groundSize); ++i)
-			{
-				double pos = i * groundSize + Fmod(groundTime * 130, groundSize);
-				groundTexture.resized(groundSize).draw(pos, 500);
-			}
-
 
 
 			//鷲がアイテムを入手してアイテム保持数を増やす
@@ -239,7 +268,7 @@ namespace HawkDropOut {
 			}
 
 			//上昇ボタン
-			if (Button(Rect{ 650, 180, 60, 60 }, 0.5, 30, 30, upEmoji, font, farmCount, upTime < 10.0, enemy, true) && Rect { 650, 180, 60, 60 }.mouseOver() && MouseL.pressed())
+			if (ButtonUpdate(Rect{ 650, 180, 60, 60 }, 0.5, 30, 30, upEmoji, font, farmCount, upTime < 10.0, enemy, true) && Rect { 650, 180, 60, 60 }.mouseOver() && MouseL.pressed())
 			{
 				cookieCircle.y -= Scene::DeltaTime() * (50.0 + plasdropspeed);
 				upTime += Scene::DeltaTime();
@@ -255,7 +284,7 @@ namespace HawkDropOut {
 			}
 
 			//攻撃ボタン
-			if (Button(Rect{ 650, 250, 60, 60 }, 0.5, 30, 30, attackfunction, font, farmCount, numofmeat >= 1, enemy, j < 1) && Rect { 650, 250, 60, 60 }.mouseOver() && MouseL.down()) {
+			if (ButtonUpdate(Rect{ 650, 250, 60, 60 }, 0.5, 30, 30, attackfunction, font, farmCount, numofmeat >= 1, enemy, j < 1) && Rect { 650, 250, 60, 60 }.mouseOver() && MouseL.down()) {
 				attack = true;
 				attackball.x = cookieCircle.x - 10;
 				attackball.y = cookieCircle.y + 10;
@@ -265,7 +294,6 @@ namespace HawkDropOut {
 			//攻撃描画
 			if (attack) {
 				//attackball.draw(Palette::Yellow);
-				wing.scaled(0.25).draw(attackball.x - 40, attackball.y - 40);
 				attackball.x -= Scene::DeltaTime() * 150;
 				j = 1;
 			}
@@ -300,7 +328,7 @@ namespace HawkDropOut {
 			}
 
 			//超上昇ボタン
-			if (Button(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, numofmeat >= 2, enemy, true) && Rect { 715, 244, 70, 70 }.mouseOver() && MouseL.pressed())
+			if (ButtonUpdate(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, numofmeat >= 2, enemy, true) && Rect { 715, 244, 70, 70 }.mouseOver() && MouseL.pressed())
 			{
 				cookieCircle.y -= Scene::DeltaTime() * 1500.0;
 			}
@@ -311,7 +339,7 @@ namespace HawkDropOut {
 			}
 
 			//下降ボタン
-			if (Button(Rect{ 650, 320, 60, 60 }, 0.5, 30, 30, downEmoji, font, factoryCount, true, enemy, true) && Rect { 650, 320, 60, 60 }.mouseOver() && MouseL.pressed())
+			if (ButtonUpdate(Rect{ 650, 320, 60, 60 }, 0.5, 30, 30, downEmoji, font, factoryCount, true, enemy, true) && Rect { 650, 320, 60, 60 }.mouseOver() && MouseL.pressed())
 			{
 				cookieCircle.y += Scene::DeltaTime() * 50.0;
 
@@ -321,13 +349,6 @@ namespace HawkDropOut {
 				else {
 					upTime -= Scene::DeltaTime() * 0.1;	 //上昇可能時間内の時間回復量
 				}
-			}
-
-			if (10 > upTime) {
-				font(U"上昇可能時間: {:.2f} 秒"_fmt(10 - upTime)).draw(30, 0, 500, Palette::Black);
-			}
-			else {
-				font(U"上昇不可能時間: {:.2f} 秒"_fmt(20 - upTime)).draw(30, 0, 500, Palette::Red);
 			}
 
 
@@ -363,7 +384,6 @@ namespace HawkDropOut {
 			//鷲が障害物に当たった場合の描画
 			if (cookieCircle.intersects(a_enemyCircle) || cookieCircle.intersects(b_enemyCircle) || cookieCircle.intersects(c_enemyCircle) || cookieCircle.intersects(d_enemyCircle) || cookieCircle.intersects(e_enemyCircle) || receive) {
 
-				texture.scaled(cookieScale).rotated(-angle).drawAt(cookieCircle.x, cookieCircle.y);
 				receive = true;
 				enemy = true;
 
@@ -372,7 +392,6 @@ namespace HawkDropOut {
 
 				//鷲が障害物に当たっていない場合の描画
 
-				texture.scaled(cookieScale).drawAt(cookieCircle.x, cookieCircle.y);
 				enemy = false;
 			}
 

@@ -603,11 +603,6 @@ public:
 	{
 		notifyError();
 	}
-
-	void draw()const override
-	{
-		Scene::SetBackground(Palette::Black);
-	}
 };
 
 class EndRollScene :public App::Scene
@@ -618,6 +613,14 @@ public:
 	EndRollScene(const InitData& init)
 		: IScene{ init }
 	{
+		JSON saveDatajson = JSON::Load(U"saveData.json");
+
+		const int32 clearStage = saveDatajson[U"ClearStage"].get<int32>();
+
+		saveDatajson[U"ClearStage"] = getData().stage;
+		saveDatajson[U"MaxHP"][getData().stage - 1] = 5;
+		saveDatajson.save(U"saveData.json");
+
 		FontAsset::Register(U"EndRollFont", FontMethod::MSDF, 60, Typeface::Heavy);
 
 		manager.add<EndRoll1>(U"EndRoll1");
@@ -650,6 +653,8 @@ public:
 
 	void draw()const override
 	{
+		Scene::SetBackground(Palette::Black);
+
 		manager.drawScene();
 	}
 };
