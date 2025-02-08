@@ -7,17 +7,32 @@ namespace Maze2 {
 
 	//名前を変更してください
 	using namespace std;
+
+	class Rotate;
+
+	class Drawing
+	{
+	public:
+		String assetName = U"ChocolateWall";
+
+		void draw(const Rotate& rotate, const Vec2& pos, const Vec2& size, const Color& color)const;
+	};
+
 	class Rotate {
 	public:
 		Vec2 pos{ 0,0 };
 		Vec2 cpos{ 0,0 };
 		double angle = 0;
 		double angle_vel = 0;
+		Drawing drawing;
+
 		Vec2 vec(Vec2 _vec) {
 			return Vec2(_vec.x * cos(angle) - _vec.y * sin(angle), _vec.x * sin(angle) + _vec.y * cos(angle));
 		}
 		void drawRect(Vec2 _pos, Vec2 _size, Color _color) {
-			Line{ pos + vec(_pos + Vec2(_size.y / 2.0,_size.y / 2.0) - cpos) ,pos + vec(_pos + Vec2(_size.x - _size.y / 2.0 + 0.01,_size.y / 2.0) + -cpos) }.draw(_size.y + 0.00001, _color);
+			drawing.draw(*this, pos + vec(_pos + Vec2(_size.y / 2.0, _size.y / 2.0) - cpos), _size + Vec2{ 1,1 }, _color);
+
+			//Line{ pos + vec(_pos + Vec2(_size.y / 2.0,_size.y / 2.0) - cpos) ,pos + vec(_pos + Vec2(_size.x - _size.y / 2.0 + 0.01,_size.y / 2.0) + -cpos) }.draw(_size.y + 0.00001, _color);
 		}
 	};
 	class Judge {
@@ -46,6 +61,7 @@ namespace Maze2 {
 			}
 			return -1;
 		}
+
 		bool canPutHole(Vec2 _pos, Vec2 _dir) {
 			Vec2 vec = _pos + _dir;
 			if (getData(vec) == 1)
@@ -267,6 +283,7 @@ namespace Maze2 {
 		Judge judge;
 		Player player{ maze.data,maze };
 		Rotate rotate;
+
 		double timer = 0;
 		mazeGame(const InitData& init)//名前を変更してください
 			: IScene{ init }
@@ -296,6 +313,12 @@ namespace Maze2 {
 			player.mazeUpdate(maze.data, maze);
 			rotate.cpos = 20 * Vec2{ maze.data[0].size(),maze.data.size() } / 2.0;
 			rotate.pos = Vec2{ 1200,800 } / 2.0;
+
+			if (not TextureAsset::IsRegistered(U"ChocolateWall"))
+			{
+				TextureAsset::Register(U"ChocolateWall", U"StageTexture/ChocolateWall.png");
+			}
+			TextureAsset::Load(U"ChocolateWall");
 		}
 
 		void update() override
@@ -307,7 +330,7 @@ namespace Maze2 {
 				//player.mazeUpdate(maze.data,maze);
 			}
 			//player.vel = Vec2(KeyRight.pressed()-KeyLeft.pressed(), -KeyUp.pressed()+ KeyDown.pressed())/10;
-			rotate.angle_vel = 0.02 * ((KeyRight|KeyD).pressed() - (KeyLeft|KeyA).pressed());
+			rotate.angle_vel = 0.02 * ((KeyRight | KeyD).pressed() - (KeyLeft | KeyA).pressed());
 			if (MouseL.pressed()) {
 				rotate.angle_vel = Cursor::DeltaF().x / 100.0;
 			}
@@ -336,4 +359,8 @@ namespace Maze2 {
 		}
 	};
 
+	void Drawing::draw(const Rotate& rotate, const Vec2& pos, const Vec2& size, const Color& color)const
+	{
+		TextureAsset(assetName).resized(size).rotated(rotate.angle).drawAt(pos, color);
+	}
 }
