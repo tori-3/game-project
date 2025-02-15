@@ -102,22 +102,6 @@ namespace HawkDropOut {
 			//地面の描画
 			//Rect{ -100, 500, 1000, 100 }.draw(Palette::Green);
 
-			ButtonDraw(Rect{ 650, 180, 60, 60 }, 0.5, 30, 30, upEmoji, font, farmCount, upTime < 10.0, enemy, true);
-			ButtonDraw(Rect{ 650, 250, 60, 60 }, 0.5, 30, 30, attackfunction, font, farmCount, numofmeat >= 1, enemy, j < 1);
-			ButtonDraw(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, numofmeat >= 2, enemy, true);
-			ButtonDraw(Rect{ 650, 320, 60, 60 }, 0.5, 30, 30, downEmoji, font, factoryCount, true, enemy, true);
-
-			if (10 > upTime) {
-				font(U"上昇可能時間: {:.2f} 秒"_fmt(10 - upTime)).draw(30, 0, 500, Palette::Black);
-			}
-			else {
-				font(U"上昇不可能時間: {:.2f} 秒"_fmt(20 - upTime)).draw(30, 0, 500, Palette::Red);
-			}
-
-			//飛距離の表示
-			font(U"飛距離").draw(30, 10, 10, Palette::Black);
-
-			font(FlyDistance).draw(30, 120, 10, Palette::Black);
 
 			//障害物の回転した画像を描画する
 			ishi.scaled(0.2).rotated(angle).draw(astowndistance, 40);
@@ -148,6 +132,22 @@ namespace HawkDropOut {
 				wing.scaled(0.25).draw(attackball.x - 40, attackball.y - 40);
 			}
 
+			ButtonDraw(Rect{ 650, 180, 60, 60 }, 0.5, 30, 30, upEmoji, font, farmCount, upTime < 10.0, enemy, true);
+			ButtonDraw(Rect{ 650, 250, 60, 60 }, 0.5, 30, 30, attackfunction, font, farmCount, numofmeat >= 1, enemy, j < 1);
+			ButtonDraw(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, numofmeat >= 2, enemy, true);
+			ButtonDraw(Rect{ 650, 320, 60, 60 }, 0.5, 30, 30, downEmoji, font, factoryCount, true, enemy, true);
+
+			if (10 > upTime) {
+				font(U"上昇可能時間: {:.2f} 秒"_fmt(10 - upTime)).draw(30, 0, 500, Palette::Black);
+			}
+			else {
+				font(U"上昇不可能時間: {:.2f} 秒"_fmt(20 - upTime)).draw(30, 0, 500, Palette::Red);
+			}
+
+			//飛距離の表示
+			font(U"飛距離").draw(30, 10, 10, Palette::Black);
+
+			font(FlyDistance).draw(30, 120, 10, Palette::Black);
 		}
 
 		void update() override
@@ -268,7 +268,7 @@ namespace HawkDropOut {
 			}
 
 			//上昇ボタン
-			if (ButtonUpdate(Rect{ 650, 180, 60, 60 }, 0.5, 30, 30, upEmoji, font, farmCount, upTime < 10.0, enemy, true) && Rect { 650, 180, 60, 60 }.mouseOver() && MouseL.pressed())
+			if (ButtonUpdate(Rect{ 650, 180, 60, 60 }, 0.5, 30, 30, upEmoji, font, farmCount, upTime < 10.0, enemy, true) && (Rect { 650, 180, 60, 60 }.leftPressed()||KeyW.pressed()||KeyUp.pressed()))
 			{
 				cookieCircle.y -= Scene::DeltaTime() * (50.0 + plasdropspeed);
 				upTime += Scene::DeltaTime();
@@ -284,7 +284,7 @@ namespace HawkDropOut {
 			}
 
 			//攻撃ボタン
-			if (ButtonUpdate(Rect{ 650, 250, 60, 60 }, 0.5, 30, 30, attackfunction, font, farmCount, numofmeat >= 1, enemy, j < 1) && Rect { 650, 250, 60, 60 }.mouseOver() && MouseL.down()) {
+			if (ButtonUpdate(Rect{ 650, 250, 60, 60 }, 0.5, 30, 30, attackfunction, font, farmCount, numofmeat >= 1, enemy, j < 1) &&( Rect { 650, 250, 60, 60 }.leftClicked() || KeyA.pressed() || KeyLeft.pressed())) {
 				attack = true;
 				attackball.x = cookieCircle.x - 10;
 				attackball.y = cookieCircle.y + 10;
@@ -328,7 +328,7 @@ namespace HawkDropOut {
 			}
 
 			//超上昇ボタン
-			if (ButtonUpdate(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, numofmeat >= 2, enemy, true) && Rect { 715, 244, 70, 70 }.mouseOver() && MouseL.pressed())
+			if (ButtonUpdate(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, numofmeat >= 2, enemy, true) && (Rect { 715, 244, 70, 70 }.leftPressed()||KeyD.pressed()||KeyRight.pressed()))
 			{
 				cookieCircle.y -= Scene::DeltaTime() * 1500.0;
 			}
@@ -339,7 +339,7 @@ namespace HawkDropOut {
 			}
 
 			//下降ボタン
-			if (ButtonUpdate(Rect{ 650, 320, 60, 60 }, 0.5, 30, 30, downEmoji, font, factoryCount, true, enemy, true) && Rect { 650, 320, 60, 60 }.mouseOver() && MouseL.pressed())
+			if (ButtonUpdate(Rect{ 650, 320, 60, 60 }, 0.5, 30, 30, downEmoji, font, factoryCount, true, enemy, true) && (Rect { 650, 320, 60, 60 }.leftPressed() || KeyS.pressed()||KeyDown.pressed()))
 			{
 				cookieCircle.y += Scene::DeltaTime() * 50.0;
 

@@ -154,10 +154,15 @@ namespace Maze1 {
 		const Audio easy{ Audio::Stream, U"MAZE/audio/bo-tto hidamari.mp3", Loop::Yes };
 		const Audio normal{ Audio::Stream, U"MAZE/audio/Candy Crush.mp3", Loop::Yes };
 		const Audio hard{ Audio::Stream, U"MAZE/audio/Mystic Edge.mp3", Loop::Yes };
-		const Texture choco{ U"MAZE/IMG_3688.jpg" };
+		//const Texture choco{ U"MAZE/IMG_3688.jpg" };
 		const Texture cookie{ U"MAZE/biscuit1.png" };
 		const Audio click{ U"MAZE/audio/color.mp3" };
 		const Audio goal{ U"MAZE/audio/bonus.mp3" };
+
+		const Texture annna{ U"MAZE/annna.png" };
+
+		const Texture chocoWall{ U"StageTexture/ChocolateWall.png" };
+
 		int x = 0, y = 0;
 		bool key = false;
 		Rect restart{ 521, 451, 158, 34 };
@@ -170,6 +175,13 @@ namespace Maze1 {
 		Vec2 ballVel{ 0, 0 }; //ボールの初期速度
 		Vec2 cookieVel{ 0, 0 }; //ボールの初期速度
 		Array < Array<int>> maze;	//迷路生成
+
+		double angle = 0;
+
+		Spotlight light;
+
+		MSRenderTexture lightTexture{ Scene::Size(),ColorF{0} };
+
 		MAZE(const InitData& init)
 			: IScene{ init }
 		{
@@ -249,11 +261,20 @@ namespace Maze1 {
 		void update() override
 		{
 			//ボール操作
-			ballVel.x = ((getData().KeyRight.pressed()) - (getData().KeyLeft.pressed())) * 1.5;
-			ballVel.y = ((getData().KeyDown.pressed()) - (getData().KeyUp.pressed())) * 1.5;
-			Vec2 newPos = ballPos + ballVel;
-			Circle newBall(newPos, 7.3);
-			bool collision = false;
+			ballVel.x = ((getData().KeyRight.pressed()) - (getData().KeyLeft.pressed()));
+			ballVel.y = ((getData().KeyDown.pressed()) - (getData().KeyUp.pressed()));
+			ballVel.setLength(Scene::DeltaTime()*100);
+
+			if (ballVel != Vec2{ 0,0 })
+			{
+				angle = ballVel.getAngle();
+			}
+
+			//Vec2 newPos = ballPos + ballVel;
+			//Circle newBall(newPos, 7.3);
+			bool collisionX = false;
+			bool collisionY = false;
+
 			for (y = 0; y < mazeHeight; ++y)
 			{
 				for (x = 0; x < mazeWidth; ++x)
@@ -262,22 +283,36 @@ namespace Maze1 {
 					{
 						Rect wallRect(x * cellSize + offsetX, y * cellSize + offsetY, cellSize);
 
-						if (newBall.intersects(wallRect))
+						if (Circle{ ballPos + Vec2{ballVel.x,0} ,7.3 }.intersects(wallRect))
 						{
-							collision = true;
+							collisionX = true;
+						}
+
+						if (Circle{ ballPos + Vec2{0,ballVel.y} ,7.3 }.intersects(wallRect))
+						{
+							collisionY = true;
+						}
+
+						if(collisionX && collisionY)
+						{
 							break;
 						}
 					}
 				}
-				if (collision) break;
+				if (collisionX && collisionY) break;
 			} //衝突するか
-			if (collision)
+
+			if (collisionX)
 			{
-				ballVel.set(0, 0);
+				ballVel.x = 0;
 			}
-			else {
-				ballPos += ballVel;
+
+			if (collisionY)
+			{
+				ballVel.y = 0;
 			}
+
+			ballPos += ballVel;
 
 			if (goalPos.intersects(Circle(ballPos, 8))) //重なったら
 			{
@@ -330,12 +365,13 @@ namespace Maze1 {
 					EndGame(false);
 				}
 			}
+
 		}
 
 		void draw() const override
 		{
 			int x = 0, y = 0;
-			Scene::SetBackground(ColorF(0.2, 0.8, 0.6));
+			Scene::SetBackground(ColorF{0.7});
 			//迷路描画
 			for (y = 0; y < mazeHeight; ++y)
 			{
@@ -343,8 +379,8 @@ namespace Maze1 {
 				{
 					if (maze[y][x] == 1) //ここが壁か
 					{
-						Rect(x * cellSize + offsetX, y * cellSize + offsetY, cellSize).draw(Palette::White);
-
+						//Rect(x * cellSize + offsetX, y * cellSize + offsetY, cellSize).draw(Palette::White);
+						chocoWall.resized(cellSize).draw(x * cellSize + offsetX, y * cellSize + offsetY);
 					}
 
 				}
@@ -352,12 +388,37 @@ namespace Maze1 {
 
 			//ボール描画
 			//Circle(ballPos, 9).draw(Palette::Red);
-			cookie.scaled(0.055).draw(ballPos - cookiePos);
+			//cookie.scaled(0.055).draw(ballPos - cookiePos);
+
+			annna.scaled(0.15).rotated(angle).drawAt(ballPos);
+
 			//ゴール描画
 			//goalPos.draw(Palette::Yellow);
-			choco.scaled(0.15).draw(gPos);
-			ClearPrint();
-			watch(stopwatch).draw(1070, -5, Palette::Black);
+			//choco.scaled(0.15).draw(gPos);
+			cookie.resized(cellSize).drawAt(goalPos.center());
+
+			{
+				const ScopedRenderTarget2D target{ lightTexture };
+				const ScopedRenderStates2D blend{ BlendState::Additive };
+
+				Circle{ ballPos,30 }.draw();
+			}
+			Graphics2D::Flush();
+			lightTexture.resolve();
+
+			{
+				ScopedSpotlight spot{ light };
+
+				lightTexture.draw(ColorF{ 0.3 });
+
+				Circle{ ballPos,100 }.draw(AlphaF(2), AlphaF(0));
+				Circle{ ballPos, 400 }.drawPie(angle - 20_deg, 20_deg * 2,AlphaF(1.0), AlphaF(0.0));
+
+				Circle{ goalPos.center(),50}.draw(AlphaF(1), AlphaF(0));
+			}
+			light.draw();
+
+			watch(stopwatch).draw(1070, -5, Palette::White);
 			if (key) {
 				if (SimpleGUI::Button(U"ゲームに戻る", Vec2{ 520, 450 })) {}
 				if (SimpleGUI::Button(U"やり直す", Vec2{ 540, 530 })) {}

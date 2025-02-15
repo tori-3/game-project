@@ -80,6 +80,9 @@ public:
 	Texture stageColor{ U"StageImage/stageColor.png", TextureDesc::Mipped };
 	Texture stageGame{ U"StageImage/stageGame.png", TextureDesc::Mipped };
 
+
+	
+
 	void updatePos()
 	{
 		Vec2 vec{};

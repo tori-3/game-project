@@ -10,29 +10,29 @@ namespace Maze2 {
 
 	class Rotate;
 
-	class Drawing
-	{
-	public:
-		String assetName = U"ChocolateWall";
-
-		void draw(const Rotate& rotate, const Vec2& pos, const Vec2& size, const Color& color)const;
-	};
-
 	class Rotate {
 	public:
 		Vec2 pos{ 0,0 };
 		Vec2 cpos{ 0,0 };
 		double angle = 0;
 		double angle_vel = 0;
-		Drawing drawing;
 
 		Vec2 vec(Vec2 _vec) {
 			return Vec2(_vec.x * cos(angle) - _vec.y * sin(angle), _vec.x * sin(angle) + _vec.y * cos(angle));
 		}
 		void drawRect(Vec2 _pos, Vec2 _size, Color _color) {
-			drawing.draw(*this, pos + vec(_pos + Vec2(_size.y / 2.0, _size.y / 2.0) - cpos), _size + Vec2{ 1,1 }, _color);
+			draw(U"CakeGround" ,*this, pos + vec(_pos + Vec2(_size.y / 2.0, _size.y / 2.0) - cpos), _size + Vec2{ 1,1 }, _color);
 
 			//Line{ pos + vec(_pos + Vec2(_size.y / 2.0,_size.y / 2.0) - cpos) ,pos + vec(_pos + Vec2(_size.x - _size.y / 2.0 + 0.01,_size.y / 2.0) + -cpos) }.draw(_size.y + 0.00001, _color);
+		}
+
+		void drawRectPlayer(Vec2 _pos, Vec2 _size, Color _color){
+			draw(U"Cloud", *this, pos + vec(_pos + Vec2(_size.y / 2.0, _size.y / 2.0) - cpos), _size + Vec2{ 1,1 }, _color);
+		}
+
+		void draw(AssetNameView assetName,const Rotate& rotate, const Vec2& pos, const Vec2& size, const Color& color)const
+		{
+			TextureAsset(assetName).resized(size).rotated(rotate.angle).drawAt(pos, color);
 		}
 	};
 	class Judge {
@@ -85,13 +85,14 @@ namespace Maze2 {
 				for (size_t k = 0; k < data.size(); k++)
 				{
 					if (data[k][i] == 1) {
-						_rotate.drawRect(dpos + Vec2(k * 20, i * 20), Vec2(20, 20), HSV{ 230, 0.5, 3 });
+						//HSV{ 0, 0, 10 }
+						_rotate.drawRect(dpos + Vec2(k * 20, i * 20), Vec2(20, 20), ColorF{1});
 					}
 					if (data[k][i] == 2) {
-						_rotate.drawRect(dpos + Vec2(k * 20, i * 20), Vec2(20, 20), HSV{ 0, 0, 10 });
+						_rotate.drawRect(dpos + Vec2(k * 20, i * 20), Vec2(20, 20),ColorF{0.7,0.5});
 					}
 					if (gpos == Vec2(k, i)) {
-						_rotate.drawRect(dpos + Vec2(k * 20, i * 20), Vec2(20, 20), HSV{ 100, 30, 100 });
+						_rotate.drawRect(dpos + Vec2(k * 20, i * 20), Vec2(20, 20), Palette::Red);
 					}
 				}
 			}
@@ -234,13 +235,16 @@ namespace Maze2 {
 		}
 		void update(Rotate _rotate, double _dirVel) {
 			double dir = _rotate.angle;
-			vel.x += 0.01 * sin(dir);
-			vel.y += 0.01 * cos(dir);
+			vel.x += Scene::DeltaTime() * sin(dir);
+			vel.y += Scene::DeltaTime() * cos(dir);
 			Vec2 length = pos - _rotate.cpos / 20.0;
 			double L = sqrt(pow(length.x, 2) + pow(length.y, 2));
 			//vel.x += _dirVel * length.y;
 			//vel.y += -_dirVel * length.x;
 			//
+
+			const Vec2 preVel = vel;
+
 			pos.x += vel.x;
 			Vec2 d = vel / vAbs(vel);
 			Vec2 p;
@@ -265,13 +269,18 @@ namespace Maze2 {
 					}
 				}
 			}
+
+			if (Scene::DeltaTime()*2 <(preVel - vel).length())
+			{
+				AudioAsset{ U"ブロックを置く" }.playOneShot();
+			}
 		}
 		void mazeUpdate(vector<vector<int>> _data, Maze maze) {
 			data = _data;
 			pos = maze.spos;
 		}
 		void draw(Rotate _rotate)const {
-			_rotate.drawRect(pos * 20, size * 20, HSV{ 200, 30, 10 });
+			_rotate.drawRectPlayer(pos * 20, size * 20, Palette::White);
 		}
 	};
 	class mazeGame : public App::Scene
@@ -314,11 +323,17 @@ namespace Maze2 {
 			rotate.cpos = 20 * Vec2{ maze.data[0].size(),maze.data.size() } / 2.0;
 			rotate.pos = Vec2{ 1200,800 } / 2.0;
 
-			if (not TextureAsset::IsRegistered(U"ChocolateWall"))
+			if (not TextureAsset::IsRegistered(U"CakeGround"))
 			{
-				TextureAsset::Register(U"ChocolateWall", U"StageTexture/ChocolateWall.png");
+				TextureAsset::Register(U"CakeGround", U"StageTexture/CakeGround.png");
 			}
-			TextureAsset::Load(U"ChocolateWall");
+			TextureAsset::Load(U"CakeGround");
+
+			if (not TextureAsset::IsRegistered(U"Cloud"))
+			{
+				TextureAsset::Register(U"Cloud", U"StageTexture/Cloud.png");
+			}
+			TextureAsset::Load(U"Cloud");
 		}
 
 		void update() override
@@ -358,9 +373,4 @@ namespace Maze2 {
 			else changeScene(U"Mini_Game_Select");//ミニゲームセレクトモードならミニゲームセレクトに帰る
 		}
 	};
-
-	void Drawing::draw(const Rotate& rotate, const Vec2& pos, const Vec2& size, const Color& color)const
-	{
-		TextureAsset(assetName).resized(size).rotated(rotate.angle).drawAt(pos, color);
-	}
 }
