@@ -10,11 +10,20 @@ namespace HawkDropOut {
 		Transformer2D transformer{ Mat3x2::Scale(1.5,{0,0 }) * Mat3x2::Translate(0,-15), TransformCursor::Yes };
 		int32 clearScore = 0;
 
+		Audio clearAudio{ U"まんじゅうラッシュ素材/クリア2.wav" };
+		Audio defeatAudio{ U"まんじゅうラッシュ素材/やられた.wav" };
+
+		bool clear = false;
+		bool gameover = false;
+		Timer gameOverTimer{ 2s };
+		bool tornadoFlg = false;
+
+
 		HawkDropOut(const InitData& init)
 			: IScene{ init }
 		{
-			if (not TextureAsset::IsRegistered(U"BackGroundTexture/雪原背景.png")) {
-				TextureAsset::Register(U"BackGroundTexture/雪原背景.png", U"BackGroundTexture/雪原背景.png");
+			if (not TextureAsset::IsRegistered(U"BackGroundTexture/雲背景.png")) {
+				TextureAsset::Register(U"BackGroundTexture/雲背景.png", U"BackGroundTexture/雲背景.png");
 			}
 
 			AudioAsset::Register(U"MiniGameBGM", U"BGM/MiniGameBGM.wav", Loop::Yes);
@@ -77,18 +86,20 @@ namespace HawkDropOut {
 			//背景画面
 			Scene::SetBackground(Palette::Blue);
 
-			TextureAsset{ U"BackGroundTexture/雪原背景.png" }.resized(800).draw();
+			TextureAsset{ U"BackGroundTexture/雲背景.png" }.resized(800).draw();
+
+			constexpr ColorF cloudColor = ColorF{ Palette::Lightpink } + ColorF{ 0.3 };
 
 			//雲を描画する
-			cloudEmoji.scaled(1).draw(Aclouddistance, 100);
+			cloudEmoji.scaled(1).draw(Aclouddistance, 100, cloudColor);
 
-			cloudEmoji.scaled(1).draw(Bclouddistance, 250);
+			cloudEmoji.scaled(1).draw(Bclouddistance, 250, cloudColor);
 
-			cloudEmoji.scaled(1).draw(Cclouddistance, 200);
+			cloudEmoji.scaled(1).draw(Cclouddistance, 200, cloudColor);
 
-			cloudEmoji.scaled(1).draw(Dclouddistance, 50);
+			cloudEmoji.scaled(1).draw(Dclouddistance, 50, cloudColor);
 
-			cloudEmoji.scaled(1).draw(Eclouddistance, 150);
+			cloudEmoji.scaled(1).draw(Eclouddistance, 150, cloudColor);
 
 			constexpr double groundSize = 50;
 
@@ -134,30 +145,60 @@ namespace HawkDropOut {
 
 			ButtonDraw(Rect{ 650, 180, 60, 60 }, 0.5, 30, 30, upEmoji, font, farmCount, upTime < 10.0, enemy, true);
 			ButtonDraw(Rect{ 650, 250, 60, 60 }, 0.5, 30, 30, attackfunction, font, farmCount, numofmeat >= 1, enemy, j < 1);
-			ButtonDraw(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, numofmeat >= 2, enemy, true);
+			ButtonDraw(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, numofmeat >= 2 || tornadoFlg, enemy, true);
 			ButtonDraw(Rect{ 650, 320, 60, 60 }, 0.5, 30, 30, downEmoji, font, factoryCount, true, enemy, true);
 
 			if (10 > upTime) {
-				font(U"上昇可能時間: {:.2f} 秒"_fmt(10 - upTime)).draw(30, 0, 500, Palette::Black);
+				font(U"上昇可能時間: {:.2f} 秒"_fmt(10 - upTime)).draw(30, 0, 500, Palette::White);
 			}
 			else {
 				font(U"上昇不可能時間: {:.2f} 秒"_fmt(20 - upTime)).draw(30, 0, 500, Palette::Red);
 			}
 
 			//飛距離の表示
-			font(U"飛距離").draw(30, 10, 10, Palette::Black);
+			//font(U"飛距離").draw(30, 10, 10, Palette::Black);
 
-			font(FlyDistance).draw(30, 120, 10, Palette::Black);
+			//font(FlyDistance).draw(30, 120, 10, Palette::Black);
+
+			font(U"飛距離 {}/{}"_fmt(FlyDistance,clearScore)).draw(30, 10, 10, Palette::Black);
+
+			if(clear)
+			{
+				Rect{ 800,600 }.draw(ColorF{ 0,0.5 });
+				font(U"Clear!!").drawAt(100, 400, 250);
+				font(U"Enterで戻る").drawAt(30, 400, 350);
+			}
 		}
 
 		void update() override
 		{
+
+			if(gameover)
+			{
+				if(gameOverTimer.reachedZero())
+				{
+					EndGame(false);
+				}
+
+				return;
+			}
+
+			if (clear)
+			{
+				if(KeyEnter.down())
+				{
+					EndGame(true);
+				}
+				return;
+			}
+
 			groundTime += Scene::DeltaTime();
 
 
 			//鷲がアイテムを入手してアイテム保持数を増やす
 			if (cookieCircle.intersects(meatCircle)) {
 				numofmeat += 1;
+				AudioAsset{ U"食べる" }.playOneShot();
 			}
 
 			//鷲がアイテムを入手するかアイテムが鷲を通り過ぎた時にランダム生成する
@@ -289,6 +330,7 @@ namespace HawkDropOut {
 				attackball.x = cookieCircle.x - 10;
 				attackball.y = cookieCircle.y + 10;
 				numofmeat -= 1;
+				AudioAsset{ U"パンチ" }.playOneShot();
 			}
 
 			//攻撃描画
@@ -301,22 +343,27 @@ namespace HawkDropOut {
 
 			//攻撃が障害物に当たった場合に障害物の座標を戻す
 			if (attackball.intersects(a_enemyCircle)) {
+				AudioAsset{ U"パンチヒット" }.playOneShot();
 				astowndistance += 900.0;
 			}
 
 			if (attackball.intersects(b_enemyCircle)) {
+				AudioAsset{ U"パンチヒット" }.playOneShot();
 				bstowndistance += 900.0;
 			}
 
 			if (attackball.intersects(c_enemyCircle)) {
+				AudioAsset{ U"パンチヒット" }.playOneShot();
 				cstowndistance += 900.0;
 			}
 
 			if (attackball.intersects(d_enemyCircle)) {
+				AudioAsset{ U"パンチヒット" }.playOneShot();
 				dstowndistance += 900.0;
 			}
 
 			if (attackball.intersects(e_enemyCircle)) {
+				AudioAsset{ U"パンチヒット" }.playOneShot();
 				estowndistance += 900.0;
 			}
 
@@ -327,16 +374,32 @@ namespace HawkDropOut {
 				j = 0;
 			}
 
+
 			//超上昇ボタン
-			if (ButtonUpdate(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, numofmeat >= 2, enemy, true) && (Rect { 715, 244, 70, 70 }.leftPressed()||KeyD.pressed()||KeyRight.pressed()))
+			if (ButtonUpdate(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, numofmeat >= 2, enemy, true) && (Rect{ 715, 244, 70, 70 }.leftClicked() || KeyD.down() || KeyRight.down()))
 			{
-				cookieCircle.y -= Scene::DeltaTime() * 1500.0;
+				tornadoFlg = true;
+				numofmeat -= 2;
+				AudioAsset{ U"サマーソルト" }.playOneShot();
 			}
 
-			//超上昇ボタンのアイテム消費
-			if (numofmeat >= 2 && MouseL.up() && Rect { 690, 228, 100, 100 }.mouseOver()) {
-				numofmeat -= 2;
+			if(tornadoFlg)
+			{
+				cookieCircle.y -= Scene::DeltaTime() * 1500.0;
+
+				const bool pressedTornado = ButtonUpdate(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount,true, false, true) && (Rect{ 715, 244, 70, 70 }.leftPressed() || KeyD.pressed() || KeyRight.pressed());
+
+				if (not pressedTornado|| cookieCircle.y <= 50)
+				{
+					tornadoFlg = false;
+				}
 			}
+
+
+			//超上昇ボタンのアイテム消費
+			//if (numofmeat >= 2 && MouseL.up() && Rect { 690, 228, 100, 100 }.mouseOver()) {
+			//	numofmeat -= 2;
+			//}
 
 			//下降ボタン
 			if (ButtonUpdate(Rect{ 650, 320, 60, 60 }, 0.5, 30, 30, downEmoji, font, factoryCount, true, enemy, true) && (Rect { 650, 320, 60, 60 }.leftPressed() || KeyS.pressed()||KeyDown.pressed()))
@@ -359,11 +422,15 @@ namespace HawkDropOut {
 
 
 			if (clearScore <= FlyDistance) {
-				EndGame(true);
+				clear = true;
+				clearAudio.playOneShot();
 			}
 			else if (cookieCircle.y >= 450)
 			{
-				EndGame(false);
+				gameOverTimer.restart();
+				gameover = true;
+				defeatAudio.playOneShot();
+				BGMManager::get().stop(0.2s);
 			}
 
 			//当たり判定の確認
@@ -383,6 +450,11 @@ namespace HawkDropOut {
 
 			//鷲が障害物に当たった場合の描画
 			if (cookieCircle.intersects(a_enemyCircle) || cookieCircle.intersects(b_enemyCircle) || cookieCircle.intersects(c_enemyCircle) || cookieCircle.intersects(d_enemyCircle) || cookieCircle.intersects(e_enemyCircle) || receive) {
+
+				if(not receive)
+				{
+					AudioAsset{ U"アンナダメージ" }.playOneShot();
+				}
 
 				receive = true;
 				enemy = true;
@@ -605,7 +677,7 @@ namespace HawkDropOut {
 
 		Texture cloudEmoji{ U"☁️"_emoji };
 
-		Texture groundTexture{ U"StageTexture/CakeSurface.png" };
+		Texture groundTexture{ U"StageTexture/ChocolateWall.png" };
 
 		// フォント
 		Font font{ FontMethod::MSDF, 48, Typeface::Bold };

@@ -294,6 +294,11 @@ namespace Maze2 {
 		Rotate rotate;
 
 		double timer = 0;
+
+		bool clear = false;
+
+		Audio clearAudio{ U"まんじゅうラッシュ素材/クリア2.wav" };
+
 		mazeGame(const InitData& init)//名前を変更してください
 			: IScene{ init }
 		{
@@ -338,8 +343,18 @@ namespace Maze2 {
 
 		void update() override
 		{
+			if(clear)
+			{
+				if(KeyEnter.down())
+				{
+					EndGame(true);
+				}
+				return;
+			}
+
 			if (judge.reacts(player.pos, player.size, maze.gpos, Vec2(1, 1))) {
-				EndGame(true);
+				clearAudio.playOneShot();
+				clear = true;
 				//maze.make(23);
 				//rotate.cpos = 20*Vec2{ maze.data[0].size(),maze.data.size() }/2.0;
 				//player.mazeUpdate(maze.data,maze);
@@ -364,6 +379,13 @@ namespace Maze2 {
 			//描画(draw関数内ではifの使用、変数の代入などができない)
 			maze.draw(rotate);
 			player.draw(rotate);
+
+			if (clear)
+			{
+				Scene::Rect().draw(ColorF{0,0.5});
+				FontAsset{ U"TitleFont" }(U"Clear!!").drawAt(150, Scene::Center());
+				FontAsset{ U"TitleFont" }(U"Enterで戻る").drawAt(45, Scene::Center() + Vec2{ 0,150 });
+			}
 		}
 
 	private:

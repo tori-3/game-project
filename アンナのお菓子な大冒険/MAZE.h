@@ -260,15 +260,17 @@ namespace Maze1 {
 
 		void update() override
 		{
+
 			//ボール操作
 			ballVel.x = ((getData().KeyRight.pressed()) - (getData().KeyLeft.pressed()));
 			ballVel.y = ((getData().KeyDown.pressed()) - (getData().KeyUp.pressed()));
-			ballVel.setLength(Scene::DeltaTime()*100);
 
 			if (ballVel != Vec2{ 0,0 })
 			{
 				angle = ballVel.getAngle();
 			}
+
+			ballVel.setLength(Scene::DeltaTime() * 100);
 
 			//Vec2 newPos = ballPos + ballVel;
 			//Circle newBall(newPos, 7.3);
@@ -462,6 +464,8 @@ namespace Maze1 {
 		}
 		void draw() const override
 		{
+			Scene::SetBackground(ColorF(0.2, 0.8, 0.6));
+
 			otologic(U"BGM by OtoLogic").draw(2, 772, Palette::Black);
 			text(U"クリア！").draw(415, 100, Palette::Yellow);
 			text2(U"タイム: ", stopwatch).draw(215, 300, Palette::Black);

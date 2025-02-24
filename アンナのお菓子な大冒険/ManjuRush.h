@@ -104,10 +104,6 @@ namespace ManjuRush {
 
 		void update() override
 		{
-			ClearPrint();
-			Print << U"jump:" << jump;
-			Print << U"KeyW:" << KeyW.pressed();
-
 			if (flag == false) {
 				if (stopwatch < 2s) {
 					font(U"3").draw(600, 200);
@@ -141,11 +137,16 @@ namespace ManjuRush {
 				//Clear
 				if (score == 1300) {
 					if (clear == false) {
-						stopwatch.restart();
+						//stopwatch.restart();
 						Clear.play();
 					}
 					clear = true;
-					if (stopwatch > 3s) {
+					//if (stopwatch > 3s) {
+					//	EndGame(true);
+					//}
+
+					if(KeyEnter.down())
+					{
 						EndGame(true);
 					}
 				}
@@ -312,6 +313,13 @@ namespace ManjuRush {
 			}
 			if (level == 3) {
 				manju.scaled(0.8).rotatedAt(Vec2{ enemys[0].w / 2 + 10,enemys[0].h / 2 }, rad3).draw(enemys[3].x - 10, enemys[3].y);
+			}
+
+			if (clear)
+			{
+				Scene::Rect().draw(ColorF{ 0,0.5 });
+				FontAsset{ U"TitleFont" }(U"Clear!!").drawAt(150, Scene::Center());
+				FontAsset{ U"TitleFont" }(U"Enterで戻る").drawAt(45, Scene::Center() + Vec2{ 0,150 });
 			}
 		}
 

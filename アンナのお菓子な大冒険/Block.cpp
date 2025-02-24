@@ -402,7 +402,6 @@ void ChocolateWallCanNotRespawn::reaction(const Point& pos, PhysicsBox* box)
 	box->hitCanNotRespawn(Rect{ pos * rect_size,rect_size });
 }
 
-
 void CloudBLBlock::draw(const Point& pos)const {
 	TextureAsset{ U"CloudBL" }.resized(70 + (368 - 300) / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
 }

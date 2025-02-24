@@ -22,7 +22,7 @@ void Main()
 
 	System::SetTerminationTriggers(UserAction::CloseButtonClicked);
 
-	FontAsset::Register(U"TitleFont", 60, Typeface::Heavy);
+	FontAsset::Register(U"TitleFont", FontMethod::MSDF, 60, Typeface::Heavy);
 
 	App manager;
 

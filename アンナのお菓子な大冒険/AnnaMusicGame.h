@@ -302,6 +302,10 @@ namespace AnnaMusicGame {
 		AnnaMusicGame(const InitData& init)
 			: IScene{ init }
 		{
+			if (not TextureAsset::IsRegistered(U"BackGroundTexture/雲背景.png"))
+			{
+				TextureAsset::Register(U"BackGroundTexture/雲背景.png", U"BackGroundTexture/雲背景.png");
+			}
 
 		}
 
@@ -309,7 +313,6 @@ namespace AnnaMusicGame {
 
 		void update() override
 		{
-
 			// 経過時間を取得
 			double deltaTime = Scene::DeltaTime();
 			anime[nowanimation].update(deltaTime);
@@ -321,26 +324,6 @@ namespace AnnaMusicGame {
 				nowanimation = 1;
 				change = false;
 			}
-
-
-
-
-
-			// アニメーションを更新
-			anime[0].draw(pos);
-			anime[nowanimation].draw(pos);
-
-
-
-
-
-			//Cursor::RequestStyle(CursorStyle::Hidden);
-			Scene::SetBackground(Palette::Pink);
-			//判定マーカー
-			C0.draw(ColorF{ 0,255,0,0.0 });
-			C1.draw(Palette::White);
-			C2.draw(ColorF{ 0,0,0,0.0 });
-			C3.draw(ColorF{ 255,0,0,0.0 });
 
 			music.setVolume(getData().BGM_volume);
 
@@ -374,12 +357,6 @@ namespace AnnaMusicGame {
 
 				if (rc.theta > 0)//判定　90　最初0からマイナス方向に並んでいる　回転で＋になったのだけ表示、判定
 				{
-
-
-					candyr.drawAt(rc);
-
-					Line{ rc + Vec2{20,0},rc + Vec2{-20,0} }.drawArrow(10,SizeF{15,15});
-
 					//判定
 					if (KeyA.down() or KeyLeft.down())
 					{
@@ -474,8 +451,6 @@ namespace AnnaMusicGame {
 						jud = 1;
 
 					}
-
-
 				}
 			}
 
@@ -492,8 +467,6 @@ namespace AnnaMusicGame {
 				{
 					maxcombo = combo;
 				}
-				font(U"Perfect{}\nMiss{}\nMaxcombo{}"_fmt(perfect, miss, maxcombo)).draw(60, 50, 50, Palette::Yellow);
-				font(U"Enterで戻る").draw(30, 250, 300, Palette::Skyblue);
 				if (KeyEnter.down() and miss <= 9)//miss9以下でクリア
 				{
 
@@ -503,19 +476,65 @@ namespace AnnaMusicGame {
 				{
 					EndGame(false);
 				}
+			}
+		}
 
+		void draw() const override
+		{
+			Scene::SetBackground(Palette::Pink);
+
+			TextureAsset{ U"BackGroundTexture/雲背景.png" }.resized(Scene::Size()).draw();
+			Scene::Rect().draw(ColorF{ 0.0,0.5 });
+
+			// アニメーションを更新
+			anime[0].draw(pos);
+			anime[nowanimation].draw(pos);
+
+			//判定マーカー
+			C0.draw(ColorF{ 0,255,0,0.0 });
+			C1.draw(Palette::White);
+			C2.draw(ColorF{ 0,0,0,0.0 });
+			C3.draw(ColorF{ 255,0,0,0.0 });
+
+
+			for (auto& rc : rcs)
+			{
+				if (rc.theta > 0)//判定　90　最初0からマイナス方向に並んでいる　回転で＋になったのだけ表示、判定
+				{
+					candyr.drawAt(rc);
+
+					Line{ rc + Vec2{20,0},rc + Vec2{-20,0} }.drawArrow(10, SizeF{ 15,15 });
+				}
+			}
+			for (auto& gc : gcs)
+			{
+				if (gc.theta > 0)//判定　90　最初0からマイナス方向に並んでいる　回転で＋になったのだけ表示、判定
+				{
+					candyg.drawAt(gc);
+
+					Line{ gc + Vec2{-20,0},gc + Vec2{20,0} }.drawArrow(10, SizeF{ 15,15 });
+				}
+			}
+
+			if (rcs.empty() and gcs.empty())
+			{
+				font(U"Perfect{}\nMiss{}\nMaxcombo{}"_fmt(perfect, miss, maxcombo)).draw(60, 50, 50, Palette::Yellow);
+				font(U"Enterで戻る").draw(30, 250, 300, Palette::Skyblue);
+
+				if(miss <= 9)
+				{
+					font(U"クリア！").draw(100,Arg::bottomRight = Scene::Size() - Vec2{ 50,50 },Palette::Yellow);
+				}
+				else
+				{
+					font(U"失敗、、、").draw(100,Arg::bottomRight = Scene::Size() - Vec2{ 50,50 }, Palette::Red);
+				}
 
 
 			}
 
 			effect.update();
 
-
-
-		}
-
-		void draw() const override
-		{
 			font(U"赤は←[A]キー").draw(40, 700, 50, Palette::Red);
 			font(U"黄緑は→[D]キー").draw(40, 700, 90, Palette::Yellowgreen);
 			font(U"をタイミング良く押そう！！\nMiss9以下でクリア").draw(40, 700, 130, Palette::Skyblue);
