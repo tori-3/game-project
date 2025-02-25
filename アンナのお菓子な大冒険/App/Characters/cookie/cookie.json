@@ -1,0 +1,12 @@
+﻿{
+  "Body": {
+    "body": {
+      "Parent": "__Main__",
+      "Position": "(600, 350)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/cookie/クッキー.png",
+      "Z": 0.0
+    }
+  }
+}

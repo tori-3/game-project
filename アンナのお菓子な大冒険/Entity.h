@@ -121,6 +121,10 @@ public:
 		return table[tag][0];
 	}
 
+	const Entity* get(StringView tag)const {
+		return table.at(tag)[0];
+	}
+
 	const Array<Entity*>& getArray(StringView tag) {
 		return table[tag];
 	}

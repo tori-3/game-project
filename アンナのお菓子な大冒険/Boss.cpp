@@ -353,7 +353,7 @@ void SnowKnight::draw()const {
 }
 
 
-SlaversCookie::SlaversCookie(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,0),50,100},cpos,{0,0},maxHp }
+SlaversCookie::SlaversCookie(const Vec2& cpos) :Entity{ U"SlaversCookie", RectF{Arg::center(0,0),50,100},cpos,{0,0},maxHp }
 , character{ U"Characters/cookieDoreisho/model.json" ,U"Characters/cookieDoreisho/motion.txt" ,0.4,cpos,true,false }
 {
 	f = []() {};
@@ -362,6 +362,8 @@ SlaversCookie::SlaversCookie(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::cen
 
 	rx = pos.x + rect_size * 6.5;
 	lx = pos.x - rect_size * 6.5;
+
+	DataManager::get().table.emplace(U"SlaversCookie");
 
 }
 
@@ -578,7 +580,15 @@ void SlaversCookie::draw()const {
 	character.draw();
 }
 
+void SlaversCookie::damage(int32 n, const Vec2& _force, DamageType damageType)
+{
+	hp -= n;
+}
 
+SlaversCookie::~SlaversCookie()
+{
+	DataManager::get().table.erase(U"SlaversCookie");
+}
 
 
 Captain::Captain(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,-30),230,100},cpos,{0,0},maxHp }

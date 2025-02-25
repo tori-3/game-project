@@ -250,18 +250,18 @@ namespace AnnaMusicGame {
 		Effect effect;
 
 
-		Array<String> detas = LoadDates(U"AnnaMusicGame/{}_dates.txt"_fmt(getData().mini_mode));
+		Array<String> detas = LoadDates(U"MiniGameAsset/AnnaMusicGame/{}_dates.txt"_fmt(getData().mini_mode));
 		int32 bpm = Parse<double>(detas[0]);
 
 		int32 st = Parse<double>(detas[1]);
 
 		String credit = detas[2];
 
-		std::pair<Array<OffsetCircular>, Array<OffsetCircular>> notes = LoadNotes(U"AnnaMusicGame/{}_notes.txt"_fmt(getData().mini_mode), s);
+		std::pair<Array<OffsetCircular>, Array<OffsetCircular>> notes = LoadNotes(U"MiniGameAsset/AnnaMusicGame/{}_notes.txt"_fmt(getData().mini_mode), s);
 		Array<OffsetCircular>& rcs = notes.first;
 		Array<OffsetCircular>& gcs = notes.second;
 
-		const Audio music{ U"AnnaMusicGame/{}.mp3"_fmt(getData().mini_mode) ,Loop::No };
+		const Audio music{ U"MiniGameAsset/AnnaMusicGame/{}.mp3"_fmt(getData().mini_mode) ,Loop::No };
 
 		const Font font{ FontMethod::MSDF,50 };
 
@@ -270,11 +270,11 @@ namespace AnnaMusicGame {
 		const Circle C2{ 550,600,30 };
 		const Circle C3{ OffsetCircular{ Point{-1450,600},2000,(100_deg) },130 };
 
-		const Audio SE{ U"AnnaMusicGame/Tambourine02-01(Open).mp3" };
+		const Audio SE{ U"MiniGameAsset/AnnaMusicGame/Tambourine02-01(Open).mp3" };
 		Stopwatch stopwatch{ StartImmediately::Yes };
 
-		Texture candyr{ U"AnnaMusicGame/candyr.png" };
-		Texture candyg{ U"AnnaMusicGame/candyg.png" };
+		Texture candyr{ U"MiniGameAsset/AnnaMusicGame/candyr.png" };
+		Texture candyg{ U"MiniGameAsset/AnnaMusicGame/candyg.png" };
 
 		int32 rg = 0;
 
@@ -282,9 +282,9 @@ namespace AnnaMusicGame {
 
 		Array<SpriteSheetAnimation>anime =
 		{
-			SpriteSheetAnimation(U"AnnaMusicGame/anime_00.png", 10, 4, 400, 400, frameduration, true),
-			SpriteSheetAnimation(U"AnnaMusicGame/anime_11.png", 10, 4, 400, 400, frameduration, true),
-			SpriteSheetAnimation(U"AnnaMusicGame/anime_22.png", 5, 1, 400, 400, frameduration, true)
+			SpriteSheetAnimation(U"MiniGameAsset/AnnaMusicGame/anime_00.png", 10, 4, 400, 400, frameduration, true),
+			SpriteSheetAnimation(U"MiniGameAsset/AnnaMusicGame/anime_11.png", 10, 4, 400, 400, frameduration, true),
+			SpriteSheetAnimation(U"MiniGameAsset/AnnaMusicGame/anime_22.png", 5, 1, 400, 400, frameduration, true)
 
 		};
 		int32 nowanimation = 1;
@@ -325,9 +325,9 @@ namespace AnnaMusicGame {
 				change = false;
 			}
 
-			music.setVolume(getData().BGM_volume);
+			music.setVolume(getData().BGMVolume);
 
-			SE.setVolume(getData().Effect_volume);
+			SE.setVolume(getData().EffectVolume);
 			// Enter
 			if (KeyEnter.down())
 			{

@@ -297,7 +297,7 @@ namespace Maze2 {
 
 		bool clear = false;
 
-		Audio clearAudio{ U"まんじゅうラッシュ素材/クリア2.wav" };
+		Audio clearAudio{ U"MiniGameAsset/Common/クリア2.wav" };
 
 		mazeGame(const InitData& init)//名前を変更してください
 			: IScene{ init }

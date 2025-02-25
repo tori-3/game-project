@@ -149,17 +149,17 @@ namespace Maze1 {
 	{
 	public:
 		const Font fontMSDF{ FontMethod::MSDF,32 };
-		const Font text{ 100 , U"MAZE/font/DotGothic16/DotGothic16-Regular.ttf", FontStyle::Bitmap };
+		const Font text{ 100 , U"MiniGameAsset/MAZE/font/DotGothic16/DotGothic16-Regular.ttf", FontStyle::Bitmap };
 		const Font watch{ FontMethod::MSDF,22 };
-		const Audio easy{ Audio::Stream, U"MAZE/audio/bo-tto hidamari.mp3", Loop::Yes };
-		const Audio normal{ Audio::Stream, U"MAZE/audio/Candy Crush.mp3", Loop::Yes };
-		const Audio hard{ Audio::Stream, U"MAZE/audio/Mystic Edge.mp3", Loop::Yes };
+		const Audio easy{ Audio::Stream, U"MiniGameAsset/MAZE/audio/bo-tto hidamari.mp3", Loop::Yes };
+		const Audio normal{ Audio::Stream, U"MiniGameAsset/MAZE/audio/Candy Crush.mp3", Loop::Yes };
+		const Audio hard{ Audio::Stream, U"MiniGameAsset/MAZE/audio/Mystic Edge.mp3", Loop::Yes };
 		//const Texture choco{ U"MAZE/IMG_3688.jpg" };
-		const Texture cookie{ U"MAZE/biscuit1.png" };
-		const Audio click{ U"MAZE/audio/color.mp3" };
-		const Audio goal{ U"MAZE/audio/bonus.mp3" };
+		const Texture cookie{ U"MiniGameAsset/MAZE/biscuit1.png" };
+		const Audio click{ U"MiniGameAsset/MAZE/audio/color.mp3" };
+		const Audio goal{ U"MiniGameAsset/MAZE/audio/bonus.mp3" };
 
-		const Texture annna{ U"MAZE/annna.png" };
+		const Texture annna{ U"MiniGameAsset/MAZE/annna.png" };
 
 		const Texture chocoWall{ U"StageTexture/ChocolateWall.png" };
 
@@ -233,23 +233,23 @@ namespace Maze1 {
 			switch (getData().mini_mode)
 			{
 			case Stage_Mode:
-				normal.setVolume(getData().BGM_volume);
+				normal.setVolume(getData().BGMVolume);
 				normal.play();
 				break;
 			case Easy_Mode:
-				easy.setVolume(getData().BGM_volume);
+				easy.setVolume(getData().BGMVolume);
 				easy.play();
 				break;
 			case Normal_Mode:
-				normal.setVolume(getData().BGM_volume);
+				normal.setVolume(getData().BGMVolume);
 				normal.play();
 				break;
 			case Hard_Mode:
-				hard.setVolume(getData().BGM_volume);
+				hard.setVolume(getData().BGMVolume);
 				hard.play();
 				break;
 			default:
-				normal.setVolume(getData().BGM_volume);
+				normal.setVolume(getData().BGMVolume);
 				normal.play();
 				break;
 			}
@@ -318,26 +318,26 @@ namespace Maze1 {
 
 			if (goalPos.intersects(Circle(ballPos, 8))) //重なったら
 			{
-				goal.setVolume(getData().Effect_volume);
+				goal.setVolume(getData().EffectVolume);
 				goal.play();
 				changeScene(U"Clear");
 				stopwatch.pause();
 			}
 			if (KeyEscape.up()) {
-				click.setVolume(getData().Effect_volume);
+				click.setVolume(getData().EffectVolume);
 				click.play();
 				key = true;
 			}
 			if (key) {
 				stopwatch.pause();
 				if (restart.leftClicked()) {
-					click.setVolume(getData().Effect_volume);
+					click.setVolume(getData().EffectVolume);
 					click.play();
 					key = false;
 					stopwatch.resume();
 				}
 				if (replay.leftClicked()) {
-					click.setVolume(getData().Effect_volume);
+					click.setVolume(getData().EffectVolume);
 					click.play();
 					changeScene(U"Maze1");
 					stopwatch.reset();
@@ -361,7 +361,7 @@ namespace Maze1 {
 					}
 				}
 				if (title.leftClicked()) {
-					click.setVolume(getData().Effect_volume);
+					click.setVolume(getData().EffectVolume);
 					click.play();
 					stopwatch.reset();
 					EndGame(false);
@@ -441,22 +441,22 @@ namespace Maze1 {
 	class Clear : public App::Scene
 	{
 	public:
-		const Font text{ 100 , U"MAZE/font/DotGothic16/DotGothic16-Regular.ttf", FontStyle::Bitmap };
-		const Font text2{ 85 , U"MAZE/font/DotGothic16/DotGothic16-Regular.ttf", FontStyle::Bitmap };
-		const Font text3{ 60 , U"MAZE/font/DotGothic16/DotGothic16-Regular.ttf", FontStyle::Bitmap };
+		const Font text{ 100 , U"MiniGameAsset/MAZE/font/DotGothic16/DotGothic16-Regular.ttf", FontStyle::Bitmap };
+		const Font text2{ 85 , U"MiniGameAsset/MAZE/font/DotGothic16/DotGothic16-Regular.ttf", FontStyle::Bitmap };
+		const Font text3{ 60 , U"MiniGameAsset/MAZE/font/DotGothic16/DotGothic16-Regular.ttf", FontStyle::Bitmap };
 		const Font otologic{ FontMethod::MSDF,18 };
-		const Audio Bgm{ Audio::Stream, U"MAZE/audio/Loop03-long.mp3", Loop::Yes };
-		const Audio click{ U"MAZE/audio/color.mp3" };
+		const Audio Bgm{ Audio::Stream, U"MiniGameAsset/MAZE/audio/Loop03-long.mp3", Loop::Yes };
+		const Audio click{ U"MiniGameAsset/MAZE/audio/color.mp3" };
 		Clear(const InitData& init)
 			: IScene{ init } {
-			Bgm.setVolume(getData().BGM_volume);
+			Bgm.setVolume(getData().BGMVolume);
 			Bgm.play();
 			clear = true;
 		}
 		void update() override
 		{
 			if (KeyEnter.down()) {
-				click.setVolume(getData().Effect_volume);
+				click.setVolume(getData().EffectVolume);
 				click.play();
 				//changeScene(U"Maze1");
 				EndGame(clear);

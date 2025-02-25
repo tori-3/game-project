@@ -214,7 +214,7 @@ public:
 	const Vec2 posItigo{ Scene::Size() - Vec2{Scene::Width()-200,200} };
 
 	CharacterSystem characterAnnna{ U"Characters/annna/annna.json",U"Characters/annna/motion.txt",0.5,posAnnna,false,true };
-	mutable CharacterSystem characterItigo{ U"CharacterImages/itigo/itigo.json" ,U"CharacterImages/itigo/motion.txt" ,0.5,posItigo,true,false };
+	mutable CharacterSystem characterItigo{ U"Characters/itigo/itigo.json" ,U"Characters/itigo/motion.txt" ,0.5,posItigo,true,false };
 
 
 	double t = 0;

@@ -172,27 +172,27 @@ namespace FallingAnna {
 	{
 	public:
 		//ここに変数などを宣言
-		const Texture defanna{ U"tex/hutuuanna.png" };
+		const Texture defanna{ U"MiniGameAsset/FallingAnna/tex/hutuuanna.png" };
 
-		const Texture kasokuanna{ U"tex/rakkaanna.png" };
-		const Texture sippaianna{ U"tex/sippai.png" };
-		const Texture clearanna{ U"tex/clear.png" };
-		Texture rock{ U"tex/rockball.png" };
-		const Texture toge{ U"tex/thunderbolt.png" };
-		const Array<Texture> cloud{ Texture(U"☁"_emoji),Texture(U"tex/cloud0.png"),Texture(U"tex/cloud1.png") };
-		const Texture jimen{ U"tex/ground.bmp" };
-		const Texture tower{ U"tex/tower2.png" };
-		Texture bat{ U"tex/physicbit.bmp" };
+		const Texture kasokuanna{ U"MiniGameAsset/FallingAnna/tex/rakkaanna.png" };
+		const Texture sippaianna{ U"MiniGameAsset/FallingAnna/tex/sippai.png" };
+		const Texture clearanna{ U"MiniGameAsset/FallingAnna/tex/clear.png" };
+		Texture rock{ U"MiniGameAsset/FallingAnna/tex/rockball.png" };
+		const Texture toge{ U"MiniGameAsset/FallingAnna/tex/thunderbolt.png" };
+		const Array<Texture> cloud{ Texture(U"☁"_emoji),Texture(U"MiniGameAsset/FallingAnna/tex/cloud0.png"),Texture(U"MiniGameAsset/FallingAnna/tex/cloud1.png") };
+		const Texture jimen{ U"MiniGameAsset/FallingAnna/tex/ground.bmp" };
+		const Texture tower{ U"MiniGameAsset/FallingAnna/tex/tower2.png" };
+		Texture bat{ U"MiniGameAsset/FallingAnna/tex/physicbit.bmp" };
 		Array<picture>bats = Array<picture>();
 		Array<picture>brokes = Array<picture>();
 		Array<Vec2>batspeeds = Array<Vec2>();
 
-		const Audio damageA{ U"oto/don.wav" };
-		const Audio hakaiA{ U"oto/bomber.wav" };
-		const Audio kasokuA{ U"oto/jett.wav" };
-		const Audio clearA{ U"oto/fanfare.wav" };
-		const Audio sippaiA{ U"oto/hoaa.wav" };
-		const Audio bgm{ U"oto/sandou.mp3" };
+		const Audio damageA{ U"MiniGameAsset/FallingAnna/oto/don.wav" };
+		const Audio hakaiA{ U"MiniGameAsset/FallingAnna/oto/bomber.wav" };
+		const Audio kasokuA{ U"MiniGameAsset/FallingAnna/oto/jett.wav" };
+		const Audio clearA{ U"MiniGameAsset/FallingAnna/oto/fanfare.wav" };
+		const Audio sippaiA{ U"MiniGameAsset/FallingAnna/oto/hoaa.wav" };
+		const Audio bgm{ U"MiniGameAsset/FallingAnna/oto/sandou.mp3" };
 
 		const Font Mfont{ 30 };
 		const Font Sfont{ 60 };
@@ -322,13 +322,13 @@ namespace FallingAnna {
 			prenokori = nokori;
 			nokori += 100;
 			bgm.setLoop(true);
-			bgm.setVolume(getData().BGM_volume);
-			damageA.setVolume(getData().Effect_volume);
-			hakaiA.setVolume(getData().Effect_volume);
-			kasokuA.setVolume(getData().Effect_volume);
-			clearA.setVolume(getData().Effect_volume);
-			sippaiA.setVolume(getData().Effect_volume);
-			bgm.setVolume(getData().Effect_volume);
+			bgm.setVolume(getData().BGMVolume);
+			damageA.setVolume(getData().EffectVolume);
+			hakaiA.setVolume(getData().EffectVolume);
+			kasokuA.setVolume(getData().EffectVolume);
+			clearA.setVolume(getData().EffectVolume);
+			sippaiA.setVolume(getData().EffectVolume);
+			bgm.setVolume(getData().EffectVolume);
 			bgm.play();
 		}
 

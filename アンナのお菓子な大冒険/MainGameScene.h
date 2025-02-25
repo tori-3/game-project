@@ -353,7 +353,13 @@ public:
 				ScopedSpotlight target{ *light,ColorF{0.3} };
 				const Transformer2D t{ camera.getMat3x2() };
 
-				Circle{ player->pos,500 }.draw(ColorF{1.0 },ColorF{ 0.0 });				
+				Circle{ player->pos,500 }.draw(ColorF{1.0 },ColorF{ 0.0 });
+
+				if(DataManager::get().table.contains(U"SlaversCookie"))
+				{
+					Circle{ manager.get(U"SlaversCookie")->pos,100 }.draw(ColorF{ 1.0 }, ColorF{ 0.0 });
+				}
+
 			}
 
 			light->draw();

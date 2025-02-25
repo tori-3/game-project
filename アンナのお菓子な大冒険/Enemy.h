@@ -14,7 +14,7 @@ public:
 	CharacterSystem character;
 
 	StrawberrySoldier(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,0),70,69},cpos,{0,0},1}
-		, character{ U"CharacterImages/itigo/itigo.json" ,U"CharacterImages/itigo/motion.txt" ,0.3,cpos,true,false }
+		, character{ U"Characters/itigo/itigo.json" ,U"Characters/itigo/motion.txt" ,0.3,cpos,true,false }
 	{
 		character.addMotion(U"",true);
 
@@ -81,7 +81,7 @@ public:
 	CharacterSystem character;
 
 	CookieSoldier(const Vec2& cpos) :Entity{ {U"Enemy"}, RectF{Arg::center(0,0),70,69},cpos,{0,0},1},
-		character{ U"CharacterImages/cookie/cookie.json",U"CharacterImages/cookie/motion_cookie.txt",0.3,cpos,true,false }
+		character{ U"Characters/cookie/cookie.json",U"Characters/cookie/motion_cookie.txt",0.3,cpos,true,false }
 	{
 		character.addMotion(U"",true);
 	}
@@ -1070,7 +1070,7 @@ public:
 		hitBox.update();
 
 		attack(U"Player", hitBox.getFigure(), 1);
-
+		attack(U"Enemy", hitBox.getFigure(), 1);
 
 		if (hitBox.touch(Direction::left)) {
 			hp = 0;

@@ -83,6 +83,10 @@ public:
 	void lateUpdate()override;
 
 	void draw()const override;
+
+	void damage(int32 n, const Vec2& _force, DamageType damageType) override;
+
+	~SlaversCookie();
 };
 
 

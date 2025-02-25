@@ -38,31 +38,31 @@ namespace ManjuRush {
 	{
 	public:
 		const Font font{ 100 };
-		Texture anna{ U"まんじゅうラッシュ素材/アンナちゃんver2右.png" };
-		const Texture anna2_j1{ U"まんじゅうラッシュ素材/アンナちゃん2_j1.png" };
-		const Texture anna2_j2{ U"まんじゅうラッシュ素材/アンナちゃん2_j2.png" };
-		const Texture anna2_j3{ U"まんじゅうラッシュ素材/アンナちゃん2_j3.png" };
-		const Texture anna2_d{ U"まんじゅうラッシュ素材/アンナちゃん2右_d.png" };
-		Texture manju{ U"まんじゅうラッシュ素材/まんじゅう3.png" };
-		Texture renga{ U"まんじゅうラッシュ素材/レンガピンク.png" };
-		Texture renga80{ U"まんじゅうラッシュ素材/レンガピンク80.png" };
+		Texture anna{ U"MiniGameAsset/まんじゅうラッシュ素材/アンナちゃんver2右.png" };
+		const Texture anna2_j1{ U"MiniGameAsset/まんじゅうラッシュ素材/アンナちゃん2_j1.png" };
+		const Texture anna2_j2{ U"MiniGameAsset/まんじゅうラッシュ素材/アンナちゃん2_j2.png" };
+		const Texture anna2_j3{ U"MiniGameAsset/まんじゅうラッシュ素材/アンナちゃん2_j3.png" };
+		const Texture anna2_d{ U"MiniGameAsset/まんじゅうラッシュ素材/アンナちゃん2右_d.png" };
+		Texture manju{ U"MiniGameAsset/まんじゅうラッシュ素材/まんじゅう3.png" };
+		Texture renga{ U"MiniGameAsset/まんじゅうラッシュ素材/レンガピンク.png" };
+		Texture renga80{ U"MiniGameAsset/まんじゅうラッシュ素材/レンガピンク80.png" };
 
-		Texture yama_s{ U"まんじゅうラッシュ素材/山小.png" };
-		Texture manju_s{ U"まんじゅうラッシュ素材/まんじゅう山小.png" };
-		Texture manju_m{ U"まんじゅうラッシュ素材/まんじゅう山中.png" };
-		Texture manju_l{ U"まんじゅうラッシュ素材/まんじゅう山大.png" };
-		Texture yama_m{ U"まんじゅうラッシュ素材/山中.png" };
-		Texture yama_l{ U"まんじゅうラッシュ素材/山大.png" };
-		Texture kumo{ U"まんじゅうラッシュ素材/くも.png" };
-		Texture kumokumo{ U"まんじゅうラッシュ素材/くもくも.png" };
+		Texture yama_s{ U"MiniGameAsset/まんじゅうラッシュ素材/山小.png" };
+		Texture manju_s{ U"MiniGameAsset/まんじゅうラッシュ素材/まんじゅう山小.png" };
+		Texture manju_m{ U"MiniGameAsset/まんじゅうラッシュ素材/まんじゅう山中.png" };
+		Texture manju_l{ U"MiniGameAsset/まんじゅうラッシュ素材/まんじゅう山大.png" };
+		Texture yama_m{ U"MiniGameAsset/まんじゅうラッシュ素材/山中.png" };
+		Texture yama_l{ U"MiniGameAsset/まんじゅうラッシュ素材/山大.png" };
+		Texture kumo{ U"MiniGameAsset/まんじゅうラッシュ素材/くも.png" };
+		Texture kumokumo{ U"MiniGameAsset/まんじゅうラッシュ素材/くもくも.png" };
 
-		double vo_b = getData().BGM_volume;
-		double vo_e = getData().Effect_volume;
+		double vo_b = getData().BGMVolume;
+		double vo_e = getData().EffectVolume;
 		Audio BGM{ U"BGM/MiniGameBGM.wav" };
-		Audio Clear{ U"まんじゅうラッシュ素材/クリア2.wav" };
-		Audio Touch{ U"まんじゅうラッシュ素材/8bitダメージ8.mp3" };
-		Audio Defeat{ U"まんじゅうラッシュ素材/やられた.wav" };
-		Audio Score{ U"まんじゅうラッシュ素材/スコア.wav" };
+		Audio Clear{ U"MiniGameAsset/Common/クリア2.wav" };
+		Audio Touch{ U"MiniGameAsset/まんじゅうラッシュ素材/8bitダメージ8.mp3" };
+		Audio Defeat{ U"MiniGameAsset/Common/やられた.wav" };
+		Audio Score{ U"MiniGameAsset/まんじゅうラッシュ素材/スコア.wav" };
 
 		RectF player{ 70, 500, 70,100 };
 		Array<RectF>enemys;

@@ -68,7 +68,7 @@ public:
 	bool panelFlg = false;
 
 
-	CharacterSystem character{ U"CharacterImages/annna/annna.json",U"CharacterImages/annna/motion.txt",0.25/2,{0,0},false};
+	CharacterSystem character{ U"Characters/annna/annna.json",U"Characters/annna/motion.txt",0.25/2,{0,0},false};
 
 	int32 drawIndex = 0;
 

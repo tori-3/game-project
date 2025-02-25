@@ -10,8 +10,8 @@ namespace HawkDropOut {
 		Transformer2D transformer{ Mat3x2::Scale(1.5,{0,0 }) * Mat3x2::Translate(0,-15), TransformCursor::Yes };
 		int32 clearScore = 0;
 
-		Audio clearAudio{ U"まんじゅうラッシュ素材/クリア2.wav" };
-		Audio defeatAudio{ U"まんじゅうラッシュ素材/やられた.wav" };
+		Audio clearAudio{ U"MiniGameAsset/Common/クリア2.wav" };
+		Audio defeatAudio{ U"MiniGameAsset/Common/やられた.wav" };
 
 		bool clear = false;
 		bool gameover = false;
@@ -652,11 +652,11 @@ namespace HawkDropOut {
 		// タイマー
 		double timer = 0.0;
 
-		Image image{ U"HawkDropOut/StrawberrySoldier.png" };
+		Image image{ U"MiniGameAsset/HawkDropOut/StrawberrySoldier.png" };
 
 		Texture ishi{ image };
 
-		Image feather{ U"HawkDropOut/wing.png" };
+		Image feather{ U"MiniGameAsset/HawkDropOut/wing.png" };
 
 		Texture wing{ feather };
 
