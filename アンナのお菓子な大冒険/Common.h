@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include"LongPressInput.hpp"
 
 enum mode { Stage_Mode, Easy_Mode, Normal_Mode, Hard_Mode };
 
@@ -16,25 +17,41 @@ struct GameData
 	//ゲームをやめるでMapに戻ってきたか
 	bool quitStage = false;
 
-	int32 maxHP = 5;
+	//int32 clearStage = 0;;
+
+	//void load()
+	//{
+	//	JSON saveDatajson = JSON::Load(U"saveData.json");
+
+	//	clearStage = saveDatajson[U"ClearStage"].get<int32>();
+	//	BGMVolume = saveDatajson[U"BGMVolume"].get<double>();
+	//	EffectVolume = saveDatajson[U"EffectVolume"].get<double>();
+	//	saveDatajson[U"MaxHP"];
 
 
+
+
+	//}
+
+
+
+
+	//キー
 	InputGroup KeyUp = s3d::KeyW | s3d::KeyUp;
 	InputGroup KeyLeft = s3d::KeyA | s3d::KeyLeft;
 	InputGroup KeyDown = s3d::KeyS | s3d::KeyDown;
 	InputGroup KeyRight = s3d::KeyD | s3d::KeyRight;
-
 	InputGroup jumpKey = s3d::KeyW | s3d::KeySpace | s3d::KeyUp;
 	Input attackKey = s3d::KeyEnter;
 	InputGroup leftKey = s3d::KeyA | s3d::KeyLeft;
 	InputGroup downKey = s3d::KeyS | s3d::KeyDown;
 	InputGroup rightKey = s3d::KeyD | s3d::KeyRight;
 
+	//ステージ
 	String backgroundTexture;
-
 	String BGMPath;
-
 	FilePath stageFile;
+	int32 maxHP = 5;
 };
 
 using App = SceneManager<String, GameData>;

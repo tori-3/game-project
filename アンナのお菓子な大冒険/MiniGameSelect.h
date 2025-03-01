@@ -38,16 +38,22 @@ public:
 
 	Texture chocolateBeltConveyor{ U"StageTexture/BeltConveyor.png" };
 
-	void chocolateButton(const Vec2&pos,int32 num,double blockSize,StringView text,const ColorF&color,bool star)const
+
+	LongPressInput leftInput{ getData().KeyLeft };
+	LongPressInput rightInput{ getData().KeyRight };
+
+
+
+	void chocolateButton(const Vec2&pos,int32 num,double blockSize,StringView text,const ColorF&color,bool star,bool selected)const
 	{
 		RectF rect{ pos,num * blockSize,blockSize };
 		const bool mouseOver = rect.mouseOver();
 		for(int32 i=0;i<num;++i)
 		{
-			beltConveyorLeft(pos + Vec2{ i * blockSize,0 },blockSize, mouseOver);
+			beltConveyorLeft(pos + Vec2{ i * blockSize,0 },blockSize, mouseOver|| selected);
 		}
 
-		rect.drawFrame(2, color);
+		rect.drawFrame(selected?8:2, color);
 
 		if(star)
 		{
@@ -103,7 +109,7 @@ public:
 
 	void update()override
 	{
-		if (backButton.leftClicked())
+		if (backButton.leftClicked() || KeyQ.down())
 		{
 			changeScene(U"TitleScene");
 		}
@@ -113,7 +119,27 @@ public:
 			Cursor::RequestStyle(CursorStyle::Hand);
 		}
 
-		index = Clamp<int32>(index + KeyD.down() - KeyA.down(), 0, miniGameList.size() - 1);
+		index = Clamp<int32>(index + rightInput.down() - leftInput.down(), 0, miniGameList.size() - 1);
+
+		for (int32 i = 0; i < miniGameList.size(); ++i)
+		{
+			int32 x = Scene::Width() / 7 * (i + 1);
+			int32 y = 150 + i % 2 * 200;
+			RectF rect = signboardHead.resized(220 * 1.2).regionAt(x, y);
+
+			if(rect.mouseOver())
+			{
+				Cursor::RequestStyle(CursorStyle::Hand);
+
+				if(MouseL.down())
+				{
+					index = i;
+				}
+			}
+
+		}
+
+
 
 		leftFire.update();
 		rightFire.update();
@@ -133,10 +159,10 @@ public:
 			signboardStick.resized(30,y).drawAt(x, y/2.0);
 			signboardHead.resized(220*1.2).drawAt(x, y);
 			miniGameList[i].pictures.resized(190).drawAt(x, y);
-
-			candle.drawAt(75, 700);
-			candle.drawAt(Scene::Width() - 75, 700);
 		}
+
+		candle.drawAt(75, 700);
+		candle.drawAt(Scene::Width() - 75, 700);
 
 		{
 			ScopedSpotlight target{ light,ColorF{0.4} };
@@ -156,9 +182,9 @@ public:
 
 		font(miniGameList[index].sentence).draw(150,Scene::Center().y+100);
 
-		chocolateButton({ 800,500 }, 3, 80,U"イージー",Palette::Greenyellow,true);
-		chocolateButton({ 800,600 }, 3, 80,U"ノーマル",Palette::Orange,true);
-		chocolateButton({ 800,700 }, 3, 80,U"ハード",Palette::Red,false);
+		chocolateButton({ 800,500 }, 3, 80,U"イージー",Palette::Greenyellow,true,true);
+		chocolateButton({ 800,600 }, 3, 80,U"ノーマル",Palette::Orange,true, false);
+		chocolateButton({ 800,700 }, 3, 80, U"ハード", Palette::Red, false, false);
 
 
 		homeIcon.drawAt(backButton.center, backButton.mouseOver() ? Palette::Gray : Palette::White);

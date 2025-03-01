@@ -265,7 +265,7 @@ public:
 class LastBoss :public Entity {
 public:
 
-	static constexpr int32 maxHp = 1;//50;
+	static constexpr int32 maxHp = 50;
 
 	bool left = true;
 

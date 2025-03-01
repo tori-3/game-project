@@ -17,8 +17,12 @@
 
 void Main()
 {
+	Window::SetTitle(U"アンナのお菓子な大冒険");
 
 	Window::Resize(1200, 800);
+
+	Scene::SetResizeMode(ResizeMode::Keep);
+	Window::SetStyle(WindowStyle::Sizable);
 
 	System::SetTerminationTriggers(UserAction::CloseButtonClicked);
 

@@ -3,7 +3,6 @@
 #include"LoadAsset.h"
 #include"LinerMove.h"
 
-
 static Mat3x2 MapCamera(const Vec2& playerPos)
 {
 	const Vec2 pos = Scene::Center() + Vec2{ 0,300 };
@@ -66,6 +65,9 @@ public:
 	bool walk = false;
 
 	bool panelFlg = false;
+
+	LongPressInput leftInput{ getData().KeyLeft };
+	LongPressInput rightInput{ getData().KeyRight };
 
 
 	CharacterSystem character{ U"Characters/annna/annna.json",U"Characters/annna/motion.txt",0.25/2,{0,0},false};
@@ -217,13 +219,13 @@ public:
 			};
 
 			//index
-			if (((KeyLeft | KeyA).down()) && index != 0) {
+			if (leftInput.down() && index != 0) {
 				index--;
 				left = true;
 				walk = true;
 				panelFlg = false;
 			}
-			if (((KeyRight | KeyD).down()) && index != rect_num - 1 && (index < clearStage)) {
+			if (rightInput.down() && index != rect_num - 1 && (index < clearStage)) {
 				index++;
 				left = false;
 				panelFlg = false;
@@ -235,6 +237,29 @@ public:
 
 			character.update(playerPos-Vec2{0,30}, left);
 				
+
+			{
+				Transformer2D target{ MapCamera(playerPos),TransformCursor::Yes };
+
+				for (int i = 0; i < rect_num; i++)
+				{
+					double r = (i == index) ? rect_size / 2.0 : rect_size / 2.5;
+
+					constexpr Vec2 supplementary{ 0,-5 };
+
+					Vec2 pos = stagePosList[i] + supplementary;
+
+					if (Circle{ pos,r }.mouseOver())
+					{
+
+					}
+
+					if (Circle{ pos,r }.leftClicked()&& i <= clearStage)
+					{
+						index = i;
+					}
+				}
+			}
 
 		}
 		else if (MouseL.down())largeFlg = false;
@@ -275,7 +300,9 @@ public:
 
 				Vec2 pos = stagePosList[i] + supplementary;
 
+
 				stageFrame.resized(r * 2).drawAt(pos);
+
 				stageColor.resized(r * 2).drawAt(pos, color);
 
 				switch (typeList[i])
@@ -286,11 +313,17 @@ public:
 					stageBattle.resized(r * 2).drawAt(pos);
 					break;
 				case StageType::MiniGame:
-					stageGame.resized(r * 2).drawAt(pos);
+					stageGame.resized(r * 2, r * 2*0.7).drawAt(pos);
 					break;
 				default:
 					break;
 				}
+
+				if (i == index)
+				{
+					Ellipse{ pos + Vec2{-1,5},r * 1.2,r * 0.7 }.drawFrame(0, 3, Palette::Deeppink);
+				}
+
 			}
 			character.draw();
 		}

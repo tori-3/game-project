@@ -1,64 +1,86 @@
 ﻿{
-  "ClearStage": 22,
-  "MaxHP": [
-    5,
-    5,
-    5,
-    5,
-    5,
-    11,
-    5,
-    5,
-    5,
-    5,
-    5,
-    5,
-    5,
-    5,
-    5,
-    5,
-    5,
-    5,
-    7,
-    5,
-    5,
-    5
-  ],
-  "MiniGame": {
-    "AnnaMusicGame": {
-      "Easy": false,
-      "Hard": false,
-      "Normal": false
-    },
-    "FallingAnna": {
-      "Easy": false,
-      "Hard": false,
-      "Normal": false
-    },
-    "HawkDropOut": {
-      "Easy": false,
-      "Hard": false,
-      "Normal": false
-    },
-    "ManjuRush": {
-      "Easy": false,
-      "Hard": false,
-      "Normal": false
-    },
-    "Maze1": {
-      "Easy": false,
-      "Hard": false,
-      "Normal": false
-    },
-    "Maze2": {
-      "Easy": false,
-      "Hard": false,
-      "Normal": false
-    }
-  },
-  "SelectedStage": 1,
-  "Settings": {
+    "ClearStage": 22,
+    "MaxHP": [
+        5,
+        5,
+        5,
+        7,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+    ],
+    "ClearComplete": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+    ],
+    "MiniGame": [
+        {
+            "Easy": false,
+            "Hard": false,
+            "Normal": false
+        },
+        {
+            "Easy": false,
+            "Hard": false,
+            "Normal": false
+        },
+        {
+            "Easy": false,
+            "Hard": false,
+            "Normal": false
+        },
+        {
+            "Easy": false,
+            "Hard": false,
+            "Normal": false
+        },
+        {
+            "Easy": false,
+            "Hard": false,
+            "Normal": false
+        },
+        {
+            "Easy": false,
+            "Hard": false,
+            "Normal": false
+        }
+    ],
+    "SelectedStage": 1,
     "BGMVolume": 1.0,
     "EffectVolume": 1.0
-  }
 }

@@ -349,6 +349,7 @@
     <ClInclude Include="LastBoss.h" />
     <ClInclude Include="LinerMove.h" />
     <ClInclude Include="LoadAsset.h" />
+    <ClInclude Include="LongPressInput.hpp" />
     <ClInclude Include="MagicCircle.h" />
     <ClInclude Include="MagicEffect.h" />
     <ClInclude Include="MainGameScene.h" />

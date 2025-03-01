@@ -974,5 +974,8 @@
     <ClInclude Include="EndRollScene.h">
       <Filter>Header Files\MiniGame</Filter>
     </ClInclude>
+    <ClInclude Include="LongPressInput.hpp">
+      <Filter>Header Files\MainGameScene\GameLib</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
