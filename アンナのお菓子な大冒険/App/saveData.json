@@ -1,86 +1,86 @@
 ﻿{
-    "ClearStage": 22,
-    "MaxHP": [
-        5,
-        5,
-        5,
-        7,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5,
-        5
-    ],
-    "ClearComplete": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-    ],
-    "MiniGame": [
-        {
-            "Easy": false,
-            "Hard": false,
-            "Normal": false
-        },
-        {
-            "Easy": false,
-            "Hard": false,
-            "Normal": false
-        },
-        {
-            "Easy": false,
-            "Hard": false,
-            "Normal": false
-        },
-        {
-            "Easy": false,
-            "Hard": false,
-            "Normal": false
-        },
-        {
-            "Easy": false,
-            "Hard": false,
-            "Normal": false
-        },
-        {
-            "Easy": false,
-            "Hard": false,
-            "Normal": false
-        }
-    ],
-    "SelectedStage": 1,
-    "BGMVolume": 1.0,
-    "EffectVolume": 1.0
+  "BGMVolume": 1.0,
+  "ClearComplete": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "ClearStage": 22,
+  "EffectVolume": 1.0,
+  "MaxHP": [
+    5,
+    5,
+    5,
+    7,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5
+  ],
+  "MiniGame": [
+    {
+      "Easy": false,
+      "Hard": false,
+      "Normal": false
+    },
+    {
+      "Easy": false,
+      "Hard": false,
+      "Normal": false
+    },
+    {
+      "Easy": false,
+      "Hard": false,
+      "Normal": false
+    },
+    {
+      "Easy": false,
+      "Hard": false,
+      "Normal": false
+    },
+    {
+      "Easy": false,
+      "Hard": false,
+      "Normal": false
+    },
+    {
+      "Easy": false,
+      "Hard": false,
+      "Normal": false
+    }
+  ],
+  "SelectedStage": 14
 }

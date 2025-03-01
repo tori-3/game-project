@@ -115,6 +115,7 @@
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="BunchoUI.cpp" />
     <ClCompile Include="CookieButton.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GrapesHPBar.cpp" />
@@ -327,6 +328,7 @@
     <ClInclude Include="BGMManager.hpp" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="Boss.h" />
+    <ClInclude Include="BunchoUI.hpp" />
     <ClInclude Include="CharacterSystem.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="CookieButton.h" />
@@ -357,6 +359,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="MAZE.h" />
     <ClInclude Include="Maze2.h" />
+    <ClInclude Include="MiniGameSceneBase.h" />
     <ClInclude Include="MiniGameSelect.h" />
     <ClInclude Include="MotionLoader.h" />
     <ClInclude Include="Movements.h" />

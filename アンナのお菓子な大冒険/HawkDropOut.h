@@ -1,9 +1,10 @@
 ﻿#pragma once
 #include"Common.h"
+#include"MiniGameSceneBase.h"
 
 namespace HawkDropOut {
 
-	class HawkDropOut : public App::Scene
+	class HawkDropOut : public MiniGameSceneBase
 	{
 	public:
 
@@ -19,8 +20,27 @@ namespace HawkDropOut {
 		bool tornadoFlg = false;
 
 
+		bool gameOverTimerFlg = false;
+		void onPauseStart()override
+		{
+			gameOverTimerFlg = gameOverTimer.isStarted();
+
+			if(gameOverTimerFlg)
+			{
+				gameOverTimer.pause();
+			}
+		}
+
+		void onGameStart()override
+		{
+			if (gameOverTimerFlg)
+			{
+				gameOverTimer.resume();
+			}
+		}
+
 		HawkDropOut(const InitData& init)
-			: IScene{ init }
+			: MiniGameSceneBase{ init }
 		{
 			if (not TextureAsset::IsRegistered(U"BackGroundTexture/雲背景.png")) {
 				TextureAsset::Register(U"BackGroundTexture/雲背景.png", U"BackGroundTexture/雲背景.png");
@@ -81,7 +101,7 @@ namespace HawkDropOut {
 
 		double groundTime = 0;
 
-		void draw() const override
+		void gameDraw() const override
 		{
 			//背景画面
 			Scene::SetBackground(Palette::Blue);
@@ -170,7 +190,7 @@ namespace HawkDropOut {
 			}
 		}
 
-		void update() override
+		void gameUpdate() override
 		{
 
 			if(gameover)
@@ -735,13 +755,6 @@ namespace HawkDropOut {
 		Circle meatCircle{ 1000, 360, 30 };
 
 		Circle attackball{ 0, 0, 40 };
-
-	private:
-		void EndGame(bool clear) {
-			getData().mini_clear = clear;//クリア状況保存
-			if (getData().mini_mode == Stage_Mode)changeScene(U"Map");//ステージモードならステージに帰る
-			else changeScene(U"Mini_Game_Select");//ミニゲームセレクトモードならミニゲームセレクトに帰る
-		}
 
 	};
 

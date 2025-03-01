@@ -55,8 +55,8 @@ public:
 	LongPressInput upInput{ getData().KeyUp };
 	LongPressInput downInput{ getData().KeyDown };
 
-	static constexpr Vec2 targetPlace{ 400,630 };
-	static constexpr Vec2 startPlace{ -100,630 };
+	static constexpr Vec2 startPlace{ -100,630+50 };
+	static constexpr Vec2 targetPlace{ 400,startPlace.y };
 	Vec2 playerPos = startPlace;
 
 	CharacterSystem character{ U"Characters/annna/annna.json",U"Characters/annna/motion.txt",0.5,startPlace,false};
@@ -64,7 +64,7 @@ public:
 	Timer changeMapTimer{ 2s };
 	Timer changeMiniGameTimer{ 2s };
 
-	static constexpr Vec2 menuPos{ 800,450 };
+	static constexpr Vec2 menuPos{ 800,450 + 30 };
 	static constexpr double menuHeight = 60;
 
 	//CookieButton mapButton{ RectF{Arg::center(Scene::Center().x-250,600),300,80},U"マップ" };

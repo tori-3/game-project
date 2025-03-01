@@ -192,6 +192,9 @@
     <ClCompile Include="LoadAsset.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BunchoUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -971,10 +974,16 @@
     <ClInclude Include="Fire.hpp">
       <Filter>Header Files\MainGameScene\GameLib</Filter>
     </ClInclude>
+    <ClInclude Include="LongPressInput.hpp">
+      <Filter>Header Files\MainGameScene\GameLib</Filter>
+    </ClInclude>
     <ClInclude Include="EndRollScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniGameSceneBase.h">
       <Filter>Header Files\MiniGame</Filter>
     </ClInclude>
-    <ClInclude Include="LongPressInput.hpp">
+    <ClInclude Include="BunchoUI.hpp">
       <Filter>Header Files\MainGameScene\GameLib</Filter>
     </ClInclude>
   </ItemGroup>

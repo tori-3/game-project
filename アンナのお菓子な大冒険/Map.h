@@ -176,6 +176,12 @@ public:
 		BGMManager::get().play(U"WorldBGM");
 	}
 
+	~Map()
+	{
+		getData().stage = index + 1;
+		getData().save();
+	}
+
 	void update() override
 	{
 		updatePos();
