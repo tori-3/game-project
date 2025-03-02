@@ -160,7 +160,7 @@ namespace BunchoUI
 		bool clickable = false;
 
 		UIElement() = default;
-		
+
 		/// @brief コンストラクタ
 		/// @param margine 周りのUIとの間隔
 		/// @param width 横幅(設定しないと自動計算)
@@ -377,7 +377,7 @@ namespace BunchoUI
 	};
 
 	/// @brief 複数の子供を持つクラスの基底クラス
-	class ChildrenContainer:public UIElement
+	class ChildrenContainer :public UIElement
 	{
 	public:
 		ChildrenContainer(const Margin& margine, const Optional<double>& width, const Optional<double>& height, double flex, bool clickable, const Optional<Relative>& relative, const Array<std::shared_ptr<UIElement>>& children);
@@ -822,6 +822,15 @@ namespace BunchoUI
 		[[nodiscard]]
 		static std::shared_ptr<SimpleScrollbar>Create(const Parameter& para);
 
+		//臨時で追加
+		void addScrollPos(double v)
+		{
+			m_value = Clamp(m_value + v / m_childHeight, 0.0, 1.0);
+			const RectF rect = getRect();
+			const double pos = m_value * (m_childHeight - rect.h);
+			m_child->setPos(rect.pos + Vec2{ 0,-pos });
+		}
+
 	protected:
 
 		void onUpdate()override;
@@ -836,7 +845,7 @@ namespace BunchoUI
 
 		bool isScroll()const noexcept;
 
-		double getRate()const noexcept;
+		double getScrollbarRate()const noexcept;
 
 		RoundRect getBackBarRoundRect()const noexcept;
 

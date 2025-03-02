@@ -373,7 +373,7 @@ namespace BunchoUI
 	{
 		for (auto& child : m_children)
 		{
-			if(child.get()==oldChild)
+			if (child.get() == oldChild)
 			{
 				child = newChild;
 				newChild->setParent(this);
@@ -573,7 +573,7 @@ namespace BunchoUI
 	}
 
 	template<UIDirection mainDirection, UIDirection crossDirection>
-	SizeF BaseArrange<mainDirection, crossDirection>::onGetSize()const 
+	SizeF BaseArrange<mainDirection, crossDirection>::onGetSize()const
 	{
 		double mainSum = 0, crossMax = 0;
 		for (const auto& child : m_children)
@@ -692,7 +692,8 @@ namespace BunchoUI
 	//-----------------------------------------------
 
 	inline StackUI::StackUI(const Parameter& para)
-		:ChildrenContainer{ para.margine,para.width,para.height,para.flex,para.clickable,para.relative,para.children } {}
+		:ChildrenContainer{ para.margine,para.width,para.height,para.flex,para.clickable,para.relative,para.children } {
+	}
 
 	inline std::shared_ptr<StackUI>StackUI::Create(const Parameter& para)
 	{
@@ -725,11 +726,12 @@ namespace BunchoUI
 	//-----------------------------------------------
 
 	inline SimpleDialog::SimpleDialog(const Parameter& para)
-		: ChildContainer{ {},none,none,0,false,Relative::Stretch(),para.child}
+		: ChildContainer{ {},none,none,0,false,Relative::Stretch(),para.child }
 		, m_transition{ Duration{para.fadeTime},Duration{para.fadeTime} }
 		, backgroundColor{ para.backgroundColor }
 		, erasable{ para.erasable }
-		, updateFunc{ para.updateFunc } {}
+		, updateFunc{ para.updateFunc } {
+	}
 
 	inline std::shared_ptr<SimpleDialog>SimpleDialog::Create(const Parameter& para)
 	{
@@ -748,7 +750,8 @@ namespace BunchoUI
 	inline RectPanel::RectPanel(const Parameter& para)
 		: PanelBase{ para.padding,para.margine,para.width,para.height,para.flex,para.clickable,para.relative,para.child }
 		, r{ para.r }
-		, color{ para.color } {}
+		, color{ para.color } {
+	}
 
 	inline std::shared_ptr<RectPanel>RectPanel::Create(const Parameter& para)
 	{
@@ -768,7 +771,8 @@ namespace BunchoUI
 		: PanelBase{ para.padding,para.margine,para.width,para.height,para.flex,para.clickable,para.relative,para.child }
 		, r{ para.r }
 		, color{ para.color }
-		, mouseOverColor{ para.mouseOverColor } {}
+		, mouseOverColor{ para.mouseOverColor } {
+	}
 
 	inline std::shared_ptr<SimpleButton>SimpleButton::Create(const Parameter& para)
 	{
@@ -788,7 +792,8 @@ namespace BunchoUI
 		: UIElement{ para.margine,para.width,para.height,para.flex,false,para.relative }
 		, value{ para.value }
 		, enabled{ para.enabled }
-		, color{ para.color } {}
+		, color{ para.color } {
+	}
 
 	inline std::shared_ptr<SimpleSlider>SimpleSlider::Create(const Parameter& para)
 	{
@@ -806,7 +811,8 @@ namespace BunchoUI
 
 	inline SimpleScrollbar::SimpleScrollbar(const Parameter& para)
 		: ChildContainer{ para.margine,para.width,para.height,para.flex,false,para.relative,para.child }
-		,speed{para.speed}{}
+		, speed{ para.speed } {
+	}
 
 	inline std::shared_ptr<SimpleScrollbar>SimpleScrollbar::Create(const Parameter& para)
 	{
@@ -818,9 +824,11 @@ namespace BunchoUI
 		return getRect().h < m_childHeight;
 	}
 
-	inline double SimpleScrollbar::getRate()const noexcept
+	inline double SimpleScrollbar::getScrollbarRate()const noexcept
 	{
-		return getRect().h / m_childHeight;
+		constexpr double minScrollbarHeight = 40;
+		const RectF rect = getRect();
+		return Max(rect.h / m_childHeight, minScrollbarHeight / rect.h);
 	}
 
 	inline RoundRect SimpleScrollbar::getBackBarRoundRect()const noexcept
@@ -832,8 +840,8 @@ namespace BunchoUI
 	inline RoundRect SimpleScrollbar::getBarRoundRect()const noexcept
 	{
 		const RectF rect = getRect();
-		const double space = rect.h * (1 - getRate());
-		return RoundRect{ rect.rightX() - ScrollbarWidth,rect.y + m_value * space,ScrollbarWidth,rect.h * getRate(),ScrollbarWidth / 2.0 };
+		const double space = rect.h * (1 - getScrollbarRate());
+		return RoundRect{ rect.rightX() - ScrollbarWidth,rect.y + m_value * space,ScrollbarWidth,rect.h * getScrollbarRate(),ScrollbarWidth / 2.0 };
 	}
 
 	//-----------------------------------------------
@@ -843,7 +851,8 @@ namespace BunchoUI
 	inline RectUI::RectUI(const Parameter& para)
 		: UIElement{ para.margine,para.width,para.height,para.flex,para.clickable,para.relative }
 		, color{ para.color }
-		, m_size{ para.size } {}
+		, m_size{ para.size } {
+	}
 
 	inline std::shared_ptr<RectUI>RectUI::Create(const Parameter& para)
 	{
@@ -871,7 +880,8 @@ namespace BunchoUI
 		, m_font{ para.font }
 		, textStyle{ para.textStyle }
 		, m_fontSize{ para.fontSize }
-		, color{ para.color } {}
+		, color{ para.color } {
+	}
 
 	inline std::shared_ptr<TextUI>TextUI::Create(const Parameter& para)
 	{
@@ -942,7 +952,8 @@ namespace BunchoUI
 	//-----------------------------------------------
 
 	inline UIManager::UIManager(const RectF& rect)
-		: m_rect{ rect } {}
+		: m_rect{ rect } {
+	}
 
 	inline void UIManager::draw()const
 	{

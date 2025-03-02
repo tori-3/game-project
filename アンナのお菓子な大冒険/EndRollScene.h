@@ -286,7 +286,7 @@ public:
 		const double height = FontAsset{ U"EndRollFont" }.height();
 
 		FontAsset{ U"EndRollFont" }(U"BGM・効果音\nまる").draw(50, 50);
-		FontAsset{ U"EndRollFont" }(U"効果音素材\n効果音ラボ\nOn - Jin ～音人～\nザ・マッチメイカァズ").draw(50, 50 + height * 3.5, AlphaF(Clamp(t - 1, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"効果音素材\n効果音ラボ\nOn - Jin ～音人～\nザ・マッチメイカァズ\nOtoLogic").draw(50, 50 + height * 3.5, AlphaF(Clamp(t - 1, 0.0, 1.0)));
 	}
 };
 

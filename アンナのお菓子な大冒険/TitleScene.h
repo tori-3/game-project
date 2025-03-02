@@ -3,6 +3,7 @@
 #include"Common.h"
 #include"CookieButton.h"
 #include"LoadAsset.h"
+#include"SweetsPanel.hpp"
 
 
 class TitleScene : public App::Scene
@@ -76,6 +77,9 @@ public:
 
 	bool menuClicked = false;
 
+
+	UIManager uiManager;
+
 	double translate()const
 	{
 		return (1 - Min(time / 2.0, 1.0)) * 500;
@@ -99,6 +103,7 @@ public:
 
 	void update() override
 	{
+		uiManager.update();
 		time += Scene::DeltaTime();
 
 		if (not (timer.isRunning() && 0s < timer))
@@ -171,7 +176,7 @@ public:
 				case 2:
 					break;
 				case 3:
-					LicenseManager::ShowInBrowser();
+					uiManager.addChild({licenseDialog()});
 					break;
 				case 4:
 					System::Exit();
@@ -249,5 +254,94 @@ public:
 		}
 
 		character.draw();
+
+		uiManager.draw();
 	}
+
+	std::shared_ptr<UIElement> licenseDialog()
+	{
+		auto showBrowserButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 200, .child = TextUI::Create({.text = U"ブラウザで見る",.color = Palette::White}) });
+		auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 20,.margine = 10,.width = 200, .child = TextUI::Create({.text = U"閉じる",.color = Palette::White}) });
+		closeButton->selected = true;
+		auto scrollbar = SimpleScrollbar::Create
+		({
+			.flex = 1.0,
+			.child = Lisence::LicenseDisplay()
+		});
+
+
+		return SimpleDialog::Create
+		({
+			.child = SweetsPanel::Create
+			({
+				.margine = 5,
+				.child = Column::Create
+				({
+					.children
+					{
+						scrollbar,
+						Row::Create
+						({
+							.children
+							{
+								showBrowserButton,
+								closeButton
+							}
+						})
+					}
+				}),
+			}),
+			.updateFunc = [=](SimpleDialog* dialog)
+			{
+				if (getData().KeyLeft.down())
+				{
+					showBrowserButton->selected = true;
+					closeButton->selected = false;
+				}
+
+				if (getData().KeyRight.down())
+				{
+					showBrowserButton->selected = false;
+					closeButton->selected = true;
+				}
+
+				if(getData().KeyUp.pressed())
+				{
+					scrollbar->addScrollPos(-Scene::DeltaTime() * 1000);
+				}
+
+				if (getData().KeyDown.pressed())
+				{
+					scrollbar->addScrollPos(Scene::DeltaTime() * 1000);
+				}
+
+				if (KeyEnter.pressed())
+				{
+					if (showBrowserButton->selected)
+					{
+						LicenseManager::ShowInBrowser();
+					}
+					else
+					{
+						dialog->close();
+						menuClicked = false;
+						KeyEnter.clearInput();
+					}
+				}
+				else
+				{
+					if (closeButton->clicked() || KeyQ.down())
+					{
+						dialog->close();
+						menuClicked = false;
+					}
+					else if (showBrowserButton->clicked())
+					{
+						LicenseManager::ShowInBrowser();
+					}
+				}
+			}
+		});
+	}
+
 };

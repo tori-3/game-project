@@ -135,7 +135,7 @@ namespace BunchoUI
 				else
 				{
 					size.x = area.w;
-					if(relative.y.stretch)
+					if (relative.y.stretch)
 					{
 						size.y = area.h;
 					}
@@ -149,7 +149,7 @@ namespace BunchoUI
 			{
 				size.y = area.h;
 
-				if(relative.x.stretch)
+				if (relative.x.stretch)
 				{
 					size.x = area.w;
 				}
@@ -647,7 +647,7 @@ namespace BunchoUI
 						setMouseCapture(false);
 					}
 
-					const double space = view.h * (1 - getRate());
+					const double space = view.h * (1 - getScrollbarRate());
 					double oldValue = m_value;
 					m_value = Clamp(m_value + Cursor::DeltaF().y / space, 0.0, 1.0);
 

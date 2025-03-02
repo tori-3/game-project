@@ -157,6 +157,9 @@
     <Filter Include="Header Files\MiniGame">
       <UniqueIdentifier>{ef690b7d-2904-42c3-834d-ab31c0d42426}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\UISystem">
+      <UniqueIdentifier>{c4f83bb2-bad1-42b1-bcd3-2842c1740956}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -193,6 +196,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BunchoUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChocolateButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Lisence.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundIcon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SweetsPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -983,8 +998,23 @@
     <ClInclude Include="MiniGameSceneBase.h">
       <Filter>Header Files\MiniGame</Filter>
     </ClInclude>
+    <ClInclude Include="Lisence.h">
+      <Filter>Header Files\MainGameScene</Filter>
+    </ClInclude>
     <ClInclude Include="BunchoUI.hpp">
+      <Filter>Header Files\UISystem</Filter>
+    </ClInclude>
+    <ClInclude Include="ChocolateButton.h">
+      <Filter>Header Files\UISystem</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundIcon.hpp">
+      <Filter>Header Files\UISystem</Filter>
+    </ClInclude>
+    <ClInclude Include="NinePatch.hpp">
       <Filter>Header Files\MainGameScene\GameLib</Filter>
+    </ClInclude>
+    <ClInclude Include="SweetsPanel.hpp">
+      <Filter>Header Files\UISystem</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include"LongPressInput.hpp"
 #include"BunchoUI.hpp"
+#include"Lisence.h"
 
 using namespace BunchoUI;
 

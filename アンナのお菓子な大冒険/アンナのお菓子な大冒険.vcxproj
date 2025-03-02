@@ -116,18 +116,22 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="BunchoUI.cpp" />
+    <ClCompile Include="ChocolateButton.cpp" />
     <ClCompile Include="CookieButton.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GrapesHPBar.cpp" />
     <ClCompile Include="LastBoss.cpp" />
+    <ClCompile Include="Lisence.cpp" />
     <ClCompile Include="LoadAsset.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Movements.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SoundIcon.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SweetsPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\engine\texture\box-shadow\128.png" />
@@ -330,6 +334,7 @@
     <ClInclude Include="Boss.h" />
     <ClInclude Include="BunchoUI.hpp" />
     <ClInclude Include="CharacterSystem.h" />
+    <ClInclude Include="ChocolateButton.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="CookieButton.h" />
     <ClInclude Include="CookieItem.h" />
@@ -350,6 +355,7 @@
     <ClInclude Include="LaserEffect.h" />
     <ClInclude Include="LastBoss.h" />
     <ClInclude Include="LinerMove.h" />
+    <ClInclude Include="Lisence.h" />
     <ClInclude Include="LoadAsset.h" />
     <ClInclude Include="LongPressInput.hpp" />
     <ClInclude Include="MagicCircle.h" />
@@ -364,16 +370,19 @@
     <ClInclude Include="MotionLoader.h" />
     <ClInclude Include="Movements.h" />
     <ClInclude Include="MyInput.h" />
+    <ClInclude Include="NinePatch.hpp" />
     <ClInclude Include="Pause.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RingEffect.h" />
     <ClInclude Include="setting.h" />
     <ClInclude Include="SimpleAction.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SoundIcon.hpp" />
     <ClInclude Include="Spawner.h" />
     <ClInclude Include="Spotlight.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Stage.h" />
+    <ClInclude Include="SweetsPanel.hpp" />
     <ClInclude Include="TalkManager.h" />
     <ClInclude Include="TalkWindow.h" />
     <ClInclude Include="TitleScene.h" />

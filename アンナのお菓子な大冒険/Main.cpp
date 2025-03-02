@@ -26,6 +26,8 @@ void Main()
 
 	System::SetTerminationTriggers(UserAction::CloseButtonClicked);
 
+	Lisence::SetLisence();
+
 	FontAsset::Register(U"TitleFont", FontMethod::MSDF, 60, Typeface::Heavy);
 
 	App manager;
