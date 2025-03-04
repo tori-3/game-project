@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include"Common.h"
 
 using App = SceneManager<String, GameData>;
 
@@ -18,116 +19,33 @@ public:
 
 	}
 
-	virtual void gameUpdate()
-	{
+	std::shared_ptr<UIElement> createPauseUI();
 
-	}
+	virtual void gameUpdate();
 
-	virtual void gameDraw()const
-	{
+	virtual void gameDraw()const;
 
-	}
+	virtual void onPauseStart();
 
-	virtual void onPauseStart()
-	{
+	virtual void onGameStart();
 
-	}
+	void pauseUpdate();
 
-	virtual void onGameStart()
-	{
+	void pauseDraw()const;
 
-	}
+	void goPause();
 
-	void pauseUpdate() {
-		uiManager.update();
+	void EndGame(bool clear);
 
-		if (uiManager.getChildren().size() == 0)
-		{
-			goGame();
-		}
-	}
+	void goGame();
 
-	void pauseDraw()const {
-		uiManager.draw();
-	}
+	void update() override;
 
-	void goPause() {
-		onPauseStart();
+	void draw() const override;
 
-		pauseFlg = true;
+private:
 
-		auto continueButton = SimpleButton::Create({ .child = TextUI::Create({.text = U"ゲームを続ける",.color = Palette::White}) });
-		auto endButton = SimpleButton::Create({ .child = TextUI::Create({.text = U"ゲームをやめる",.color = Palette::White}) });
-		auto settingButton = SimpleButton::Create({ .child = TextUI::Create({.text = U"設定",.color = Palette::White}) });
-
-		uiManager.addChild
-		({
-			SimpleDialog::Create
-			({
-				.child = RectPanel::Create
-				({
-					.padding = 30,
-					.margine = 30,
-					.child = Row::Create
-					({
-						.children
-						{
-							continueButton,
-							endButton,
-							settingButton
-						}
-					})
-				}),
-				.updateFunc=[=](SimpleDialog* dialog)
-				{
-					if(continueButton->clicked())
-					{
-						dialog->close();
-					}
-					if(endButton->clicked())
-					{
-						EndGame(false);
-					}
-					if(settingButton->clicked())
-					{
-						
-					}
-				}
-			})
-		});
-	}
-
-	void EndGame(bool clear) {
-		getData().mini_clear = clear;//クリア状況保存
-		if (getData().mini_mode == Stage_Mode)changeScene(U"Map");//ステージモードならステージに帰る
-		else changeScene(U"Mini_Game_Select");//ミニゲームセレクトモードならミニゲームセレクトに帰る
-	}
-
-	void goGame() {
-		pauseFlg = false;
-		onGameStart();
-	}
-
-	void update() override
-	{
-		if (pause != pauseFlg)
-		{
-			pause = pauseFlg;
-		}
-		if (not pause)
-		{
-			gameUpdate();
-			if(KeyEscape.down())
-			{
-				goPause();
-			}
-		}
-		else pauseUpdate();
-	}
-
-	void draw() const override
-	{
-		gameDraw();
-		if (pause)pauseDraw();
-	}
+	LongPressInput leftInput;
+	LongPressInput rightInput;
+	int32 m_settingSelectIndex = 0;
 };

@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include"Common.h"
+#include"MiniGameSceneBase.h"
 
 namespace Maze2 {
 
@@ -283,7 +283,7 @@ namespace Maze2 {
 			_rotate.drawRectPlayer(pos * 20, size * 20, Palette::White);
 		}
 	};
-	class mazeGame : public App::Scene
+	class mazeGame : public MiniGameSceneBase
 	{
 	public:
 
@@ -302,7 +302,7 @@ namespace Maze2 {
 		Audio clearAudio{ U"MiniGameAsset/Common/クリア2.wav" };
 
 		mazeGame(const InitData& init)//名前を変更してください
-			: IScene{ init }
+			: MiniGameSceneBase{ init }
 		{
 			if (not TextureAsset::IsRegistered(U"BackGroundTexture/洞窟背景.png")) {
 				TextureAsset::Register(U"BackGroundTexture/洞窟背景.png", U"BackGroundTexture/洞窟背景.png");
@@ -343,7 +343,7 @@ namespace Maze2 {
 			TextureAsset::Load(U"Cloud");
 		}
 
-		void update() override
+		void gameUpdate() override
 		{
 			if(clear)
 			{
@@ -374,7 +374,7 @@ namespace Maze2 {
 			//変数などの更新
 		}
 
-		void draw() const override
+		void gameDraw() const override
 		{
 			TextureAsset{ U"BackGroundTexture/洞窟背景.png" }.draw();
 
@@ -396,11 +396,5 @@ namespace Maze2 {
 			}
 		}
 
-	private:
-		void EndGame(bool clear) {
-			getData().mini_clear = clear;//クリア状況保存
-			if (getData().mini_mode == Stage_Mode)changeScene(U"Map");//ステージモードならステージに帰る
-			else changeScene(U"Mini_Game_Select");//ミニゲームセレクトモードならミニゲームセレクトに帰る
-		}
 	};
 }

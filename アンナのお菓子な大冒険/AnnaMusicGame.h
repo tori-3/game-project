@@ -1,5 +1,6 @@
 ﻿#pragma once
 # include"Common.h"
+#include"MiniGameSceneBase.h"
 
 namespace AnnaMusicGame {
 
@@ -232,7 +233,7 @@ namespace AnnaMusicGame {
 
 
 	//名前を変更してください
-	class AnnaMusicGame : public App::Scene
+	class AnnaMusicGame : public MiniGameSceneBase
 	{
 	public:
 		//ここに変数などを宣言
@@ -301,8 +302,23 @@ namespace AnnaMusicGame {
 
 		RenderTexture background{ Scene::Size() };
 
+		void onPauseStart()override
+		{
+			stopwatch.pause();
+			music.pause();
+		}
+
+		void onGameStart()override
+		{
+			if(music.isPaused())
+			{
+				music.play(BGMMixBus);
+			}
+			stopwatch.resume();
+		}
+
 		AnnaMusicGame(const InitData& init)
-			: IScene{ init }
+			: MiniGameSceneBase{ init }
 		{
 			if (not TextureAsset::IsRegistered(U"BackGroundTexture/雲背景.png"))
 			{
@@ -319,7 +335,7 @@ namespace AnnaMusicGame {
 
 
 
-		void update() override
+		void gameUpdate() override
 		{
 			// 経過時間を取得
 			double deltaTime = Scene::DeltaTime();
@@ -406,7 +422,7 @@ namespace AnnaMusicGame {
 				{
 
 
-					candyg.drawAt(gc);
+					//candyg.drawAt(gc);
 
 					Line{ gc + Vec2{-20,0},gc + Vec2{20,0} }.drawArrow(10, SizeF{ 15,15 });
 
@@ -476,7 +492,7 @@ namespace AnnaMusicGame {
 			}
 		}
 
-		void draw() const override
+		void gameDraw() const override
 		{
 			Scene::SetBackground(Palette::Pink);
 

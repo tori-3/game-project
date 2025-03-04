@@ -186,6 +186,11 @@ public:
 	{
 		updatePos();
 
+		if(KeyQ.down())
+		{
+			changeScene(U"TitleScene");
+		}
+
 		if (not largeFlg) {
 
 			if (backButton.leftClicked())
@@ -196,12 +201,13 @@ public:
 			if (panelFlg&&(start.leftClicked()||KeyEnter.down()) && index<=clearStage) {
 				getData().mini_mode = Stage_Mode;
 				getData().stage = index + 1;
-				getData().mini_clear = false;
+				//getData().mini_clear = false;
 				getData().stageFile = stageList[index];
 				getData().backgroundTexture = json[U"StageData"][U"Stage{}"_fmt(index + 1)][U"BackgroundTexture"].getString();
 				getData().maxHP = saveDatajson[U"MaxHP"][index].get<int32>();
 				getData().backFromMainGameScene = false;
 				getData().quitStage = false;
+				getData().sceneName = sceneNames[index];
 
 				LoadAsset::RegisterTexture(getData().backgroundTexture);
 
@@ -237,7 +243,7 @@ public:
 				panelFlg = false;
 			}
 
-			if (RectF{ 100, 100,pictures[index].resized(450).size }.leftClicked() && index<clearStage) {
+			if (RectF{ 100, 100,pictures[index].resized(450).size }.leftClicked() && index<clearStage &&panelFlg) {
 				largeFlg = true;
 			}
 

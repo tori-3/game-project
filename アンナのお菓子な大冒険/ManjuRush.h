@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include"Common.h"
+#include"MiniGameSceneBase.h"
 
 namespace ManjuRush {
 
@@ -34,7 +35,7 @@ namespace ManjuRush {
 	};
 
 	//名前を変更してください
-	class ManjuRush : public App::Scene
+	class ManjuRush : public MiniGameSceneBase
 	{
 	public:
 		const Font font{ 100 };
@@ -85,9 +86,21 @@ namespace ManjuRush {
 
 		Effect effect;
 
+		void onPauseStart()override
+		{
+			stopwatch.pause();
+			jumptime.pause();
+		}
+
+		void onGameStart()override
+		{
+			stopwatch.resume();
+			jumptime.resume();
+		}
+
 
 		ManjuRush(const InitData& init)//名前を変更してください
-			: IScene{ init }
+			: MiniGameSceneBase{ init }
 		{
 			enemys << RectF{ 1100,player.y + player.h - 16 - 50,80,60 };
 			enemys << RectF{ 2000,player.y - 100,80,60 };
@@ -95,7 +108,7 @@ namespace ManjuRush {
 			enemys << RectF{ 2500,370,80,60 };
 		}
 
-		void update() override
+		void gameUpdate() override
 		{
 			if (flag == false) {
 				if (stopwatch < 2s) {
@@ -244,7 +257,7 @@ namespace ManjuRush {
 			}
 		}
 
-		void draw() const override
+		void gameDraw() const override
 		{
 			player.draw(ColorF{ 1,1,1,0 });
 			//*
@@ -316,12 +329,6 @@ namespace ManjuRush {
 			}
 		}
 
-	private:
-		void EndGame(bool clear) {
-			getData().mini_clear = clear;//クリア状況保存
-			if (getData().mini_mode == Stage_Mode)changeScene(U"Map");//ステージモードならステージに帰る
-			else changeScene(U"Mini_Game_Select");//ミニゲームセレクトモードならミニゲームセレクトに帰る
-		}
 	};
 
 }

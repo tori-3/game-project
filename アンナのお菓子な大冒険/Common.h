@@ -25,6 +25,11 @@ struct GameData
 
 	int32 clearStage = 0;;
 
+	int32 miniGameIndex = 0;
+
+	//今いるシーンの名前
+	String sceneName;
+
 	struct MiniGameState
 	{
 		bool easyClear = false;
@@ -39,6 +44,43 @@ struct GameData
 	GameData()
 	{
 		load();
+	}
+
+	void saveMiniGameClear()
+	{
+		switch (mini_mode)
+		{
+		case Stage_Mode:
+			if(clearStage < stage)
+			{
+				clearStage = stage;
+				save();
+			}
+			break;
+		case Easy_Mode:
+			if(not miniGameList[miniGameIndex].easyClear)
+			{
+				miniGameList[miniGameIndex].easyClear = true;
+				save();
+			}
+			break;
+		case Normal_Mode:
+			if (not miniGameList[miniGameIndex].normalClear)
+			{
+				miniGameList[miniGameIndex].normalClear = true;
+				save();
+			}
+			break;
+		case Hard_Mode:
+			if (not miniGameList[miniGameIndex].hardClear)
+			{
+				miniGameList[miniGameIndex].hardClear = true;
+				save();
+			}
+			break;
+		default:
+			break;
+		}
 	}
 
 	void save()

@@ -1,5 +1,6 @@
 ﻿#pragma once
 # include"Common.h"
+#include"MiniGameSceneBase.h"
 
 namespace FallingAnna {
 
@@ -168,7 +169,7 @@ namespace FallingAnna {
 	};
 
 	//名前を変更してください
-	class FallingAnna : public App::Scene
+	class FallingAnna : public MiniGameSceneBase
 	{
 	public:
 		//ここに変数などを宣言
@@ -281,7 +282,7 @@ namespace FallingAnna {
 
 
 		FallingAnna(const InitData& init)//名前を変更してください
-			: IScene{ init }
+			: MiniGameSceneBase{ init }
 		{
 			//変数などの初期化
 			Scene::SetBackground(ColorF{ 0.8, 0.9, 1.0 });
@@ -579,7 +580,7 @@ namespace FallingAnna {
 				sippaiA.playOneShot();
 			}
 		}
-		void update() override
+		void gameUpdate() override
 		{
 			float cl = 1;
 			batframe(cl);
@@ -758,7 +759,7 @@ namespace FallingAnna {
 
 
 		}
-		void draw() const override
+		void gameDraw() const override
 		{
 			TextureAsset{ U"BackGroundTexture/雲背景.png" }.resized(Scene::Size()).draw();
 
@@ -861,12 +862,6 @@ namespace FallingAnna {
 
 		}
 
-	private:
-		void EndGame(bool clear) {
-			getData().mini_clear = clear;//クリア状況保存
-			if (getData().mini_mode == Stage_Mode)changeScene(U"Map");//ステージモードならステージに帰る
-			else changeScene(U"Mini_Game_Select");//ミニゲームセレクトモードならミニゲームセレクトに帰る
-		}
 	};
 
 

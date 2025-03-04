@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include"Common.h"
+#include"MiniGameSceneBase.h"
 
 namespace Maze1 {
 
@@ -145,7 +146,7 @@ namespace Maze1 {
 	//	}
 	//};
 
-	class MAZE : public App::Scene
+	class MAZE : public MiniGameSceneBase
 	{
 	public:
 		const Font fontMSDF{ FontMethod::MSDF,32 };
@@ -183,7 +184,7 @@ namespace Maze1 {
 		MSRenderTexture lightTexture{ Scene::Size(),ColorF{0} };
 
 		MAZE(const InitData& init)
-			: IScene{ init }
+			: MiniGameSceneBase{ init }
 		{
 			stopwatch.reset();
 			switch (getData().mini_mode)
@@ -252,8 +253,17 @@ namespace Maze1 {
 
 		}
 
+		void onPauseStart()override
+		{
+			stopwatch.pause();
+		}
 
-		void update() override
+		void onGameStart()override
+		{
+			stopwatch.resume();
+		}
+
+		void gameUpdate() override
 		{
 
 			//ボール操作
@@ -317,50 +327,50 @@ namespace Maze1 {
 				changeScene(U"Clear");
 				stopwatch.pause();
 			}
-			if (KeyEscape.up()) {
-				click.play();
-				key = true;
-			}
-			if (key) {
-				stopwatch.pause();
-				if (restart.leftClicked()) {
-					click.play();
-					key = false;
-					stopwatch.resume();
-				}
-				if (replay.leftClicked()) {
-					click.play();
-					changeScene(U"Maze1");
-					stopwatch.reset();
-					switch (getData().mini_mode)
-					{
-					case Stage_Mode:
-						ballPos = { 182, 132 };
-						break;
-					case Easy_Mode:
-						ballPos = { 302, 202 };
-						break;
-					case Normal_Mode:
-						ballPos = { 182, 132 };
-						break;
-					case Hard_Mode:
-						ballPos = { 32, 32 };
-						break;
-					default:
-						ballPos = { 32, 32 };
-						break;
-					}
-				}
-				if (title.leftClicked()) {
-					click.play();
-					stopwatch.reset();
-					EndGame(false);
-				}
-			}
+			//if (KeyEscape.up()) {
+			//	click.play();
+			//	key = true;
+			//}
+			//if (key) {
+			//	stopwatch.pause();
+			//	if (restart.leftClicked()) {
+			//		click.play();
+			//		key = false;
+			//		stopwatch.resume();
+			//	}
+			//	if (replay.leftClicked()) {
+			//		click.play();
+			//		changeScene(U"Maze1");
+			//		stopwatch.reset();
+			//		switch (getData().mini_mode)
+			//		{
+			//		case Stage_Mode:
+			//			ballPos = { 182, 132 };
+			//			break;
+			//		case Easy_Mode:
+			//			ballPos = { 302, 202 };
+			//			break;
+			//		case Normal_Mode:
+			//			ballPos = { 182, 132 };
+			//			break;
+			//		case Hard_Mode:
+			//			ballPos = { 32, 32 };
+			//			break;
+			//		default:
+			//			ballPos = { 32, 32 };
+			//			break;
+			//		}
+			//	}
+			//	if (title.leftClicked()) {
+			//		click.play();
+			//		stopwatch.reset();
+			//		EndGame(false);
+			//	}
+			//}
 
 		}
 
-		void draw() const override
+		void gameDraw() const override
 		{
 			int x = 0, y = 0;
 			Scene::SetBackground(ColorF{0.7});
@@ -411,24 +421,19 @@ namespace Maze1 {
 			light.draw();
 
 			watch(stopwatch).draw(1070, -5, Palette::White);
-			if (key) {
-				if (SimpleGUI::Button(U"ゲームに戻る", Vec2{ 520, 450 })) {}
-				if (SimpleGUI::Button(U"やり直す", Vec2{ 540, 530 })) {}
-				if (SimpleGUI::Button(U"タイトルに戻る", Vec2{ 512, 610 })) {}
-				//restart.draw(Palette::Black);
-				//replay.draw(Palette::Black);
-				//title.draw(Palette::Black);
-			}
+			//if (key) {
+			//	if (SimpleGUI::Button(U"ゲームに戻る", Vec2{ 520, 450 })) {}
+			//	if (SimpleGUI::Button(U"やり直す", Vec2{ 540, 530 })) {}
+			//	if (SimpleGUI::Button(U"タイトルに戻る", Vec2{ 512, 610 })) {}
+			//	//restart.draw(Palette::Black);
+			//	//replay.draw(Palette::Black);
+			//	//title.draw(Palette::Black);
+			//}
 		}
 
-		void EndGame(bool clear) {
-			getData().mini_clear = clear;//クリア状況保存
-			if (getData().mini_mode == Stage_Mode)changeScene(U"Map");//ステージモードならステージに帰る
-			else changeScene(U"Mini_Game_Select");//ミニゲームセレクトモードならミニゲームセレクトに帰る
-		}
 	};
 
-	class Clear : public App::Scene
+	class Clear : public MiniGameSceneBase
 	{
 	public:
 		const Font text{ 100 , U"MiniGameAsset/MAZE/font/DotGothic16/DotGothic16-Regular.ttf", FontStyle::Bitmap };
@@ -438,11 +443,11 @@ namespace Maze1 {
 		const Audio Bgm{ Audio::Stream, U"MiniGameAsset/MAZE/audio/Loop03-long.mp3", Loop::Yes };
 		const Audio click{ U"MiniGameAsset/MAZE/audio/color.mp3" };
 		Clear(const InitData& init)
-			: IScene{ init } {
+			: MiniGameSceneBase{ init } {
 			Bgm.play(BGMMixBus);
 			clear = true;
 		}
-		void update() override
+		void gameUpdate() override
 		{
 			if (KeyEnter.down()) {
 				click.play();
@@ -450,7 +455,7 @@ namespace Maze1 {
 				EndGame(clear);
 			}
 		}
-		void draw() const override
+		void gameDraw() const override
 		{
 			Scene::SetBackground(ColorF(0.2, 0.8, 0.6));
 
@@ -458,12 +463,6 @@ namespace Maze1 {
 			text(U"クリア！").draw(415, 100, Palette::Yellow);
 			text2(U"タイム: ", stopwatch).draw(215, 300, Palette::Black);
 			text3(U"エンターキーを押してマップに戻る").draw(95, 510, Palette::Blue);
-		}
-
-		void EndGame(bool clear) {
-			getData().mini_clear = clear;//クリア状況保存
-			if (getData().mini_mode == Stage_Mode)changeScene(U"Map");//ステージモードならステージに帰る
-			else changeScene(U"Mini_Game_Select");//ミニゲームセレクトモードならミニゲームセレクトに帰る
 		}
 	};
 

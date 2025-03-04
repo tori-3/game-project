@@ -46,7 +46,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 	String text = Window::GetState().fullscreen ? U"ウィンドウ" : U"全画面";
 	auto windowModeButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 200, .child = TextUI::Create({.text = text,.color=Palette::White}) });
 
-	static size_t selectIndex = 0;
+	static int32 selectIndex = 0;
 	static LongPressInput upInput;
 	static LongPressInput downInput;
 
@@ -80,12 +80,12 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 
 			if (upInput.down())
 			{
-				selectIndex = Max(selectIndex - 1, 0ull);
+				selectIndex = Max(selectIndex - 1, 0);
 			}
 
 			if (downInput.down())
 			{
-				selectIndex = Min(selectIndex + 1, 3ull);
+				selectIndex = Min(selectIndex + 1, 3);
 			}
 
 			effectVolumeSliderPanel->color = selectIndex == 0 ? ColorF{ Palette::Skyblue } : AlphaF(0);

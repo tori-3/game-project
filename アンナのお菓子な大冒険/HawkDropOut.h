@@ -8,7 +8,6 @@ namespace HawkDropOut {
 	{
 	public:
 
-		Transformer2D transformer{ Mat3x2::Scale(1.5,{0,0 }) * Mat3x2::Translate(0,-15), TransformCursor::Yes };
 		int32 clearScore = 0;
 
 		Audio clearAudio{ U"MiniGameAsset/Common/クリア2.wav" };
@@ -103,6 +102,7 @@ namespace HawkDropOut {
 
 		void gameUpdate() override
 		{
+			Transformer2D transformer{ Mat3x2::Scale(1.5,{0,0 }) * Mat3x2::Translate(0,-15), TransformCursor::Yes };
 
 			if(gameover)
 			{
@@ -516,6 +516,9 @@ namespace HawkDropOut {
 
 		void gameDraw() const override
 		{
+
+			Transformer2D transformer{ Mat3x2::Scale(1.5,{0,0 }) * Mat3x2::Translate(0,-15), TransformCursor::Yes };
+
 			//背景画面
 			Scene::SetBackground(Palette::Blue);
 

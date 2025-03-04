@@ -790,9 +790,8 @@ namespace BunchoUI
 
 	double TextUI::onGetY(double x)const
 	{
-		const double scale = m_fontSize / (double)m_font.fontSize();
 		auto xAdvances = m_font(m_text).getXAdvances(m_fontSize);
-		const double fontHeight = m_font.height() * scale;
+		const double fontHeight = m_font.height(m_fontSize);
 		Vec2 penPos{ 0,0 };
 
 		for (size_t i = 0; i < xAdvances.size(); ++i)
