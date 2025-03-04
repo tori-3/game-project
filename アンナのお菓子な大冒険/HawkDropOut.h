@@ -353,6 +353,7 @@ namespace HawkDropOut {
 
 
 			if (clearScore <= FlyDistance) {
+				getData().saveMiniGameClear();
 				clear = true;
 				clearAudio.playOneShot();
 			}

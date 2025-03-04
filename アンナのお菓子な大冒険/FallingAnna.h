@@ -663,7 +663,10 @@ namespace FallingAnna {
 
 					dosuperend();
 
-
+					if(getclear())
+					{
+						getData().saveMiniGameClear();
+					}
 				}
 				else if (getsuperend())
 				{

@@ -145,6 +145,7 @@ namespace ManjuRush {
 					if (clear == false) {
 						//stopwatch.restart();
 						Clear.play();
+						getData().saveMiniGameClear();
 					}
 					clear = true;
 					//if (stopwatch > 3s) {

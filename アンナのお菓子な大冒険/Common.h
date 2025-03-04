@@ -27,6 +27,10 @@ struct GameData
 
 	int32 miniGameIndex = 0;
 
+	//ミニゲーム選択画面用
+	//前回選択したミニゲームのモード
+	int32 miniGameModeIndex = 0;
+
 	//今いるシーンの名前
 	String sceneName;
 

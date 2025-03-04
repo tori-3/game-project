@@ -357,6 +357,7 @@ namespace Maze2 {
 			if (judge.reacts(player.pos, player.size, maze.gpos, Vec2(1, 1))) {
 				clearAudio.playOneShot();
 				clear = true;
+				getData().saveMiniGameClear();
 				//maze.make(23);
 				//rotate.cpos = 20*Vec2{ maze.data[0].size(),maze.data.size() }/2.0;
 				//player.mazeUpdate(maze.data,maze);

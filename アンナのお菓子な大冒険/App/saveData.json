@@ -24,7 +24,7 @@
     false,
     false
   ],
-  "ClearStage": 22,
+  "ClearStage": 3,
   "EffectVolume": 1.0,
   "MaxHP": [
     5,
@@ -52,27 +52,27 @@
   ],
   "MiniGame": [
     {
-      "Easy": false,
+      "Easy": true,
       "Hard": false,
+      "Normal": true
+    },
+    {
+      "Easy": true,
+      "Hard": true,
+      "Normal": true
+    },
+    {
+      "Easy": true,
+      "Hard": true,
       "Normal": false
     },
     {
       "Easy": false,
-      "Hard": false,
+      "Hard": true,
       "Normal": false
     },
     {
-      "Easy": false,
-      "Hard": false,
-      "Normal": false
-    },
-    {
-      "Easy": false,
-      "Hard": false,
-      "Normal": false
-    },
-    {
-      "Easy": false,
+      "Easy": true,
       "Hard": false,
       "Normal": false
     },
@@ -82,5 +82,5 @@
       "Normal": false
     }
   ],
-  "SelectedStage": 4
+  "SelectedStage": 2
 }

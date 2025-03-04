@@ -12,6 +12,7 @@ public:
 		Texture pictures;
 		String sentence;
 		int32 stageNum;
+		String sceneName;
 	};
 
 	static constexpr Circle backButton{ {35,35},30 };
@@ -29,8 +30,6 @@ public:
 
 	Spotlight light{ Scene::Size() };
 
-	size_t index = 0;
-
 	Fire leftFire{ {75,620},HSV{ 20,0.8,1 },40,{ 0, -30 } };
 	Fire rightFire{ {Scene::Width() - 75,620},HSV{ 20,0.8,1 },40,{ 0, -30 } };
 
@@ -41,10 +40,21 @@ public:
 
 	LongPressInput leftInput{ getData().KeyLeft };
 	LongPressInput rightInput{ getData().KeyRight };
+	LongPressInput upInput{ getData().KeyUp };
+	LongPressInput downInput{ getData().KeyDown };
 
+	static constexpr int32 ChocolateButtonBlockCount = 3;
+	static constexpr double ChocolateButtonBlockSize = 80;
+	static constexpr Vec2 EasyButtonPos{ 800,500 };
+	static constexpr Vec2 NormalButtonPos{ 800,600 };
+	static constexpr Vec2 HardButtonPos{ 800,700 };
 
+	bool chocolateButtonUpdate(const Vec2& pos, int32 num, double blockSize)const
+	{
+		return RectF{ pos,num * blockSize,blockSize }.leftClicked();
+	}
 
-	void chocolateButton(const Vec2&pos,int32 num,double blockSize,StringView text,const ColorF&color,bool star,bool selected)const
+	void chocolateButtonDraw(const Vec2&pos,int32 num,double blockSize,StringView text,const ColorF&color,bool star,bool selected)const
 	{
 		RectF rect{ pos,num * blockSize,blockSize };
 		const bool mouseOver = rect.mouseOver();
@@ -99,7 +109,7 @@ public:
 			data.pictures = Texture{ miniGame[U"Picture"].getString() };
 			data.sentence = miniGame[U"Sentence"].getString();
 			data.stageNum = stageNum;
-
+			data.sceneName = miniGame[U"SceneName"].getString();
 			miniGameList << data;
 		}
 
@@ -119,8 +129,9 @@ public:
 			Cursor::RequestStyle(CursorStyle::Hand);
 		}
 
-		index = Clamp<int32>(index + rightInput.down() - leftInput.down(), 0, miniGameList.size() - 1);
-
+		getData().miniGameIndex = Clamp<int32>(getData().miniGameIndex + rightInput.down() - leftInput.down(), 0, miniGameList.size() - 1);
+		getData().miniGameModeIndex = Clamp<int32>(getData().miniGameModeIndex + downInput.down() - upInput.down(), 0, 2);
+		
 		for (int32 i = 0; i < miniGameList.size(); ++i)
 		{
 			int32 x = Scene::Width() / 7 * (i + 1);
@@ -133,23 +144,48 @@ public:
 
 				if(MouseL.down())
 				{
-					index = i;
+					getData().miniGameIndex = i;
 				}
 			}
 
 		}
 
+		const int32 modeIndex = getData().miniGameModeIndex;
 
+		if (chocolateButtonUpdate(EasyButtonPos, ChocolateButtonBlockCount, ChocolateButtonBlockSize) || (modeIndex == 0 && KeyEnter.down()))
+		{
+			getData().mini_mode = mode::Easy_Mode;
+			getData().sceneName = miniGameList[getData().miniGameIndex].sceneName;
+			changeScene(miniGameList[getData().miniGameIndex].sceneName);
+			BGMManager::get().stop();
+		}
+
+		if (chocolateButtonUpdate(NormalButtonPos, ChocolateButtonBlockCount, ChocolateButtonBlockSize) || (modeIndex == 1 && KeyEnter.down()))
+		{
+			getData().mini_mode = mode::Normal_Mode;
+			getData().sceneName = miniGameList[getData().miniGameIndex].sceneName;
+			changeScene(miniGameList[getData().miniGameIndex].sceneName);
+			BGMManager::get().stop();
+		}
+
+		if (chocolateButtonUpdate(HardButtonPos, ChocolateButtonBlockCount, ChocolateButtonBlockSize) || (modeIndex == 2 && KeyEnter.down()))
+		{
+			getData().mini_mode = mode::Hard_Mode;
+			getData().sceneName = miniGameList[getData().miniGameIndex].sceneName;
+			changeScene(miniGameList[getData().miniGameIndex].sceneName);
+			BGMManager::get().stop();
+		}
 
 		leftFire.update();
 		rightFire.update();
-
 	}
 
 	void draw()const override
 	{
 		background.resized(Scene::Width()).draw();
 
+		const int32 gameIndex = getData().miniGameIndex;
+		const int32 modeIndex = getData().miniGameModeIndex;
 
 		for (int32 i = 0; i < miniGameList.size(); ++i)
 		{
@@ -167,8 +203,8 @@ public:
 		{
 			ScopedSpotlight target{ light,ColorF{0.4} };
 
-			int32 x = Scene::Width() / 7 * (index + 1);
-			int32 y = 150 + index % 2 * 200;
+			int32 x = Scene::Width() / 7 * (gameIndex + 1);
+			int32 y = 150 + gameIndex % 2 * 200;
 			Circle{ x,y,200 }.draw(ColorF{ 2.0 }, ColorF{ 0.0 });
 
 			Circle{ {75,600},100 }.draw(ColorF{ 1.0 }, ColorF{ 0.0 });
@@ -180,16 +216,13 @@ public:
 		rightFire.draw();
 
 
-		font(miniGameList[index].sentence).draw(150,Scene::Center().y+100);
+		font(miniGameList[gameIndex].sentence).draw(150,Scene::Center().y+100);
 
-		chocolateButton({ 800,500 }, 3, 80,U"イージー",Palette::Greenyellow,true,true);
-		chocolateButton({ 800,600 }, 3, 80,U"ノーマル",Palette::Orange,true, false);
-		chocolateButton({ 800,700 }, 3, 80, U"ハード", Palette::Red, false, false);
-
+		chocolateButtonDraw(EasyButtonPos, ChocolateButtonBlockCount, ChocolateButtonBlockSize,U"イージー",Palette::Greenyellow,getData().miniGameList[gameIndex].easyClear, modeIndex == 0);
+		chocolateButtonDraw(NormalButtonPos, ChocolateButtonBlockCount, ChocolateButtonBlockSize,U"ノーマル",Palette::Orange, getData().miniGameList[gameIndex].normalClear, modeIndex == 1);
+		chocolateButtonDraw(HardButtonPos, ChocolateButtonBlockCount, ChocolateButtonBlockSize, U"ハード", Palette::Red, getData().miniGameList[gameIndex].hardClear, modeIndex == 2);
 
 		homeIcon.drawAt(backButton.center, backButton.mouseOver() ? Palette::Gray : Palette::White);
 
 	}
-
-
 };

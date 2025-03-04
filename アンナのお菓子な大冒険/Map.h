@@ -31,7 +31,7 @@ public:
 
 	//画面下の四角形の情報
 	const int rect_size = 40;//四角形の大きさ
-	const int rect_num = 22;//四角形(ゲーム)の個数
+	const int rect_num = 23;//四角形(ゲーム)の個数
 	const int rect_gap = 3;//四角形の間隔
 
 	static constexpr Circle backButton{ {35,35},30 };

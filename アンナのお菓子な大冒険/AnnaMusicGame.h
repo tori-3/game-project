@@ -301,6 +301,7 @@ namespace AnnaMusicGame {
 	public:
 
 		RenderTexture background{ Scene::Size() };
+		bool saveFlg = false;
 
 		void onPauseStart()override
 		{
@@ -476,6 +477,12 @@ namespace AnnaMusicGame {
 			//終了
 			if (rcs.empty() and gcs.empty())
 			{
+				if(not saveFlg&& miss <= 9)
+				{
+					getData().saveMiniGameClear();
+					saveFlg = true;
+				}
+
 				if (maxcombo < combo)
 				{
 					maxcombo = combo;
@@ -554,20 +561,5 @@ namespace AnnaMusicGame {
 			font(U"{}"_fmt(credit)).draw(30, 5, 750, Palette::Skyblue);
 			font(U"Combo{}"_fmt(combo)).draw(60, 650, 380, Palette::Yellowgreen);
 		}
-
-	private:
-		void EndGame(bool clear) {
-			getData().mini_clear = clear;//クリア状況保存
-			if (getData().mini_mode == Stage_Mode)changeScene(U"Map");//ステージモードならステージに帰る
-			else changeScene(U"Mini_Game_Select");//ミニゲームセレクトモードならミニゲームセレクトに帰る
-		}
-
 	};
-
-
-
-
-
-
-
 }

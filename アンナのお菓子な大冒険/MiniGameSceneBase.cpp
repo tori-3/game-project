@@ -130,7 +130,7 @@ void MiniGameSceneBase::goPause() {
 void MiniGameSceneBase::EndGame(bool clear) {
 	getData().mini_clear = clear;//クリア状況保存
 	if (getData().mini_mode == Stage_Mode)changeScene(U"Map");//ステージモードならステージに帰る
-	else changeScene(U"Mini_Game_Select");//ミニゲームセレクトモードならミニゲームセレクトに帰る
+	else changeScene(U"MiniGameSelect");//ミニゲームセレクトモードならミニゲームセレクトに帰る
 }
 
 void MiniGameSceneBase::goGame() {

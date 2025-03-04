@@ -323,6 +323,7 @@ namespace Maze1 {
 
 			if (goalPos.intersects(Circle(ballPos, 8))) //重なったら
 			{
+				getData().saveMiniGameClear();
 				goal.play();
 				changeScene(U"Clear");
 				stopwatch.pause();

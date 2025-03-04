@@ -1,5 +1,5 @@
 ﻿{
-    "MiniGameStage": [3,7,10,14,17,21],
+    "MiniGameStage": [4,8,11,15,18,22],
     "StageData": {
         "Stage1": {
             "BGM": "BGM/StageSnow7.wav",
@@ -8,10 +8,20 @@
             "Picture": "BackgroundTexture/雪原背景.png",
             "SceneName": "MainGameScene",
             "Sentence": "<1-1>冒険のはじまり\nアンナちゃんが落ちた先には\nお菓子の世界が広がっていました。\nどんなお菓子が待ち受けているのか、\nわくわくしながら\nアンナちゃんは進みます。",
-            "StagePos": "(50,700)",
+            "StagePos": "(0,700)",
             "Type": "Stage"
         },
         "Stage2": {
+            "BGM": "BGM/StageSnow7.wav",
+            "BackgroundTexture": "BackgroundTexture/雪原背景.png",
+            "MapFile": "StageData/snowStage1.json",
+            "Picture": "BackgroundTexture/雪原背景.png",
+            "SceneName": "MainGameScene",
+            "Sentence": "<1-1>冒険のはじまり\nアンナちゃんが落ちた先には\nお菓子の世界が広がっていました。\nどんなお菓子が待ち受けているのか、\nわくわくしながら\nアンナちゃんは進みます。",
+            "StagePos": "(50,700)",
+            "Type": "Stage"
+        },
+        "Stage3": {
             "BGM": "BGM/StageSnow7.wav",
             "BackgroundTexture": "BackgroundTexture/雪原背景.png",
             "MapFile": "StageData/snowStage2.json",
@@ -21,7 +31,7 @@
             "StagePos": "(100,700)",
             "Type": "Stage"
         },
-        "Stage3": {
+        "Stage4": {
             "BGM": "",
             "BackgroundTexture": "",
             "MapFile": "",
@@ -31,7 +41,7 @@
             "StagePos": "(150,700)",
             "Type": "MiniGame"
         },
-        "Stage4": {
+        "Stage5": {
             "BGM": "BGM/StageSnow7.wav",
             "BackgroundTexture": "BackgroundTexture/雪原背景.png",
             "MapFile": "StageData/snowStage3.json",
@@ -41,7 +51,7 @@
             "StagePos": "(185,720)",
             "Type": "Stage"
         },
-        "Stage5": {
+        "Stage6": {
             "BGM": "BGM/StageSnow7.wav",
             "BackgroundTexture": "BackgroundTexture/雪原背景.png",
             "MapFile": "StageData/snowStage4.json",
@@ -51,7 +61,7 @@
             "StagePos": "(220,700)",
             "Type": "Stage"
         },
-        "Stage6": {
+        "Stage7": {
             "BGM": "BGM/StageBoss6.wav",
             "BackgroundTexture": "BackgroundTexture/雪原背景.png",
             "MapFile": "StageData/snowStageBoss.json",
@@ -61,7 +71,7 @@
             "StagePos": "(233,610)",
             "Type": "Boss"
         },
-        "Stage7": {
+        "Stage8": {
             "BGM": "",
             "BackgroundTexture": "",
             "MapFile": "",
@@ -71,7 +81,7 @@
             "StagePos": "(300,680)",
             "Type": "MiniGame"
         },
-        "Stage8": {
+        "Stage9": {
             "BGM": "BGM/StageChoco21.mp3",
             "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
             "MapFile": "StageData/caveStage1.json",
@@ -81,7 +91,7 @@
             "StagePos": "(350,660)",
             "Type": "Stage"
         },
-        "Stage9": {
+        "Stage10": {
             "BGM": "BGM/StageChoco21.mp3",
             "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
             "MapFile": "StageData/caveStage2.json",
@@ -91,7 +101,7 @@
             "StagePos": "(400,680)",
             "Type": "Stage"
         },
-        "Stage10": {
+        "Stage11": {
             "BGM": "",
             "BackgroundTexture": "",
             "MapFile": "",
@@ -101,7 +111,7 @@
             "StagePos": "(415,630)",
             "Type": "MiniGame"
         },
-        "Stage11": {
+        "Stage12": {
             "BGM": "BGM/StageChoco21.mp3",
             "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
             "MapFile": "StageData/caveStage3.json",
@@ -111,7 +121,7 @@
             "StagePos": "(430,580)",
             "Type": "Stage"
         },
-        "Stage12": {
+        "Stage13": {
             "BGM": "BGM/StageChoco21.mp3",
             "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
             "MapFile": "StageData/caveStage4.json",
@@ -121,7 +131,7 @@
             "StagePos": "(445,530)",
             "Type": "Stage"
         },
-        "Stage13": {
+        "Stage14": {
             "BGM": "BGM/StageBoss6.wav",
             "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
             "MapFile": "StageData/caveStageBoss.json",
@@ -131,7 +141,7 @@
             "StagePos": "(460,480)",
             "Type": "Boss"
         },
-        "Stage14": {
+        "Stage15": {
             "BGM": "",
             "BackgroundTexture": "",
             "MapFile": "",
@@ -141,7 +151,7 @@
             "StagePos": "(590,510)",
             "Type": "MiniGame"
         },
-        "Stage15": {
+        "Stage16": {
             "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
             "BackgroundTexture": "BackgroundTexture/雲背景.png",
             "MapFile": "StageData/cloudStage1.json",
@@ -151,7 +161,7 @@
             "StagePos": "(650,480)",
             "Type": "Stage"
         },
-        "Stage16": {
+        "Stage17": {
             "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
             "BackgroundTexture": "BackgroundTexture/雲背景.png",
             "MapFile": "StageData/cloudStage2.json",
@@ -161,7 +171,7 @@
             "StagePos": "(730,490)",
             "Type": "Stage"
         },
-        "Stage17": {
+        "Stage18": {
             "BGM": "",
             "BackgroundTexture": "",
             "MapFile": "",
@@ -171,7 +181,7 @@
             "StagePos": "(780,450)",
             "Type": "MiniGame"
         },
-        "Stage18": {
+        "Stage19": {
             "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
             "BackgroundTexture": "BackgroundTexture/雲背景.png",
             "MapFile": "StageData/cloudStage3.json",
@@ -181,7 +191,7 @@
             "StagePos": "(830,490)",
             "Type": "Stage"
         },
-        "Stage19": {
+        "Stage20": {
             "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
             "BackgroundTexture": "BackgroundTexture/雲背景.png",
             "MapFile": "StageData/cloudStage4.json",
@@ -190,7 +200,7 @@
             "Sentence": "<3-4>綿菓子の雲に飛び乗って\nだんだん陽が暮れてきました。\n雲海の先に見えるのは、\nお菓子のお城でしょうか。\nお城を目指して、\nアンナちゃんは港に向かいました。",
             "StagePos": "(880,450)"
         },
-        "Stage20": {
+        "Stage21": {
             "BGM": "BGM/StageBoss6.wav",
             "BackgroundTexture": "BackgroundTexture/雲背景.png",
             "MapFile": "StageData/cloudStageBoss.json",
@@ -200,7 +210,7 @@
             "StagePos": "(930,490)",
             "Type": "Boss"
         },
-        "Stage21": {
+        "Stage22": {
             "BGM": "",
             "BackgroundTexture": "",
             "MapFile": "",
@@ -210,7 +220,7 @@
             "StagePos": "(950,430)",
             "Type": "MiniGame"
         },
-        "Stage22": {
+        "Stage23": {
             "BGM": "BGM/StageBossLast1.wav",
             "BackgroundTexture": "BackgroundTexture/ラスボス背景.png",
             "MapFile": "StageData/LastBoss.json",
