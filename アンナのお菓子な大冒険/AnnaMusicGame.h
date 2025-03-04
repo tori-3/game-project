@@ -299,6 +299,8 @@ namespace AnnaMusicGame {
 
 	public:
 
+		RenderTexture background{ Scene::Size() };
+
 		AnnaMusicGame(const InitData& init)
 			: IScene{ init }
 		{
@@ -307,6 +309,12 @@ namespace AnnaMusicGame {
 				TextureAsset::Register(U"BackGroundTexture/雲背景.png", U"BackGroundTexture/雲背景.png");
 			}
 
+			const Texture texture{ U"BackGroundTexture/ステージセレクト.png" };
+			const RenderTexture internalTexture{ Scene::Size() };
+			const RenderTexture internalTexture2{ Scene::Size() };
+
+			Shader::GaussianBlur(texture, internalTexture, internalTexture2);
+			Shader::GaussianBlur(internalTexture2, internalTexture, background);
 		}
 
 
@@ -325,20 +333,9 @@ namespace AnnaMusicGame {
 				change = false;
 			}
 
-			music.setVolume(getData().BGMVolume);
-
-			SE.setVolume(getData().EffectVolume);
-			// Enter
-			if (KeyEnter.down())
-			{
-				EndGame(false);
-
-			}
-
-
 			if (bpm / (60 * s) * st * s < stopwatch.ms())
 			{
-				music.play();
+				music.play(BGMMixBus);
 			}
 			if (KeyD.down() or KeyA.down() or KeyLeft.down() or KeyRight.down())
 			{
@@ -483,8 +480,8 @@ namespace AnnaMusicGame {
 		{
 			Scene::SetBackground(Palette::Pink);
 
-			TextureAsset{ U"BackGroundTexture/雲背景.png" }.resized(Scene::Size()).draw();
-			Scene::Rect().draw(ColorF{ 0.0,0.5 });
+			background.resized(Scene::Size()).draw();
+			Scene::Rect().draw(ColorF{ 0,0.1 });
 
 			// アニメーションを更新
 			anime[0].draw(pos);

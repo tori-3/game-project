@@ -322,14 +322,7 @@ namespace FallingAnna {
 			prenokori = nokori;
 			nokori += 100;
 			bgm.setLoop(true);
-			bgm.setVolume(getData().BGMVolume);
-			damageA.setVolume(getData().EffectVolume);
-			hakaiA.setVolume(getData().EffectVolume);
-			kasokuA.setVolume(getData().EffectVolume);
-			clearA.setVolume(getData().EffectVolume);
-			sippaiA.setVolume(getData().EffectVolume);
-			bgm.setVolume(getData().EffectVolume);
-			bgm.play();
+			bgm.play(BGMMixBus);
 		}
 
 		void generateRock()
@@ -673,16 +666,16 @@ namespace FallingAnna {
 				}
 				else if (getsuperend())
 				{
-					if (getData().KeyDown.down())
+					if (KeyEnter.down())
 					{
 						//	changeScene(U"Fallinganna");
 						EndGame(getclear());
 					}
-					//ステージモードかつクリア時はリトライできない
-					else if (!(getData().mini_mode == Stage_Mode && getclear()) && getData().KeyUp.down())
-					{
-						changeScene(U"FallingAnna");
-					}
+					////ステージモードかつクリア時はリトライできない
+					//else if (!(getData().mini_mode == Stage_Mode && getclear()) && getData().KeyUp.down())
+					//{
+					//	changeScene(U"FallingAnna");
+					//}
 				}
 
 			}
@@ -767,6 +760,8 @@ namespace FallingAnna {
 		}
 		void draw() const override
 		{
+			TextureAsset{ U"BackGroundTexture/雲背景.png" }.resized(Scene::Size()).draw();
+
 			//アンナちゃんとかだけは相対座標で表示することでいい感じだったりする
 			drawtower();
 			//描画(draw関数内ではifの使用、変数の代入などができない)
@@ -852,7 +847,7 @@ namespace FallingAnna {
 					Cfont(U"失敗……").drawAt(ww * 0.5f, wh * 0.35f);
 				}
 				Sfont(U"合格ライン:", goukakuline).draw(Arg::topLeft = Vec2(ww * 0.5f, wh * 0.47f));
-				Mfont(U"↑でリトライ  ↓でおわる").drawAt(Vec2(ww * 0.5f, wh * 0.6f));
+				Mfont(U"Enterでおわる").drawAt(Vec2(ww * 0.5f, wh * 0.6f));
 			}
 			if (getclear())
 			{

@@ -287,6 +287,8 @@ namespace Maze2 {
 	{
 	public:
 
+		Spotlight light;
+
 		//ここに変数などを宣言
 		Maze maze{ 23 };//奇数
 		Judge judge;
@@ -379,6 +381,12 @@ namespace Maze2 {
 			//描画(draw関数内ではifの使用、変数の代入などができない)
 			maze.draw(rotate);
 			player.draw(rotate);
+
+			{
+				ScopedSpotlight spot{ light,ColorF{0.2} };
+				Circle{ Scene::Center(),500 }.draw(ColorF{1.0},ColorF{0});
+			}
+			light.draw();
 
 			if (clear)
 			{

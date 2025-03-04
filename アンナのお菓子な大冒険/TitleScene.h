@@ -174,6 +174,7 @@ public:
 					changeMiniGameTimer.restart();
 					break;
 				case 2:
+					uiManager.addChild({ SettingWindow(getData().KeyUp,getData().KeyDown,getData().KeyLeft,getData().KeyRight,[=] {menuClicked = false; getData().save(); KeyEnter.clearInput(); }) });
 					break;
 				case 3:
 					uiManager.addChild({licenseDialog()});
@@ -260,8 +261,8 @@ public:
 
 	std::shared_ptr<UIElement> licenseDialog()
 	{
-		auto showBrowserButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 200, .child = TextUI::Create({.text = U"ブラウザで見る",.color = Palette::White}) });
-		auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 20,.margine = 10,.width = 200, .child = TextUI::Create({.text = U"閉じる",.color = Palette::White}) });
+		auto showBrowserButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 220, .child = TextUI::Create({.text = U"ブラウザで見る",.color = Palette::White}) });
+		auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 20,.margine = 10,.width = 220, .child = TextUI::Create({.text = U"閉じる",.color = Palette::White}) });
 		closeButton->selected = true;
 		auto scrollbar = SimpleScrollbar::Create
 		({

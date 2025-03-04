@@ -20,6 +20,7 @@ void Main()
 	Window::SetTitle(U"アンナのお菓子な大冒険");
 
 	Window::Resize(1200, 800);
+	Window::SetToggleFullscreenEnabled(false);//強制全画面を無効
 
 	Scene::SetResizeMode(ResizeMode::Keep);
 	Window::SetStyle(WindowStyle::Sizable);
@@ -29,6 +30,9 @@ void Main()
 	Lisence::SetLisence();
 
 	FontAsset::Register(U"TitleFont", FontMethod::MSDF, 60, Typeface::Heavy);
+
+	FontAsset::Register(U"NormalFont", FontMethod::MSDF, 25);
+	TextUI::DefaultFontName = U"NormalFont";
 
 	App manager;
 
@@ -44,8 +48,6 @@ void Main()
 	manager.add<Maze2::mazeGame>(U"Maze2");
 	manager.add<AnnaMusicGame::AnnaMusicGame>(U"AnnaMusicGame");
 	manager.add<EndRollScene>(U"EndRollScene");
-
-	//manager.init(U"EndRollScene");
 
 	LoadAsset::LoadAudio();
 

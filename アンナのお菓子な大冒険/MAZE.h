@@ -233,24 +233,19 @@ namespace Maze1 {
 			switch (getData().mini_mode)
 			{
 			case Stage_Mode:
-				normal.setVolume(getData().BGMVolume);
-				normal.play();
+				normal.play(BGMMixBus);
 				break;
 			case Easy_Mode:
-				easy.setVolume(getData().BGMVolume);
-				easy.play();
+				easy.play(BGMMixBus);
 				break;
 			case Normal_Mode:
-				normal.setVolume(getData().BGMVolume);
-				normal.play();
+				normal.play(BGMMixBus);
 				break;
 			case Hard_Mode:
-				hard.setVolume(getData().BGMVolume);
-				hard.play();
+				hard.play(BGMMixBus);
 				break;
 			default:
-				normal.setVolume(getData().BGMVolume);
-				normal.play();
+				normal.play(BGMMixBus);
 				break;
 			}
 
@@ -318,26 +313,22 @@ namespace Maze1 {
 
 			if (goalPos.intersects(Circle(ballPos, 8))) //重なったら
 			{
-				goal.setVolume(getData().EffectVolume);
 				goal.play();
 				changeScene(U"Clear");
 				stopwatch.pause();
 			}
 			if (KeyEscape.up()) {
-				click.setVolume(getData().EffectVolume);
 				click.play();
 				key = true;
 			}
 			if (key) {
 				stopwatch.pause();
 				if (restart.leftClicked()) {
-					click.setVolume(getData().EffectVolume);
 					click.play();
 					key = false;
 					stopwatch.resume();
 				}
 				if (replay.leftClicked()) {
-					click.setVolume(getData().EffectVolume);
 					click.play();
 					changeScene(U"Maze1");
 					stopwatch.reset();
@@ -361,7 +352,6 @@ namespace Maze1 {
 					}
 				}
 				if (title.leftClicked()) {
-					click.setVolume(getData().EffectVolume);
 					click.play();
 					stopwatch.reset();
 					EndGame(false);
@@ -449,14 +439,12 @@ namespace Maze1 {
 		const Audio click{ U"MiniGameAsset/MAZE/audio/color.mp3" };
 		Clear(const InitData& init)
 			: IScene{ init } {
-			Bgm.setVolume(getData().BGMVolume);
-			Bgm.play();
+			Bgm.play(BGMMixBus);
 			clear = true;
 		}
 		void update() override
 		{
 			if (KeyEnter.down()) {
-				click.setVolume(getData().EffectVolume);
 				click.play();
 				//changeScene(U"Maze1");
 				EndGame(clear);

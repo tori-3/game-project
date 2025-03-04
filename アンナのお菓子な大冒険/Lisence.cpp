@@ -34,6 +34,12 @@ namespace Lisence
 		});
 
 		LicenseManager::AddLicense({
+			.title = U"夢にみた緑",
+			.copyright = U"Copyright (c) 遊句",
+			.text = U"https://yougou.sonnabakana.com"
+		});
+
+		LicenseManager::AddLicense({
 			.title = U"DotGothic16",
 			.copyright = U"Copyright (c) 2020 The DotGothic16 Project Authors",
 			.text = U"https://github.com/fontworks-fonts/DotGothic16\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\nThis license is copied below, and is also available with a FAQ at :\nhttp://scripts.sil.org/OFL"

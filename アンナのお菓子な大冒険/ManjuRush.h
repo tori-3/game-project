@@ -56,8 +56,6 @@ namespace ManjuRush {
 		Texture kumo{ U"MiniGameAsset/まんじゅうラッシュ素材/くも.png" };
 		Texture kumokumo{ U"MiniGameAsset/まんじゅうラッシュ素材/くもくも.png" };
 
-		double vo_b = getData().BGMVolume;
-		double vo_e = getData().EffectVolume;
 		Audio BGM{ U"BGM/MiniGameBGM.wav" };
 		Audio Clear{ U"MiniGameAsset/Common/クリア2.wav" };
 		Audio Touch{ U"MiniGameAsset/まんじゅうラッシュ素材/8bitダメージ8.mp3" };
@@ -95,11 +93,6 @@ namespace ManjuRush {
 			enemys << RectF{ 2000,player.y - 100,80,60 };
 			enemys << RectF{ 1500,player.y - 350 + 5,80,60 };
 			enemys << RectF{ 2500,370,80,60 };
-			BGM.setVolume(vo_b);
-			Clear.setVolume(vo_e);
-			Touch.setVolume(vo_e);
-			Defeat.setVolume(vo_e);
-			Score.setVolume(vo_e);
 		}
 
 		void update() override
@@ -123,7 +116,7 @@ namespace ManjuRush {
 			}
 			else {
 				if (!defeat) {
-					BGM.play();
+					BGM.play(BGMMixBus);
 				}
 
 				if (score > 1300 || getData().mini_mode == Hard_Mode) {

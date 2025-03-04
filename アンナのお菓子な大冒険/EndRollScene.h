@@ -66,35 +66,6 @@ public:
 	}
 };
 
-//class EndRoll3 :public App::Scene
-//{
-//public:
-//	double t = 0;
-//
-//	Texture texture{ U"EndRoll/突撃アンナ.png" };
-//
-//	EndRoll3(const InitData& init) : IScene{ init } {}
-//
-//	void update()override
-//	{
-//		t += Scene::DeltaTime();
-//
-//		if (endRollTime < t)
-//		{
-//			changeScene(U"EndRoll4");
-//		}
-//	}
-//
-//	void draw()const override
-//	{
-//		Scene::SetBackground(Palette::Black);
-//
-//		FontAsset{ U"EndRollFont" }(U"アンナちゃんのママ兼パパ\nりゅーの").draw(50, 50);
-//
-//		texture.mirrored().resized(300).draw(Arg::bottomRight(Scene::Size() - Vec2{ 50,50 }));
-//	}
-//};
-
 class EndRoll3 :public App::Scene
 {
 public:
@@ -286,7 +257,8 @@ public:
 		const double height = FontAsset{ U"EndRollFont" }.height();
 
 		FontAsset{ U"EndRollFont" }(U"BGM・効果音\nまる").draw(50, 50);
-		FontAsset{ U"EndRollFont" }(U"効果音素材\n効果音ラボ\nOn - Jin ～音人～\nザ・マッチメイカァズ\nOtoLogic").draw(50, 50 + height * 3.5, AlphaF(Clamp(t - 1, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"効果音素材").draw(50, 50 + height * 3.5, AlphaF(Clamp(t - 1, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"効果音ラボ\nOn - Jin ～音人～\nザ・マッチメイカァズ\nOtoLogic\n夢にみた緑").draw(40,50, 50 + height * 4.5, AlphaF(Clamp(t - 1, 0.0, 1.0)));
 	}
 };
 
@@ -491,8 +463,6 @@ public:
 
 	Texture texture{ U"EndRoll/雲ボス.png" };
 
-	Texture rogo{ U"EndRoll/ロゴ.png" };
-
 	EndRoll13(const InitData& init) : IScene{ init } {}
 
 	void update()override
@@ -512,7 +482,10 @@ public:
 		texture.resized(Scene::Width()).draw();
 		Scene::Rect().draw(ColorF{ 0,0.3 });
 
-		rogo.resized(600).drawAt(Scene::Center(), AlphaF(Clamp(t - 0.5, 0.0, 1.0)));
+		const double height = FontAsset{ U"EndRollFont" }.height();
+
+		FontAsset{ U"EndRollFont" }(U"東京都市大学").drawAt(Scene::Center()+Vec2{ 0,-height/2.0 });
+		FontAsset{ U"EndRollFont" }(U"コンピュータ技術研究会").drawAt(Scene::Center() + Vec2{ 0,height / 2.0 });
 	}
 };
 
@@ -639,8 +612,6 @@ public:
 		manager.add<EndRoll14>(U"EndRoll14");
 		manager.add<EndRoll15>(U"EndRoll15");
 		manager.add<EndRoll16>(U"EndRoll16");
-
-		//manager.init(U"EndRoll13");
 	}
 
 	void update()override

@@ -9,6 +9,8 @@ public:
 	Duration interval;
 	Duration startTime;
 
+	LongPressInput() = default;
+
 	LongPressInput(const InputGroup& input, Duration interval = 0.2s, Duration startTime=0.4s)
 		:input{ input }, interval{ interval }, startTime{startTime}, m_lastPressTime {
 		startTime

@@ -2,15 +2,17 @@
 #include"LongPressInput.hpp"
 #include"BunchoUI.hpp"
 #include"Lisence.h"
+#include"SettingWindow.h"
 
 using namespace BunchoUI;
 
 enum mode { Stage_Mode, Easy_Mode, Normal_Mode, Hard_Mode };
 
+constexpr MixBus EffectMixBus = MixBus0;
+constexpr MixBus BGMMixBus = MixBus1;
+
 struct GameData
 {
-	double BGMVolume = 1.0;
-	double EffectVolume = 1.0;
 	int32 stage = 1;
 	mode mini_mode = Easy_Mode;
 	bool mini_clear = false;
@@ -44,8 +46,8 @@ struct GameData
 		JSON saveDatajson;
 		saveDatajson[U"SelectedStage"] = stage;
 		saveDatajson[U"ClearStage"] = clearStage;
-		saveDatajson[U"BGMVolume"] = BGMVolume;
-		saveDatajson[U"EffectVolume"] = EffectVolume;
+		saveDatajson[U"BGMVolume"] = GlobalAudio::BusGetVolume(BGMMixBus);
+		saveDatajson[U"EffectVolume"] = GlobalAudio::BusGetVolume(EffectMixBus);
 
 		for(int32 maxHP: maxHPList)
 		{
@@ -75,8 +77,8 @@ struct GameData
 
 		stage = saveDatajson[U"SelectedStage"].get<int32>();
 		clearStage = saveDatajson[U"ClearStage"].get<int32>();
-		BGMVolume = saveDatajson[U"BGMVolume"].get<double>();
-		EffectVolume = saveDatajson[U"EffectVolume"].get<double>();
+		GlobalAudio::BusSetVolume(BGMMixBus, saveDatajson[U"BGMVolume"].get<double>());
+		GlobalAudio::BusSetVolume(EffectMixBus, saveDatajson[U"EffectVolume"].get<double>());
 
 		maxHPList.clear();
 		for(const auto& obj:saveDatajson[U"MaxHP"].arrayView())

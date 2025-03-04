@@ -126,6 +126,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Movements.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SettingWindow.cpp" />
     <ClCompile Include="SoundIcon.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -375,6 +376,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="RingEffect.h" />
     <ClInclude Include="setting.h" />
+    <ClInclude Include="SettingWindow.h" />
     <ClInclude Include="SimpleAction.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SoundIcon.hpp" />
