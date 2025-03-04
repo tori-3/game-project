@@ -863,6 +863,7 @@ namespace FallingAnna {
 			}
 			Sfont(U"残り:", Math::Round(nokori / annah * 1.6), U"m").draw(Arg::topRight = Vec2(ww * 0.95f, wh * 0.05f));
 
+			FontAsset{ U"NormalFont" }(U"[ESC]ポーズ").draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 		}
 
 	};

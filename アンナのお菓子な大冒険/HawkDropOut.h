@@ -517,94 +517,96 @@ namespace HawkDropOut {
 
 		void gameDraw() const override
 		{
-
-			Transformer2D transformer{ Mat3x2::Scale(1.5,{0,0 }) * Mat3x2::Translate(0,-15), TransformCursor::Yes };
-
-			//背景画面
-			Scene::SetBackground(Palette::Blue);
-
-			TextureAsset{ U"BackGroundTexture/雲背景.png" }.resized(800).draw();
-
-			constexpr ColorF cloudColor = ColorF{ Palette::Lightpink } + ColorF{ 0.3 };
-
-			//雲を描画する
-			cloudEmoji.scaled(1).draw(Aclouddistance, 100, cloudColor);
-
-			cloudEmoji.scaled(1).draw(Bclouddistance, 250, cloudColor);
-
-			cloudEmoji.scaled(1).draw(Cclouddistance, 200, cloudColor);
-
-			cloudEmoji.scaled(1).draw(Dclouddistance, 50, cloudColor);
-
-			cloudEmoji.scaled(1).draw(Eclouddistance, 150, cloudColor);
-
-			constexpr double groundSize = 50;
-
-			for (int32 i = -1; i < (800 / groundSize); ++i)
 			{
-				double pos = i * groundSize + Fmod(groundTime * 130, groundSize);
-				groundTexture.resized(groundSize).draw(pos, 500);
+				Transformer2D transformer{ Mat3x2::Scale(1.5,{0,0 }) * Mat3x2::Translate(0,-15), TransformCursor::Yes };
+
+				//背景画面
+				Scene::SetBackground(Palette::Blue);
+
+				TextureAsset{ U"BackGroundTexture/雲背景.png" }.resized(800).draw();
+
+				constexpr ColorF cloudColor = ColorF{ Palette::Lightpink } + ColorF{ 0.3 };
+
+				//雲を描画する
+				cloudEmoji.scaled(1).draw(Aclouddistance, 100, cloudColor);
+
+				cloudEmoji.scaled(1).draw(Bclouddistance, 250, cloudColor);
+
+				cloudEmoji.scaled(1).draw(Cclouddistance, 200, cloudColor);
+
+				cloudEmoji.scaled(1).draw(Dclouddistance, 50, cloudColor);
+
+				cloudEmoji.scaled(1).draw(Eclouddistance, 150, cloudColor);
+
+				constexpr double groundSize = 50;
+
+				for (int32 i = -1; i < (800 / groundSize); ++i)
+				{
+					double pos = i * groundSize + Fmod(groundTime * 130, groundSize);
+					groundTexture.resized(groundSize).draw(pos, 500);
+				}
+
+
+				//地面の描画
+				//Rect{ -100, 500, 1000, 100 }.draw(Palette::Green);
+
+
+				//障害物の回転した画像を描画する
+				ishi.scaled(0.2).rotated(angle).draw(astowndistance, 40);
+
+				ishi.scaled(0.2).rotated(angle).draw(bstowndistance, 120);
+
+				ishi.scaled(0.2).rotated(angle).draw(cstowndistance, 200);
+
+				ishi.scaled(0.2).rotated(angle).draw(dstowndistance, 280);
+
+				ishi.scaled(0.2).rotated(angle).draw(estowndistance, 360);
+
+				//アイテムの画像を描画する
+				meat.scaled(0.5).draw(meatCircle.x - 30, meatCircle.y - 30);
+
+				if (cookieCircle.intersects(a_enemyCircle) || cookieCircle.intersects(b_enemyCircle) || cookieCircle.intersects(c_enemyCircle) || cookieCircle.intersects(d_enemyCircle) || cookieCircle.intersects(e_enemyCircle) || receive) {
+
+					texture.scaled(cookieScale).rotated(-angle).drawAt(cookieCircle.x, cookieCircle.y);
+				}
+				else {
+
+					//鷲が障害物に当たっていない場合の描画
+					texture.scaled(cookieScale).drawAt(cookieCircle.x, cookieCircle.y);
+				}
+
+
+				if (attack) {
+					wing.scaled(0.25).draw(attackball.x - 40, attackball.y - 40);
+				}
+
+				ButtonDraw(Rect{ 650, 180, 60, 60 }, 0.5, 30, 30, upEmoji, font, farmCount, upTime < 10.0, enemy, true);
+				ButtonDraw(Rect{ 650, 250, 60, 60 }, 0.5, 30, 30, attackfunction, font, farmCount, numofmeat >= 1, enemy, j < 1);
+				ButtonDraw(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, numofmeat >= 2 || tornadoFlg, enemy, true);
+				ButtonDraw(Rect{ 650, 320, 60, 60 }, 0.5, 30, 30, downEmoji, font, factoryCount, true, enemy, true);
+
+				if (10 > upTime) {
+					font(U"上昇可能時間: {:.2f} 秒"_fmt(10 - upTime)).draw(30, 0, 500, Palette::White);
+				}
+				else {
+					font(U"上昇不可能時間: {:.2f} 秒"_fmt(20 - upTime)).draw(30, 0, 500, Palette::Red);
+				}
+
+				//飛距離の表示
+				//font(U"飛距離").draw(30, 10, 10, Palette::Black);
+
+				//font(FlyDistance).draw(30, 120, 10, Palette::Black);
+
+				font(U"飛距離 {}/{}"_fmt(FlyDistance, clearScore)).draw(30, 10, 10, Palette::Black);
+
+				if (clear)
+				{
+					Rect{ 800,600 }.draw(ColorF{ 0,0.5 });
+					font(U"Clear!!").drawAt(100, 400, 250);
+					font(U"Enterで戻る").drawAt(30, 400, 350);
+				}
 			}
-
-
-			//地面の描画
-			//Rect{ -100, 500, 1000, 100 }.draw(Palette::Green);
-
-
-			//障害物の回転した画像を描画する
-			ishi.scaled(0.2).rotated(angle).draw(astowndistance, 40);
-
-			ishi.scaled(0.2).rotated(angle).draw(bstowndistance, 120);
-
-			ishi.scaled(0.2).rotated(angle).draw(cstowndistance, 200);
-
-			ishi.scaled(0.2).rotated(angle).draw(dstowndistance, 280);
-
-			ishi.scaled(0.2).rotated(angle).draw(estowndistance, 360);
-
-			//アイテムの画像を描画する
-			meat.scaled(0.5).draw(meatCircle.x - 30, meatCircle.y - 30);
-
-			if (cookieCircle.intersects(a_enemyCircle) || cookieCircle.intersects(b_enemyCircle) || cookieCircle.intersects(c_enemyCircle) || cookieCircle.intersects(d_enemyCircle) || cookieCircle.intersects(e_enemyCircle) || receive) {
-
-				texture.scaled(cookieScale).rotated(-angle).drawAt(cookieCircle.x, cookieCircle.y);
-			}
-			else {
-
-				//鷲が障害物に当たっていない場合の描画
-				texture.scaled(cookieScale).drawAt(cookieCircle.x, cookieCircle.y);
-			}
-
-
-			if (attack) {
-				wing.scaled(0.25).draw(attackball.x - 40, attackball.y - 40);
-			}
-
-			ButtonDraw(Rect{ 650, 180, 60, 60 }, 0.5, 30, 30, upEmoji, font, farmCount, upTime < 10.0, enemy, true);
-			ButtonDraw(Rect{ 650, 250, 60, 60 }, 0.5, 30, 30, attackfunction, font, farmCount, numofmeat >= 1, enemy, j < 1);
-			ButtonDraw(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, numofmeat >= 2 || tornadoFlg, enemy, true);
-			ButtonDraw(Rect{ 650, 320, 60, 60 }, 0.5, 30, 30, downEmoji, font, factoryCount, true, enemy, true);
-
-			if (10 > upTime) {
-				font(U"上昇可能時間: {:.2f} 秒"_fmt(10 - upTime)).draw(30, 0, 500, Palette::White);
-			}
-			else {
-				font(U"上昇不可能時間: {:.2f} 秒"_fmt(20 - upTime)).draw(30, 0, 500, Palette::Red);
-			}
-
-			//飛距離の表示
-			//font(U"飛距離").draw(30, 10, 10, Palette::Black);
-
-			//font(FlyDistance).draw(30, 120, 10, Palette::Black);
-
-			font(U"飛距離 {}/{}"_fmt(FlyDistance, clearScore)).draw(30, 10, 10, Palette::Black);
-
-			if (clear)
-			{
-				Rect{ 800,600 }.draw(ColorF{ 0,0.5 });
-				font(U"Clear!!").drawAt(100, 400, 250);
-				font(U"Enterで戻る").drawAt(30, 400, 350);
-			}
+			FontAsset{ U"NormalFont" }(U"[ESC]ポーズ").draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 		}
 
 	private:

@@ -395,6 +395,8 @@ namespace Maze2 {
 				FontAsset{ U"TitleFont" }(U"Clear!!").drawAt(150, Scene::Center());
 				FontAsset{ U"TitleFont" }(U"Enterで戻る").drawAt(45, Scene::Center() + Vec2{ 0,150 });
 			}
+
+			FontAsset{ U"NormalFont" }(U"[ESC]ポーズ").draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 		}
 
 	};

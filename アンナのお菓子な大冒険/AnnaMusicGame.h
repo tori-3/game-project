@@ -560,6 +560,8 @@ namespace AnnaMusicGame {
 			font(U"をタイミング良く押そう！！\nMiss9以下でクリア").draw(40, 700, 130, Palette::Skyblue);
 			font(U"{}"_fmt(credit)).draw(30, 5, 750, Palette::Skyblue);
 			font(U"Combo{}"_fmt(combo)).draw(60, 650, 380, Palette::Yellowgreen);
+
+			FontAsset{ U"NormalFont" }(U"[ESC]ポーズ").draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 		}
 	};
 }

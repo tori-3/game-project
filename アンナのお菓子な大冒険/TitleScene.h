@@ -56,7 +56,7 @@ public:
 	LongPressInput upInput{ getData().KeyUp };
 	LongPressInput downInput{ getData().KeyDown };
 
-	static constexpr Vec2 startPlace{ -100,630+50 };
+	static constexpr Vec2 startPlace{ -100,630+15 };
 	static constexpr Vec2 targetPlace{ 400,startPlace.y };
 	Vec2 playerPos = startPlace;
 
@@ -249,12 +249,11 @@ public:
 				pos.y += menuHeight;
 			}
 
-
-			//mapButton.draw();
-			//minigameButton.draw();
 		}
+		FontAsset{ U"NormalFont" }(U"操作：[W]↑ [S]↓ [A]← [D]→ [Enter]決定 [Q]戻る [ESC]ポーズ").draw(Arg::bottomLeft(5, Scene::Height() - 5), AlphaF(Min(time / 2.0, 1.0)));
 
 		character.draw();
+
 
 		uiManager.draw();
 	}

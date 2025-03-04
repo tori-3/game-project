@@ -24,7 +24,7 @@
     false,
     false
   ],
-  "ClearStage": 3,
+  "ClearStage": 22,
   "EffectVolume": 1.0,
   "MaxHP": [
     5,
@@ -82,5 +82,5 @@
       "Normal": false
     }
   ],
-  "SelectedStage": 2
+  "SelectedStage": 21
 }

@@ -328,6 +328,8 @@ namespace ManjuRush {
 				FontAsset{ U"TitleFont" }(U"Clear!!").drawAt(150, Scene::Center());
 				FontAsset{ U"TitleFont" }(U"Enterで戻る").drawAt(45, Scene::Center() + Vec2{ 0,150 });
 			}
+
+			FontAsset{ U"NormalFont" }(U"[ESC]ポーズ").draw(Vec2{ 10,5 });
 		}
 
 	};

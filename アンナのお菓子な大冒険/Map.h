@@ -345,7 +345,7 @@ public:
 			Rect{ Arg::center(600,300),1100,450 }.draw(ColorF{ Palette::Deeppink,0.8 }).drawFrame(3, 0);
 			font(sentences[index]).draw(600, 100);
 			start.drawFrame(3);
-			font(U"開始").drawAt(start.center(), ColorF{ 1.0, Periodic::Sine0_1(3s) });
+			font(U"開始(Enter)").drawAt(start.center(), ColorF{ 1.0, Periodic::Sine0_1(3s) });
 
 			if(start.mouseOver())
 			{
@@ -367,7 +367,7 @@ public:
 			Cursor::RequestStyle(CursorStyle::Hand);
 		}
 		homeIcon.drawAt(backButton.center, backButton.mouseOver() ? Palette::Gray : Palette::White);
-
+		FontAsset{ U"NormalFont" }(U"[Q]タイトルに戻る").draw(Arg::leftCenter = backButton.center + Vec2{ 30,0 });
 
 		if (largeFlg) {
 			Rect{ Scene::Size() }.draw(ColorF(0, 0.6));

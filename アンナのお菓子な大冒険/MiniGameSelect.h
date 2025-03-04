@@ -224,5 +224,6 @@ public:
 
 		homeIcon.drawAt(backButton.center, backButton.mouseOver() ? Palette::Gray : Palette::White);
 
+		FontAsset{ U"NormalFont" }(U"[Q]タイトルに戻る").draw(Arg::leftCenter=backButton.center+Vec2{30,0});
 	}
 };

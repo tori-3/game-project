@@ -7,8 +7,8 @@
             "MapFile": "StageData/startStage.json",
             "Picture": "BackgroundTexture/雪原背景.png",
             "SceneName": "MainGameScene",
-            "Sentence": "<1-1>冒険のはじまり\nアンナちゃんが落ちた先には\nお菓子の世界が広がっていました。\nどんなお菓子が待ち受けているのか、\nわくわくしながら\nアンナちゃんは進みます。",
-            "StagePos": "(0,700)",
+            "Sentence": "<1-0>お菓子の国\nアンナちゃんはお菓子の国に有名な\nケーキを食べに来ました。\nしかし、、、",
+            "StagePos": "(35,700)",
             "Type": "Stage"
         },
         "Stage2": {
@@ -17,8 +17,8 @@
             "MapFile": "StageData/snowStage1.json",
             "Picture": "BackgroundTexture/雪原背景.png",
             "SceneName": "MainGameScene",
-            "Sentence": "<1-1>冒険のはじまり\nアンナちゃんが落ちた先には\nお菓子の世界が広がっていました。\nどんなお菓子が待ち受けているのか、\nわくわくしながら\nアンナちゃんは進みます。",
-            "StagePos": "(50,700)",
+            "Sentence": "<1-1>冒険のはじまり\nそこにはお菓子の世界が広がって\nいました。\nどんなお菓子が待ち受けているのか、\nわくわくしながら\nアンナちゃんは進みます。",
+            "StagePos": "(80,700)",
             "Type": "Stage"
         },
         "Stage3": {
@@ -28,7 +28,7 @@
             "Picture": "BackgroundTexture/雪原背景.png",
             "SceneName": "MainGameScene",
             "Sentence": "<1-2>プリンのトランポリン\nプリンでとびはねるイチゴちゃん。\n楽しそうなので、アンナちゃんも\n混ざります。\n（お菓子で遊んではいけません。）",
-            "StagePos": "(100,700)",
+            "StagePos": "(125,700)",
             "Type": "Stage"
         },
         "Stage4": {
@@ -37,8 +37,8 @@
             "MapFile": "",
             "Picture": "MiniGameDisplay/まんじゅうラッシュ.png",
             "SceneName": "ManjuRush",
-            "Sentence": "<ミニゲーム-まんじゅうラッシュ>\nジャンプ(↑)で迫りくるまんじゅうを\nよけるゲームです。",
-            "StagePos": "(150,700)",
+            "Sentence": "<ミニゲーム-まんじゅうラッシュ>\nまんじゅうの軍団がアンナちゃんを\n襲う！\n迫りくるまんじゅうをよけよう！\n[W]ジャンプ　[S]さがる\nスコア1300でクリア",
+            "StagePos": "(170,700)",
             "Type": "MiniGame"
         },
         "Stage5": {
@@ -48,7 +48,7 @@
             "Picture": "BackgroundTexture/雪原背景.png",
             "SceneName": "MainGameScene",
             "Sentence": "<1-3>いちごラッシュ！\nいちごの軍団が行く手を阻む！\n全力で駆け抜けよう！",
-            "StagePos": "(185,720)",
+            "StagePos": "(195,720)",
             "Type": "Stage"
         },
         "Stage6": {
@@ -67,7 +67,7 @@
             "MapFile": "StageData/snowStageBoss.json",
             "Picture": "BackgroundTexture/雪原背景.png",
             "SceneName": "MainGameScene",
-            "Sentence": "<1-Boss>雪だるナイト参上！\nクリーム雪原を治める雪だるまの長。\n鎧はあらゆる攻撃を防ぎます。\n雪だるナイトを倒すには\nアンナちゃんとっておきの\n必殺技を食らわせよう！",
+            "Sentence": "<1-Boss>雪だるナイト参上！\nクリーム雪原を治める雪だるまの長。\n鎧はあらゆる攻撃を防ぎます。\n雪だるナイトに\nアンナちゃんとっておきの\n必殺技を食らわせよう！",
             "StagePos": "(233,610)",
             "Type": "Boss"
         },
@@ -77,7 +77,7 @@
             "MapFile": "",
             "Picture": "MiniGameDisplay/MAZE.png",
             "SceneName": "Maze1",
-            "Sentence": "<ミニゲーム-暗闇迷路>\n迷路",
+            "Sentence": "<ミニゲーム-暗闇迷路>\nビスケットの匂いに誘われて真っ暗な\n迷路に迷い込んでしまった！\n明かりを頼りにビスケットを\n手に入れよう！\n[W]↑  [S]↓  [A]←  [D]→",
             "StagePos": "(300,680)",
             "Type": "MiniGame"
         },
@@ -107,7 +107,7 @@
             "MapFile": "",
             "Picture": "MiniGameDisplay/回転迷路.png",
             "SceneName": "Maze2",
-            "Sentence": "<ミニゲーム-回転迷路>\n迷路を回転させてゴールを\n目指しましょう。",
+            "Sentence": "<ミニゲーム-回転迷路>\nアンナちゃんの行く手にパズルが出現！\nピンクの駒をゴールに入れよう！\n[A]左回転　[D]右回転",
             "StagePos": "(415,630)",
             "Type": "MiniGame"
         },
@@ -147,7 +147,7 @@
             "MapFile": "",
             "Picture": "MiniGameDisplay/HawkDropOut.png",
             "SceneName": "HawkDropOut",
-            "Sentence": "<ミニゲーム-HawkDropOut>\n地面に着かないように鷹を飛ばすゲーム\nです。\n上昇、下降ボタンを使って石をよけま\nしょう。\n肉を取るとアイテムをゲットできます。",
+            "Sentence": "<ミニゲーム-HawkDropOut>\n鷹に乗ってひとっ飛び！\n敵を避けながら地面に着かないように\n気を付けてよう！\nクッキーを取るとアイテムゲット！\n[W]上昇  [A]攻撃(クッキー×1)\n[S]降下   [D]急上昇(クッキー×2)",
             "StagePos": "(590,510)",
             "Type": "MiniGame"
         },
@@ -177,7 +177,7 @@
             "MapFile": "",
             "Picture": "MiniGameDisplay/音ゲー.png",
             "SceneName": "AnnaMusicGame",
-            "Sentence": "<ミニゲーム-AnnaMusicGame>\n音ゲーです。\nタイミングよく←[A]と→[D]を\n押してください。",
+            "Sentence": "<ミニゲーム-AnnaMusicGame>\nたくさんのキャンディーが落ちてきた！\nタイミングよく←[A]と→[D]を押して\nキャンディーを手に入れよう！",
             "StagePos": "(780,450)",
             "Type": "MiniGame"
         },
@@ -216,7 +216,7 @@
             "MapFile": "",
             "Picture": "MiniGameDisplay/FallingAnna.png",
             "SceneName": "FallingAnna",
-            "Sentence": "<ミニゲーム-FallingAnna>\n岩を破壊してスコアを稼ぎながら落下\nするゲームです。\n詳しくは写真を拡大してください。",
+            "Sentence": "<ミニゲーム-FallingAnna>\n雲からダイブ！！\n岩を壊してスコアを稼ごう！\n[A]←  [D]→  [S]加速  [W]ブレーキ\n障害物をよけながら加速して\n岩を壊そう！",
             "StagePos": "(950,430)",
             "Type": "MiniGame"
         },

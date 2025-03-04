@@ -374,7 +374,7 @@ public:
 
 		TalkManager::get().talkWindow.draw(RectF{ 0,500,Scene::Size().x,300 });
 
-		FontAsset(U"TitleFont")(U"Escで操作方法").draw(40,850,0,Palette::Orange);
+		FontAsset{ U"NormalFont" }(U"[ESC]ポーズ").draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 
 		if (DataManager::get().bossHPRate)
 		{
@@ -413,7 +413,7 @@ public:
 		Rect{ Scene::Size() }.draw(ColorF{ 0,0.7 });
 		RoundRect{ Arg::center = Scene::Center(),1150,750,10 }.draw(ColorF{ Palette::Skyblue,0.7});
 		FontAsset(U"TitleFont")(U"ポーズ").drawAt(Scene::Center().x, 100);
-		FontAsset(U"TitleFont")(U"Space or W：ジャンプ\nA：左\nD：右\S：しゃがむ\nEnter：技を発動\nEnter長押し：突進(クッキーが10個貯まったら)\n").drawAt(50,Scene::Center());
+		FontAsset(U"TitleFont")(U"Space or W：ジャンプ\nA：左\nD：右\nS：しゃがむ\nEnter：技を発動\nEnter長押し：突進(クッキーが10個貯まったら)\n").drawAt(50,Scene::Center());
 		gameButton.draw();
 		mapButton.draw();
 	}

@@ -430,6 +430,8 @@ namespace Maze1 {
 			//	//replay.draw(Palette::Black);
 			//	//title.draw(Palette::Black);
 			//}
+
+			FontAsset{ U"NormalFont" }(U"[ESC]ポーズ").draw(Vec2{ 10,5 });
 		}
 
 	};

@@ -118,7 +118,7 @@ void WeakWall::reaction(const Point& pos, PhysicsBox* box)
 		if (box->lines(Direction::left).intersects(rect) || box->lines(Direction::right).intersects(rect) || box->lines(Direction::up).intersects(rect) || box->lines(Direction::down).intersects(rect)) {
 			if (Abs(box->vel->x) > 500) {
 				breaked = true;
-				AudioAsset{ U"突進衝突" }.playOneShot();
+				AudioAsset{ U"突進衝突" }.play();
 				return;
 			}
 		}
