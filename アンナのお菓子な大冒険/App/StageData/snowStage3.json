@@ -1,7 +1,7 @@
 ﻿{
-    "BackGround": [
-        "StageData/snowStage3_back.json"
-    ],
+  "BackGround": [
+    "StageData/snowStage3_back.json"
+  ],
   "Block": {
     "BeltConveyorLeft": [
       "(101, 2)",
@@ -957,7 +957,7 @@
       "(35, 5)"
     ],
     "Player": [
-      "(2, 7)"
+      "(3, 7)"
     ],
     "SpawnerStrawberrySoldier": [
       "(78, 1)",

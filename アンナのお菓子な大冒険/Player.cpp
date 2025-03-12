@@ -407,6 +407,8 @@ Player::Player(const Vec2& cpos) :
 			return hp <= 0;
 		},
 		.start = [&]() {
+			BGMManager::get().play(U"ゲームオーバー");
+
 			actMan.cancelAll({U"Dead"});
 			DataManager::get().table.emplace(U"IrisOut");
 			character.clearMotion();

@@ -1025,5 +1025,8 @@
     <ClInclude Include="Lisence.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Fairy.h">
+      <Filter>Header Files\MainGameScene\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -346,6 +346,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="FadeUpEffect.h" />
+    <ClInclude Include="Fairy.h" />
     <ClInclude Include="FallingAnna.h" />
     <ClInclude Include="Figure.hpp" />
     <ClInclude Include="Fire.hpp" />

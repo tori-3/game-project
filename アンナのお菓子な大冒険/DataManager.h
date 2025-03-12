@@ -16,6 +16,7 @@ public:
 
 	double tame = 0;
 
+	Vec2 fairyPos{};
 
 	int32 maxHP = 5;
 

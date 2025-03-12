@@ -57,14 +57,15 @@ public:
 		{U"CloudBRBlock",[]() {return new CloudBRBlock(); }},
 		{U"CloudTLBlock",[]() {return new CloudTLBlock(); }},
 		{U"CloudTRBlock",[]() {return new CloudTRBlock(); }},
-		{U"CloudConcaveBLBlock",[]() {return new CloudConcaveBLBlock(); }},
-		{U"CloudConcaveBRBlock",[]() {return new CloudConcaveBRBlock(); }},
-		{U"CloudConcaveTLBlock",[]() {return new CloudConcaveTLBlock(); }},
-		{U"CloudConcaveTRBlock",[]() {return new CloudConcaveTRBlock(); }},
+		//{U"CloudConcaveBLBlock",[]() {return new CloudConcaveBLBlock(); }},
+		//{U"CloudConcaveBRBlock",[]() {return new CloudConcaveBRBlock(); }},
+		//{U"CloudConcaveTLBlock",[]() {return new CloudConcaveTLBlock(); }},
+		//{U"CloudConcaveTRBlock",[]() {return new CloudConcaveTRBlock(); }},
 		{U"CloudLBlock",[]() {return new CloudLBlock(); }},
 		{U"CloudRBlock",[]() {return new CloudRBlock(); }},
+		{U"CloudBBlock",[]() {return new CloudBBlock(); }},
 		{U"ChocolateWallCanNotRespawn",[]() {return new ChocolateWallCanNotRespawn(); }},
-		{U"FairyBlock",[]() {return new FairyBlock(); }}
+		{U"FairyBlock",[]() {return new FairyBlock(); }},
 	};
 
 	Stage(const JSON& json,bool backGround=false) {

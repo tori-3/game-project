@@ -1,7 +1,7 @@
 ﻿{
-    "BackGround": [
-        "StageData/startStage_back1.json"
-    ],
+  "BackGround": [
+    "StageData/startStage_back1.json"
+  ],
   "Block": {
     "CakeGround": [
       "(0, 9)",
@@ -100,17 +100,11 @@
       "(11, 4)",
       "(12, 4)"
     ],
-    "CloudBlock": [
-      "(9, 3)"
-    ],
-    "CloudConcaveTLBlock": [
-      "(8, 3)"
-    ],
-    "CloudConcaveTRBlock": [
-      "(10, 3)"
-    ],
     "CloudSurfaceBlock": [
-      "(9, 2)"
+      "(9, 2)",
+      "(8, 3)",
+      "(9, 3)",
+      "(10, 3)"
     ],
     "CloudTLBlock": [
       "(8, 2)",
@@ -136,10 +130,10 @@
     ]
   },
   "Rate": 1.0,
-    "SignboardPath": [
-        "StageData/SignboardText/0-1/看板0.txt",
-        "StageData/SignboardText/0-1/看板1.txt",
-        "StageData/SignboardText/0-1/看板2.txt"
-    ],
+  "SignboardPath": [
+    "StageData/SignboardText/0-1/看板0.txt",
+    "StageData/SignboardText/0-1/看板1.txt",
+    "StageData/SignboardText/0-1/看板2.txt"
+  ],
   "stage_size": "(21, 12)"
 }

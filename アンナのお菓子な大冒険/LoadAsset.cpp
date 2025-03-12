@@ -10,6 +10,8 @@ void LoadAsset::LoadAudio()
 		AudioAsset::LoadAsync(name);
 	}
 
+	AudioAsset{ U"ゲームオーバー" }.setVolume(10);
+
 	AudioAsset{ U"足音" }.setVolume(3);
 
 	AudioAsset{ U"ビーム" }.setVolume(3);

@@ -62,8 +62,8 @@ public:
 
 	CharacterSystem character{ U"Characters/annna/annna.json",U"Characters/annna/motion.txt",0.5,startPlace,false};
 
-	Timer changeMapTimer{ 2s };
-	Timer changeMiniGameTimer{ 2s };
+	Timer changeMapTimer{ 1s };
+	Timer changeMiniGameTimer{ 1s };
 
 	static constexpr Vec2 menuPos{ 800,450 + 30 };
 	static constexpr double menuHeight = 60;
@@ -188,9 +188,16 @@ public:
 			}
 		}
 
+		if(menuClicked&& selectedIndex==2&&uiManager.getChildren().size()==0)
+		{
+			getData().save();
+			menuClicked = false;
+		}
+
+
 		if(changeMapTimer.isStarted())
 		{
-			playerPos.x += Scene::DeltaTime() * 500;
+			playerPos.x += Scene::DeltaTime() * 500*2;
 		}
 
 		if(changeMapTimer.reachedZero())
@@ -202,7 +209,7 @@ public:
 		{
 			if (0.7s<changeMiniGameTimer.duration() - Duration{ changeMiniGameTimer.sF() })
 			{
-				playerPos.y += Scene::DeltaTime() * 500;
+				playerPos.y += Scene::DeltaTime() * 500*2;
 			}
 		}
 

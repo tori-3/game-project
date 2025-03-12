@@ -228,70 +228,50 @@ void CloudBlock(Point pos) {
 	TextureAsset{ U"Cloud" }.resized(rect_size).draw(pos * rect_size);
 }
 
+constexpr double cloudTextureSize = rect_size * (273.0 / 227.0);
+
 void CloudSurfaceBlock(Point pos) {
-	TextureAsset{ U"CloudSurface" }.resized(rect_size*2).draw((pos+Point{0,-1}) * rect_size);
+	TextureAsset{ U"CloudT" }.resized(cloudTextureSize).draw(Arg::bottomLeft = (pos + Point{ 0,1 }) * rect_size);
 }
 
 void CloudBLBlock(Point pos) {
 	const Vec2 center=Rect{ pos * rect_size,rect_size }.center();
 
-	TextureAsset{ U"CloudBL" }.resized(368/300.0*70).drawAt(center);
+	TextureAsset{ U"CloudBL" }.resized(cloudTextureSize).draw(Arg::topRight = (pos + Point{ 1,0 }) * rect_size);
 }
 
 void CloudBRBlock(Point pos) {
 	const Vec2 center = Rect{ pos * rect_size,rect_size }.center();
 
-	TextureAsset{ U"CloudBR" }.resized(368 / 300.0 * 70).drawAt(center);
+	TextureAsset{ U"CloudBR" }.resized(cloudTextureSize).draw(pos * rect_size);
 }
 
 void CloudTLBlock(Point pos) {
 	const Vec2 center = Rect{ pos * rect_size,rect_size }.center();
 
-	TextureAsset{ U"CloudTL" }.resized(368/ 300.0 * 70).drawAt(center);
+	TextureAsset{ U"CloudTL" }.resized(cloudTextureSize).draw(Arg::bottomRight = (pos + Point{ 1,1 }) * rect_size);
 }
 
 void CloudTRBlock(Point pos) {
 	const Vec2 center = Rect{ pos * rect_size,rect_size }.center();
 
-	TextureAsset{ U"CloudTR" }.resized(368 / 300.0 * 70).drawAt(center);
-}
-
-void CloudConcaveBLBlock(Point pos) {
-	const Vec2 center = Rect{ pos * rect_size,rect_size }.center();
-
-	TextureAsset{ U"CloudConcaveBL" }.resized(368/ 300.0 * 70).drawAt(center);
-}
-
-void CloudConcaveBRBlock(Point pos) {
-	const Vec2 center = Rect{ pos * rect_size,rect_size }.center();
-
-	TextureAsset{ U"CloudConcaveBR" }.resized(368 / 300.0 * 70).drawAt(center);
-}
-
-void CloudConcaveTLBlock(Point pos) {
-	const Vec2 center = Rect{ pos * rect_size,rect_size }.center();
-
-	TextureAsset{ U"CloudConcaveTL" }.resized(368 / 300.0 * 70).drawAt(center);
-}
-
-void CloudConcaveTRBlock(Point pos) {
-	const Vec2 center = Rect{ pos * rect_size,rect_size }.center();
-
-	TextureAsset{ U"CloudConcaveTR" }.resized(368 / 300.0 * 70).drawAt(center);
+	TextureAsset{ U"CloudTR" }.resized(cloudTextureSize).draw(Arg::bottomLeft = (pos + Point{ 0,1 }) * rect_size);
 }
 
 void CloudLBlock(Point pos) {
 	const Vec2 center = Rect{ pos * rect_size,rect_size }.center();
 
-	TextureAsset{ U"CloudL" }.resized(368 / 300.0 * 70).drawAt(center);
+	TextureAsset{ U"CloudL" }.resized(cloudTextureSize).draw(Arg::topRight = (pos + Point{ 1,0 }) * rect_size);
 }
 
 void CloudRBlock(Point pos) {
-	TextureAsset{ U"CloudR" }.resized(368 / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
+	TextureAsset{ U"CloudR" }.resized(cloudTextureSize).draw(pos * rect_size);
 
 }
 
-
+void CloudBBlock(Point pos) {
+	TextureAsset{ U"CloudB" }.resized(cloudTextureSize).draw(pos * rect_size);
+}
 
 void ChocolateWallCanNotRespawn(Point pos) {
 	TextureAsset(U"ChocolateWall").resized(rect_size).draw(pos * rect_size);
@@ -360,10 +340,11 @@ Array<Info>list{
 	{U"CloudBRBlock",CloudBRBlock,U"雲右下"},
 	{U"CloudTLBlock",CloudTLBlock,U"雲左上"},
 	{U"CloudTRBlock",CloudTRBlock,U"雲右上"},
-	{U"CloudConcaveBLBlock",CloudConcaveBLBlock,U"雲端左下"},
-	{U"CloudConcaveBRBlock",CloudConcaveBRBlock,U"雲端右下"},
-	{U"CloudConcaveTLBlock",CloudConcaveTLBlock,U"雲端左上"},
-	{U"CloudConcaveTRBlock",CloudConcaveTRBlock,U"雲端右上"},
+	//{U"CloudConcaveBLBlock",CloudConcaveBLBlock,U"雲端左下"},
+	//{U"CloudConcaveBRBlock",CloudConcaveBRBlock,U"雲端右下"},
+	//{U"CloudConcaveTLBlock",CloudConcaveTLBlock,U"雲端左上"},
+	//{U"CloudConcaveTRBlock",CloudConcaveTRBlock,U"雲端右上"},
+	{U"CloudBBlock",CloudBBlock,U"雲下"},
 	{U"CloudLBlock",CloudLBlock,U"雲左"},
 	{U"CloudRBlock",CloudRBlock,U"雲右"},
 	{U"FairyBlock",FairyBlock,U"妖精"}

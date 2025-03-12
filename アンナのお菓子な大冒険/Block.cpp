@@ -360,6 +360,8 @@ void  SignboardBlock::update(const Point& pos)
 {
 	if (DataManager::get().playerPos.intersects(RectF{ (pos-Vec2{1,1}) * rect_size,rect_size*3}))
 	{
+		DataManager::get().fairyPos = pos;
+
 		if (KeyEnter.down()) {
 			TalkManager::get().talkWindow.setTalk(list);
 
@@ -371,7 +373,10 @@ void  SignboardBlock::update(const Point& pos)
 
 void SignboardBlock::draw(const Point& pos)const
 {
-	TextureAsset(U"Signboard").resized(rect_size).draw(pos * rect_size);
+	if(not DataManager::get().table.contains(U"SignboardInvisible"))
+	{
+		TextureAsset(U"Signboard").resized(rect_size).draw(pos * rect_size);
+	}
 
 	if (DataManager::get().playerPos.intersects(RectF{ (pos - Vec2{1,1}) * rect_size,rect_size * 3 }))
 	{
@@ -385,61 +390,47 @@ void SignboardBlock::draw(const Point& pos)const
 	}
 }
 
-
-void CloudBlock::draw(const Point& pos)const {
-	TextureAsset(U"Cloud").resized(rect_size).draw(pos * rect_size);
-}
-
-
-void CloudSurfaceBlock::draw(const Point& pos)const {
-	TextureAsset{ U"CloudSurface" }.resized(rect_size * 2).draw((pos + Point{ 0,-1 }) * rect_size);
-}
-
-
-
 void ChocolateWallCanNotRespawn::reaction(const Point& pos, PhysicsBox* box)
 {
 	box->hitCanNotRespawn(Rect{ pos * rect_size,rect_size });
 }
 
+void CloudBlock::draw(const Point& pos)const {
+	TextureAsset(U"Cloud").resized(rect_size).draw(pos * rect_size);
+}
+
+constexpr double cloudTextureSize = rect_size * (273.0 / 227.0);
+
+void CloudSurfaceBlock::draw(const Point& pos)const {
+	TextureAsset{ U"CloudT" }.resized(cloudTextureSize).draw(Arg::bottomLeft=(pos + Point{ 0,1 }) * rect_size);
+}
+
 void CloudBLBlock::draw(const Point& pos)const {
-	TextureAsset{ U"CloudBL" }.resized(70 + (368 - 300) / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
+	TextureAsset{ U"CloudBL" }.resized(cloudTextureSize).draw(Arg::topRight = (pos + Point{ 1,0 }) * rect_size);
 }
 
 void CloudBRBlock::draw(const Point& pos)const {
-	TextureAsset{ U"CloudBR" }.resized(70 + (368 - 300) / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
+	TextureAsset{ U"CloudBR" }.resized(cloudTextureSize).draw(pos * rect_size);
 }
 
 void CloudTLBlock::draw(const Point& pos)const {
-	TextureAsset{ U"CloudTL" }.resized(70 + (368 - 300) / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
+	TextureAsset{ U"CloudTL" }.resized(cloudTextureSize).draw(Arg::bottomRight= (pos + Point{ 1,1 }) * rect_size);
 }
 
 void CloudTRBlock::draw(const Point& pos)const {
-	TextureAsset{ U"CloudTR" }.resized(70 + (368 - 300) / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
-}
-
-void CloudConcaveBLBlock::draw(const Point& pos)const {
-	TextureAsset{ U"CloudConcaveBL" }.resized(70 + (368 - 300) / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
-}
-
-void CloudConcaveBRBlock::draw(const Point& pos)const {
-	TextureAsset{ U"CloudConcaveBR" }.resized(70 + (368 - 300) / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
-}
-
-void CloudConcaveTLBlock::draw(const Point& pos)const {
-	TextureAsset{ U"CloudConcaveTL" }.resized(70 + (368 - 300) / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
-}
-
-void CloudConcaveTRBlock::draw(const Point& pos)const {
-	TextureAsset{ U"CloudConcaveTR" }.resized(70 + (368 - 300) / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
+	TextureAsset{ U"CloudTR" }.resized(cloudTextureSize).draw(Arg::bottomLeft= (pos + Point{ 0,1 }) * rect_size);
 }
 
 void CloudLBlock::draw(const Point& pos)const {
-	TextureAsset{ U"CloudL" }.resized(70 + (368 - 300) / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
+	TextureAsset{ U"CloudL" }.resized(cloudTextureSize).draw(Arg::topRight = (pos + Point{ 1,0 }) * rect_size);
 }
 
 void CloudRBlock::draw(const Point& pos)const {
-	TextureAsset{ U"CloudR" }.resized(70 + (368 - 300) / 300.0 * 70).drawAt(Rect{ pos * rect_size,rect_size }.center());
+	TextureAsset{ U"CloudR" }.resized(cloudTextureSize).draw(pos * rect_size);
+}
+
+void CloudBBlock::draw(const Point& pos)const {
+	TextureAsset{ U"CloudB" }.resized(cloudTextureSize).draw(pos * rect_size);
 }
 
 FairyBlock::FairyBlock()
