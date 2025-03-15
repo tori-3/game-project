@@ -1,5 +1,5 @@
 ﻿{
-  "BGMVolume": 0.5335552096366882,
+  "BGMVolume": 1.0,
   "ClearComplete": [
     false,
     false,
@@ -25,7 +25,7 @@
     false
   ],
   "ClearStage": 23,
-  "EffectVolume": 0.5007572770118713,
+  "EffectVolume": 1.0,
   "MaxHP": [
     5,
     5,
@@ -68,7 +68,7 @@
       "Normal": false
     },
     {
-      "Easy": false,
+      "Easy": true,
       "Hard": false,
       "Normal": false
     },
@@ -83,5 +83,5 @@
       "Normal": false
     }
   ],
-  "SelectedStage": 1
+  "SelectedStage": 4
 }

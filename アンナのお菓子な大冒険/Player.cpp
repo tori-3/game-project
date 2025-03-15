@@ -193,7 +193,8 @@ Player::Player(const Vec2& cpos) :
 		},
 		.start = [&]() {
 			character.addMotion(U"Shagamu");
-			hitBox.setFigure(RectF{ Arg::center(0,defaultBody.h / 4.0),defaultBody.w,defaultBody.h / 2.0 });
+			
+			hitBox.setFigure(RectF{ Arg::center= Vec2(0,defaultBody.h/4.0),defaultBody.w,defaultBody.h / 2.0 });
 		},
 		.update = [&](double t) {
 			speed = 0;
@@ -448,6 +449,7 @@ Player::Player(const Vec2& cpos) :
 
 void Player::update() {
 
+	ClearPrint();
 	manager->stage->hit(&hitBox);
 
 	actMan.update();
@@ -508,6 +510,7 @@ void Player::update() {
 
 	if (hitBox.canRespawnOn() && hitBox.rightFloor() && hitBox.leftFloor()) {
 		lastTouchPos = pos;
+		Print << U"lastTouchPos:" << lastTouchPos;
 	}
 
 	const bool horizontalCrushed = hitBox.touch(Direction::left) and hitBox.touch(Direction::right);
@@ -536,11 +539,19 @@ void Player::update() {
 		hp -= 1;
 
 		crushedTimer = 0;
+
+		//当たり判定を同期させるため？
+		//これがないとなんかバグる
+		hitBox.update();
 	}
 }
 
 void Player::draw()const{
+	hitBox.getFigure().drawFrame(5,Palette::Red);
+	hitBox.physics.draw();
 	character.draw();
+
+	pos.asCircle(10).draw(Palette::Blue);
 }
 
 void Player::damage(int32 n, const Vec2& force, DamageType damageType)

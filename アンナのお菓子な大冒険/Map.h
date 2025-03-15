@@ -189,6 +189,7 @@ public:
 		if(KeyQ.down())
 		{
 			changeScene(U"TitleScene");
+			AudioAsset{ U"決定ボタン" }.playOneShot();
 		}
 
 		if (not largeFlg) {
@@ -196,9 +197,13 @@ public:
 			if (backButton.leftClicked())
 			{
 				changeScene(U"TitleScene");
+				AudioAsset{ U"決定ボタン" }.playOneShot();
 			}
 
 			if (panelFlg&&(start.leftClicked()||KeyEnter.down()) && index<=clearStage) {
+
+				AudioAsset{ U"決定ボタン" }.playOneShot();
+
 				getData().mini_mode = Stage_Mode;
 				getData().stage = index + 1;
 				//getData().mini_clear = false;
@@ -231,16 +236,36 @@ public:
 			};
 
 			//index
-			if (leftInput.down() && index != 0) {
-				index--;
-				left = true;
-				walk = true;
-				panelFlg = false;
+			if (leftInput.down())
+			{
+				if (0 < index)
+				{
+					index--;
+					left = true;
+					walk = true;
+					panelFlg = false;
+					AudioAsset{ U"カーソル移動" }.playOneShot();
+				}
+				else
+				{
+					AudioAsset{ U"ビープ音" }.playOneShot();
+				}
 			}
-			if (rightInput.down() && index != rect_num - 1 && (index < clearStage)) {
-				index++;
-				left = false;
-				panelFlg = false;
+
+			if (rightInput.down())
+			{
+				if(index != rect_num - 1 && (index < clearStage))
+				{
+					index++;
+					left = false;
+					panelFlg = false;
+					AudioAsset{ U"カーソル移動" }.playOneShot();
+
+				}
+				else
+				{
+					AudioAsset{ U"ビープ音" }.playOneShot();
+				}
 			}
 
 			if (RectF{ 100, 100,pictures[index].resized(450).size }.leftClicked() && index<clearStage &&panelFlg) {
@@ -269,6 +294,7 @@ public:
 					if (Circle{ pos,r }.leftClicked()&& i <= clearStage)
 					{
 						index = i;
+						AudioAsset{ U"決定ボタン" }.playOneShot();
 					}
 				}
 			}
@@ -278,6 +304,7 @@ public:
 
 		if (KeyEnter.down())
 		{
+			AudioAsset{ U"決定ボタン" }.playOneShot();
 			panelFlg = true;
 		}
 	}

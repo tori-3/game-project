@@ -18,7 +18,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 			.margine=10,
 			.children
 			{
-				TextUI::Create({.text=U"効果音 音量",.color=Palette::White}),
+				TextUI::Create({.text=U"効果音 音量",.color=Palette::White,.width = 150}),
 				effectVolumeSlider,
 				effectVolumeIcon
 			}
@@ -35,7 +35,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 			.margine = 10,
 			.children
 			{
-				TextUI::Create({.text=U"BGM 音量",.color = Palette::White}),
+				TextUI::Create({.text=U"BGM 音量",.color = Palette::White,.width = 150}),
 				BGMVolumeSlider,
 				BGMVolumeIcon
 			}
@@ -80,12 +80,28 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 
 			if (upInput.down())
 			{
-				selectIndex = Max(selectIndex - 1, 0);
+				if(0<selectIndex)
+				{
+					AudioAsset{ U"カーソル移動" }.playOneShot();
+					--selectIndex;
+				}
+				else
+				{
+					AudioAsset{ U"ビープ音" }.playOneShot();
+				}
 			}
 
 			if (downInput.down())
 			{
-				selectIndex = Min(selectIndex + 1, 3);
+				if (selectIndex<3)
+				{
+					AudioAsset{ U"カーソル移動" }.playOneShot();
+					++selectIndex;
+				}
+				else
+				{
+					AudioAsset{ U"ビープ音" }.playOneShot();
+				}
 			}
 
 			effectVolumeSliderPanel->color = selectIndex == 0 ? ColorF{ Palette::Skyblue } : AlphaF(0);
@@ -116,6 +132,8 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 
 			if (windowModeButton->clicked() || (selectIndex == 2 && KeyEnter.down()))
 			{
+				AudioAsset{ U"決定ボタン" }.playOneShot();
+
 				const bool isFullscreen = Window::GetState().fullscreen;
 				windowModeButton->setChild(TextUI::Create({.text = isFullscreen ? U"全画面":U"ウィンドウ",.color=Palette::White  }));
 				Window::SetFullscreen(not isFullscreen);
@@ -123,6 +141,8 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 
 			if (closeButton->clicked() || (selectIndex == 3 && KeyEnter.down())||KeyQ.down())
 			{
+				AudioAsset{ U"キャンセル" }.playOneShot();
+
 				dialog->close();
 				if (onClose)
 				{

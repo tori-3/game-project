@@ -127,21 +127,38 @@ public:
 
 		if (not menuClicked)
 		{
-			if (upInput.down() && 0 < selectedIndex)
+			if (upInput.down())
 			{
-				--selectedIndex;
+				if(0 < selectedIndex)
+				{
+					--selectedIndex;
+					AudioAsset{ U"カーソル移動" }.playOneShot();
+				}
+				else
+				{
+					AudioAsset{ U"ビープ音" }.playOneShot();
+				}
 			}
 
-			if (downInput.down() && selectedIndex < menuList.size() - 1)
+			if (downInput.down())
 			{
-				++selectedIndex;
+				if(selectedIndex < menuList.size() - 1)
+				{
+					++selectedIndex;
+					AudioAsset{ U"カーソル移動" }.playOneShot();
+				}
+				else
+				{
+					AudioAsset{ U"ビープ音" }.playOneShot();
+				}
 			}
 
 			if(KeyEnter.down())
 			{
 				menuClicked = true;
+				AudioAsset{ U"決定ボタン" }.playOneShot();
 			}
-
+			
 			{
 				Transformer2D target{ Mat3x2::Translate(translate(),0),TransformCursor::Yes };
 				Vec2 pos = menuPos;
@@ -150,6 +167,7 @@ public:
 				{
 					if (updateStick(pos + (selectedIndex == i ? Vec2{ -30,0 } : Vec2{})))
 					{
+						AudioAsset{ U"決定ボタン" }.playOneShot();
 						selectedIndex = i;
 						menuClicked = true;
 					}
@@ -302,14 +320,30 @@ public:
 			{
 				if (getData().KeyLeft.down())
 				{
-					showBrowserButton->selected = true;
-					closeButton->selected = false;
+					if(closeButton->selected)
+					{
+						showBrowserButton->selected = true;
+						closeButton->selected = false;
+						AudioAsset{U"カーソル移動"}.playOneShot();
+					}
+					else
+					{
+						AudioAsset{ U"ビープ音" }.playOneShot();
+					}
 				}
 
 				if (getData().KeyRight.down())
 				{
-					showBrowserButton->selected = false;
-					closeButton->selected = true;
+					if(showBrowserButton->selected)
+					{
+						showBrowserButton->selected = false;
+						closeButton->selected = true;
+						AudioAsset{ U"カーソル移動" }.playOneShot();
+					}
+					else
+					{
+						AudioAsset{ U"ビープ音" }.playOneShot();
+					}
 				}
 
 				if(getData().KeyUp.pressed())
@@ -327,12 +361,14 @@ public:
 					if (showBrowserButton->selected)
 					{
 						LicenseManager::ShowInBrowser();
+						AudioAsset{ U"決定ボタン" }.playOneShot();
 					}
 					else
 					{
 						dialog->close();
 						menuClicked = false;
 						KeyEnter.clearInput();
+						AudioAsset{ U"キャンセル" }.playOneShot();
 					}
 				}
 				else
@@ -341,10 +377,12 @@ public:
 					{
 						dialog->close();
 						menuClicked = false;
+						AudioAsset{ U"キャンセル" }.playOneShot();
 					}
 					else if (showBrowserButton->clicked())
 					{
 						LicenseManager::ShowInBrowser();
+						AudioAsset{ U"決定ボタン" }.playOneShot();
 					}
 				}
 			}

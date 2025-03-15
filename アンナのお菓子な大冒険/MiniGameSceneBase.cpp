@@ -80,12 +80,28 @@ std::shared_ptr<UIElement> MiniGameSceneBase::createPauseUI()
 		{
 			if(leftInput.down())
 			{
-				m_settingSelectIndex = Max(m_settingSelectIndex - 1, 0);
+				if(0<m_settingSelectIndex)
+				{
+					--m_settingSelectIndex;
+					AudioAsset{ U"カーソル移動" }.playOneShot();
+				}
+				else
+				{
+					AudioAsset{ U"ビープ音" }.playOneShot();
+				}
 			}
 
 			if (rightInput.down())
 			{
-				m_settingSelectIndex = Min(m_settingSelectIndex + 1, 3);
+				if (m_settingSelectIndex<3)
+				{
+					++m_settingSelectIndex;
+					AudioAsset{ U"カーソル移動" }.playOneShot();
+				}
+				else
+				{
+					AudioAsset{ U"ビープ音" }.playOneShot();
+				}
 			}
 
 			redoButton->selected = m_settingSelectIndex == 0;
@@ -95,18 +111,22 @@ std::shared_ptr<UIElement> MiniGameSceneBase::createPauseUI()
 
 			if (redoButton->clicked() || (redoButton->selected && KeyEnter.down()))
 			{
+				AudioAsset{ U"決定ボタン" }.playOneShot();
 				changeScene(getData().sceneName);
 			}
 			else if (continueButton->clicked()||(continueButton->selected&&KeyEnter.down()))
 			{
+				AudioAsset{ U"キャンセル" }.playOneShot();
 				dialog->close();
 			}
 			else if (endButton->clicked() || (endButton->selected && KeyEnter.down()))
 			{
+				AudioAsset{ U"決定ボタン" }.playOneShot();
 				EndGame(false);
 			}
 			else if (settingButton->clicked() || (settingButton->selected && KeyEnter.down()))
 			{
+				AudioAsset{ U"決定ボタン" }.playOneShot();
 				uiManager.addChild(
 					SettingWindow(getData().KeyUp, getData().KeyDown, getData().KeyLeft, getData().KeyRight, [=] {uiManager.addChild(createPauseUI()); getData().save(); })
 				);

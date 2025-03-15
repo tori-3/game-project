@@ -20,6 +20,11 @@ public:
 
 	bool canRespawnOn = false;
 
+	void draw()const
+	{
+		RectF{ *pos + delta,width,height }.drawFrame(5, Palette::Orange);
+	}
+
 	PhysicsBox(Vec2* pos, Vec2* vel, Vec2 delta, double width, double height, int32* hp) :pos(pos), vel(vel), delta(delta), width(width), height(height), hp{hp} {}
 
 	//それぞれの方向のshift関数を呼び出す

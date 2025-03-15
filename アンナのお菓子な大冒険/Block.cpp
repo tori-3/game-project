@@ -433,6 +433,14 @@ void CloudBBlock::draw(const Point& pos)const {
 	TextureAsset{ U"CloudB" }.resized(cloudTextureSize).draw(pos * rect_size);
 }
 
+void ChocoCakeBlock::draw(const Point& pos)const {
+	TextureAsset{ U"ChocoCake" }.resized(rect_size).draw(pos * rect_size);
+}
+
+void ChocoCakeWallBlock::draw(const Point& pos)const {
+	TextureAsset{ U"ChocoCakeWall" }.resized(rect_size).draw(pos * rect_size);
+}
+
 FairyBlock::FairyBlock()
 {
 	character.addMotion(U"Floating",true);

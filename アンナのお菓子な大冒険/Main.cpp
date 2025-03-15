@@ -51,20 +51,8 @@ void Main()
 
 	LoadAsset::LoadAudio();
 
-	//bool start = false;
-
 	while (System::Update())
 	{
-		//if(KeySpace.down())
-		//{
-		//	start = true;
-		//}
-
-		//if(not start)
-		//{
-		//	continue;
-		//}
-
 		if (not manager.update())
 		{
 			break;

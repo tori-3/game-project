@@ -420,30 +420,6 @@ public:
 	void draw(const Point& pos)const override;
 };
 
-//class CloudConcaveBLBlock :public Block
-//{
-//public:
-//	void draw(const Point& pos)const override;
-//};
-//
-//class CloudConcaveBRBlock :public Block
-//{
-//public:
-//	void draw(const Point& pos)const override;
-//};
-//
-//class CloudConcaveTLBlock :public Block
-//{
-//public:
-//	void draw(const Point& pos)const override;
-//};
-//
-//class CloudConcaveTRBlock :public Block
-//{
-//public:
-//	void draw(const Point& pos)const override;
-//};
-
 class CloudLBlock :public Block
 {
 public:
@@ -451,6 +427,18 @@ public:
 };
 
 class CloudRBlock :public Block
+{
+public:
+	void draw(const Point& pos)const override;
+};
+
+class ChocoCakeBlock :public Block
+{
+public:
+	void draw(const Point& pos)const override;
+};
+
+class ChocoCakeWallBlock :public Block
 {
 public:
 	void draw(const Point& pos)const override;

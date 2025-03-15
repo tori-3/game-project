@@ -65,6 +65,8 @@ public:
 		{U"CloudRBlock",[]() {return new CloudRBlock(); }},
 		{U"CloudBBlock",[]() {return new CloudBBlock(); }},
 		{U"ChocolateWallCanNotRespawn",[]() {return new ChocolateWallCanNotRespawn(); }},
+		{U"ChocoCakeBlock",[]() {return new ChocoCakeBlock(); }},
+		{U"ChocoCakeWallBlock",[]() {return new ChocoCakeWallBlock(); }},
 		{U"FairyBlock",[]() {return new FairyBlock(); }},
 	};
 

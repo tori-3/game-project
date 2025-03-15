@@ -278,6 +278,14 @@ void ChocolateWallCanNotRespawn(Point pos) {
 	Rect{ pos * rect_size,rect_size }.drawFrame(5, 0,Palette::Red);
 }
 
+void ChocoCakeBlock(Point pos) {
+	TextureAsset{ U"ChocoCake" }.resized(rect_size).draw(pos * rect_size);
+}
+
+void ChocoCakeWallBlock(Point pos) {
+	TextureAsset{ U"ChocoCakeWall" }.resized(rect_size).draw(pos * rect_size);
+}
+
 void FairyBlock(Point pos) {
 	Rect{ pos * rect_size,rect_size }.draw(Palette::Greenyellow);
 }
@@ -347,7 +355,9 @@ Array<Info>list{
 	{U"CloudBBlock",CloudBBlock,U"雲下"},
 	{U"CloudLBlock",CloudLBlock,U"雲左"},
 	{U"CloudRBlock",CloudRBlock,U"雲右"},
-	{U"FairyBlock",FairyBlock,U"妖精"}
+	{U"FairyBlock",FairyBlock,U"妖精"},
+	{U"ChocoCakeWallBlock",ChocoCakeWallBlock,U"チョコケーキの壁"},
+	{U"ChocoCakeBlock",ChocoCakeBlock,U"チョコケーキの床"}
 };
 
 HashTable<String, std::function<void(Point)>> table;
