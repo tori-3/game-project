@@ -57,10 +57,6 @@ public:
 		{U"CloudBRBlock",[]() {return new CloudBRBlock(); }},
 		{U"CloudTLBlock",[]() {return new CloudTLBlock(); }},
 		{U"CloudTRBlock",[]() {return new CloudTRBlock(); }},
-		//{U"CloudConcaveBLBlock",[]() {return new CloudConcaveBLBlock(); }},
-		//{U"CloudConcaveBRBlock",[]() {return new CloudConcaveBRBlock(); }},
-		//{U"CloudConcaveTLBlock",[]() {return new CloudConcaveTLBlock(); }},
-		//{U"CloudConcaveTRBlock",[]() {return new CloudConcaveTRBlock(); }},
 		{U"CloudLBlock",[]() {return new CloudLBlock(); }},
 		{U"CloudRBlock",[]() {return new CloudRBlock(); }},
 		{U"CloudBBlock",[]() {return new CloudBBlock(); }},
@@ -86,16 +82,18 @@ public:
 
 			//ファイルにあるブロック名を読み込む(ステージで使われていないブロックを読み込もうとしてエラーになるのを防ぐため)
 			Array<String>block_name;
-			for (const auto& block : json[U"Block"]) {
+			for (const auto& block : json[U"Block"])
+			{
 				block_name << block.key;
-				if (block.key == U"Player") {
+				if (block.key == U"Player")
+				{
 					DataManager::get().addEntity(U"Player", (block.value[0].get<Point>() + Vec2{ 0.5,1 })*rect_size);
 					hasPlayer = true;
 				}
 			}
 
-			if (not backGround) {
-
+			if (not backGround)
+			{
 				//もしプレイヤーの位置が設定されていなかったら
 				if (not hasPlayer) {
 					DataManager::get().addEntity(U"Player", (Vec2{ 3,5 } + Vec2{ 0.5,1 }) * rect_size);
@@ -106,8 +104,8 @@ public:
 			Grid<std::unique_ptr<Block>>_map(json[U"stage_size"].get<Point>());
 
 			//mapにファイルのデータを読み込む。
-			for (int i = 0; i < block_name.size(); i++) {
-
+			for (int i = 0; i < block_name.size(); i++)
+			{
 				if (block_name[i] == U"SignboardBlock")
 				{
 					Array<String>pathList;
@@ -147,22 +145,29 @@ public:
 
 		}
 
-		if (not backGround) {
+		if (not backGround)
+		{
 			DataManager::get().stageSize = map.size() * rect_size;
 		}
 	}
 
-	void hit(HitBox* hitbox) {
+	void hit(HitBox* hitbox)
+	{
 		hitbox->physics.resetFlg();
 		int range = 6;
 		Point point = hitbox->pos->asPoint() / Point(rect_size, rect_size);
 		for (int y = Max(0, point.y - range); y < Min((int)map.height(), point.y + range); y++)
 		{
-			for (int x = Max(0, point.x - range); x < Min((int)map.width(), point.x + range); x++) {
+			for (int x = Max(0, point.x - range); x < Min((int)map.width(), point.x + range); x++)
+			{
 				Point p(x, y);
 				if (map[p] != nullptr)map[p]->reaction(p, &(hitbox->physics));//reaction関数がhanteiに図形を渡して呼び出す
 			}
 		}
+
+		//ステージの右端と左端にも当たり判定
+		hitbox->physics.hit(RectF{ Arg::rightCenter(Vec2{0,0}),rect_size*1000 });
+		hitbox->physics.hit(RectF{ Arg::leftCenter(Vec2{map.width()*rect_size,0}),rect_size * 1000 });
 	}
 
 	void update(const Vec2& vec,int32 left= range_left,int32 right= range_right) {
@@ -182,26 +187,29 @@ public:
 		Point pos = vec.asPoint() / Point(rect_size, rect_size);//プレイヤーの座標をマップ番号に変換
 		for (int y = 0; y < map.height(); y++)
 		{
-			for (int x = Max(0, pos.x - left); x < Min((int)map.width(), pos.x + right); x++) {
+			for (int x = Max(0, pos.x - left); x < Min((int)map.width(), pos.x + right); x++)
+			{
 				Point p(x, y);
 				if (map[p] != NULL)map[p]->draw(p);
 			}
 		}
 	}
 
-	void updateAsBackGround(const Vec2& vec, int32 left = range_left, int32 right = range_right) {
-
+	void updateAsBackGround(const Vec2& vec, int32 left = range_left, int32 right = range_right)
+	{
 		Point pos = vec.asPoint() / Point(rect_size, rect_size);//プレイヤーの座標をマップ番号に変換
 		for (int y = 0; y < map.height(); y++)
 		{
-			for (int x = Max(0, pos.x - left); x < pos.x + right; x++) {
+			for (int x = Max(0, pos.x - left); x < pos.x + right; x++)
+			{
 				Point p(x % map.width(), y);
 				if (map[p] != NULL)map[p]->update(Point{ x,y });
 			}
 		}
 	}
 
-	void drawAsBackGround(const Vec2& vec, int32 left = range_left, int32 right = range_right)const {
+	void drawAsBackGround(const Vec2& vec, int32 left = range_left, int32 right = range_right)const
+	{
 		//ブロックの描写
 		Point pos = vec.asPoint() / Point(rect_size, rect_size);//プレイヤーの座標をマップ番号に変換
 		for (int y = 0; y < map.height(); y++)
@@ -215,13 +223,15 @@ public:
 
 	size_t width()const { return map.width(); }
 
-	size_t height() {
+	size_t height()
+	{
 		return map.height();
 	}
 };
 
 
-class StageBackGround {
+class StageBackGround
+{
 public:
 
 	Stage stage;
@@ -229,40 +239,44 @@ public:
 	double rate;
 
 
-	StageBackGround(const JSON& json) :stage{ json,true }, rate{ json[U"Rate"].get<double>() } {
+	StageBackGround(const JSON& json)
+		: stage{ json,true }
+		, rate{ json[U"Rate"].get<double>() }
+	{}
 
-	}
-
-	void draw(const Vec2& pos)const {
+	void draw(const Vec2& pos)const
+	{
 		{
 			const Transformer2D transformer1{ Mat3x2::Scale(rate, Vec2{0,0}) };
 			const Transformer2D transformer2{ Mat3x2::Translate(Vec2{-pos * rate}) };
 			stage.drawAsBackGround(pos * rate, 4, brockNum());
 		}
-
 	}
 
-	int32 brockNum()const{
+	int32 brockNum()const
+	{
 		return int32(Scene::Width()/ (rect_size*rate)+4.0);
 	}
 };
 
-class StageBackGroundManager {
+class StageBackGroundManager
+{
 public:
 
 	Array<StageBackGround>backGrounds;
 
-	StageBackGroundManager(const JSON& json) {
-
+	StageBackGroundManager(const JSON& json)
+	{
 		for (const auto& elem : json[U"BackGround"].arrayView())
 		{
 			backGrounds << StageBackGround{ JSON::Load(elem.getString()) };
 		}
 	}
 
-	void draw(const Vec2& pos)const {
-
-		for (auto& backGround : backGrounds) {
+	void draw(const Vec2& pos)const
+	{
+		for (auto& backGround : backGrounds)
+		{
 			backGround.draw(pos);
 			Rect{ Scene::Size() }.draw(ColorF{ Palette::Skyblue,0.1 });
 		}

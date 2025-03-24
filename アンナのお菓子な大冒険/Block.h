@@ -11,14 +11,11 @@
 class Block {
 public:
 	Block() {};
-	virtual void reaction(const Point& pos, PhysicsBox* box)
-	{
-		box->hit(Rect{ pos * rect_size,rect_size });
-	}
+	virtual void reaction(const Point& pos, PhysicsBox* box);
 
-	virtual void update([[maybe_unused]] const Point& pos){}
+	virtual void update(const Point& pos);
 
-	virtual void draw([[maybe_unused]] const Point& pos)const {};
+	virtual void draw(const Point& pos)const;
 };
 
 class Untouchable: public Block {

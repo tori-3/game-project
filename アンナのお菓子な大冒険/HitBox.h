@@ -34,13 +34,15 @@ public:
 		shift(rect, Direction::right, Vec2{ -0.1,0 });
 		shift(rect, Direction::left, Vec2{ 0.1,0 });
 
-			const Vec2 p0 = *pos + delta;
-			if (rect.intersects(Vec2{ p0.x, p0.y + height+5 })) {
-				leftFloor = true;
-			}
-			if (rect.intersects(Vec2{ p0.x + width, p0.y + height+5 })) {
-				rightFloor = true;
-			}
+		const Vec2 p0 = *pos + delta;
+		if (rect.intersects(Vec2{ p0.x, p0.y + height + 5 }))
+		{
+			leftFloor = true;
+		}
+		if (rect.intersects(Vec2{ p0.x + width, p0.y + height + 5 }))
+		{
+			rightFloor = true;
+		}
 
 	}
 
@@ -81,14 +83,15 @@ public:
 		return Line{};
 	}
 
-	void resetFlg() {
+	void resetFlg()
+	{
 		touch_flag[0] = touch_flag[1] = touch_flag[2] = touch_flag[3] = 0;
 		leftFloor = rightFloor = false;
 		canRespawnOn = false;
 	}
 
-	void physicsUpdate() {
-
+	void physicsUpdate()
+	{
 		if (touch_flag[0] && vel->y < 0)vel->y = 0;//天井に衝突したらy軸速度を0に
 		if (touch_flag[1] && vel->y > 0)vel->y = 0;//床に衝突したらy軸速度を0に
 

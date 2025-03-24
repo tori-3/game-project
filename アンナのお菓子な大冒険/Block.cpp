@@ -1,6 +1,15 @@
 ﻿#include"Block.h"
 #include"TalkManager.h"
 
+void Block::reaction(const Point& pos, PhysicsBox* box)
+{
+	box->hit(Rect{ pos * rect_size,rect_size });
+}
+
+void Block::update(const Point&) {}
+
+void Block::draw(const Point&)const {};
+
 void CakeSurface::draw(const Point& pos)const
 {
 	TextureAsset(U"CakeSurface").resized(rect_size).draw(pos * rect_size);
