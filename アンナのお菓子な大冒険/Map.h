@@ -83,6 +83,17 @@ public:
 	Texture stageColor{ U"StageImage/stageColor.png", TextureDesc::Mipped };
 	Texture stageGame{ U"StageImage/stageGame.png", TextureDesc::Mipped };
 
+	static constexpr Vec2 fairyPos{ 80,700 - 30 };
+	CharacterSystem fairy{ U"Characters/yousei1/yousei.json",U"Characters/yousei1/motion.txt",0.25 * 0.5,fairyPos,true };
+
+	static constexpr Vec2 snowKnightPos{ 233,610 - 40 };
+	CharacterSystem snowKnight{ U"Characters/yukidarunaito/yukidarunaito.json" ,U"Characters/yukidarunaito/motion.txt" ,0.2 * 0.2,snowKnightPos,true,false };
+	Timer snowKnightKiriageTimer{ 10s };
+
+	static constexpr Vec2 cookieDoreishoPos{ 460,480 - 25 };
+	CharacterSystem cookieDoreisho{ U"Characters/cookieDoreisho/model.json" ,U"Characters/cookieDoreisho/motion.txt" ,0.4*0.4,cookieDoreishoPos,true,false };
+	Timer cookieDoreishoTimer{ 4s };
+
 	void updatePos();
 	
 	Map(const InitData& init);

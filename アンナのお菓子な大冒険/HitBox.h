@@ -13,6 +13,7 @@ public:
 	double width, height;
 	Vec2 delta;//座表と左上の座標との差
 	int32* hp;
+	bool rush = false;
 
 	double acc1=0;
 
@@ -28,7 +29,7 @@ public:
 	PhysicsBox(Vec2* pos, Vec2* vel, Vec2 delta, double width, double height, int32* hp) :pos(pos), vel(vel), delta(delta), width(width), height(height), hp{hp} {}
 
 	//それぞれの方向のshift関数を呼び出す
-	template<typename T>void hit(T rect) {
+	template<typename T>void hit(const T& rect) {
 		shift(rect, Direction::up, Vec2{ 0,0.1 });
 		shift(rect, Direction::down, Vec2{ 0,-0.1 });
 		shift(rect, Direction::right, Vec2{ -0.1,0 });
@@ -46,7 +47,8 @@ public:
 
 	}
 
-	template<typename T>void hitCanNotRespawn(T rect)
+	template<typename T>
+	void hitCanNotRespawn(const T& rect)
 	{
 		bool oldcanRespawnOn = canRespawnOn;
 		hit(rect);
@@ -54,7 +56,8 @@ public:
 	}
 
 	//図形の埋め込みを解消する
-	template<typename T>void shift(T rect, Direction num, Vec2 vec)
+	template<typename T>
+	void shift(const T& rect, Direction num, const Vec2& vec)
 	{
 		if (not rect.intersects(lines(num)))return;//Lineと当たっていなければ何もしない
 		while (rect.intersects(lines(num)))*pos += vec;//Lineと当たらなくなるまで移動

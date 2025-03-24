@@ -15,7 +15,8 @@ void CakeSurface::draw(const Point& pos)const
 	TextureAsset(U"CakeSurface").resized(rect_size).draw(pos * rect_size);
 }
 
-void CakeGround::draw(const Point& pos)const {
+void CakeGround::draw(const Point& pos)const
+{
 	TextureAsset(U"CakeGround").resized(rect_size).draw(pos* rect_size);
 }
 
@@ -49,7 +50,8 @@ void Slider::reaction(const Point& pos, PhysicsBox* box)
 	Point p = pos * rect_size;
 	const Triangle triangle{ p, p + Point(0,rect_size), p + Point(rect_size,rect_size) };
 	box->hit(triangle);
-	if (box->lines(Direction::left).intersects(triangle)) {
+	if (box->lines(Direction::left).intersects(triangle))
+	{
 		*(box->pos) += Vec2(5, 5);
 	}
 }
@@ -64,7 +66,8 @@ void Moving::reaction(const Point& pos, PhysicsBox* box)
 {
 	RectF rect{ pos * rect_size,rect_size };
 	rect.x += Periodic::Triangle0_1(3s, DataManager::get().time) * rect_size * 3;
-	if (box->lines(Direction::down).center().movedBy(0,1).intersects(rect)) {
+	if (box->lines(Direction::down).center().movedBy(0,1).intersects(rect))
+	{
 		if (Periodic::Square0_1(3s, DataManager::get().time))box->pos->x += Scene::DeltaTime() / 1.5 * rect_size * 3;
 		else box->pos->x -= Scene::DeltaTime() / 1.5 * rect_size * 3;
 	}
@@ -85,7 +88,8 @@ void Elevator::reaction(const Point& pos, PhysicsBox* box)
 	rect.y -= (int32)(Periodic::Triangle0_1(6s, DataManager::get().time) * rect_size * 5);
 	box->hitCanNotRespawn(rect);
 
-	if (box->lines(Direction::down).intersects(rect) && not Periodic::Square0_1(6s, DataManager::get().time)) {
+	if (box->lines(Direction::down).intersects(rect) && not Periodic::Square0_1(6s, DataManager::get().time))
+	{
 		box->pos->y += (rect_size * 5) * Scene::DeltaTime() / 3 + 0.2;
 	}
 }
@@ -97,22 +101,28 @@ void Elevator::draw(const Point& pos)const
 	TextureAsset(U"ChocolateWall").resized(rect_size).draw(rect.pos);
 }
 
-void StrawberrySoldierBlock::update(const Point& pos){
-	if (not bornFlg) {
+void StrawberrySoldierBlock::update(const Point& pos)
+{
+	if (not bornFlg)
+	{
 		DataManager::get().addEntity(U"StrawberrySoldier", pos * rect_size + Vec2{ 0.5,0.5 }*rect_size);
 		bornFlg = true;
 	}
 }
 
-void CookieSoldierBlock::update(const Point& pos) {
-	if (not bornFlg) {
+void CookieSoldierBlock::update(const Point& pos)
+{
+	if (not bornFlg)
+	{
 		DataManager::get().addEntity(U"CookieSoldier", pos * rect_size + Vec2{ 0.5,0.5 }*rect_size);
 		bornFlg = true;
 	}
 }
 
-void Door::update(const Point& pos) {
-	if (not bornFlg) {
+void Door::update(const Point& pos)
+{
+	if (not bornFlg)
+	{
 		DataManager::get().addEntity(U"Door", pos * rect_size);
 		bornFlg = true;
 	}
@@ -120,12 +130,14 @@ void Door::update(const Point& pos) {
 
 void WeakWall::reaction(const Point& pos, PhysicsBox* box)
 {
-
 	const Rect rect{ pos * rect_size,rect_size };
 
-	if (not breaked) {
-		if (box->lines(Direction::left).intersects(rect) || box->lines(Direction::right).intersects(rect) || box->lines(Direction::up).intersects(rect) || box->lines(Direction::down).intersects(rect)) {
-			if (Abs(box->vel->x) > 500) {
+	if (not breaked)
+	{
+		if (box->lines(Direction::left).intersects(rect) || box->lines(Direction::right).intersects(rect) || box->lines(Direction::up).intersects(rect) || box->lines(Direction::down).intersects(rect))
+		{
+			if (box->rush)
+			{
 				breaked = true;
 				AudioAsset{ U"突進衝突" }.play();
 				return;
@@ -135,8 +147,10 @@ void WeakWall::reaction(const Point& pos, PhysicsBox* box)
 	}
 }
 
-void WeakWall::draw(const Point& pos)const {
-	if (not breaked) {
+void WeakWall::draw(const Point& pos)const
+{
+	if (not breaked)
+	{
 		TextureAsset(U"WeakWall").resized(rect_size).draw(pos * rect_size);
 	}
 }
@@ -169,30 +183,36 @@ void BeltConveyorLeft::reaction(const Point& pos, PhysicsBox* box)
 	box->hitCanNotRespawn(rect);
 }
 
-void BeltConveyorLeft::draw(const Point& pos)const {
+void BeltConveyorLeft::draw(const Point& pos)const
+{
 	const double size = TextureAsset(U"ChocolateWall").size().x;
 	const double d = 1 - Periodic::Sawtooth0_1(0.5s, DataManager::get().time);
 	TextureAsset(U"BeltConveyor")(size - size * d, 0, size * d, size).resized(rect_size * d, rect_size).draw(pos * rect_size);
 	TextureAsset(U"BeltConveyor")(0, 0, size - size * d, size).resized(rect_size * (1 - d), rect_size).draw((pos + Vec2{ d,0 }) * rect_size);
 }
 
-void SpawnerStrawberrySoldier::update(const Point& pos) {
-
-	if (not bornFlg) {
+void SpawnerStrawberrySoldier::update(const Point& pos)
+{
+	if (not bornFlg)
+	{
 		DataManager::get().addEntity(U"SpawnerStrawberrySoldier", pos * rect_size + Vec2{ 0.5,0.5 }*rect_size);
 		bornFlg = true;
 	}
 }
 
-void SnowmanBlock::update(const Point& pos) {
-	if (not bornFlg) {
+void SnowmanBlock::update(const Point& pos)
+{
+	if (not bornFlg)
+	{
 		DataManager::get().addEntity(U"Snowman", pos * rect_size + Vec2{ 1,1 }*rect_size);
 		bornFlg = true;
 	}
 }
 
-void ItigoSlaveBlock::update(const Point& pos) {
-	if (not bornFlg) {
+void ItigoSlaveBlock::update(const Point& pos)
+{
+	if (not bornFlg)
+	{
 		DataManager::get().addEntity(U"ItigoSlave", pos * rect_size + Vec2{ 0.5,0 }*rect_size);
 		bornFlg = true;
 	}
@@ -206,8 +226,10 @@ void CloudEnemyBlock::update(const Point& pos) {
 	}
 }
 
-void CornBlock::update(const Point& pos) {
-	if (not bornFlg) {
+void CornBlock::update(const Point& pos)
+{
+	if (not bornFlg)
+	{
 		DataManager::get().addEntity(U"Corn", pos * rect_size + Vec2{ 0.5,0.5 }*rect_size);
 		bornFlg = true;
 	}
@@ -220,29 +242,37 @@ void CookieMutiBlock::update(const Point& pos) {
 	}
 }
 
-void CookieKabanBlock::update(const Point& pos){
-	if (not bornFlg) {
+void CookieKabanBlock::update(const Point& pos)
+{
+	if (not bornFlg)
+	{
 		DataManager::get().addEntity(U"CookieKaban", pos * rect_size + Vec2{ 0.5,0 }*rect_size);
 		bornFlg = true;
 	}
 }
 
-void ZerosenBlock::update(const Point& pos){
-	if (not bornFlg) {
+void ZerosenBlock::update(const Point& pos)
+{
+	if (not bornFlg)
+	{
 		DataManager::get().addEntity(U"Zerosen", pos * rect_size + Vec2{ 0.5,0 }*rect_size);
 		bornFlg = true;
 	}
 }
 
-void SnowKnightBlock::update(const Point& pos) {
-	if (not bornFlg) {
+void SnowKnightBlock::update(const Point& pos)
+{
+	if (not bornFlg)
+	{
 		DataManager::get().addEntity(U"SnowKnight", pos * rect_size + Vec2{ 0.5,0 }*rect_size);
 		bornFlg = true;
 	}
 }
 
-void SlaversCookieBlock::update(const Point& pos) {
-	if (not bornFlg) {
+void SlaversCookieBlock::update(const Point& pos)
+{
+	if (not bornFlg)
+	{
 		DataManager::get().addEntity(U"SlaversCookie", pos * rect_size + Vec2{ 0.5,0 }*rect_size);
 		bornFlg = true;
 	}
@@ -251,24 +281,27 @@ void SlaversCookieBlock::update(const Point& pos) {
 void ThroughBlock::reaction(const Point& pos, PhysicsBox* box)
 {
 	//ヘッドドロップのときはすり抜ける(速度で判定)
-	if (not(1150 < (box->vel->y))) {
+	if (not(1150 < (box->vel->y)))
+	{
 		box->hitDown(Rect{ pos * rect_size,rect_size,20 });
 	}
 }
 
-void ThroughBlock::draw(const Point& pos)const {
-
+void ThroughBlock::draw(const Point& pos)const
+{
 	TextureAsset{ U"SlippingFloors" }.resized(rect_size).draw(pos * rect_size);
 }
 
 void PoleBlock::reaction(const Point& pos, PhysicsBox* box)
 {
 	RectF rect{ pos * rect_size ,rect_size };
-	if (box->lines(Direction::right).intersects(rect) and 600 < box->vel->x) {
+	if (box->lines(Direction::right).intersects(rect) and box->rush)
+	{
 		DataManager::get().table.emplace(U"PoleHit");
 		DataManager::get().table.emplace(U"ShakeCamera");
 	}
-	else if (box->lines(Direction::left).intersects(rect) and box->vel->x < -600) {
+	else if (box->lines(Direction::left).intersects(rect) and box->rush)
+	{
 		DataManager::get().table.emplace(U"PoleHit");
 		DataManager::get().table.emplace(U"ShakeCamera");
 	}
@@ -276,8 +309,8 @@ void PoleBlock::reaction(const Point& pos, PhysicsBox* box)
 	box->hit(rect);
 }
 
-void PoleBlock::draw(const Point& pos)const{
-
+void PoleBlock::draw(const Point& pos)const
+{
 	if(pos.x==0)
 	{
 		TextureAsset{ U"moroiHashiraL" }.resized(rect_size).draw(pos * rect_size);
@@ -288,75 +321,86 @@ void PoleBlock::draw(const Point& pos)const{
 	}
 };
 
-void CaptainBlock::update(const Point& pos){
-	if (not bornFlg) {
+void CaptainBlock::update(const Point& pos)
+{
+	if (not bornFlg)
+	{
 		DataManager::get().addEntity(U"Captain", pos * rect_size + Vec2{ 0.5,0 }*rect_size);
 		bornFlg = true;
 	}
 }
 
-void LastBossBlock::update(const Point& pos) {
-	if (not bornFlg) {
+void LastBossBlock::update(const Point& pos)
+{
+	if (not bornFlg)
+	{
 		DataManager::get().addEntity(U"LastBoss", pos * rect_size + Vec2{ 0.5,0 }*rect_size);
 		bornFlg = true;
 	}
 }
 
-void IceCream::draw(const Point& pos)const {
+void IceCream::draw(const Point& pos)const
+{
 	TextureAsset(U"IceCream").resized(rect_size * 2).draw(pos * rect_size);
 };
 
-void Candle::draw(const Point& pos)const {
+void Candle::draw(const Point& pos)const
+{
 	TextureAsset(U"Candle").resized(rect_size * 2).draw(pos * rect_size - Vec2::UnitX() * rect_size / 2);
 	TextureAsset(U"fire").resized(rect_size).draw(pos * rect_size - Vec2::UnitY() * rect_size / 2);
 };
 
-void Candy::draw(const Point& pos)const {
+void Candy::draw(const Point& pos)const
+{
 	TextureAsset(U"Candy").resized(rect_size * 2.5).rotated(15_deg).draw(pos * rect_size);
 };
 
-void CandyStick::draw(const Point& pos)const {
+void CandyStick::draw(const Point& pos)const
+{
 	TextureAsset(U"CandyStick").resized(rect_size * 2.2).draw(pos * rect_size);
 };
 
-void Cherries::draw(const Point& pos)const {
+void Cherries::draw(const Point& pos)const
+{
 	TextureAsset(U"Cherries").resized(rect_size * 1.3).draw(pos * rect_size);
 };
 
-void Blueberry::draw(const Point& pos)const {
+void Blueberry::draw(const Point& pos)const
+{
 	TextureAsset(U"Blueberry").resized(rect_size * 1.3).draw(pos * rect_size);
 };
 
-
-void FallingRocksBlock::update(const Point& pos) {
-
+void FallingRocksBlock::update(const Point& pos)
+{
 	constexpr double range = 1 * rect_size;
 
 	const double blockX = pos.x * rect_size;
 
-	if (not fallingFlg) {
-
+	if (not fallingFlg)
+	{
 		const double playerX = DataManager::get().playerPos.x;
 
-		if (InRange(playerX, blockX - range, blockX + range)) {
+		if (InRange(playerX, blockX - range, blockX + range))
+		{
 			fallingFlg = true;
 
 			DataManager::get().addEntity(U"FallingRocks",(pos+Vec2{0.5,0.5})*rect_size);
 		}
-
 	}
 };
 
-void FallingRocksBlock::draw(const Point& pos)const {
-
+void FallingRocksBlock::draw(const Point& pos)const
+{
 	if (not fallingFlg)
 	{
 		TextureAsset(U"PointedCorn").resized(rect_size).draw(pos * rect_size);
 	}
 };
 
-void RollingRocksBlock::update(const Point& pos) {
-	if (not bornFlg) {
+void RollingRocksBlock::update(const Point& pos)
+{
+	if (not bornFlg)
+	{
 		DataManager::get().addEntity(U"RollingRocks", (pos+Vec2{1,1}) * rect_size);
 		bornFlg = true;
 	}
@@ -371,7 +415,8 @@ void  SignboardBlock::update(const Point& pos)
 	{
 		DataManager::get().fairyPos = pos;
 
-		if (KeyEnter.down()) {
+		if (KeyEnter.down())
+		{
 			TalkManager::get().talkWindow.setTalk(list);
 
 			KeyEnter.clearInput();
@@ -404,49 +449,60 @@ void ChocolateWallCanNotRespawn::reaction(const Point& pos, PhysicsBox* box)
 	box->hitCanNotRespawn(Rect{ pos * rect_size,rect_size });
 }
 
-void CloudBlock::draw(const Point& pos)const {
+void CloudBlock::draw(const Point& pos)const
+{
 	TextureAsset(U"Cloud").resized(rect_size).draw(pos * rect_size);
 }
 
 constexpr double cloudTextureSize = rect_size * (273.0 / 227.0);
 
-void CloudSurfaceBlock::draw(const Point& pos)const {
+void CloudSurfaceBlock::draw(const Point& pos)const
+{
 	TextureAsset{ U"CloudT" }.resized(cloudTextureSize).draw(Arg::bottomLeft=(pos + Point{ 0,1 }) * rect_size);
 }
 
-void CloudBLBlock::draw(const Point& pos)const {
+void CloudBLBlock::draw(const Point& pos)const
+{
 	TextureAsset{ U"CloudBL" }.resized(cloudTextureSize).draw(Arg::topRight = (pos + Point{ 1,0 }) * rect_size);
 }
 
-void CloudBRBlock::draw(const Point& pos)const {
+void CloudBRBlock::draw(const Point& pos)const
+{
 	TextureAsset{ U"CloudBR" }.resized(cloudTextureSize).draw(pos * rect_size);
 }
 
-void CloudTLBlock::draw(const Point& pos)const {
+void CloudTLBlock::draw(const Point& pos)const
+{
 	TextureAsset{ U"CloudTL" }.resized(cloudTextureSize).draw(Arg::bottomRight= (pos + Point{ 1,1 }) * rect_size);
 }
 
-void CloudTRBlock::draw(const Point& pos)const {
+void CloudTRBlock::draw(const Point& pos)const
+{
 	TextureAsset{ U"CloudTR" }.resized(cloudTextureSize).draw(Arg::bottomLeft= (pos + Point{ 0,1 }) * rect_size);
 }
 
-void CloudLBlock::draw(const Point& pos)const {
+void CloudLBlock::draw(const Point& pos)const
+{
 	TextureAsset{ U"CloudL" }.resized(cloudTextureSize).draw(Arg::topRight = (pos + Point{ 1,0 }) * rect_size);
 }
 
-void CloudRBlock::draw(const Point& pos)const {
+void CloudRBlock::draw(const Point& pos)const
+{
 	TextureAsset{ U"CloudR" }.resized(cloudTextureSize).draw(pos * rect_size);
 }
 
-void CloudBBlock::draw(const Point& pos)const {
+void CloudBBlock::draw(const Point& pos)const
+{
 	TextureAsset{ U"CloudB" }.resized(cloudTextureSize).draw(pos * rect_size);
 }
 
-void ChocoCakeBlock::draw(const Point& pos)const {
+void ChocoCakeBlock::draw(const Point& pos)const
+{
 	TextureAsset{ U"ChocoCake" }.resized(rect_size).draw(pos * rect_size);
 }
 
-void ChocoCakeWallBlock::draw(const Point& pos)const {
+void ChocoCakeWallBlock::draw(const Point& pos)const
+{
 	TextureAsset{ U"ChocoCakeWall" }.resized(rect_size).draw(pos * rect_size);
 }
 

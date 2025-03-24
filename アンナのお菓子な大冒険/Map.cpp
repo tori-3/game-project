@@ -26,7 +26,8 @@ void Map::updatePos()
 	playerPos = Math::SmoothDamp(playerPos, nextPos, vec, 0.001, 5000);
 }
 
-Map::Map(const InitData& init) : IScene{ init }
+Map::Map(const InitData& init)
+	: IScene{ init }
 {
 	Scene::SetBackground(Palette::Skyblue);
 
@@ -92,6 +93,16 @@ Map::Map(const InitData& init) : IScene{ init }
 
 	AudioAsset::Register(U"WorldBGM", U"BGM/WorldMap2.mp3", Loop::Yes);
 	BGMManager::get().play(U"WorldBGM");
+
+
+	//アニメーション
+	fairy.addMotion(U"Floating", true);
+
+	snowKnightKiriageTimer.start();
+	snowKnight.addMotion(U"kiriage");
+
+	cookieDoreishoTimer.start();
+	cookieDoreisho.addMotion(U"walk");
 }
 
 Map::~Map()
@@ -103,6 +114,22 @@ Map::~Map()
 void Map::update()
 {
 	updatePos();
+
+	fairy.update(fairyPos, false);
+	snowKnight.update(snowKnightPos,true);
+	cookieDoreisho.update(cookieDoreishoPos, true);
+
+	if(snowKnightKiriageTimer.reachedZero())
+	{
+		snowKnight.addMotion(U"kiriage");
+		snowKnightKiriageTimer.restart();
+	}
+
+	if (cookieDoreishoTimer.reachedZero())
+	{
+		cookieDoreisho.addMotion(U"walk");
+		cookieDoreishoTimer.restart();
+	}
 
 	if (KeyQ.down())
 	{
@@ -295,6 +322,10 @@ void Map::draw() const
 			}
 
 		}
+		fairy.draw();
+		snowKnight.draw();
+		cookieDoreisho.draw();
+
 		character.draw();
 	}
 

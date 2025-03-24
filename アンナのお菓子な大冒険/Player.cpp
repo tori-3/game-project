@@ -82,28 +82,35 @@ Player::Player(const Vec2& cpos) :
 	actMan.add(U"Rush", {
 		.start = [&]() {
 			itemCount = 0;
-
+			hitBox.physics.rush = true;
 			speed = 1000;
 			character.addMotion(U"Tosshin",true);
 			AudioAsset{ U"突進足音" }.play();
 			AudioAsset{ U"風" }.play();
+
+			//前のフレームのtouchが残っているためここで当たり判定を取っておく
+			manager->stage->hit(&hitBox);
 		},
 		.update = [&](double t) {
 
 			speed = 1000;
 
-			if (hitBox.touch(Direction::down)) {
+			if (hitBox.touch(Direction::down))
+			{
 				AudioAsset{ U"突進足音" }.play();
 			}
-			else {
+			else
+			{
 				AudioAsset{ U"突進足音" }.stop(0.1s);
 			}
 
-
-			if (attackDamaged(U"Enemy",  character.character.table.at(U"Hitbox").joint.getQuad(), 5, 1500)) {
+			if (attackDamaged(U"Enemy",  character.character.table.at(U"Hitbox").joint.getQuad(), 5, 1500))
+			{
 				AudioAsset{ U"突進衝突" }.playOneShot();
 			}
-			if (hitBox.touch(Direction::left)) {
+
+			if (hitBox.touch(Direction::left))
+			{
 
 				//すり抜け防止
 				manager->stage->hit(&hitBox);
@@ -113,8 +120,8 @@ Player::Player(const Vec2& cpos) :
 
 				return false;
 			}
-			else if (hitBox.touch(Direction::right)) {
-
+			else if (hitBox.touch(Direction::right))
+			{
 				//すり抜け防止
 				manager->stage->hit(&hitBox);
 
@@ -122,9 +129,8 @@ Player::Player(const Vec2& cpos) :
 				actMan.start(U"Damage");
 				return false;
 			}
-			else {
-				return true;
-			}
+
+			return true;
 		},
 		.end = [&]() {
 			character.removeMotion(U"Tosshin");
@@ -133,6 +139,7 @@ Player::Player(const Vec2& cpos) :
 			AudioAsset{ U"風" }.stop(0.1s);
 			AudioAsset{ U"突進衝突" }.playOneShot();
 			speed = 400;
+			hitBox.physics.rush = false;
 		}
 	});
 
@@ -148,7 +155,8 @@ Player::Player(const Vec2& cpos) :
 		},
 		.end = [&]() {
 			character.removeMotion(U"Falling");
-			if (not downKey.pressed() && not actMan.hasActive(U"Dead",U"Clear")) {
+			if (not downKey.pressed() && not actMan.hasActive(U"Dead",U"Clear"))
+			{
 				actMan.start(U"Landing");
 			}
 		}
@@ -268,7 +276,6 @@ Player::Player(const Vec2& cpos) :
 			speed = 400;
 		}
 	});
-
 
 	actMan.add(U"Summer", {
 		.startCondition = [&]() {
