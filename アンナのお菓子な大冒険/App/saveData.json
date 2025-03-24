@@ -59,7 +59,7 @@
     },
     {
       "Easy": true,
-      "Hard": false,
+      "Hard": true,
       "Normal": false
     },
     {
@@ -73,7 +73,7 @@
       "Normal": false
     },
     {
-      "Easy": false,
+      "Easy": true,
       "Hard": false,
       "Normal": false
     },

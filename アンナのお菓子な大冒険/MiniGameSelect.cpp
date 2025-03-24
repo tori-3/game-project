@@ -30,6 +30,7 @@ void MiniGameSelect::update()
 {
 	if (backButton.leftClicked() || KeyQ.down())
 	{
+		AudioAsset{ U"決定ボタン" }.playOneShot();
 		changeScene(U"TitleScene");
 	}
 
@@ -38,8 +39,57 @@ void MiniGameSelect::update()
 		Cursor::RequestStyle(CursorStyle::Hand);
 	}
 
-	getData().miniGameIndex = Clamp<int32>(getData().miniGameIndex + rightInput.down() - leftInput.down(), 0, miniGameList.size() - 1);
-	getData().miniGameModeIndex = Clamp<int32>(getData().miniGameModeIndex + downInput.down() - upInput.down(), 0, 2);
+	if(rightInput.down())
+	{
+		if(getData().miniGameIndex< miniGameList.size() - 1)
+		{
+			++getData().miniGameIndex;
+			AudioAsset{ U"カーソル移動" }.playOneShot();
+		}
+		else
+		{
+			AudioAsset{ U"ビープ音" }.playOneShot();
+		}
+	}
+
+	if (leftInput.down())
+	{
+		if (0<getData().miniGameIndex)
+		{
+			--getData().miniGameIndex;
+			AudioAsset{ U"カーソル移動" }.playOneShot();
+		}
+		else
+		{
+			AudioAsset{ U"ビープ音" }.playOneShot();
+		}
+	}
+
+	if (downInput.down())
+	{
+		if (getData().miniGameModeIndex < 2)
+		{
+			++getData().miniGameModeIndex;
+			AudioAsset{ U"カーソル移動" }.playOneShot();
+		}
+		else
+		{
+			AudioAsset{ U"ビープ音" }.playOneShot();
+		}
+	}
+
+	if (upInput.down())
+	{
+		if (0 < getData().miniGameModeIndex)
+		{
+			--getData().miniGameModeIndex;
+			AudioAsset{ U"カーソル移動" }.playOneShot();
+		}
+		else
+		{
+			AudioAsset{ U"ビープ音" }.playOneShot();
+		}
+	}
 
 	for (int32 i = 0; i < miniGameList.size(); ++i)
 	{
@@ -53,6 +103,7 @@ void MiniGameSelect::update()
 
 			if (MouseL.down())
 			{
+				AudioAsset{ U"決定ボタン" }.playOneShot();
 				getData().miniGameIndex = i;
 			}
 		}
@@ -87,6 +138,7 @@ void MiniGameSelect::update()
 		getData().description = miniGameList[getData().miniGameIndex].sentence;
 		changeScene(miniGameList[getData().miniGameIndex].sceneName);
 		BGMManager::get().stop();
+		AudioAsset{ U"決定ボタン" }.playOneShot();
 	}
 
 	leftFire.update();
