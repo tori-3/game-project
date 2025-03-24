@@ -9,7 +9,7 @@ Player::Player(const Vec2& cpos) :
 
 	actMan.add(U"Walk", {
 		.startCondition = [&]() {
-			return hitBox.touch(Direction::down) and (not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer",U"HeadDropLanding",U"HeadDrop",U"Damage",U"Dead",U"Clear")) and (leftKey.pressed() or rightKey.pressed());
+			return hitBox.touch(Direction::down) and (not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer",U"HeadDropLanding",U"HeadDrop",U"Damage",U"Dead",U"Clear",U"Stop")) and (leftKey.pressed() or rightKey.pressed());
 		},
 		.start = [&]() {
 			AudioAsset{U"足音"}.play();
@@ -187,7 +187,7 @@ Player::Player(const Vec2& cpos) :
 
 	actMan.add(U"Shagamu", {
 		.startCondition = [&]() {
-			return downKey.pressed() and (not jumpKey.pressed()) and hitBox.touch(Direction::down) and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Landing",U"HeadDropLanding",U"HeadDrop",U"Punch",U"Jump",U"PreJump",U"Falling",U"Dead",U"Clear",U"Rush");
+			return downKey.pressed() and (not jumpKey.pressed()) and hitBox.touch(Direction::down) and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Landing",U"HeadDropLanding",U"HeadDrop",U"Punch",U"Jump",U"PreJump",U"Falling",U"Dead",U"Clear",U"Rush",U"Stop");
 		},
 		.start = [&]() {
 			character.addMotion(U"Shagamu");
@@ -443,6 +443,12 @@ Player::Player(const Vec2& cpos) :
 		}
 	});
 
+	//落下後のワープで一瞬止まる
+	actMan.add(U"Stop", {
+		.update = [&](double t) {
+			return t <= 0.7;
+		},
+	});
 }
 
 void Player::update()
@@ -467,7 +473,7 @@ void Player::update()
 			if (not hitBox.touch(Direction::right))vel.x = speed;
 		}
 	}
-	else if (actMan.hasActive(U"Damage", U"Dead", U"Clear", U"HeadDrop"))
+	else if (actMan.hasActive(U"Damage", U"Dead", U"Clear", U"HeadDrop",U"Stop"))
 	{
 		//何もできない
 	}
@@ -547,6 +553,8 @@ void Player::update()
 		hp -= 1;
 
 		crushedTimer = 0;
+
+		actMan.start(U"Stop");
 
 		//当たり判定を同期させるため？
 		//これがないとなんかバグる

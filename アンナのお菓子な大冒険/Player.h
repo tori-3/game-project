@@ -69,12 +69,6 @@ public:
 class Player :public Entity
 {
 public:
-	double acc1 = 0;
-
-	bool jump = false;//描画用のジャンプフラグ
-
-	Timer damageTimer{ 1s };
-
 	bool rushMode = false;
 
 	bool left = false;
@@ -93,7 +87,6 @@ public:
 
 	double crushedTimer = 0;
 
-
 	Vec2 lastTouchPos{};
 
 	InputGroup jumpKey;
@@ -101,6 +94,14 @@ public:
 	InputGroup leftKey;
 	InputGroup downKey;
 	InputGroup attackKey;
+
+	bool canSummer = true;
+
+	bool punch = false;
+
+	bool die = false;
+
+	bool summerHited = false;
 
 	void setDataP(GameData* data)
 	{
@@ -113,27 +114,19 @@ public:
 
 	Player(const Vec2& cpos);
 
-	bool canSummer = true;
-
-	bool punch = false;
-
-	bool walk=false;
-
 	void update()override;
-
-	bool die = false;
-
-	bool summerHited = false;
 
 	void draw()const override;
 
 	void damage(int32 n, const Vec2& force = {}, DamageType damageType = DamageType::Brakable)override;
 
-	bool isActive()override {
+	bool isActive()override
+	{
 		return true;
 	}
 
-	void stopRush() {
+	void stopRush()
+	{
 		rushMode = false;
 	}
 
