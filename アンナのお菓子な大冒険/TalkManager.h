@@ -1,12 +1,10 @@
 ﻿#pragma once
 #include"TalkWindow.h"
 
-class TalkManager {
+class TalkManager
+{
 public:
 	TalkWindow talkWindow;
-
-
-
 
 public:
 	 TalkManager(const  TalkManager&) = delete; 
@@ -14,7 +12,8 @@ public:
 	 TalkManager( TalkManager&&) = delete; 
 	 TalkManager& operator=( TalkManager&&) = delete;
 
-	 static TalkManager& get() {
+	 static TalkManager& get()
+	 {
 		 static TalkManager instance;
 		 return instance;
 	 }

@@ -20,8 +20,8 @@ public:
 	double rx, lx;
 	double centerX = 0;
 
-	std::function<void()> f;
-	std::function<void()>f2;
+	std::function<void()>updateFunc;
+	std::function<void()>endFunc;
 
 	bool left = false;
 	double timer;
@@ -34,6 +34,7 @@ public:
 
 	double accumulatedTime = 0;
 
+	//鎧の耐久回数
 	int32 yoroi = 1;
 
 	Vec2 kenboxPos{ 0,0 };
@@ -54,7 +55,8 @@ public:
 	void draw()const override;
 };
 
-class SlaversCookie :public Entity {
+class SlaversCookie :public Entity
+{
 public:
 
 	static constexpr int32 maxHp = 3;
@@ -65,8 +67,8 @@ public:
 
 	bool left = true;
 
-	std::function<void()> f;
-	std::function<void()>f2;
+	std::function<void()> updateFunc;
+	std::function<void()>endFunc;
 
 	double timer;
 
@@ -89,8 +91,8 @@ public:
 	~SlaversCookie();
 };
 
-
-class Captain :public Entity {
+class Captain :public Entity
+{
 public:
 
 	static constexpr int32 maxHp = 30;
@@ -103,10 +105,10 @@ public:
 
 	double center;
 
-	Vec2 r, l;
+	Vec2 rPos, lPos;
 
-	std::function<void()> f;
-	std::function<void()>f2;
+	std::function<void()> updateFunc;
+	std::function<void()>endFunc;
 
 	double timer;
 

@@ -126,7 +126,7 @@ void LastBoss::update() {
 				}
 				else if (timer < 3.0 - 0.4) {
 					umbrella->speed = 0;
-					umbrella->angle = linerMove(umbrella->angle, (manager->get(U"Player")->pos - umbrella->pos).getAngle(), 360_deg);
+					umbrella->angle = LinerMove(umbrella->angle, (manager->get(U"Player")->pos - umbrella->pos).getAngle(), 360_deg);
 				}
 			};
 
@@ -269,8 +269,8 @@ void LastBoss::update() {
 			updateFunc = [=]() {
 				changeDirection();
 
-				pos.x = linerMove(pos.x, targetX, lenX / timeLim);
-				pos.y = linerMove(pos.y, targetY, lenY / timeLim);
+				pos.x = LinerMove(pos.x, targetX, lenX / timeLim);
+				pos.y = LinerMove(pos.y, targetY, lenY / timeLim);
 
 				this->accumulatedTime += Scene::DeltaTime();
 				if (eventInterval <= this->accumulatedTime)
@@ -308,7 +308,7 @@ void LastBoss::update() {
 				if (timer < 18.1) {
 
 
-					pos.x=linerMove(pos.x, randomX, 100);
+					pos.x=LinerMove(pos.x, randomX, 100);
 
 					if (pos.x == randomX) {
 						changeDirection();
@@ -386,8 +386,8 @@ void LastBoss::update() {
 			updateFunc = [=]() {
 				changeDirection();
 
-				pos.x = linerMove(pos.x, targetX, lenX / timeLim);
-				pos.y = linerMove(pos.y, targetY, lenY / timeLim);
+				pos.x = LinerMove(pos.x, targetX, lenX / timeLim);
+				pos.y = LinerMove(pos.y, targetY, lenY / timeLim);
 
 				this->accumulatedTime += Scene::DeltaTime();
 				if (eventInterval <= this->accumulatedTime)

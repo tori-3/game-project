@@ -151,14 +151,29 @@
     <Filter Include="Header Files\MainGameScene\GameLib">
       <UniqueIdentifier>{db246fae-65b3-4969-aab1-9ded29fb9286}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\MainGameScene\Animation">
-      <UniqueIdentifier>{172e6456-caff-441c-8805-6f05ff8a9b91}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\MiniGame">
       <UniqueIdentifier>{ef690b7d-2904-42c3-834d-ab31c0d42426}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\UISystem">
       <UniqueIdentifier>{c4f83bb2-bad1-42b1-bcd3-2842c1740956}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene">
+      <UniqueIdentifier>{e376f1b1-66ee-4660-bf1e-d6189b8f9333}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AnimationSystem">
+      <UniqueIdentifier>{172e6456-caff-441c-8805-6f05ff8a9b91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AnimationSystem">
+      <UniqueIdentifier>{9a2a5018-0160-42e3-a70b-b61643b1393d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene">
+      <UniqueIdentifier>{d9b643a5-95a6-4324-bff7-dc87252bd9d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UISystem">
+      <UniqueIdentifier>{297cb3de-555c-4dec-ad0e-069c3144748d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Effect">
+      <UniqueIdentifier>{eaa0f9f0-1b2b-407c-86ea-eefcc943d725}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -166,9 +181,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Movements.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
@@ -192,26 +204,71 @@
     <ClCompile Include="LoadAsset.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BunchoUI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ChocolateButton.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Lisence.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SoundIcon.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SweetsPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SettingWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MiniGameSceneBase.cpp">
+    <ClCompile Include="TalkWindow.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChocolateButton.cpp">
+      <Filter>Source Files\UISystem</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniGameSceneBase.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="BunchoUI.cpp">
+      <Filter>Source Files\UISystem</Filter>
+    </ClCompile>
+    <ClCompile Include="SweetsPanel.cpp">
+      <Filter>Source Files\UISystem</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundIcon.cpp">
+      <Filter>Source Files\UISystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Movements.cpp">
+      <Filter>Source Files\AnimationSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MagicCircle.cpp">
+      <Filter>Source Files\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="StarEffect.cpp">
+      <Filter>Source Files\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="FadeUpEffect.cpp">
+      <Filter>Source Files\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="LaserEffect.cpp">
+      <Filter>Source Files\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="MagicEffect.cpp">
+      <Filter>Source Files\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="RingEffect.cpp">
+      <Filter>Source Files\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniGameSelect.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Common.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAdder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGameScene.cpp">
+      <Filter>Source Files\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -857,7 +914,7 @@
     <ClInclude Include="setting.h">
       <Filter>Header Files\MainGameScene</Filter>
     </ClInclude>
-    <ClInclude Include="Effect.h">
+    <ClInclude Include="ExplosionEffect.h">
       <Filter>Header Files\MainGameScene\Effect</Filter>
     </ClInclude>
     <ClInclude Include="RingEffect.h">
@@ -884,14 +941,11 @@
     <ClInclude Include="Figure.hpp">
       <Filter>Header Files\MainGameScene\GameLib</Filter>
     </ClInclude>
-    <ClInclude Include="Singleton.h">
-      <Filter>Header Files\MainGameScene\GameLib</Filter>
-    </ClInclude>
     <ClInclude Include="AnimationSystem.h">
-      <Filter>Header Files\MainGameScene\Animation</Filter>
+      <Filter>Header Files\AnimationSystem</Filter>
     </ClInclude>
     <ClInclude Include="MotionLoader.h">
-      <Filter>Header Files\MainGameScene\Animation</Filter>
+      <Filter>Header Files\AnimationSystem</Filter>
     </ClInclude>
     <ClInclude Include="CookieItem.h">
       <Filter>Header Files\MainGameScene\Entity</Filter>
@@ -900,19 +954,16 @@
       <Filter>Header Files\MainGameScene\GameLib</Filter>
     </ClInclude>
     <ClInclude Include="CharacterSystem.h">
-      <Filter>Header Files\MainGameScene\Animation</Filter>
+      <Filter>Header Files\AnimationSystem</Filter>
     </ClInclude>
     <ClInclude Include="Movements.h">
-      <Filter>Header Files\MainGameScene\Animation</Filter>
+      <Filter>Header Files\AnimationSystem</Filter>
     </ClInclude>
     <ClInclude Include="Spawner.h">
       <Filter>Header Files\MainGameScene\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="Map.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IMotionField.h">
-      <Filter>Header Files\MainGameScene\Animation</Filter>
+      <Filter>Header Files\AnimationSystem</Filter>
     </ClInclude>
     <ClInclude Include="SimpleAction.h">
       <Filter>Header Files\MainGameScene</Filter>
@@ -950,17 +1001,11 @@
     <ClInclude Include="LinerMove.h">
       <Filter>Header Files\MainGameScene\GameLib</Filter>
     </ClInclude>
-    <ClInclude Include="IrisOut.h">
-      <Filter>Header Files\MainGameScene</Filter>
-    </ClInclude>
     <ClInclude Include="Boss.h">
       <Filter>Header Files\MainGameScene\Entity</Filter>
     </ClInclude>
     <ClInclude Include="TalkManager.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MyInput.h">
-      <Filter>Header Files\MainGameScene</Filter>
     </ClInclude>
     <ClInclude Include="AnnaMusicGame.h">
       <Filter>Header Files\MiniGame</Filter>
@@ -971,26 +1016,17 @@
     <ClInclude Include="FadeUpEffect.h">
       <Filter>Header Files\MainGameScene\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="TitleScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LoadAsset.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Spotlight.hpp">
       <Filter>Header Files\MainGameScene\GameLib</Filter>
     </ClInclude>
-    <ClInclude Include="MiniGameSelect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Fire.hpp">
       <Filter>Header Files\MainGameScene\GameLib</Filter>
     </ClInclude>
     <ClInclude Include="LongPressInput.hpp">
       <Filter>Header Files\MainGameScene\GameLib</Filter>
-    </ClInclude>
-    <ClInclude Include="EndRollScene.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MiniGameSceneBase.h">
       <Filter>Header Files\MiniGame</Filter>
@@ -1018,6 +1054,36 @@
     </ClInclude>
     <ClInclude Include="Fairy.h">
       <Filter>Header Files\MainGameScene\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="EndRollScene.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniGameSelect.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="IrisOut.h">
+      <Filter>Header Files\MainGameScene\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="MyBlendState.h">
+      <Filter>Header Files\MainGameScene\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="StarEffect.h">
+      <Filter>Header Files\MainGameScene\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="BeltConveyorButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAdder.h">
+      <Filter>Header Files\MainGameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SmoothCamera.h">
+      <Filter>Header Files\MainGameScene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

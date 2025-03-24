@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include"Common.h"
 #include"Entity.h"
-#include"Effect.h"
+#include"ExplosionEffect.h"
 #include"CharacterSystem.h"
 #include"SimpleAction.h"
 #include"BGMManager.hpp"
@@ -170,7 +170,7 @@ public:
 		}
 
 		if (rotateFlg) {
-			angle = linerMove(angle, targetAngle, 360_deg);
+			angle = LinerMove(angle, targetAngle, 360_deg);
 
 
 			accumulatedTime += Scene::DeltaTime();

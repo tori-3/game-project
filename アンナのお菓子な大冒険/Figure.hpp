@@ -2,11 +2,13 @@
 
 //図形クラス(Circle, RectF, Quad, Triangle, Ellipse, Polygon)をまとめて扱えるクラス
 
-namespace FigureIndex {
+namespace FigureIndex
+{
 	enum { Circle, RectF, Quad, Triangle, Ellipse, Polygon };
 }
 
-class Figure {
+class Figure
+{
 public:
 
 	using Shape = std::variant<Circle, RectF, Quad, Triangle, Ellipse, Polygon>;

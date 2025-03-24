@@ -11,14 +11,16 @@ public:
 	BGMManager(BGMManager&&) = delete;
 	BGMManager& operator=(BGMManager&&) = delete;
 
-	static BGMManager& get() {
+	static BGMManager& get()
+	{
 		static BGMManager instance;
 		return instance;
 	}
 
 public:
 
-	void play(AssetNameView name,Duration fadeinTime=0.2s, Duration fadeoutTime = 0.1s) {
+	void play(AssetNameView name,Duration fadeinTime=0.2s, Duration fadeoutTime = 0.1s)
+	{
 
 		if (m_name != name) {
 			if (m_name) {
@@ -31,7 +33,8 @@ public:
 		}	
 	}
 
-	void stop(Duration fadeoutTime = 0.5s) {
+	void stop(Duration fadeoutTime = 0.5s)
+	{
 		AudioAsset{ m_name }.stop(fadeoutTime);
 		m_name = {};
 	}

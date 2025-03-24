@@ -6,18 +6,17 @@ class LongPressInput
 public:
 
 	InputGroup input;
-	Duration interval;
-	Duration startTime;
+	Duration interval = 0.2s;
+	Duration startTime = 0.4s;
 
 	LongPressInput() = default;
 
 	LongPressInput(const InputGroup& input, Duration interval = 0.2s, Duration startTime=0.4s)
-		:input{ input }, interval{ interval }, startTime{startTime}, m_lastPressTime {
-		startTime
-	}
-	{
-
-	}
+		: input{ input }
+		, interval{ interval }
+		, startTime{startTime}
+		, m_lastPressTime {startTime}
+	{}
 
 	bool down()
 	{

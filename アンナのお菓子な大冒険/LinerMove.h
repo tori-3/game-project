@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-inline double linerMove(double pos, double target, double speed, double dt = Scene::DeltaTime()) {
-
+inline double LinerMove(double pos, double target, double speed, double dt = Scene::DeltaTime())
+{
 	double d = speed * dt;
 
 	if (pos < target) {

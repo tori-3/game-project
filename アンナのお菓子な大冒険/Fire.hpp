@@ -1,9 +1,12 @@
 ﻿#pragma once
 
-class Fire {
+class Fire
+{
 public:
 
-	Fire(const Vec2& pos, const ColorF& color = HSV{ 20,0.8,1 }, double size = 50, const Vec2& force = { 0, -50 }) :particleSystem{ pos,force } {
+	Fire(const Vec2& pos, const ColorF& color = HSV{ 20,0.8,1 }, double size = 50, const Vec2& force = { 0, -50 })
+		:m_particleSystem{ pos,force }
+	{
 
 		if (not TextureAsset::IsRegistered(U"particle"))
 		{
@@ -11,31 +14,35 @@ public:
 		}
 
 		ArcEmitter2D arcEmitter;
-		parameters.startColor = color;
-		parameters.startSize = size;
-		particleSystem.setEmitter(arcEmitter);
-		particleSystem.setTexture(TextureAsset(U"particle"));
-		particleSystem.setParameters(parameters);
-		particleSystem.prewarm();
+		m_parameters.startColor = color;
+		m_parameters.startSize = size;
+		m_particleSystem.setEmitter(arcEmitter);
+		m_particleSystem.setTexture(TextureAsset(U"particle"));
+		m_particleSystem.setParameters(m_parameters);
+		m_particleSystem.prewarm();
 	}
 
-	void update() {
-		particleSystem.update();
+	void update()
+	{
+		m_particleSystem.update();
 	}
 
-	void draw()const {
-		particleSystem.draw();
+	void draw()const
+	{
+		m_particleSystem.draw();
 	}
 
-	void setPosition(const Vec2& pos) {
-		particleSystem.setPosition(pos);
+	void setPosition(const Vec2& pos)
+	{
+		m_particleSystem.setPosition(pos);
 	}
 
-	void setForce(const Vec2& force) {
-		particleSystem.setForce(force);
+	void setForce(const Vec2& force)
+	{
+		m_particleSystem.setForce(force);
 	}
 
 private:
-	ParticleSystem2D particleSystem;
-	ParticleSystem2DParameters parameters;
+	ParticleSystem2D m_particleSystem;
+	ParticleSystem2DParameters m_parameters;
 };

@@ -6,10 +6,10 @@
 
 class EntityManager;
 
-
 enum class DamageType { Brakable, UnBrakable };
 
-class Entity {
+class Entity
+{
 public:
 	EntityManager* manager = nullptr;
 
@@ -18,6 +18,7 @@ public:
 	Vec2 pos, vel;
 	int32 hp;
 	HitBox hitBox;
+	bool alive = true;
 
 	Entity(const String& tag,const Figure& figure, const Vec2& _pos, const Vec2& _vel,int32 _hp) :tag{ tag },pos{_pos}, vel{_vel}, hp{_hp}, hitBox{&pos, &vel, figure, &hp} {}
 
@@ -29,16 +30,18 @@ public:
 
 	virtual void draw()const = 0;
 
-	virtual void damage(int32 n, [[maybe_unused]] const Vec2& force={}, [[maybe_unused]] DamageType damageType=DamageType::Brakable) {
+	virtual void damage(int32 n, [[maybe_unused]] const Vec2& force={}, [[maybe_unused]] DamageType damageType=DamageType::Brakable)
+	{
 		hp -= n;
 	}
 
-	bool alive = true;
-	void kill() {
+	void kill()
+	{
 		alive = false;
 	}
 
-	virtual bool isActive() {
+	virtual bool isActive()
+	{
 
 		if (hitBox.touch(Direction::down) && hitBox.touch(Direction::up)) {
 			hp = 0;
@@ -50,15 +53,18 @@ public:
 		return 0<hp&& pos.y<2000 and alive;
 	}
 
-	void setManager(EntityManager* _manager) {
+	void setManager(EntityManager* _manager)
+	{
 		manager = _manager;
 	}
 
-	EntityManager* getManager() {
+	EntityManager* getManager()
+	{
 		return manager;
 	}
 
-	bool operator<(const Entity& right) const {
+	bool operator<(const Entity& right) const
+	{
 		return z < right.z;
 	}
 
@@ -66,9 +72,9 @@ public:
 
 	Array<Entity*> attack(StringView target, const Figure& figure, int32 damage, double power=200, DamageType damageType=DamageType::Brakable, int32 kaisuu = -1);
 
-	Array<Entity*> attack(StringView target, const Figure& figure, int32 damage, DamageType damageType, int32 kaisuu = -1) {
+	Array<Entity*> attack(StringView target, const Figure& figure, int32 damage, DamageType damageType, int32 kaisuu = -1)
+	{
 		return attack(target,figure,damage,200,damageType,kaisuu);
-
 	}
 
 	//ダメージを受けたEntityのみを返す
@@ -91,45 +97,55 @@ public:
 
 	Stage* stage = nullptr;
 
-	void update() {
+	void update()
+	{
 
-		for (auto i : step(entitys.size())) {
+		for (auto i : step(entitys.size()))
+		{
 			entitys[i]->update();
 		}
 
-		for (auto i : step(entitys.size())) {
+		for (auto i : step(entitys.size()))
+		{
 			entitys[i]->lateUpdate();
 		}
 
-		entitys.remove_if([&](const PEntity& entity) {
-			if (not entity->isActive()) {
+		entitys.remove_if([&](const PEntity& entity)
+		{
+			if (not entity->isActive())
+			{
 				table[entity->tag].remove(entity.get());
 				return true;
 			}
-		return false;
+			return false;
 		});//Activeで無いものを削除
 
 		entitys.stable_sort_by([](const PEntity& a, const PEntity& b) {return *a < *b; });//z座標でソート
 	}
 
-	void draw()const {
+	void draw()const
+	{
 		entitys.each([](const PEntity& entity) {entity->draw(); });
 	}
 
 
-	Entity* get(StringView tag) {
+	Entity* get(StringView tag)
+	{
 		return table[tag][0];
 	}
 
-	const Entity* get(StringView tag)const {
+	const Entity* get(StringView tag)const
+	{
 		return table.at(tag)[0];
 	}
 
-	const Array<Entity*>& getArray(StringView tag) {
+	const Array<Entity*>& getArray(StringView tag)
+	{
 		return table[tag];
 	}
 
-	void add(Entity* entity) {
+	void add(Entity* entity)
+	{
 		entitys << std::unique_ptr<Entity>(entity);
 		entitys.back()->setManager(this);
 		table[entity->tag] << entity;
@@ -137,8 +153,8 @@ public:
 
 };
 
-inline Array<Entity*> Entity::attack(StringView target, const Figure& figure, int32 damage, double power, DamageType damageType, int32 kaisuu) {
-
+inline Array<Entity*> Entity::attack(StringView target, const Figure& figure, int32 damage, double power, DamageType damageType, int32 kaisuu)
+{
 	Array<Entity*>list;
 	for (auto& entity : manager->getArray(target)) {
 		if (entity->hitBox.getFigure().intersects(figure)) {
@@ -162,29 +178,36 @@ inline Array<Entity*> Entity::attack(StringView target, const Figure& figure, in
 	return list;
 }
 
-inline Array<Entity*> Entity::attackDamaged(StringView target, const Figure& figure, double damage, double power, int32 kaisuu) {
-
+inline Array<Entity*> Entity::attackDamaged(StringView target, const Figure& figure, double damage, double power, int32 kaisuu)
+{
 	Array<Entity*>list;
-	for (auto& entity : manager->getArray(target)) {
-		if (entity->hitBox.getFigure().intersects(figure)) {
+	for (auto& entity : manager->getArray(target))
+	{
+		if (entity->hitBox.getFigure().intersects(figure))
+		{
 
 			int32 tmpHp = entity->hp;
 
-			if (entity->pos.x < pos.x) {
+			if (entity->pos.x < pos.x)
+			{
 				entity->damage(damage, { -power,-200 });
 			}
-			else {
+			else
+			{
 				entity->damage(damage, { power,-200 });
 			}
 
-			if (entity->hp < tmpHp) {
+			if (entity->hp < tmpHp)
+			{
 				list << entity;
 			}
 
-			if (kaisuu == 0) {
+			if (kaisuu == 0)
+			{
 				break;
 			}
-			else {
+			else
+			{
 				kaisuu -= 1;
 			}
 		}

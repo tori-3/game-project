@@ -1,12 +1,10 @@
 ﻿#pragma once
 #include"Common.h"
 #include"Entity.h"
-#include"Effect.h"
+#include"ExplosionEffect.h"
 #include"CharacterSystem.h"
 #include"SimpleAction.h"
 #include"BGMManager.hpp"
-
-#include"MyInput.h"
 
 class Hadouken:public Entity {
 public:
@@ -98,18 +96,19 @@ public:
 
 	Vec2 lastTouchPos{};
 
-	MyInput jumpKey;
-	MyInput rightKey;
-	MyInput leftKey;
-	MyInput downKey;
-	MyInput attackKey;
+	InputGroup jumpKey;
+	InputGroup rightKey;
+	InputGroup leftKey;
+	InputGroup downKey;
+	InputGroup attackKey;
 
-	void setDataP(GameData* data) {
-		jumpKey.setKey(data->jumpKey);
-		rightKey.setKey(data->rightKey);
-		leftKey.setKey(data->leftKey);
-		downKey.setKey(data->downKey);
-		attackKey.setKey(data->attackKey);
+	void setDataP(GameData* data)
+	{
+		jumpKey=data->jumpKey;
+		rightKey=data->rightKey;
+		leftKey=data->leftKey;
+		downKey=data->downKey;
+		attackKey=data->attackKey;
 	}
 
 	Player(const Vec2& cpos);
@@ -137,15 +136,5 @@ public:
 	void stopRush() {
 		rushMode = false;
 	}
-
-	void KeyUpdate(bool jump,bool down,bool left, bool right,bool attack)
-	{
-		jumpKey.update(jump);
-		downKey.update(down);
-		leftKey.update(left);
-		rightKey.update(right);
-		attackKey.update(attack);
-	}
-
 
 };

@@ -8,7 +8,7 @@ bool check_range(Point pos, Point size) {
 	return 1;
 }
 
-BlendState MakeBlendState()
+BlendState MakeTransparentBlendState()
 {
 	BlendState blendState = BlendState::Default2D;
 	blendState.srcAlpha = Blend::SrcAlpha;
@@ -215,7 +215,7 @@ void Main()
 
 				{
 					const ScopedRenderTarget2D target{ texture };
-					const ScopedRenderStates2D blend{ MakeBlendState() };
+					const ScopedRenderStates2D blend{ MakeTransparentBlendState() };
 					const Transformer2D transformer{ Mat3x2::Scale(r,{0,0}) };
 					for (auto y : step(map.height()))
 					{

@@ -117,22 +117,36 @@
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="BunchoUI.cpp" />
     <ClCompile Include="ChocolateButton.cpp" />
+    <ClCompile Include="Common.cpp" />
+    <ClCompile Include="DataManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyAdder.cpp" />
+    <ClCompile Include="FadeUpEffect.cpp" />
     <ClCompile Include="GrapesHPBar.cpp" />
+    <ClCompile Include="LaserEffect.cpp" />
     <ClCompile Include="LastBoss.cpp" />
     <ClCompile Include="Lisence.cpp" />
     <ClCompile Include="LoadAsset.cpp" />
+    <ClCompile Include="MagicCircle.cpp" />
+    <ClCompile Include="MagicEffect.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MainGameScene.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="MiniGameSceneBase.cpp" />
+    <ClCompile Include="MiniGameSelect.cpp" />
     <ClCompile Include="Movements.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RingEffect.cpp" />
     <ClCompile Include="SettingWindow.cpp" />
     <ClCompile Include="SoundIcon.cpp" />
+    <ClCompile Include="StarEffect.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="SweetsPanel.cpp" />
+    <ClCompile Include="TalkWindow.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\engine\texture\box-shadow\128.png" />
@@ -330,7 +344,10 @@
   <ItemGroup>
     <ClInclude Include="AnimationSystem.h" />
     <ClInclude Include="AnnaMusicGame.h" />
+    <ClInclude Include="BeltConveyorButton.h" />
     <ClInclude Include="BGMManager.hpp" />
+    <ClInclude Include="EnemyAdder.h" />
+    <ClInclude Include="MyBlendState.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="Boss.h" />
     <ClInclude Include="BunchoUI.hpp" />
@@ -339,7 +356,7 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="CookieItem.h" />
     <ClInclude Include="DataManager.h" />
-    <ClInclude Include="Effect.h" />
+    <ClInclude Include="ExplosionEffect.h" />
     <ClInclude Include="EndRollScene.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
@@ -370,17 +387,17 @@
     <ClInclude Include="MiniGameSelect.h" />
     <ClInclude Include="MotionLoader.h" />
     <ClInclude Include="Movements.h" />
-    <ClInclude Include="MyInput.h" />
     <ClInclude Include="NinePatch.hpp" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RingEffect.h" />
     <ClInclude Include="setting.h" />
     <ClInclude Include="SettingWindow.h" />
     <ClInclude Include="SimpleAction.h" />
-    <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SmoothCamera.h" />
     <ClInclude Include="SoundIcon.hpp" />
     <ClInclude Include="Spawner.h" />
     <ClInclude Include="Spotlight.hpp" />
+    <ClInclude Include="StarEffect.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="SweetsPanel.hpp" />

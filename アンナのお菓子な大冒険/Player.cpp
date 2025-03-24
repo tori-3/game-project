@@ -4,9 +4,8 @@ Player::Player(const Vec2& cpos) :
 	character{ U"Characters/annna/annna.json",U"Characters/annna/motion.txt",0.25,cpos,false },
 	Entity{ U"Player",defaultBody ,cpos,{0,0},DataManager::get().maxHP }
 {
-
+	//最前面に持ってくるため
 	z = 100;
-
 
 	actMan.add(U"Walk", {
 		.startCondition = [&]() {
@@ -171,7 +170,6 @@ Player::Player(const Vec2& cpos) :
 	}
 	});
 
-
 	actMan.add(U"Standing", {
 		.startCondition = [&]() {
 			return not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Walk",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer",U"HeadDropLanding",U"Damage",U"Dead",U"Clear") and hitBox.touch(Direction::down);
@@ -213,7 +211,6 @@ Player::Player(const Vec2& cpos) :
 		}
 	});
 
-	//次回スライディングが壁にぶつかったときに止まるようにする。
 	actMan.add(U"Sliding", {
 		.start = [&]() {
 			character.addMotion(U"Sliding");
@@ -422,6 +419,7 @@ Player::Player(const Vec2& cpos) :
 			DataManager::get().playerAlive = false;
 		}
 	});
+
 	actMan.add(U"Clear", {
 		.startCondition = [&]() {
 			return DataManager::get().table.contains(U"Clear");
@@ -447,9 +445,8 @@ Player::Player(const Vec2& cpos) :
 
 }
 
-void Player::update() {
-
-	ClearPrint();
+void Player::update()
+{
 	manager->stage->hit(&hitBox);
 
 	actMan.update();
@@ -459,46 +456,56 @@ void Player::update() {
 		vel.y = Min(vel.y, 800.0);
 	}
 
-	if (actMan.hasActive(U"Sliding", U"Rush")) {
-
-		if (left) {
+	if (actMan.hasActive(U"Sliding", U"Rush"))
+	{
+		if (left)
+		{
 			if (not hitBox.touch(Direction::left))vel.x = -speed;
 		}
-		else {
+		else
+		{
 			if (not hitBox.touch(Direction::right))vel.x = speed;
 		}
 	}
-	else if (actMan.hasActive(U"Damage", U"Dead", U"Clear", U"HeadDrop")) {
+	else if (actMan.hasActive(U"Damage", U"Dead", U"Clear", U"HeadDrop"))
+	{
 		//何もできない
 	}
 	else if (actMan.hasActive(U"Summer", U"HeadDropLanding", U"Mirror{}"_fmt(character.mirrorCount - 1))) {
-		if (leftKey.pressed()) {
+		if (leftKey.pressed())
+		{
 			if (not hitBox.touch(Direction::left))vel.x = -speed;
 		}//左
-		else if (rightKey.pressed()) {
+		else if (rightKey.pressed())
+		{
 			if (not hitBox.touch(Direction::right))vel.x = speed;
 		}//右
 	}
 	else {
-		if (leftKey.pressed()) {
+		if (leftKey.pressed())
+		{
 			if (not hitBox.touch(Direction::left))vel.x = -speed;
 			left = true;
 		}//左
-		else if (rightKey.pressed()) {
+		else if (rightKey.pressed())
+		{
 			if (not hitBox.touch(Direction::right))vel.x = speed;
 			left = false;
 		}//右
 	}
 
-	if (hitBox.touch(Direction::down)) {
+	if (hitBox.touch(Direction::down))
+	{
 		canSummer = true;
 	}
 
 	hitBox.physicsUpdate();
 	hitBox.update();
 
-	for (auto& entity : manager->getArray(U"Item")) {
-		if (entity->hitBox.intersects(hitBox)) {
+	for (auto& entity : manager->getArray(U"Item"))
+	{
+		if (entity->hitBox.intersects(hitBox))
+		{
 			itemCount++;
 			entity->damage(1);
 			AudioAsset{ U"食べる" }.playOneShot();
@@ -508,9 +515,9 @@ void Player::update() {
 	character.update(pos, left);
 	character.character.touchGround(hitBox.Get_Box().boundingRect().bottomY());
 
-	if (hitBox.canRespawnOn() && hitBox.rightFloor() && hitBox.leftFloor()) {
+	if (hitBox.canRespawnOn() && hitBox.rightFloor() && hitBox.leftFloor())
+	{
 		lastTouchPos = pos;
-		Print << U"lastTouchPos:" << lastTouchPos;
 	}
 
 	const bool horizontalCrushed = hitBox.touch(Direction::left) and hitBox.touch(Direction::right);
@@ -529,7 +536,8 @@ void Player::update() {
 	const bool isCrushed = 0.2 < crushedTimer;
 
 	//落下した or 潰された
-	if (isDrop or isCrushed) {
+	if (isDrop or isCrushed)
+	{
 		vel = Vec2{};
 		force = Vec2{};
 		pos = lastTouchPos;
@@ -546,22 +554,19 @@ void Player::update() {
 	}
 }
 
-void Player::draw()const{
-	hitBox.getFigure().drawFrame(5,Palette::Red);
-	hitBox.physics.draw();
+void Player::draw()const
+{
 	character.draw();
-
-	pos.asCircle(10).draw(Palette::Blue);
 }
 
 void Player::damage(int32 n, const Vec2& force, DamageType damageType)
 {
-
-	if (0 < hp) {
-
-		if (not actMan.hasActive(U"Rush", U"Muteki", U"Summer", U"Dead", U"Clear")) {
-
-			if (not actMan.hasActive(U"HeadDrop", U"HeadDropMuteki") or damageType == DamageType::UnBrakable) {
+	if (0 < hp)
+	{
+		if (not actMan.hasActive(U"Rush", U"Muteki", U"Summer", U"Dead", U"Clear"))
+		{
+			if (not actMan.hasActive(U"HeadDrop", U"HeadDropMuteki") or damageType == DamageType::UnBrakable)
+			{
 
 				this->force = force;
 

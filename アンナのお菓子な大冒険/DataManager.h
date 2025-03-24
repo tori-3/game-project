@@ -1,16 +1,14 @@
 ﻿#pragma once
-#include"Singleton.h"
 #include"TalkWindow.h"
 
-class DataManager {
-	Singleton(DataManager);
+class DataManager
+{
 public:
 	Effect effect, additiveEffect;
 	HashSet<String> table;
 	double time = 0;
 	Array<std::pair<String, Vec2>>list;
 	Vec2 playerPos{};
-	//TalkWindow talkWindow;
 
 	bool playerAlive = true;
 
@@ -27,23 +25,35 @@ public:
 
 	Optional<double> bossHPRate = none;
 
-	void addEntity(const String& name, const Vec2& pos) {
+	void addEntity(const String& name, const Vec2& pos)
+	{
 		list << std::pair<String, Vec2>{name,pos};
 	}
+
+	//シングルトン
+	DataManager(const DataManager&) = delete;
+	DataManager& operator=(const DataManager&) = delete;
+	DataManager(DataManager&&) = delete;
+	DataManager& operator=(DataManager&&) = delete;
+	static DataManager& get() { return *instance; }
+	static void create() { if (!instance)instance = new DataManager; }
+	static void destroy() { delete instance; instance = nullptr; }
+private:
+	DataManager() = default;
+	~DataManager() = default;
+	static DataManager* instance;
 };
 
-
-//エフェクトなどのシングルトンは別に作った方がよい?
-
-
-class DataManagerStart {
+class DataManagerStart
+{
 public:
-	DataManagerStart() {
+	DataManagerStart()
+	{
 		DataManager::create();
 	}
 
-	~DataManagerStart() {
+	~DataManagerStart()
+	{
 		DataManager::destroy();
 	}
-
 };

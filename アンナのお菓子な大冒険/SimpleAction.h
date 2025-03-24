@@ -1,13 +1,15 @@
 ﻿#pragma once
 
-struct ActionInfo {
+struct ActionInfo
+{
 	std::function<bool()>startCondition = []{return false; };
-	std::function<void()>start= [] {};;
+	std::function<void()>start = [] {};
 	std::function<bool(double)>update = [](double) {return true; };
-	std::function<void()>end= [] {};
+	std::function<void()>end = [] {};
 };
 
-class SimpleAction {
+class SimpleAction
+{
 public:
 	ActionInfo info;
 
@@ -15,43 +17,50 @@ public:
 
 	bool active = false;
 
-	bool isActive()const {
+	bool isActive()const
+	{
 		return active;
 	}
 
-	SimpleAction(const ActionInfo& info):info{info}{
-	}
+	SimpleAction() = default;
 
-	SimpleAction(){}
+	SimpleAction(const ActionInfo& info):info{info}{}
 
-	void start() {
+	void start()
+	{
 		active = true;
 		time = 0;
 		info.start();
 	}
 
-	bool conditonStart() {
-		if (info.startCondition()) {
+	bool conditonStart()
+	{
+		if (info.startCondition())
+		{
 			start();
 			return true;
 		}
-		else {
+		else
+		{
 			return false;
 		}
 	}
 
-	void cancel() {
-		if (active) {
+	void cancel()
+	{
+		if (active)
+		{
 			active = false;
 			info.end();
 		}
 	}
 
-	void update() {
-
+	void update()
+	{
 		if (active) {
 			time += Scene::DeltaTime();
-			if (not info.update(time)) {
+			if (not info.update(time))
+			{
 				active = false;
 				info.end();
 			}
@@ -66,49 +75,55 @@ public:
 	}
 };
 
-class ActionManager {
+class ActionManager
+{
 public:
 
 	HashTable<String,SimpleAction>table;
 
-	ActionManager() {
+	ActionManager() {}
 
-	}
-
-	void cancelAll(HashSet<String> without={}) {
+	void cancelAll(HashSet<String> without={})
+	{
 		for (auto&& [key, value] : table)
 		{
-			if (not without.contains(key)) {
+			if (not without.contains(key))
+			{
 				value.cancel();
 			}
 		}
 	}
 
-	void cancel(StringView name) {
+	void cancel(StringView name)
+	{
 		table[name].cancel();
 	}
 
-
-	void add(StringView name,const ActionInfo& info) {
+	void add(StringView name,const ActionInfo& info)
+	{
 		table[name] = SimpleAction{ info };
 	}
 
-	void update() {
+	void update()
+	{
 		for (auto&& [key, value] : table)
 		{
 			value.update();
 		}
 	}
 
-	bool conditonStart(StringView name) {
+	bool conditonStart(StringView name)
+	{
 		return table[name].conditonStart();
 	}
 
-	void start(StringView name) {
+	void start(StringView name)
+	{
 		table[name].start();
 	}
 
-	void debugPrint() {
+	void debugPrint()
+	{
 		for (auto&& [key, value] : table)
 		{
 			Print << key<<U":" << value.isActive();
@@ -116,16 +131,20 @@ public:
 	}
 
 	template<class... Arg>
-	bool hasActive(Arg&& ...arg)const {
-		for (const auto& name : std::initializer_list<String>{ arg... }) {
-			if (table.contains(name) and table.at(name).isActive()) {
+	bool hasActive(Arg&& ...arg)const
+	{
+		for (const auto& name : std::initializer_list<String>{ arg... })
+		{
+			if (table.contains(name) and table.at(name).isActive())
+			{
 				return true;
 			}
 		}
 		return false;
 	}
 
-	SimpleAction get(StringView name)const {
+	SimpleAction get(StringView name)const
+	{
 		return table.at(name);
 	}
 };

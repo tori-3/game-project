@@ -5,8 +5,9 @@
 #include"FadeUpEffect.h"
 #include"Player.h"
 
-SnowKnight::SnowKnight(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(-20,40),70 * 1,70 * 4 - 30 },cpos,{0,0},maxHp }
-, character{ U"Characters/yukidarunaito/yukidarunaito.json" ,U"Characters/yukidarunaito/motion.txt" ,0.2,cpos,true,false }
+SnowKnight::SnowKnight(const Vec2& cpos)
+	: Entity{ U"Enemy", RectF{Arg::center(-20,40),70 * 1,70 * 4 - 30 },cpos,{0,0},maxHp }
+	, character{ U"Characters/yukidarunaito/yukidarunaito.json" ,U"Characters/yukidarunaito/motion.txt" ,0.2,cpos,true,false }
 {
 	centerX = pos.x;
 
@@ -16,14 +17,15 @@ SnowKnight::SnowKnight(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(-2
 	auto& k = character.character.table[U"kenbox"];
 
 	//最初は数秒何もしない
-	f = []() {};
-	f2 = []() {};
+	updateFunc = []() {};
+	endFunc = []() {};
 	timer = 3;
 
 }
 
 
-void SnowKnight::update() {
+void SnowKnight::update()
+{
 
 	manager->stage->hit(&hitBox);
 
@@ -35,10 +37,12 @@ void SnowKnight::update() {
 	if (timer <= 0)
 	{
 		int32 type = 0;
-		if (not summonList) {
+		if (not summonList)
+		{
 			type = 2;
 		}
-		else {
+		else
+		{
 			type = Random(0, 1);
 		}
 
@@ -57,11 +61,11 @@ void SnowKnight::update() {
 				d = lx - pos.x;
 			}
 			left = d < 0;
-			f = [=]
+			updateFunc = [=]
 			{
 				pos.x += (d / 1) * Scene::DeltaTime();
 			};
-			f2 = [=]
+			endFunc = [=]
 			{
 				vel.x = 0;
 				left != left;
@@ -70,7 +74,6 @@ void SnowKnight::update() {
 		break;
 		case 1:
 		{
-
 			left = manager->get(U"Player")->pos.x < pos.x;
 
 			double maxTime = yoroi ? 5.8 : 7.0;
@@ -86,7 +89,7 @@ void SnowKnight::update() {
 			//0.2 切り上げ
 			//1　何もしない
 			character.addMotion(U"kiriage");
-			f = [=]
+			updateFunc = [=]
 			{
 				double t = maxTime - timer;
 
@@ -96,49 +99,51 @@ void SnowKnight::update() {
 
 					attack(U"Player", ken, 1,DamageType::UnBrakable);
 
-					if (not kenFlg) {
+					if (not kenFlg)
+					{
 						AudioAsset{ U"剣を振る" }.play();
 						kenFlg = true;
 					}
 
-					if (yoroi or true) {
+					if (yoroi or true)
+					{
 
-						if (t <= 2.4) {
-							if (left) {
+						if (t <= 2.4)
+						{
+							if (left)
+							{
 								vel.x = -300;
 							}
-							else {
+							else
+							{
 								vel.x = 300;
 							}
 						}
 
 					}
-					else {
-
-						if (left) {
+					else
+					{
+						if (left)
+						{
 							vel.x = -400;
 						}
-						else {
+						else
+						{
 							vel.x = 400;
 						}
 					}
 
 
 				}
-				else if (3.5 < t and t <= 3.6) {
-					if (hitBox.touch(Direction::down)) {
+				else if (3.5 < t and t <= 3.6)
+				{
+					if (hitBox.touch(Direction::down))
+					{
 						vel.y = -300;
 					}
-
-
 				}
-
-
 			};
-			f2 = [=]
-			{
-
-			};
+			endFunc = []{};
 		}
 		break;
 
@@ -147,12 +152,9 @@ void SnowKnight::update() {
 			timer = 1.6;
 			character.addMotion(U"ageru");
 
-			f = [=]
-			{
+			updateFunc = []{};
 
-			};
-
-			f2 = [=]
+			endFunc = [=]
 			{
 				AudioAsset{ U"召喚" }.playOneShot();
 
@@ -197,8 +199,8 @@ void SnowKnight::update() {
 					DataManager::get().additiveEffect.add<ExplosionEffect>(bornPos, 60, Palette::Yellowgreen);
 				}
 
-				f = []() {};
-				f2 = []() {};
+				updateFunc = []() {};
+				endFunc = []() {};
 				timer = 3;
 			};
 
@@ -208,35 +210,36 @@ void SnowKnight::update() {
 
 	}
 
-	if (timer > 0)
+	if (0< timer)
 	{
 		timer -= Scene::DeltaTime();
-		f();
+		updateFunc();
 		if (timer <= 0)
 		{
-			f2();
+			endFunc();
 		}
 	}
 
 	character.update(pos, left);
-	if (not yoroi) {
+	if (not yoroi)
+	{
 		character.character.table[U"kabuto"].joint.color = ColorF{ 1,0 };
 		character.character.base->table[U"kabuto"].joint.color = ColorF{ 1,0 };
 		character.character.table[U"tate"].joint.color = ColorF{ 1,0 };
 		character.character.base->table[U"tate"].joint.color = ColorF{ 1,0 };
 		character.character.table[U"yoroi"].joint.color = ColorF{ 1,0 };
 		character.character.base->table[U"yoroi"].joint.color = ColorF{ 1,0 };
-
 	}
 }
 
-void SnowKnight::lateUpdate() {
-
+void SnowKnight::lateUpdate()
+{
 	DataManager::get().bossHPRate = hp / double(maxHp);
 
 	summonList.remove_if([](Entity* entity) {return not entity->isActive(); });
 
-	if (not isActive()) {
+	if (not isActive())
+	{
 		DataManager::get().table.emplace(U"Clear");
 		DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 200);
 		DataManager::get().additiveEffect.add<ExplosionEffect>(pos + Vec2{ 50,50 }, 100);
@@ -244,17 +247,19 @@ void SnowKnight::lateUpdate() {
 	}
 }
 
-void SnowKnight::damage(int32 n, const Vec2& _force, DamageType damageType) {
-
-	if (not character.hasMotion(U"Muteki") and not character.hasMotion(U"YoroiMuteki")) {
-
-		if (yoroi) {
+void SnowKnight::damage(int32 n, const Vec2& _force, DamageType damageType)
+{
+	if (not character.hasMotion(U"Muteki") and not character.hasMotion(U"YoroiMuteki"))
+	{
+		if (yoroi)
+		{
 			//5は突進のダメージ
-			if (5 <= n) {
+			if (5 <= n)
+			{
 				yoroi -= 1;
 			}
-			else {
-
+			else
+			{
 				String text;
 
 				if (attackCount < 3)
@@ -296,18 +301,16 @@ void SnowKnight::damage(int32 n, const Vec2& _force, DamageType damageType) {
 					}
 				}
 
-
 				DataManager::get().effect.add<FadeUpEffect>(pos,text, FontAsset(U"TitleFont"),Palette::Blue);
 
 				++attackCount;
 			}
 
-
-
-
-			if (yoroi <= 0) {
+			if (yoroi <= 0)
+			{
 				character.addMotion(U"Nugeru");
 			}
+
 			character.addMotion(U"YoroiMuteki");
 			force = _force;
 			vel.y = force.y;
@@ -315,7 +318,8 @@ void SnowKnight::damage(int32 n, const Vec2& _force, DamageType damageType) {
 
 			AudioAsset{ U"ヘッドドロップ" }.playOneShot();
 		}
-		else {
+		else
+		{
 			hp -= n;
 			character.addMotion(U"Muteki");
 			force = _force;
@@ -323,22 +327,29 @@ void SnowKnight::damage(int32 n, const Vec2& _force, DamageType damageType) {
 			vel.x = force.x;
 		}
 
-		if (5 <= n) {
+		if (5 <= n)
+		{
 			dynamic_cast<Player*>(manager->get(U"Player"))->stopRush();
-			if (pos.x < manager->get(U"Player")->pos.x) {
+			if (pos.x < manager->get(U"Player")->pos.x)
+			{
 				manager->get(U"Player")->damage(0, Vec2{ 200,-20 });
 			}
-			else {
+			else
+			{
 				manager->get(U"Player")->damage(0, Vec2{ -200,-20 });
 			}
 		}
 	}
-	else if (character.hasMotion(U"YoroiMuteki") and 5 <= n) {
-		if (yoroi) {
+	else if (character.hasMotion(U"YoroiMuteki") and 5 <= n)
+	{
+		if (yoroi)
+		{
 			yoroi -= 1;
-			if (yoroi <= 0) {
+			if (yoroi <= 0)
+			{
 				character.addMotion(U"Nugeru");
 			}
+
 			character.addMotion(U"Muteki");
 			force = _force;
 			vel.y = force.y;
@@ -348,72 +359,78 @@ void SnowKnight::damage(int32 n, const Vec2& _force, DamageType damageType) {
 	}
 }
 
-void SnowKnight::draw()const {
+void SnowKnight::draw()const
+{
 	character.draw();
 }
 
 
-SlaversCookie::SlaversCookie(const Vec2& cpos) :Entity{ U"SlaversCookie", RectF{Arg::center(0,0),50,100},cpos,{0,0},maxHp }
-, character{ U"Characters/cookieDoreisho/model.json" ,U"Characters/cookieDoreisho/motion.txt" ,0.4,cpos,true,false }
+SlaversCookie::SlaversCookie(const Vec2& cpos)
+	: Entity{ U"SlaversCookie", RectF{Arg::center(0,0),50,100},cpos,{0,0},maxHp }
+	, character{ U"Characters/cookieDoreisho/model.json" ,U"Characters/cookieDoreisho/motion.txt" ,0.4,cpos,true,false }
 {
-	f = []() {};
-	f2 = []() {};
+	updateFunc = []() {};
+	endFunc = []() {};
 	timer = 3;
 
 	rx = pos.x + rect_size * 6.5;
 	lx = pos.x - rect_size * 6.5;
 
 	DataManager::get().table.emplace(U"SlaversCookie");
-
 }
 
-void SlaversCookie::update() {
-
+void SlaversCookie::update()
+{
 	manager->stage->hit(&hitBox);
 
 	if (rx <= pos.x)
 	{
 		left = true;
 	}
-	else if (pos.x <= lx) {
+	else if (pos.x <= lx)
+	{
 		left = false;
 	}
 
 	bool poleHit = false;
-	if (DataManager::get().table.contains(U"PoleHit")) {
+	if (DataManager::get().table.contains(U"PoleHit"))
+	{
 		DataManager::get().table.erase(U"PoleHit");
 		poleHit = true;
 		timer = 0;
 	}
 
 
-	if (timer <= 0) {
-
-		if (type == 0) {
-
+	if (timer <= 0)
+	{
+		if (type == 0)
+		{
 			type = Random(1, 3);
 
-			if (not summonListItigo) {
+			if (not summonListItigo)
+			{
 				type = 1;
 			}
 		}
-		else {
+		else
+		{
 			type = 0;
 		}
 
-		if (poleHit) {
+		if (poleHit)
+		{
 			type = 4;
 		}
 
 		switch (type)
 		{
-		case 0: {
-
+		case 0:
+		{
 			timer = 2;
 
 			character.addMotion(U"walk", true);
 
-			f = [&]() {
+			updateFunc = [&]() {
 				if (left) {
 					vel.x = -300;
 				}
@@ -422,13 +439,13 @@ void SlaversCookie::update() {
 				}
 			};
 
-			f2 = [&]() {
+			endFunc = [&]() {
 				character.removeMotion(U"walk");
 			};
 
 		}break;
-		case 1: {
-
+		case 1:
+		{
 			if (summonListItigo.size() < 10) {
 
 				AudioAsset{ U"召喚" }.playOneShot();
@@ -451,11 +468,11 @@ void SlaversCookie::update() {
 				}
 				character.addMotion(U"meirei");
 
-				f = [&]() {
+				updateFunc = [&]() {
 
 				};
 
-				f2 = [&]() {
+				endFunc = [&]() {
 					character.removeMotion(U"meirei");
 				};
 
@@ -464,38 +481,39 @@ void SlaversCookie::update() {
 			}
 			else {
 				timer = 0;
-				f = []() {};
-				f2 = []() {};
+				updateFunc = []() {};
+				endFunc = []() {};
 			}
 
 		}break;
-		case 2: {
+		case 2:
+		{
 			timer = 1;
 
 			character.addMotion(U"nageire");
 
 
-			f = [&]() {};
+			updateFunc = [&]() {};
 
-			f2 = [&]() {
+			endFunc = [&]() {
 
 				Vec2 bornPos{ pos.x + Random(-100,100),pos.y + 200 };
 				Entity* tmp = new DropCorn{ bornPos,100 * Random(1.0) };
 				manager->add(tmp);
 				DataManager::get().additiveEffect.add<ExplosionEffect>(bornPos, 60, Palette::Yellowgreen);
-				f = [&]() {};
-				f2 = [&]() {};
+				updateFunc = [&]() {};
+				endFunc = [&]() {};
 				timer = 1;
 			};
 
 
 		}break;
-		case 3: {
-
+		case 3:
+		{
 			character.addMotion(U"meirei");
 
-			f = [&]() {};
-			f2 = [&]() {};
+			updateFunc = [&]() {};
+			endFunc = [&]() {};
 			timer = 0;
 
 			if (not summonSnowLeft) {
@@ -524,15 +542,15 @@ void SlaversCookie::update() {
 			}
 
 		}break;
-		case 4: {
+		case 4:
+		{
 			character.clearMotion();
 			character.addMotion(U"shobon");
 			hp -= 1;
 
-			f = [&]() {};
-			f2 = [&]() {};
+			updateFunc = [&]() {};
+			endFunc = [&]() {};
 			timer = 3;
-
 		}break;
 
 		default:
@@ -546,29 +564,33 @@ void SlaversCookie::update() {
 	if (timer > 0)
 	{
 		timer -= Scene::DeltaTime();
-		f();
+		updateFunc();
 		if (timer <= 0)
 		{
-			f2();
+			endFunc();
 		}
 	}
 
 	character.update(pos, left);
 }
 
-void SlaversCookie::lateUpdate() {
+void SlaversCookie::lateUpdate()
+{
 
 	DataManager::get().bossHPRate = hp / double(maxHp);
 
 	summonListItigo.remove_if([](Entity* entity) {return not entity->isActive(); });
-	if (summonSnowLeft and not summonSnowLeft->isActive()) {
+	if (summonSnowLeft and not summonSnowLeft->isActive())
+	{
 		summonSnowLeft = nullptr;
 	}
-	if (summonSnowRight and not summonSnowRight->isActive()) {
+	if (summonSnowRight and not summonSnowRight->isActive())
+	{
 		summonSnowRight = nullptr;
 	}
 
-	if (not isActive()) {
+	if (not isActive())
+	{
 		DataManager::get().table.emplace(U"Clear");
 		DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 200);
 		DataManager::get().additiveEffect.add<ExplosionEffect>(pos + Vec2{ 50,50 }, 100);
@@ -576,7 +598,8 @@ void SlaversCookie::lateUpdate() {
 	}
 }
 
-void SlaversCookie::draw()const {
+void SlaversCookie::draw()const
+{
 	character.draw();
 }
 
@@ -594,77 +617,83 @@ SlaversCookie::~SlaversCookie()
 Captain::Captain(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,-30),230,100},cpos,{0,0},maxHp }
 , character{ U"Characters/sentyo/model.json" ,U"Characters/sentyo/motion.txt" ,1,cpos,true,false }
 {
-	r = { pos.x + 400,pos.y };
-	l = { pos.x - 400,pos.y };
+	rPos = { pos.x + 400,pos.y };
+	lPos = { pos.x - 400,pos.y };
 	center = pos.x;
 
-	f = []() {};
-	f2 = []() {};
+	updateFunc = []() {};
+	endFunc = []() {};
 	timer = 3;
 	character.addMotion(U"Mokumoku", true);
 }
 
 
-void Captain::update() {
-
-
+void Captain::update()
+{
 	//目をプレイヤーに向ける
 	character.character.table[U"me"].joint.pos = (manager->get(U"Player")->pos - pos).setLength(15);
 
-	if (character.hasMotion(U"Muteki")) {
+	if (character.hasMotion(U"Muteki"))
+	{
 		character.character.table[U"me"].joint.pos = Vec2{ 0,-30 };
 	}
 
-	if (timer <= 0) {
-
+	if (timer <= 0)
+	{
 		type = Random(0, 3);
 
-		if (type == 3) {
-			if (5 < summonList.size()) {
+		if (type == 3)
+		{
+			if (5 < summonList.size())
+			{
 				type = Random(0, 2);
 			}
 		}
 
-		if (type == 2) {
-
+		if (type == 2)
+		{
 			double playerX = manager->get(U"Player")->pos.x;
 
-			if (playerX <= l.x and pos.x <= l.x) {
+			if (playerX <= lPos.x and pos.x <= lPos.x) {
 				type = Random(0, 1);
 			}
-			else if (r.x <= playerX and r.x <= pos.x) {
+			else if (rPos.x <= playerX and rPos.x <= pos.x) {
 				type = Random(0, 1);
 			}
 		}
 
 		switch (type)
 		{
-		case 0: {
+		case 0:
+		{
 			double timeLim = 2.5;
 			timer = timeLim;
 			Vec2 d;
 
 			bool targetIsRight = pos.x < center;
 
-			if (Abs(center - pos.x) < 200) {
+			if (Abs(center - pos.x) < 200)
+			{
 				targetIsRight = RandomBool();
 			}
 
 			if (targetIsRight)
 			{
-				d = r - pos;
+				d = rPos - pos;
 				left = false;
 			}
 			else
 			{
-				d = l - pos;
+				d = lPos - pos;
 				left = true;
 			}
 
-			if (left) {
+			if (left)
+			{
 				character.addMotion(U"YureruLeft");
 			}
-			else {
+			else
+			{
 				character.addMotion(U"YureruRight");
 			}
 
@@ -672,63 +701,63 @@ void Captain::update() {
 
 			Duration time = 1.5s;
 			double A = 30;
-			if (RandomBool()) {
+			if (RandomBool())
+			{
 				time = timeLim * 2s;
-				A = 500 + l.y - y;
+				A = 500 + lPos.y - y;
 			}
 
-			f = [=]
+			updateFunc = [=]
 			{
 				pos.x = Periodic::Sine1_1(timeLim * 4, timeLim - timer) * d.x + x;
 				pos.y = (d.y / timeLim) * (timeLim - timer) + y + Periodic::Sine1_1(time, timer) * A;
 
-				if (timer < 0.2) {
+				if (timer < 0.2)
+				{
 					character.addMotion(U"YureruCenter");
 				}
 			};
-			f2 = [=]
+			endFunc = [=]
 			{
 				vel.x = 0;
 				left != left;
 			};
-		}
-			  break;
-		case 1: {
+		}break;
+		case 1:
+		{
 
 			//プレイヤーを追従
 			timer = 3;
 
-			f = [&] {
-
-				pos.x = linerMove(pos.x, manager->get(U"Player")->pos.x, 500);
-
+			updateFunc = [&] {
+				pos.x = LinerMove(pos.x, manager->get(U"Player")->pos.x, 500);
 			};
 
-			f2 = [&] {
+			endFunc = [&] {
 
 				//口を開けてゆっくり追いかける
 				timer = 1.0;
 				character.addMotion(U"Gaaa");
 
-				f = [&] {
-					pos.x = linerMove(pos.x, manager->get(U"Player")->pos.x, 500 * timer / 1.0);
+				updateFunc = [&] {
+					pos.x = LinerMove(pos.x, manager->get(U"Player")->pos.x, 500 * timer / 1.0);
 				};
 
-				f2 = [&] {
+				endFunc = [&] {
 
 					//落下
 					double timeLim = 0.2;
 					timer = timeLim;
 
-					double dy = (r.y + 450) - pos.y;
+					double dy = (rPos.y + 450) - pos.y;
 					double y = pos.y;
 
-					f = [=] {
+					updateFunc = [=] {
 
 						pos.y = y + dy * (timeLim - timer) / timeLim;
 					};
 
-					f2 = [&] {
+					endFunc = [&] {
 						DataManager::get().table.emplace(U"ShakeCamera");
 
 						//待つ
@@ -736,19 +765,19 @@ void Captain::update() {
 
 						character.addMotion(U"Tojiru");
 
-						f = [&] {
+						updateFunc = [&] {
 
 						};
 
-						f2 = [&] {
+						endFunc = [&] {
 							//上る
 							timer = 2.0;
 
-							f = [&] {
-								pos.y = Math::SmoothDamp(pos.y, r.y, vel.y, 0.5);
+							updateFunc = [&] {
+								pos.y = Math::SmoothDamp(pos.y, rPos.y, vel.y, 0.5);
 							};
 
-							f2 = [&] {
+							endFunc = [&] {
 
 
 							};
@@ -758,13 +787,9 @@ void Captain::update() {
 				};
 			};
 
-
-
-
-
-
 		}break;
-		case 2: {
+		case 2:
+		{
 
 			//金平糖を吐き出す
 
@@ -775,18 +800,20 @@ void Captain::update() {
 
 			double targetX = 0;
 
-			if (manager->get(U"Player")->pos.x < pos.x) {
-				targetX = l.x;
+			if (manager->get(U"Player")->pos.x < pos.x)
+			{
+				targetX = lPos.x;
 			}
-			else {
-				targetX = r.x;
+			else
+			{
+				targetX = rPos.x;
 			}
 
 			timer = Abs(targetX - pos.x) / speed;
 
-			f = [=] {
+			updateFunc = [=] {
 
-				pos.x = linerMove(pos.x, targetX, speed);
+				pos.x = LinerMove(pos.x, targetX, speed);
 
 				accumulatedTime += Scene::DeltaTime();
 				constexpr double eventInterval = 0.1;
@@ -799,19 +826,20 @@ void Captain::update() {
 
 			};
 
-			f2 = [=] {
+			endFunc = [=] {
 				character.removeMotion(U"Gaaa");
 				character.addMotion(U"Tojiru");
 
 				//口を閉じる
 				timer = 2;
-				f = []()->void {};
-				f2 = []()->void {};
+				updateFunc = []()->void {};
+				endFunc = []()->void {};
 
 			};
 
 		}break;
-		case 3: {
+		case 3:
+		{
 
 			//敵を吐き出す
 
@@ -832,22 +860,23 @@ void Captain::update() {
 
 			bool targetIsRight = pos.x < center;
 
-			if (Abs(center - pos.x) < 200) {
+			if (Abs(center - pos.x) < 200)
+			{
 				targetIsRight = RandomBool();
 			}
 
 			if (targetIsRight)
 			{
-				d = r - pos;
+				d = rPos - pos;
 				left = false;
 			}
 			else
 			{
-				d = l - pos;
+				d = lPos - pos;
 				left = true;
 			}
 
-			f = [=] {
+			updateFunc = [=] {
 
 				pos.x = Periodic::Sine1_1(timeLim * 4, timeLim - timer) * d.x + x;
 				pos.y = (d.y / timeLim) * (timeLim - timer) + y + Periodic::Sine1_1(time, timer) * A;
@@ -906,13 +935,13 @@ void Captain::update() {
 
 			};
 
-			f2 = [=] {
+			endFunc = [=] {
 				character.addMotion(U"Tojiru");
 
 				//口を閉じる
 				timer = 2;
-				f = []()->void {};
-				f2 = []()->void {};
+				updateFunc = []()->void {};
+				endFunc = []()->void {};
 
 			};
 
@@ -928,10 +957,10 @@ void Captain::update() {
 	if (timer > 0)
 	{
 		timer -= Scene::DeltaTime();
-		f();
+		updateFunc();
 		if (timer <= 0)
 		{
-			f2();
+			endFunc();
 		}
 	}
 
@@ -947,7 +976,8 @@ void Captain::lateUpdate() {
 
 	summonList.remove_if([](Entity* entity) {return not entity->isActive(); });
 
-	if (not isActive()) {
+	if (not isActive())
+	{
 		DataManager::get().table.emplace(U"Clear");
 		DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 200);
 		DataManager::get().additiveEffect.add<ExplosionEffect>(pos + Vec2{ 50,50 }, 100);
@@ -955,13 +985,15 @@ void Captain::lateUpdate() {
 	}
 }
 
-void Captain::draw()const{
+void Captain::draw()const
+{
 	character.draw();
 }
 
 void Captain::damage(int32 n, const Vec2&, DamageType)
 {
-	if (not character.hasMotion(U"Muteki")) {
+	if (not character.hasMotion(U"Muteki"))
+	{
 		hp -= n;
 		character.addMotion(U"Muteki");
 	}
