@@ -214,6 +214,15 @@ public:
 				getData().quitStage = false;
 				getData().sceneName = sceneNames[index];
 
+				if(sceneNames[index]==U"MainGameScene")
+				{
+					getData().description = U"Space or W：ジャンプ\nA：左\nD：右\nS：しゃがむ\nEnter：技を発動\nEnter長押し：突進(クッキーが10個貯まったら)";
+				}
+				else
+				{
+					getData().description = sentences[index];
+				}
+
 				LoadAsset::RegisterTexture(getData().backgroundTexture);
 
 				String path = json[U"StageData"][U"Stage{}"_fmt(index + 1)][U"BGM"].getString();

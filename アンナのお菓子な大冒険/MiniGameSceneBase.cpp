@@ -62,6 +62,7 @@ std::shared_ptr<UIElement> MiniGameSceneBase::createPauseUI()
 				.children
 				{
 					TextUI::Create({.text=U"ポーズ",.fontSize = 40,.color=Palette::White}),
+					TextUI::Create({.text = getData().description,.fontSize = 30,.color = Palette::White,.flex = 1,}),
 					Row::Create
 					({
 						.children
@@ -74,7 +75,6 @@ std::shared_ptr<UIElement> MiniGameSceneBase::createPauseUI()
 					})
 				}
 			})
-
 		}),
 		.updateFunc = [=](SimpleDialog* dialog)
 		{
@@ -138,13 +138,16 @@ std::shared_ptr<UIElement> MiniGameSceneBase::createPauseUI()
 
 
 void MiniGameSceneBase::goPause() {
-	onPauseStart();
 
-	pauseFlg = true;
-	m_settingSelectIndex = 3;
+	if (not pauseFlg)
+	{
+		onPauseStart();
 
-	uiManager.addChild(createPauseUI());
+		pauseFlg = true;
+		m_settingSelectIndex = 3;
 
+		uiManager.addChild(createPauseUI());
+	}
 }
 
 void MiniGameSceneBase::EndGame(bool clear) {

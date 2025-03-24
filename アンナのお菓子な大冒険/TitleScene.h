@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include"Common.h"
-#include"CookieButton.h"
 #include"LoadAsset.h"
 #include"SweetsPanel.hpp"
 

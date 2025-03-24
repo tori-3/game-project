@@ -3,7 +3,6 @@
 #include"Enemy.h"
 #include"Boss.h"
 #include"setting.h"
-#include"Pause.h"
 #include"Player.h"
 #include"LastBoss.h"
 #include"Spawner.h"
@@ -13,9 +12,9 @@
 
 #include"GrapesHPBar.h"
 
-#include"CookieButton.h"
-
 #include"Spotlight.hpp"
+
+#include"MiniGameSceneBase.h"
 
 inline Mat3x2 shakeMat(const Timer& timer, double amplitude = 20)
 {
@@ -117,7 +116,7 @@ public:
 //本当はcppですべきなんだろうなー
 DataManager* DataManager::instance = nullptr;
 
-class MainGameScene : public IPauseScene
+class MainGameScene : public MiniGameSceneBase
 {
 public:
 	void cookieDisplay(int32 count,double tame)const {
@@ -206,7 +205,7 @@ public:
 
 	// コンストラクタ（必ず実装）
 	MainGameScene(const InitData& init)
-		: IPauseScene{ init }
+		: MiniGameSceneBase{ init }
 	{
 		DataManager::get().maxHP = getData().maxHP;
 
@@ -311,6 +310,8 @@ public:
 		{
 			hpBar.update(DataManager::get().bossHPRate.value());
 		}
+
+		DataManager::get().time += Scene::DeltaTime();
 	}
 
 	// 描画関数（オプション）
@@ -386,36 +387,6 @@ public:
 			const Transformer2D t{ camera.getMat3x2() };
 			irisOut.draw();
 		}
-	}
-
-
-
-
-	CookieButton gameButton{ RectF{Arg::center(Scene::Center().x-200,700),300,60},U"ゲームに戻る" };
-	CookieButton mapButton{ RectF{Arg::center(Scene::Center().x+200,700),300,60},U"マップに戻る" };
-
-	//ポーズ画面
-	void pauseUpdate()override {
-
-		if (gameButton.update())
-		{
-			goGame();
-		}
-
-		if(mapButton.update())
-		{
-			getData().quitStage = true;
-			EndGame(false);
-		}
-	}
-
-	void pauseDraw()const override {
-		Rect{ Scene::Size() }.draw(ColorF{ 0,0.7 });
-		RoundRect{ Arg::center = Scene::Center(),1150,750,10 }.draw(ColorF{ Palette::Skyblue,0.7});
-		FontAsset(U"TitleFont")(U"ポーズ").drawAt(Scene::Center().x, 100);
-		FontAsset(U"TitleFont")(U"Space or W：ジャンプ\nA：左\nD：右\nS：しゃがむ\nEnter：技を発動\nEnter長押し：突進(クッキーが10個貯まったら)\n").drawAt(50,Scene::Center());
-		gameButton.draw();
-		mapButton.draw();
 	}
 
 	void EndGame(bool clear) {

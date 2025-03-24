@@ -18,6 +18,8 @@ struct GameData
 	bool mini_clear = false;
 	bool boss_clear = false;
 
+	String description;
+
 	bool backFromMainGameScene = false;
 
 	//ゲームをやめるでMapに戻ってきたか

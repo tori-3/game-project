@@ -152,26 +152,30 @@ public:
 
 		const int32 modeIndex = getData().miniGameModeIndex;
 
+		bool startMiniGame = false;
+
 		if (chocolateButtonUpdate(EasyButtonPos, ChocolateButtonBlockCount, ChocolateButtonBlockSize) || (modeIndex == 0 && KeyEnter.down()))
 		{
 			getData().mini_mode = mode::Easy_Mode;
-			getData().sceneName = miniGameList[getData().miniGameIndex].sceneName;
-			changeScene(miniGameList[getData().miniGameIndex].sceneName);
-			BGMManager::get().stop();
+			startMiniGame = true;
 		}
 
 		if (chocolateButtonUpdate(NormalButtonPos, ChocolateButtonBlockCount, ChocolateButtonBlockSize) || (modeIndex == 1 && KeyEnter.down()))
 		{
 			getData().mini_mode = mode::Normal_Mode;
-			getData().sceneName = miniGameList[getData().miniGameIndex].sceneName;
-			changeScene(miniGameList[getData().miniGameIndex].sceneName);
-			BGMManager::get().stop();
+			startMiniGame = true;
 		}
 
 		if (chocolateButtonUpdate(HardButtonPos, ChocolateButtonBlockCount, ChocolateButtonBlockSize) || (modeIndex == 2 && KeyEnter.down()))
 		{
 			getData().mini_mode = mode::Hard_Mode;
+			startMiniGame = true;
+		}
+
+		if(startMiniGame)
+		{
 			getData().sceneName = miniGameList[getData().miniGameIndex].sceneName;
+			getData().description = miniGameList[getData().miniGameIndex].sentence;
 			changeScene(miniGameList[getData().miniGameIndex].sceneName);
 			BGMManager::get().stop();
 		}

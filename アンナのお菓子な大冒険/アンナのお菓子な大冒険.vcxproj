@@ -117,7 +117,6 @@
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="BunchoUI.cpp" />
     <ClCompile Include="ChocolateButton.cpp" />
-    <ClCompile Include="CookieButton.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GrapesHPBar.cpp" />
     <ClCompile Include="LastBoss.cpp" />
@@ -338,7 +337,6 @@
     <ClInclude Include="CharacterSystem.h" />
     <ClInclude Include="ChocolateButton.h" />
     <ClInclude Include="Common.h" />
-    <ClInclude Include="CookieButton.h" />
     <ClInclude Include="CookieItem.h" />
     <ClInclude Include="DataManager.h" />
     <ClInclude Include="Effect.h" />
@@ -374,7 +372,6 @@
     <ClInclude Include="Movements.h" />
     <ClInclude Include="MyInput.h" />
     <ClInclude Include="NinePatch.hpp" />
-    <ClInclude Include="Pause.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RingEffect.h" />
     <ClInclude Include="setting.h" />

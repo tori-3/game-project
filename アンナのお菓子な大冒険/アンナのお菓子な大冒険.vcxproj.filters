@@ -189,9 +189,6 @@
     <ClCompile Include="GrapesHPBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CookieButton.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LoadAsset.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -887,9 +884,6 @@
     <ClInclude Include="Figure.hpp">
       <Filter>Header Files\MainGameScene\GameLib</Filter>
     </ClInclude>
-    <ClInclude Include="Pause.h">
-      <Filter>Header Files\MainGameScene\GameLib</Filter>
-    </ClInclude>
     <ClInclude Include="Singleton.h">
       <Filter>Header Files\MainGameScene\GameLib</Filter>
     </ClInclude>
@@ -978,9 +972,6 @@
       <Filter>Header Files\MainGameScene\Effect</Filter>
     </ClInclude>
     <ClInclude Include="TitleScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CookieButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LoadAsset.h">
