@@ -90,9 +90,23 @@ public:
 	CharacterSystem snowKnight{ U"Characters/yukidarunaito/yukidarunaito.json" ,U"Characters/yukidarunaito/motion.txt" ,0.2 * 0.2,snowKnightPos,true,false };
 	Timer snowKnightKiriageTimer{ 10s };
 
-	static constexpr Vec2 cookieDoreishoPos{ 460,480 - 25 };
+	static constexpr Vec2 cookieDoreishoPos{ 460+2,480 - 25 };
 	CharacterSystem cookieDoreisho{ U"Characters/cookieDoreisho/model.json" ,U"Characters/cookieDoreisho/motion.txt" ,0.4*0.4,cookieDoreishoPos,true,false };
 	Timer cookieDoreishoTimer{ 4s };
+
+	static constexpr Vec2 captainPos{ 930-2,490 - 32 };
+	CharacterSystem captain{ U"Characters/sentyo/model.json" ,U"Characters/sentyo/motion.txt" ,1 * 0.2,captainPos,true,false };
+	Timer captainTimer{ 8s };
+	Timer captainCloseTimer{ 4s };
+
+	static constexpr Vec2 lastBossPos{ 1050,300 - 35 };
+	CharacterSystem lastBoss{ U"Characters/bitter/model1.json" ,U"Characters/bitter/motion1.txt" ,0.3*0.5,lastBossPos,false,false };
+	Timer lastBossTimer{ 6s };
+	Timer lastBossStandTimer{ 4s };
+
+
+
+
 
 	void updatePos();
 	

@@ -9,6 +9,7 @@
 #include"Spotlight.hpp"
 #include"MiniGameSceneBase.h"
 #include"SmoothCamera.h"
+#include"Player.h"
 
 class MainGameScene : public MiniGameSceneBase
 {

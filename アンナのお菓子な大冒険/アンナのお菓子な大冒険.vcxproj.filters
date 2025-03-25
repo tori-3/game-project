@@ -175,6 +175,9 @@
     <Filter Include="Source Files\Effect">
       <UniqueIdentifier>{eaa0f9f0-1b2b-407c-86ea-eefcc943d725}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\MiniGame">
+      <UniqueIdentifier>{0d8aa2d8-eff4-415e-8d28-3f7200bc8f98}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -269,6 +272,27 @@
     </ClCompile>
     <ClCompile Include="MainGameScene.cpp">
       <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Gimmick.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AnnaMusicGame.cpp">
+      <Filter>Source Files\MiniGame</Filter>
+    </ClCompile>
+    <ClCompile Include="HawkDropOut.cpp">
+      <Filter>Source Files\MiniGame</Filter>
+    </ClCompile>
+    <ClCompile Include="ManjuRush.cpp">
+      <Filter>Source Files\MiniGame</Filter>
+    </ClCompile>
+    <ClCompile Include="MAZE.cpp">
+      <Filter>Source Files\MiniGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Maze2.cpp">
+      <Filter>Source Files\MiniGame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1084,6 +1108,9 @@
     </ClInclude>
     <ClInclude Include="SmoothCamera.h">
       <Filter>Header Files\MainGameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Gimmick.h">
+      <Filter>Header Files\MainGameScene\Entity</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,19 +1,238 @@
 ﻿#include"LastBoss.h"
 
+ClosedUmbrella::ClosedUmbrella(const Vec2& cpos, double angle, double speed)
+	: Entity{ U"Umbrella", RectF{Arg::center(0,-5),40,150},cpos,{0,0},1 }
+	, character{ U"Characters/bitter/umbrella2.json" ,U"Characters/bitter/umbrellaMotion.txt" ,0.3,cpos,false,false }, angle{ angle }, speed{ speed }
+{
+	character.character.joint->angle = angle;
+	character.character.joint->color.a = 0.0;
 
-void LastBoss::update() {
+	if (not TextureAsset::IsRegistered(U"MagicEffect0")) {
+		TextureAsset::Register(U"MagicEffect0", 0xF810_icon, 50);
+		TextureAsset::Register(U"MagicEffect1", 0xF786_icon, 50);
+		TextureAsset::Register(U"MagicEffect2", 0xF563_icon, 50);
+		TextureAsset::Register(U"MagicEffect3", 0xF005_icon, 50);
+	}
 
+}
+
+void ClosedUmbrella::update()
+{
+	if ((not audioStartFlg) and hitBox.getFigure().intersects(RectF{ DataManager::get().stageSize }) and effectFlg)
+	{
+		AudioAsset{ U"傘の音" }.playOneShot();
+		audioStartFlg = true;
+	}
+
+	time += Scene::DeltaTime() * 2;
+	character.character.joint->color.a = Min(time, 1.0);
+
+	hitBox.update();
+	character.character.joint->angle = angle;
+	pos += Vec2{ OffsetCircular{ {0,0},speed,angle} }*Scene::DeltaTime();
+
+	if (effectFlg)
+	{
+		accumulatedTime += Scene::DeltaTime();
+
+		if (eventInterval <= accumulatedTime)
+		{
+			DataManager::get().additiveEffect.add<MagicEffect>(Vec2{ pos }, TextureAsset{ U"MagicEffect{}"_fmt(Random(0,3)) }, HSV{ 360 * 2 * Scene::Time() });
+			accumulatedTime -= eventInterval;
+		}
+	}
+
+	attack(U"Player", character.character.table[U"umb"].joint.getQuad2(), 1, DamageType::UnBrakable);
+
+	character.update(pos, false);
+}
+
+void ClosedUmbrella::draw()const
+{
+	character.draw();
+}
+
+bool ClosedUmbrella::isActive()
+{
+	return time < 30;
+}
+
+
+
+ChaseUmbrella::ChaseUmbrella(const Vec2& cpos, double angle, double speed, double time) :Entity{ U"Umbrella", Circle{0,0,50},cpos,{0,0},1 }
+, character{ U"Characters/bitter/umbrella2.json" ,U"Characters/bitter/umbrellaMotion.txt" ,0.3,cpos,false,false }, angle{ angle }, speed{ speed }, timeLim{ time }
+{
+	character.character.joint->angle = angle;
+	character.character.joint->color.a = 0.0;
+
+	if (not TextureAsset::IsRegistered(U"MagicEffect0")) {
+		TextureAsset::Register(U"MagicEffect0", 0xF810_icon, 50);
+		TextureAsset::Register(U"MagicEffect1", 0xF786_icon, 50);
+		TextureAsset::Register(U"MagicEffect2", 0xF563_icon, 50);
+		TextureAsset::Register(U"MagicEffect3", 0xF005_icon, 50);
+	}
+
+	AudioAsset{ U"傘の音" }.playOneShot(0.3);
+}
+
+void ChaseUmbrella::update()
+{
+	time += Scene::DeltaTime();
+
+	character.character.joint->angle = angle;
+
+	if (not rotateFlg) {
+		pos += Vec2{ OffsetCircular{ {0,0},speed,angle} }*Scene::DeltaTime();
+
+		accumulatedTime += Scene::DeltaTime();
+
+		if (eventInterval <= accumulatedTime)
+		{
+			DataManager::get().additiveEffect.add<MagicEffect>(Vec2{ pos }, TextureAsset{ U"MagicEffect{}"_fmt(Random(0,3)) }, HSV{ 360 * 2 * Scene::Time() });
+			accumulatedTime -= eventInterval;
+		}
+	}
+
+
+	manager->stage->hit(&hitBox);
+	hitBox.update();
+
+	if ((not rotateFlg) and hitBox.touchAny()) {
+
+		AudioAsset{ U"傘の音" }.playOneShot(0.3);
+
+		targetAngle = (manager->get(U"Player")->pos - pos).getAngle();
+
+		constexpr double range = 15_deg;
+
+		if (InRange(targetAngle, 90_deg - range, 90_deg)) {
+			targetAngle = 90_deg - range;
+		}
+		else if (InRange(targetAngle, 90_deg, 90_deg + range)) {
+			targetAngle = 90_deg + range;
+		}
+		else if (InRange(targetAngle, -90_deg, -90_deg + range)) {
+			targetAngle = -90_deg + range;
+		}
+		else if (InRange(targetAngle, -90_deg - range, -90_deg)) {
+			targetAngle = -90_deg - range;
+		}
+
+		rotateFlg = true;
+	}
+
+	if (rotateFlg) {
+		angle = LinerMove(angle, targetAngle, 360_deg);
+
+
+		accumulatedTime += Scene::DeltaTime();
+
+		if (eventInterval <= accumulatedTime)
+		{
+			DataManager::get().additiveEffect.add<MagicEffect>(pos, TextureAsset{ U"MagicEffect{}"_fmt(Random(0,3)) }, HSV{ 360 * 2 * Scene::Time() }, Random(360_deg), 300);
+			accumulatedTime -= eventInterval;
+		}
+
+		if (angle == targetAngle) {
+			rotateFlg = false;
+		}
+
+	}
+
+	if (timeLim - 1 < time)
+	{
+		character.character.joint->color.a = timeLim - time;
+	}
+
+	attack(U"Player", character.character.table[U"umb"].joint.getQuad2(), 1, DamageType::UnBrakable);
+
+	character.update(pos, false);
+}
+
+bool ChaseUmbrella::isActive()
+{
+	return time < timeLim;
+}
+
+void ChaseUmbrella::draw()const
+{
+	character.draw();
+}
+
+
+EnemyUmbrella::EnemyUmbrella(const Vec2& pos, Entity* child) :Entity{ U"Umbrella", RectF{Arg::center(0,-5),40,150},pos,{0,0},1 }, child{ child }
+, character{ U"Characters/bitter/umbrella2.json" ,U"Characters/bitter/umbrellaMotion.txt" ,0.3,pos,false,false }
+{
+	character.addMotion(U"open");
+}
+
+void EnemyUmbrella::update()
+{
+	pos.y += child ? (Scene::DeltaTime() * 200) : (-Scene::DeltaTime() * 200);
+	hitBox.update();
+
+	character.update(pos, false);
+}
+
+void EnemyUmbrella::lateUpdate()
+{
+	if (child) {
+		child->pos = pos + Vec2{ 0,40 };
+		child->vel = {};
+
+		if (child->hitBox.touch(Direction::down))
+		{
+			child = nullptr;
+			character.addMotion(U"close");
+		}
+		else if (not child->isActive())
+		{
+			child = nullptr;
+			character.addMotion(U"close");
+		}
+	}
+}
+
+bool EnemyUmbrella::isActive()
+{
+	return child or -300 < pos.y;
+}
+
+void EnemyUmbrella::draw()const
+{
+	character.draw();
+}
+
+
+LastBoss::LastBoss(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,-5),40,150},cpos,{0,0},maxHp }
+, character{ U"Characters/bitter/model1.json" ,U"Characters/bitter/motion1.txt" ,0.3,cpos,false,false }
+{
+	if (not TextureAsset::IsRegistered(U"MagicEffect0"))
+	{
+		TextureAsset::Register(U"MagicEffect0", 0xF810_icon, 50);
+		TextureAsset::Register(U"MagicEffect1", 0xF786_icon, 50);
+		TextureAsset::Register(U"MagicEffect2", 0xF563_icon, 50);
+		TextureAsset::Register(U"MagicEffect3", 0xF005_icon, 50);
+	}
+
+	//カメラの設定のため
+	DataManager::get().table.insert(U"LastBoss");
+}
+
+void LastBoss::update()
+{
 	manager->stage->hit(&hitBox);
 
 	if(not floatFlg)hitBox.physicsUpdate();
 	hitBox.update();
 
-	if (timer <= 0) {
+	if (timer <= 0)
+	{
 
 		switch (type)
 		{
-		case State::kick: {
-
+		case State::kick:
+		{
 			constexpr double timeLim = 1.4;
 			timer = timeLim;
 			character.addMotion(U"kick1");
@@ -501,4 +720,31 @@ void LastBoss::update() {
 	magicCircle.update();
 
 	character.update(pos, left);
+}
+
+void LastBoss::lateUpdate()
+{
+	DataManager::get().bossHPRate = hp / double(maxHp);
+
+	if (not isActive()) {
+		DataManager::get().table.emplace(U"Clear");
+	}
+}
+
+void LastBoss::draw()const
+{
+	magicCircle.draw();
+	character.draw();
+}
+
+void LastBoss::damage(int32 n, const Vec2&, DamageType)
+{
+	if (damageTimer <= 0)
+	{
+		hp -= n;
+		damageTimer = mutekiTime;
+		damageFlg = true;
+
+		character.addMotion(U"Muteki");
+	}
 }

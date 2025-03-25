@@ -1,4 +1,9 @@
 ﻿#include"EnemyAdder.h"
+#include"Enemy.h"
+#include"Boss.h"
+#include"LastBoss.h"
+#include"Spawner.h"
+#include"Gimmick.h"
 
 EnemyAdder::EnemyAdder()
 {

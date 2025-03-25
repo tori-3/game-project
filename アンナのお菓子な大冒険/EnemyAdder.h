@@ -1,8 +1,5 @@
 ﻿#pragma once
-#include"Enemy.h"
-#include"Boss.h"
-#include"LastBoss.h"
-#include"Spawner.h"
+#include"Entity.h"
 
 class EnemyAdder
 {

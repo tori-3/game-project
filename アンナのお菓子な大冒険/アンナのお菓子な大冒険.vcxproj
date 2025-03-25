@@ -113,6 +113,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnnaMusicGame.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="BunchoUI.cpp" />
@@ -121,8 +122,11 @@
     <ClCompile Include="DataManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyAdder.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="FadeUpEffect.cpp" />
+    <ClCompile Include="Gimmick.cpp" />
     <ClCompile Include="GrapesHPBar.cpp" />
+    <ClCompile Include="HawkDropOut.cpp" />
     <ClCompile Include="LaserEffect.cpp" />
     <ClCompile Include="LastBoss.cpp" />
     <ClCompile Include="Lisence.cpp" />
@@ -131,7 +135,10 @@
     <ClCompile Include="MagicEffect.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainGameScene.cpp" />
+    <ClCompile Include="ManjuRush.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MAZE.cpp" />
+    <ClCompile Include="Maze2.cpp" />
     <ClCompile Include="MiniGameSceneBase.cpp" />
     <ClCompile Include="MiniGameSelect.cpp" />
     <ClCompile Include="Movements.cpp" />
@@ -347,6 +354,7 @@
     <ClInclude Include="BeltConveyorButton.h" />
     <ClInclude Include="BGMManager.hpp" />
     <ClInclude Include="EnemyAdder.h" />
+    <ClInclude Include="Gimmick.h" />
     <ClInclude Include="MyBlendState.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="Boss.h" />

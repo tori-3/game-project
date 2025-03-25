@@ -103,6 +103,13 @@ Map::Map(const InitData& init)
 
 	cookieDoreishoTimer.start();
 	cookieDoreisho.addMotion(U"walk");
+
+	captain.addMotion(U"Mokumoku", true);
+	captainTimer.start();
+
+	lastBoss.addMotion(U"Stand");
+	lastBossTimer.start();
+
 }
 
 Map::~Map()
@@ -118,6 +125,8 @@ void Map::update()
 	fairy.update(fairyPos, false);
 	snowKnight.update(snowKnightPos,true);
 	cookieDoreisho.update(cookieDoreishoPos, true);
+	captain.update(captainPos, true);
+	lastBoss.update(lastBossPos, true);
 
 	if(snowKnightKiriageTimer.reachedZero())
 	{
@@ -130,6 +139,35 @@ void Map::update()
 		cookieDoreisho.addMotion(U"walk");
 		cookieDoreishoTimer.restart();
 	}
+
+	if(captainTimer.reachedZero())
+	{
+		captainTimer.reset();
+		captainCloseTimer.restart();
+		captain.addMotion(U"Gaaa");
+	}
+
+	if(captainCloseTimer.reachedZero())
+	{
+		captainCloseTimer.reset();
+		captainTimer.restart();
+		captain.addMotion(U"Tojiru");
+	}
+
+	if(lastBossTimer.reachedZero())
+	{
+		lastBossTimer.reset();
+		lastBoss.addMotion(U"ごめんあそばせ");
+		lastBossStandTimer.restart();
+	}
+
+	if(lastBossStandTimer.reachedZero())
+	{
+		lastBossStandTimer.reset();
+		lastBoss.addMotion(U"Stand");
+		lastBossTimer.restart();
+	}
+
 
 	if (KeyQ.down())
 	{
@@ -325,7 +363,8 @@ void Map::draw() const
 		fairy.draw();
 		snowKnight.draw();
 		cookieDoreisho.draw();
-
+		captain.draw();
+		lastBoss.draw();
 		character.draw();
 	}
 
