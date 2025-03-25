@@ -3,7 +3,6 @@
 
 namespace Maze2
 {
-
 	mazeGame::mazeGame(const InitData& init)//名前を変更してください
 		: MiniGameSceneBase{ init }
 	{

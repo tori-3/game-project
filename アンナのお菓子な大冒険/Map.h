@@ -104,8 +104,17 @@ public:
 	Timer lastBossTimer{ 6s };
 	Timer lastBossStandTimer{ 4s };
 
+	static constexpr Vec2 itigoSlavePos{ 490,660 };
+	CharacterSystem itigoSlave{ U"Characters/itigoSlave/itigoSlave.json" ,U"Characters/itigoSlave/motion.txt" ,0.3*0.4,itigoSlavePos,true,false };
 
+	static constexpr Vec2 itigoPos{ 490-50,680-5 };
+	static constexpr double itigoRoadLength = 180;
+	CharacterSystem itigo{ U"Characters/itigo/itigo.json" ,U"Characters/itigo/motion.txt" ,0.3*0.4,itigoPos,true,false };
+	Stopwatch time;
 
+	static constexpr Vec2 cloudPos{ 730,490-120 };
+	static constexpr double cloudRoadLength = 250;
+	CharacterSystem cloud{ U"Characters/cloud/cloud.json" ,U"Characters/cloud/motion.txt" ,0.5*0.4,cloudPos,true,false };
 
 
 	void updatePos();

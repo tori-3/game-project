@@ -110,6 +110,11 @@ Map::Map(const InitData& init)
 	lastBoss.addMotion(U"Stand");
 	lastBossTimer.start();
 
+	itigoSlave.addMotion(U"attack",true);
+
+	itigo.addMotion(U"", true);
+
+	cloud.addMotion(U"walk", true);
 }
 
 Map::~Map()
@@ -122,11 +127,17 @@ void Map::update()
 {
 	updatePos();
 
+	time.start();
+
 	fairy.update(fairyPos, false);
 	snowKnight.update(snowKnightPos,true);
 	cookieDoreisho.update(cookieDoreishoPos, true);
 	captain.update(captainPos, true);
 	lastBoss.update(lastBossPos, true);
+	itigoSlave.update(itigoSlavePos, true);
+
+	itigo.update(itigoPos + Vec2{ Periodic::Triangle0_1(15s,time.sF()) * itigoRoadLength,0 }, not Periodic::Square0_1(15s,time.sF()));
+	cloud.update(cloudPos + Vec2{ Periodic::Triangle0_1(16s,time.sF()) * itigoRoadLength,0 }, Periodic::Square0_1(16s, time.sF()));
 
 	if(snowKnightKiriageTimer.reachedZero())
 	{
@@ -167,7 +178,6 @@ void Map::update()
 		lastBoss.addMotion(U"Stand");
 		lastBossTimer.restart();
 	}
-
 
 	if (KeyQ.down())
 	{
@@ -365,6 +375,9 @@ void Map::draw() const
 		cookieDoreisho.draw();
 		captain.draw();
 		lastBoss.draw();
+		itigoSlave.draw();
+		itigo.draw();
+		cloud.draw();
 		character.draw();
 	}
 
