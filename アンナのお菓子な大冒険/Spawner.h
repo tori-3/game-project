@@ -45,20 +45,46 @@ public:
 		: Entity{ U"Spawner", RectF{Arg::center(0,0),0,0},pos,{0,0},3 }
 	{}
 
+	int32 spawnCount = 0;
+
+	static constexpr double Interval = 2.0;
+	double intervalTimer = 0;
+
+	bool canSpown = true;
+
 	void update()override
 	{
-		if (entityList.size() < 5)
+		if(not canSpown)
 		{
-			if (not RectF{ Arg::center(pos),rect_size * 2,9999 }.intersects(DataManager::get().playerPos))
+			if (entityList.size() == 0)
 			{
-				for (accumlater += Scene::DeltaTime(); spawn <= accumlater; accumlater -= spawn)
+				intervalTimer += Scene::DeltaTime();
+			}
+
+			if (Interval <= intervalTimer)
+			{
+				canSpown = true;
+				spawnCount = 0;
+			}
+		}
+		else if (not RectF{ Arg::center(pos),rect_size * 2,9999 }.intersects(DataManager::get().playerPos))
+		{
+			for (accumlater += Scene::DeltaTime(); spawn <= accumlater; accumlater -= spawn)
+			{
+				Entity* child = new StrawberrySoldier{ pos };
+				entityList << child;
+				manager->add(new Spawner{ pos,child });
+
+				++spawnCount;
+				if (spawnCount == 5)
 				{
-					Entity* child = new StrawberrySoldier{ pos };
-					entityList << child;
-					manager->add(new Spawner{ pos,child });
+					canSpown = false;
+					intervalTimer = 0;
 				}
 			}
 		}
+
+
 	}
 
 	void lateUpdate()override

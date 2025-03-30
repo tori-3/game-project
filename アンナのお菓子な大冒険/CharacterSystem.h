@@ -6,20 +6,13 @@ class CharacterSystem
 {
 public:
 
-	HashTable<String, Motion>table;
-
 	Character character;
 
-	DrawManager drawManager;
-
-	MotionLoader loader;
-
-	Vec2 tmpPos;
-
-	bool tmpLeft;
-
 	CharacterSystem(const String&jsonPath, const String& motionPath,double scale,const Vec2& pos,bool left,bool mirror=false)
-		:character{ JSON::Load(jsonPath),scale }, loader{ CSV{motionPath} },tmpPos{pos},tmpLeft{left}
+		: character{ JSON::Load(jsonPath),scale }
+		, loader{ CSV{motionPath} }
+		, tmpPos{pos}
+		, tmpLeft{left}
 	{
 		character.setDrawManager(&drawManager);
 
@@ -38,8 +31,8 @@ public:
 
 
 	int32 mirrorCount = 0;
-	void update(const Vec2& pos,bool left) {
-
+	void update(const Vec2& pos,bool left)
+	{
 		if (left != tmpLeft)
 		{
 			if(not character.hasMotion(U"Mirror"))
@@ -63,12 +56,13 @@ public:
 
 	}
 
-	void draw()const {
+	void draw()const
+	{
 		drawManager.draw();
 	}
 
-	void clearMotion() {
-
+	void clearMotion()
+	{
 		for(auto it=character.motionTable.begin();it!=character.motionTable.end();)
 		{
 			if(it->first== U"Mirror")
@@ -82,25 +76,35 @@ public:
 		}
 	}
 
-	void addMotion(const String& motionName,bool loop=false) {
-
-		if (not table.contains(motionName)) {
+	void addMotion(const String& motionName,bool loop=false)
+	{
+		if (not table.contains(motionName))
+		{
 			table[motionName] = loader.LoadMotion(motionName);
 		}
 
 		table[motionName].loop = loop;
 		character.addMotion(motionName,table[motionName]);
-
 	}
 
-	void removeMotion(const String& motionName) {
+	void removeMotion(const String& motionName)
+	{
 		character.removeMotion(motionName);
 	}
 
-	bool hasMotion(const String& motionName) {
+	bool hasMotion(const String& motionName)
+	{
 		return character.hasMotion(motionName);
 	}
 
 private:
+	HashTable<String, Motion>table;
 
+	DrawManager drawManager;
+
+	MotionLoader loader;
+
+	Vec2 tmpPos;
+
+	bool tmpLeft;
 };

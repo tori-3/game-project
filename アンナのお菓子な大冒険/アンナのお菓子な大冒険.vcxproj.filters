@@ -294,6 +294,9 @@
     <ClCompile Include="Maze2.cpp">
       <Filter>Source Files\MiniGame</Filter>
     </ClCompile>
+    <ClCompile Include="ExplosionEffect.cpp">
+      <Filter>Source Files\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">

@@ -413,7 +413,7 @@ void  SignboardBlock::update(const Point& pos)
 {
 	if (DataManager::get().playerPos.intersects(RectF{ (pos-Vec2{1,1}) * rect_size,rect_size*3}))
 	{
-		DataManager::get().fairyPos = pos;
+		DataManager::get().fairyPos = (pos+Vec2{1.5,0}) * rect_size;
 
 		if (KeyEnter.down())
 		{
@@ -425,22 +425,33 @@ void  SignboardBlock::update(const Point& pos)
 	}
 }
 
+void SoapBubble(const Circle& circle, const ColorF& color)
+{
+	circle.draw(ColorF(1, 0), color).drawFrame(2, ColorF(1, 0.5));
+	Circle{ circle.center.x - circle.r * 0.4,circle.center.y - circle.r * 0.4,circle.r * 0.3 }.draw(ColorF(1, 0.5));
+}
+
 void SignboardBlock::draw(const Point& pos)const
 {
-	if(not DataManager::get().table.contains(U"SignboardInvisible"))
+	const bool fairy = DataManager::get().table.contains(U"SignboardInvisible");
+
+	if(fairy)
+	{
+		SoapBubble(Circle{ (pos + Vec2{0.5,0}) * rect_size,rect_size * 0.3 }, HSV{ Scene::Time() * 30 ,0.3 });
+	}
+	else
 	{
 		TextureAsset(U"Signboard").resized(rect_size).draw(pos * rect_size);
 	}
 
 	if (DataManager::get().playerPos.intersects(RectF{ (pos - Vec2{1,1}) * rect_size,rect_size * 3 }))
 	{
-
 		constexpr double thickness = 5;
 
 		const RoundRect window{ RectF{ Arg::center((pos + Vec2{0.5,0.5-1}) * rect_size),rect_size*1.5,rect_size * 0.8},20 };
 		window.draw({ Palette::Black, 0.8 }).drawFrame(thickness, 0);
 
-		FontAsset(U"WindowFont")(U"Enter:読む").drawAt(15,window.center());
+		FontAsset(U"WindowFont")(fairy?U"Enter話す":U"Enter:読む").drawAt(15, window.center());
 	}
 }
 
@@ -509,6 +520,7 @@ void ChocoCakeWallBlock::draw(const Point& pos)const
 FairyBlock::FairyBlock()
 {
 	character.addMotion(U"Floating",true);
+	DataManager::get().table.emplace(U"SignboardInvisible");
 }
 
 void FairyBlock::update(const Point& pos)

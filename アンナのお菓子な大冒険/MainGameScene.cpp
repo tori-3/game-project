@@ -1,4 +1,5 @@
 ﻿#include"MainGameScene.h"
+#include"Fairy.h"
 
 MainGameScene::MainGameScene(const InitData& init)
 	: MiniGameSceneBase{ init }
@@ -22,6 +23,11 @@ MainGameScene::MainGameScene(const InitData& init)
 	if (getData().backgroundTexture == U"BackgroundTexture/洞窟背景.png")
 	{
 		light = new Spotlight{ Scene::Size() };
+	}
+
+	if (getData().stage == 2)
+	{
+		manager.add(new Fairy{});
 	}
 }
 

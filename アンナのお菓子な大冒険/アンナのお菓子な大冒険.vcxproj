@@ -123,6 +123,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyAdder.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="ExplosionEffect.cpp" />
     <ClCompile Include="FadeUpEffect.cpp" />
     <ClCompile Include="Gimmick.cpp" />
     <ClCompile Include="GrapesHPBar.cpp" />

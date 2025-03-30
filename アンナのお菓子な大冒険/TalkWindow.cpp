@@ -13,6 +13,22 @@ void TalkWindow::update()
 	const size_t length = static_cast<size_t>(m_accumlater);
 	const String& text = talks[index].text;
 
+	if (length != m_lastLength && not nextFlg && not(text.size() < length || text[length] == U'\n'))
+	{
+		if(talks[index].name == U"アンナ")
+		{
+			AudioAsset{ U"アンナちゃん" }.playOneShot();
+		}
+		else if (talks[index].name == U"妖精")
+		{
+			AudioAsset{ U"妖精" }.playOneShot();
+		}
+		else
+		{
+			AudioAsset{ U"看板" }.playOneShot();
+		}
+	}
+
 	m_lastLength = length;
 
 	if (nextFlg)
