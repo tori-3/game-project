@@ -137,7 +137,7 @@
             "MapFile": "StageData/caveStageBoss.json",
             "Picture": "BackgroundTexture/洞窟背景.png",
             "SceneName": "MainGameScene",
-            "Sentence": "<2-Boss>悪逆非道！奴隷監督クッキー\n手下をこき使う悪い長。\nひきょう者の奴隷監督クッキーは\n手下を使ってアンナちゃんを襲います。\n必殺技を使ってどうにか倒しましょう！",
+            "Sentence": "<2-Boss>悪逆非道！監督クッキー\n手下をこき使う悪い長。\nひきょう者の奴隷監督クッキーは\n手下を使ってアンナちゃんを襲います。\n必殺技を使ってどうにか倒しましょう！",
             "StagePos": "(460,480)",
             "Type": "Boss"
         },

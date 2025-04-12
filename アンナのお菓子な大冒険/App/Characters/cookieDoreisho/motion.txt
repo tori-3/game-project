@@ -138,3 +138,20 @@ MoveTo,body,0,0,0
 
 RotateTo,body,70,0.15
 ChangeTexture,kao,Characters/cookieDoreisho/shobo.png,0
+
+#damage
+ChangeColor,body,1.5,0.5,0.5,1,0.25
+
+ChangeColor,body,1,1,1,1,0.25
+
+ChangeColor,body,1.5,0.5,0.5,1,0.25
+
+ChangeColor,body,1,1,1,1,0.25
+
+ChangeColor,body,1.5,0.5,0.5,1,0.25
+
+ChangeColor,body,1,1,1,1,0.25
+
+ChangeColor,body,1.5,0.5,0.5,1,0.25
+
+ChangeColor,body,1,1,1,1,0.25

@@ -204,7 +204,7 @@ Player::Player(const Vec2& cpos) :
 		},
 		.update = [&](double t) {
 			speed = 0;
-			return downKey.pressed() and not jumpKey.down() and not attackKey.pressed();
+			return downKey.pressed() and not jumpKey.down() and not attackKey.pressed() && not actMan.hasActive(U"Falling");
 		},
 		.end = [&]() {
 			character.removeMotion(U"Shagamu");

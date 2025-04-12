@@ -78,6 +78,9 @@ public:
 
 	double rx, lx;
 
+	//ダメージを既に受けたか
+	bool damaged = false;
+
 	SlaversCookie(const Vec2& cpos);
 
 	void update()override;

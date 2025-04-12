@@ -545,6 +545,7 @@ ChangeColor,body,1,1,1,1,0.25
 Base,body
 
 ChangeTexture,normal,Characters/annna/hyoujou/smile!!.png
+ChangeColor,body,1,1,1,1,0
 
 RotateTo,head,-15,@time
 Move,body,0,-25,@time

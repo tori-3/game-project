@@ -22,6 +22,11 @@ void LoadAsset::LoadAudio()
 
 	AudioAsset{ U"妖精" }.setVolume(3);
 
+	AudioAsset{ U"ドーナツ" }.setVolume(3);
+	AudioAsset{ U"ドーナツ" }.setLoop(true);
+
+	AudioAsset{ U"ドーナツ衝突" }.setVolume(3);
+
 	AudioAsset{ U"看板" }.setVolume(20);
 
 }

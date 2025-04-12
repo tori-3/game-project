@@ -396,6 +396,12 @@ void SlaversCookie::update()
 	if (DataManager::get().table.contains(U"PoleHit"))
 	{
 		DataManager::get().table.erase(U"PoleHit");
+
+		const SizeF stageSize = DataManager::get().stageSize;
+		DataManager::get().addEntity(U"RollingRocks", Vec2(stageSize.x - rect_size, -rect_size * 3));
+
+
+		damaged = false;
 		poleHit = true;
 		timer = 0;
 	}
@@ -546,7 +552,7 @@ void SlaversCookie::update()
 		{
 			character.clearMotion();
 			character.addMotion(U"shobon");
-			hp -= 1;
+			//hp -= 1;
 
 			updateFunc = [&]() {};
 			endFunc = [&]() {};
@@ -605,7 +611,13 @@ void SlaversCookie::draw()const
 
 void SlaversCookie::damage(int32 n, const Vec2& _force, DamageType damageType)
 {
-	hp -= n;
+	if (not damaged)
+	{
+		hp -= n;
+		damaged = true;
+		character.addMotion(U"damage");
+		AudioAsset{ U"ドーナツ衝突" }.playOneShot();
+	}
 }
 
 SlaversCookie::~SlaversCookie()

@@ -32,6 +32,8 @@ class RollingRocks :public Entity
 {
 public:
 
+	Audio audio = AudioAsset{ U"ドーナツ" };
+
 	RollingRocks(const Vec2& cpos);
 
 	void update()override;

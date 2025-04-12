@@ -59,11 +59,15 @@ bool FallingRocks::isActive()
 
 RollingRocks::RollingRocks(const Vec2& cpos)
 	:Entity{ U"Rocks", Circle{ 0,0,rect_size },cpos,{0,0},1 }
-{}
+{
+
+}
 
 void RollingRocks::update()
 {
 	manager->stage->hit(&hitBox);
+
+	audio.play();
 
 	pos.x -= Scene::DeltaTime() * 200;
 
@@ -72,6 +76,7 @@ void RollingRocks::update()
 
 	attack(U"Player", hitBox.getFigure(), 1);
 	attack(U"Enemy", hitBox.getFigure(), 1);
+	attack(U"SlaversCookie", hitBox.getFigure(), 1);
 
 	if (hitBox.touch(Direction::left))
 	{
@@ -84,6 +89,8 @@ void RollingRocks::lateUpdate()
 	if (not isActive())
 	{
 		DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 100, Palette::Darkgray);
+		audio.stop();
+		AudioAsset{ U"ドーナツ衝突" }.playOneShot();
 	}
 }
 
