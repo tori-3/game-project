@@ -58,6 +58,26 @@ struct GameData
 
 	void load();
 
+	void setIncreaseHPMode(bool onOff)
+	{
+		if (increaseHPMode && not onOff)
+		{
+			constexpr int32 defaultHP = 5;
+
+			for (int32& maxHP : maxHPList)
+			{
+				maxHP = defaultHP;
+			}
+		}
+
+		increaseHPMode = onOff;
+	}
+
+	bool getIncreaseHPMode()const noexcept
+	{
+		return increaseHPMode;
+	}
+
 	//キー
 	InputGroup KeyUp = s3d::KeyW | s3d::KeyUp;
 	InputGroup KeyLeft = s3d::KeyA | s3d::KeyLeft;
@@ -75,6 +95,9 @@ struct GameData
 	String BGMPath;
 	FilePath stageFile;
 	int32 maxHP = 5;
+
+private:
+	bool increaseHPMode = true;
 };
 
 using App = SceneManager<String, GameData>;

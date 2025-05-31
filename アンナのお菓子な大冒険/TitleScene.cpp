@@ -131,7 +131,7 @@ void TitleScene::update()
 				changeMiniGameTimer.restart();
 				break;
 			case 2:
-				uiManager.addChild({ SettingWindow(getData().KeyUp,getData().KeyDown,getData().KeyLeft,getData().KeyRight,[=] {menuClicked = false; getData().save(); KeyEnter.clearInput(); }) });
+				uiManager.addChild({ SettingWindow(getData().KeyUp,getData().KeyDown,getData().KeyLeft,getData().KeyRight,[=] {menuClicked = false; getData().save(); KeyEnter.clearInput(); },getData(),uiManager) });
 				break;
 			case 3:
 				uiManager.addChild({ licenseDialog() });

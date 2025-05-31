@@ -128,7 +128,7 @@ std::shared_ptr<UIElement> MiniGameSceneBase::createPauseUI()
 			{
 				AudioAsset{ U"決定ボタン" }.playOneShot();
 				uiManager.addChild(
-					SettingWindow(getData().KeyUp, getData().KeyDown, getData().KeyLeft, getData().KeyRight, [=] {uiManager.addChild(createPauseUI()); getData().save(); })
+					SettingWindow(getData().KeyUp, getData().KeyDown, getData().KeyLeft, getData().KeyRight, [=] {uiManager.addChild(createPauseUI()); getData().save(); },getData(), uiManager)
 				);
 				dialog->close();
 			}

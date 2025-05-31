@@ -2,11 +2,19 @@
   "Body": {
     "ago": {
       "Parent": "kao",
-      "Position": "(0, 0)",
+      "Position": "(0, -0.1245)",
       "RotateCenter": "(4.34014, -33.93187)",
       "Scale": 1.0,
       "TexturePath": "Characters/sentyo/ago.png",
       "Z": -30.0
+    },
+    "back": {
+      "Parent": "kao",
+      "Position": "(0.07399, 0)",
+      "RotateCenter": "(0,0)",
+      "Scale": 1.0,
+      "TexturePath": "Characters/sentyo/back.png",
+      "Z": -200.0
     },
     "hige": {
       "Parent": "ago",
@@ -18,7 +26,7 @@
     },
     "kao": {
       "Parent": "__Main__",
-      "Position": "(600, 350)",
+      "Position": "(400, 350)",
       "RotateCenter": "(0,0)",
       "Scale": 1.0,
       "TexturePath": "Characters/sentyo/kao.png",
