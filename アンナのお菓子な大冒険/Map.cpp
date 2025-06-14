@@ -179,7 +179,7 @@ void Map::update()
 		lastBossTimer.restart();
 	}
 
-	if (KeyQ.down())
+	if (getData().menuBackKey.down())
 	{
 		changeScene(U"TitleScene");
 		AudioAsset{ U"決定ボタン" }.playOneShot();
@@ -194,7 +194,7 @@ void Map::update()
 			AudioAsset{ U"決定ボタン" }.playOneShot();
 		}
 
-		if (panelFlg && (start.leftClicked() || KeyEnter.down()) && index <= clearStage)
+		if (panelFlg && (start.leftClicked() || getData().menuDecisionKey.down()) && index <= clearStage)
 		{
 
 			AudioAsset{ U"決定ボタン" }.playOneShot();
@@ -308,7 +308,7 @@ void Map::update()
 	}
 	else if (MouseL.down())largeFlg = false;
 
-	if (KeyEnter.down())
+	if (getData().menuDecisionKey.down())
 	{
 		AudioAsset{ U"決定ボタン" }.playOneShot();
 		panelFlg = true;

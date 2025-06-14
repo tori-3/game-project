@@ -22,7 +22,8 @@ void MiniGameSceneBase::onGameStart()
 
 }
 
-void MiniGameSceneBase::pauseUpdate() {
+void MiniGameSceneBase::pauseUpdate()
+{
 	uiManager.update();
 
 	if (uiManager.getChildren().size() == 0)
@@ -31,7 +32,8 @@ void MiniGameSceneBase::pauseUpdate() {
 	}
 }
 
-void MiniGameSceneBase::pauseDraw()const {
+void MiniGameSceneBase::pauseDraw()const
+{
 	uiManager.draw();
 }
 
@@ -42,8 +44,8 @@ std::shared_ptr<UIElement> MiniGameSceneBase::createPauseUI()
 	auto settingButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 200,.child = TextUI::Create({.text = U"設定",.color = Palette::White}) });
 	auto continueButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 20,.margine = 10,.width = 200,.child = TextUI::Create({.text = U"続ける",.color = Palette::White}) });
 
-	leftInput = LongPressInput{ getData().KeyLeft };
-	rightInput = LongPressInput{ getData().KeyRight };
+	leftInput = LongPressInput{ getData().menuLeftKey };
+	rightInput = LongPressInput{ getData().menuRightKey };
 
 	redoButton->selected = m_settingSelectIndex == 0;
 	endButton->selected = m_settingSelectIndex == 1;
@@ -109,26 +111,26 @@ std::shared_ptr<UIElement> MiniGameSceneBase::createPauseUI()
 			settingButton->selected = m_settingSelectIndex == 2;
 			continueButton->selected = m_settingSelectIndex == 3;
 
-			if (redoButton->clicked() || (redoButton->selected && KeyEnter.down()))
+			if (redoButton->clicked() || (redoButton->selected && getData().menuDecisionKey.down()))
 			{
 				AudioAsset{ U"決定ボタン" }.playOneShot();
 				changeScene(getData().sceneName);
 			}
-			else if (continueButton->clicked()||(continueButton->selected&&KeyEnter.down()))
+			else if (continueButton->clicked()||(continueButton->selected&& getData().menuDecisionKey.down()))
 			{
 				AudioAsset{ U"キャンセル" }.playOneShot();
 				dialog->close();
 			}
-			else if (endButton->clicked() || (endButton->selected && KeyEnter.down()))
+			else if (endButton->clicked() || (endButton->selected && getData().menuDecisionKey.down()))
 			{
 				AudioAsset{ U"決定ボタン" }.playOneShot();
 				EndGame(false);
 			}
-			else if (settingButton->clicked() || (settingButton->selected && KeyEnter.down()))
+			else if (settingButton->clicked() || (settingButton->selected && getData().menuDecisionKey.down()))
 			{
 				AudioAsset{ U"決定ボタン" }.playOneShot();
 				uiManager.addChild(
-					SettingWindow(getData().KeyUp, getData().KeyDown, getData().KeyLeft, getData().KeyRight, [=] {uiManager.addChild(createPauseUI()); getData().save(); },getData(), uiManager)
+					SettingWindow(getData().menuUpKey, getData().menuDownKey, getData().menuLeftKey, getData().menuRightKey, [=] {uiManager.addChild(createPauseUI()); getData().save(); },getData(), uiManager)
 				);
 				dialog->close();
 			}
@@ -137,8 +139,8 @@ std::shared_ptr<UIElement> MiniGameSceneBase::createPauseUI()
 }
 
 
-void MiniGameSceneBase::goPause() {
-
+void MiniGameSceneBase::goPause()
+{
 	if (not pauseFlg)
 	{
 		onPauseStart();
@@ -150,13 +152,15 @@ void MiniGameSceneBase::goPause() {
 	}
 }
 
-void MiniGameSceneBase::EndGame(bool clear) {
+void MiniGameSceneBase::EndGame(bool clear)
+{
 	getData().mini_clear = clear;//クリア状況保存
 	if (getData().mini_mode == Stage_Mode)changeScene(U"Map");//ステージモードならステージに帰る
 	else changeScene(U"MiniGameSelect");//ミニゲームセレクトモードならミニゲームセレクトに帰る
 }
 
-void MiniGameSceneBase::goGame() {
+void MiniGameSceneBase::goGame()
+{
 	pauseFlg = false;
 	onGameStart();
 }
@@ -170,7 +174,7 @@ void MiniGameSceneBase::update()
 	if (not pause)
 	{
 		gameUpdate();
-		if (KeyEscape.down())
+		if (getData().pauseKey.down())
 		{
 			goPause();
 		}

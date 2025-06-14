@@ -35,10 +35,10 @@ public:
 
 	const Font font{ 30 };
 
-	LongPressInput leftInput{ getData().KeyLeft };
-	LongPressInput rightInput{ getData().KeyRight };
-	LongPressInput upInput{ getData().KeyUp };
-	LongPressInput downInput{ getData().KeyDown };
+	LongPressInput leftInput{ getData().menuLeftKey };
+	LongPressInput rightInput{ getData().menuRightKey };
+	LongPressInput upInput{ getData().menuUpKey };
+	LongPressInput downInput{ getData().menuDownKey };
 
 	BeltConveyorButton easyButton{ {800,500},3,80 };
 	BeltConveyorButton normalButton{ {800,600},3,80 };

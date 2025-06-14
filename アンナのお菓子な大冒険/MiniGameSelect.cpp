@@ -28,7 +28,7 @@ MiniGameSelect::MiniGameSelect(const InitData& init)
 
 void MiniGameSelect::update()
 {
-	if (backButton.leftClicked() || KeyQ.down())
+	if (backButton.leftClicked() || getData().menuBackKey.down())
 	{
 		AudioAsset{ U"決定ボタン" }.playOneShot();
 		changeScene(U"TitleScene");
@@ -114,19 +114,19 @@ void MiniGameSelect::update()
 
 	bool startMiniGame = false;
 
-	if (easyButton.update() || (modeIndex == 0 && KeyEnter.down()))
+	if (easyButton.update() || (modeIndex == 0 && getData().menuDecisionKey.down()))
 	{
 		getData().mini_mode = mode::Easy_Mode;
 		startMiniGame = true;
 	}
 
-	if (normalButton.update() || (modeIndex == 1 && KeyEnter.down()))
+	if (normalButton.update() || (modeIndex == 1 && getData().menuDecisionKey.down()))
 	{
 		getData().mini_mode = mode::Normal_Mode;
 		startMiniGame = true;
 	}
 
-	if (hardButton.update() || (modeIndex == 2 && KeyEnter.down()))
+	if (hardButton.update() || (modeIndex == 2 && getData().menuDecisionKey.down()))
 	{
 		getData().mini_mode = mode::Hard_Mode;
 		startMiniGame = true;

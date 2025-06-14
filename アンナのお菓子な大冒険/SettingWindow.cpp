@@ -11,6 +11,9 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 	auto effectVolumeIcon = SoundIcon::Create({ .volume = effectVolumeSlider->value });
 	auto BGMVolumeIcon = SoundIcon::Create({ .volume = BGMVolumeSlider->value });
 
+	auto keyConfigButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 200, .child = TextUI::Create({.text = U"キー設定",.color = Palette::White}) });
+
+
 	auto effectVolumeSliderPanel = RectPanel::Create
 	({
 		.color=Palette::Skyblue,
@@ -41,7 +44,6 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 				BGMVolumeSlider,
 				BGMVolumeIcon
 			}
-
 		})
 	});
 
@@ -49,8 +51,8 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 	auto windowModeButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 240, .child = TextUI::Create({.text = text,.color=Palette::White}) });
 
 
-	String text2 = gameData.getIncreaseHPMode() ? U"お助けモードを\nOFFにする" : U"お助けモードを\nONにする";
-	auto hpModeButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 240, .child = TextUI::Create({.text = text2,.color = Palette::White}) });
+	String text2 = gameData.getIncreaseHPMode() ? U"お助けモードをOFFにする" : U"お助けモードをONにする";
+	auto hpModeButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 340, .child = TextUI::Create({.text = text2,.color = Palette::White}) });
 
 	auto infoButton = ChocolateButton::Create({ .color = Palette::White, .padding = -20,.width=50,.height=50, .child = TextUI::Create({.text = U"i",.color = Palette::Gray}) });
 
@@ -67,7 +69,8 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 	BGMVolumeSliderPanel->color = selectIndex == 1 ? ColorF{ Palette::Skyblue } : AlphaF(0);
 	windowModeButton->selected = selectIndex == 2;
 	hpModeButton->selected = selectIndex == 3;
-	closeButton->selected = selectIndex == 4;
+	keyConfigButton->selected = selectIndex == 4;
+	closeButton->selected = selectIndex == 5;
 
 	return SimpleDialog::Create
 	({
@@ -92,6 +95,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 							infoButton
 						}
 					}),
+					keyConfigButton,
 					closeButton
 				}
 			}),
@@ -118,7 +122,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 
 			if (downInput.down())
 			{
-				if (selectIndex<4)
+				if (selectIndex<5)
 				{
 					AudioAsset{ U"カーソル移動" }.playOneShot();
 					++selectIndex;
@@ -133,7 +137,8 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 			BGMVolumeSliderPanel->color = selectIndex == 1 ? ColorF{ Palette::Skyblue } : AlphaF(0);
 			windowModeButton->selected = selectIndex == 2;
 			hpModeButton->selected = selectIndex == 3;
-			closeButton->selected = selectIndex == 4;
+			keyConfigButton->selected = selectIndex == 4;
+			closeButton->selected = selectIndex == 5;
 
 			if (selectIndex == 0)
 			{
@@ -156,7 +161,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 				AudioAsset{ U"パンチヒット" }.playOneShot();
 			}
 
-			if (windowModeButton->clicked() || (selectIndex == 2 && KeyEnter.down()))
+			if (windowModeButton->clicked() || (selectIndex == 2 && gameData.menuDecisionKey.down()))
 			{
 				AudioAsset{ U"決定ボタン" }.playOneShot();
 
@@ -192,8 +197,9 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 						}),
 						.updateFunc=[=](SimpleDialog* dialog)mutable
 						{
-							if(closeButton->clicked()||KeyEnter.down())
+							if(closeButton->clicked()||gameData.menuDecisionKey.down())
 							{
+								AudioAsset{ U"キャンセル" }.playOneShot();
 								dialog->close();
 								manager.addChild(SettingWindow(upInputGroup, downInputGroup, leftInputGroup, rightInputGroup, onClose, gameData, manager, selectIndex));
 							}
@@ -205,8 +211,10 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 
 
 
-			if(hpModeButton->clicked() || (selectIndex == 3 && KeyEnter.down()))
+			if(hpModeButton->clicked() || (selectIndex == 3 && gameData.menuDecisionKey.down()))
 			{
+				AudioAsset{ U"決定ボタン" }.playOneShot();
+
 				dialog->close();
 
 				auto yesButton = ChocolateButton::Create({ .color = Palette::Darkred, .padding = 20,.margine = 10,.width = 240, .child = TextUI::Create({.text = U"OFFにする",.color = Palette::White})});
@@ -268,13 +276,13 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 								}
 							}
 
-							if((yesButton->selected && KeyEnter.down())|| yesButton->clicked())
+							if((yesButton->selected && gameData.menuDecisionKey.down())|| yesButton->clicked())
 							{
 								gameData.setIncreaseHPMode(false);
 								AudioAsset{ U"決定ボタン" }.playOneShot();
 							}
 
-							if ((noButton->selected && KeyEnter.down()) || noButton->clicked())
+							if ((noButton->selected && gameData.menuDecisionKey.down()) || noButton->clicked())
 							{
 								AudioAsset{ U"キャンセル" }.playOneShot();
 
@@ -288,7 +296,34 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 
 			}
 
-			if (closeButton->clicked() || (selectIndex == 4 && KeyEnter.down())||KeyQ.down())
+			if(keyConfigButton->clicked()|| (selectIndex == 4 && gameData.menuDecisionKey.down()))
+			{
+				AudioAsset{ U"決定ボタン" }.playOneShot();
+
+				dialog->close();
+
+				manager.addChild
+				({
+					SimpleDialog::Create
+					({
+						.erasable = false,
+						.child = SweetsPanel::Create
+						({
+							.child=Column::Create
+							({
+								.children
+								{
+
+
+								}
+							})
+						})
+					})
+
+				});
+			}
+
+			if (closeButton->clicked() || (selectIndex == 5 && gameData.menuDecisionKey.down())|| gameData.menuBackKey.down())
 			{
 				AudioAsset{ U"キャンセル" }.playOneShot();
 

@@ -585,11 +585,11 @@ namespace FallingAnna {
 			float cl = 1;
 			batframe(cl);
 			rockframe(cl);
-			if (getData().KeyLeft.pressed())
+			if (getData().minigameLeftKey.pressed())
 			{
 				left = true;
 			}
-			else if (getData().KeyRight.pressed())
+			else if (getData().minigameRightKey.pressed())
 			{
 				left = false;
 			}
@@ -597,11 +597,11 @@ namespace FallingAnna {
 			{
 				annaframe(cl);
 
-				if (getData().KeyUp.pressed())
+				if (getData().minigameUpKey.pressed())
 				{
 					nowspy += (spy - nowspy) * breaky;
 				}
-				else if (getData().KeyDown.down())
+				else if (getData().minigameDownKey.down())
 				{
 					kasoku();
 				}
@@ -611,11 +611,11 @@ namespace FallingAnna {
 				}
 
 				rakka(nowspy * cl);
-				if (getData().KeyLeft.pressed())
+				if (getData().minigameLeftKey.pressed())
 				{
 					idou(-spx * cl);
 				}
-				if (getData().KeyRight.pressed())
+				if (getData().minigameRightKey.pressed())
 				{
 					idou(spx * cl);
 				}

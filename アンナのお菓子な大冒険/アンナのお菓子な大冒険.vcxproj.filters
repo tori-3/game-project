@@ -1115,5 +1115,8 @@
     <ClInclude Include="Gimmick.h">
       <Filter>Header Files\MainGameScene\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="KeyConfigUtility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

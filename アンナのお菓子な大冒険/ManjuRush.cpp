@@ -93,7 +93,7 @@ namespace ManjuRush
 				font(U"スコア:", score).draw(600, 0);
 				//ジャンプ
 
-				if (getData().KeyUp.pressed() && jump == false)
+				if (getData().minigameUpKey.pressed() && jump == false)
 				{
 					jump = true;
 
@@ -103,13 +103,13 @@ namespace ManjuRush
 
 				}
 				//上昇
-				if (0s < jumptime && jumptime < 0.4s && 0 < v && getData().KeyUp.pressed()) {
+				if (0s < jumptime && jumptime < 0.4s && 0 < v && getData().minigameUpKey.pressed()) {
 					jump = true;
 					player.y -= v;
 				}
 				else if (0 < v && player.y <= 500) {
 					//下降
-					if (getData().KeyDown.pressed()) {
+					if (getData().minigameDownKey.pressed()) {
 						player.y += 5;
 					}
 					//減衰

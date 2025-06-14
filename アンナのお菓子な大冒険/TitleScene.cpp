@@ -92,7 +92,7 @@ void TitleScene::update()
 			}
 		}
 
-		if (KeyEnter.down())
+		if (getData().menuDecisionKey.down())
 		{
 			menuClicked = true;
 			AudioAsset{ U"決定ボタン" }.playOneShot();
@@ -131,7 +131,7 @@ void TitleScene::update()
 				changeMiniGameTimer.restart();
 				break;
 			case 2:
-				uiManager.addChild({ SettingWindow(getData().KeyUp,getData().KeyDown,getData().KeyLeft,getData().KeyRight,[=] {menuClicked = false; getData().save(); KeyEnter.clearInput(); },getData(),uiManager) });
+				uiManager.addChild({ SettingWindow(getData().menuUpKey,getData().menuDownKey,getData().menuLeftKey,getData().menuRightKey,[=] {menuClicked = false; getData().save(); KeyConfigUtility::CleapInput(getData().menuDecisionKey); },getData(),uiManager) });
 				break;
 			case 3:
 				uiManager.addChild({ licenseDialog() });
@@ -257,7 +257,7 @@ std::shared_ptr<UIElement> TitleScene::licenseDialog()
 		}),
 		.updateFunc = [=](SimpleDialog* dialog)
 		{
-			if (getData().KeyLeft.down())
+			if (getData().menuLeftKey.down())
 			{
 				if (closeButton->selected)
 				{
@@ -271,7 +271,7 @@ std::shared_ptr<UIElement> TitleScene::licenseDialog()
 				}
 			}
 
-			if (getData().KeyRight.down())
+			if (getData().menuRightKey.down())
 			{
 				if (showBrowserButton->selected)
 				{
@@ -285,17 +285,17 @@ std::shared_ptr<UIElement> TitleScene::licenseDialog()
 				}
 			}
 
-			if (getData().KeyUp.pressed())
+			if (getData().menuUpKey.pressed())
 			{
 				scrollbar->addScrollPos(-Scene::DeltaTime() * 1000);
 			}
 
-			if (getData().KeyDown.pressed())
+			if (getData().menuDownKey.pressed())
 			{
 				scrollbar->addScrollPos(Scene::DeltaTime() * 1000);
 			}
 
-			if (KeyEnter.pressed())
+			if (getData().menuDecisionKey.pressed())
 			{
 				if (showBrowserButton->selected)
 				{
@@ -306,13 +306,15 @@ std::shared_ptr<UIElement> TitleScene::licenseDialog()
 				{
 					dialog->close();
 					menuClicked = false;
-					KeyEnter.clearInput();
+
+					KeyConfigUtility::CleapInput(getData().menuDecisionKey);
+
 					AudioAsset{ U"キャンセル" }.playOneShot();
 				}
 			}
 			else
 			{
-				if (closeButton->clicked() || KeyQ.down())
+				if (closeButton->clicked() || getData().menuBackKey.down())
 				{
 					dialog->close();
 					menuClicked = false;

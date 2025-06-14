@@ -128,8 +128,8 @@ namespace Maze1
 	{
 
 		//ボール操作
-		ballVel.x = ((getData().KeyRight.pressed()) - (getData().KeyLeft.pressed()));
-		ballVel.y = ((getData().KeyDown.pressed()) - (getData().KeyUp.pressed()));
+		ballVel.x = ((getData().minigameRightKey.pressed()) - (getData().minigameLeftKey.pressed()));
+		ballVel.y = ((getData().minigameDownKey.pressed()) - (getData().minigameUpKey.pressed()));
 
 		if (ballVel != Vec2{ 0,0 })
 		{
