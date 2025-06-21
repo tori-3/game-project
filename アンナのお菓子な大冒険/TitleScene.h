@@ -32,8 +32,8 @@ public:
 
 	size_t selectedIndex = 0;
 
-	LongPressInput upInput{ getData().menuUpKey };
-	LongPressInput downInput{ getData().menuDownKey };
+	LongPressInput upInput{ getData().minigameUpKey };
+	LongPressInput downInput{ getData().minigameDownKey };
 
 	static constexpr Vec2 startPlace{ -100,630+15 };
 	static constexpr Vec2 targetPlace{ 400,startPlace.y };

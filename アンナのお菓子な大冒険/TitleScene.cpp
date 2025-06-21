@@ -131,7 +131,7 @@ void TitleScene::update()
 				changeMiniGameTimer.restart();
 				break;
 			case 2:
-				uiManager.addChild({ SettingWindow(getData().menuUpKey,getData().menuDownKey,getData().menuLeftKey,getData().menuRightKey,[=] {menuClicked = false; getData().save(); KeyConfigUtility::CleapInput(getData().menuDecisionKey); },getData(),uiManager) });
+				uiManager.addChild({ SettingWindow(getData().minigameUpKey,getData().minigameDownKey,getData().minigameLeftKey,getData().minigameRightKey,[=] {menuClicked = false; getData().save(); KeyConfigUtility::CleapInput(getData().menuDecisionKey); },getData(),uiManager) });
 				break;
 			case 3:
 				uiManager.addChild({ licenseDialog() });
@@ -257,7 +257,7 @@ std::shared_ptr<UIElement> TitleScene::licenseDialog()
 		}),
 		.updateFunc = [=](SimpleDialog* dialog)
 		{
-			if (getData().menuLeftKey.down())
+			if (getData().minigameLeftKey.down())
 			{
 				if (closeButton->selected)
 				{
@@ -271,7 +271,7 @@ std::shared_ptr<UIElement> TitleScene::licenseDialog()
 				}
 			}
 
-			if (getData().menuRightKey.down())
+			if (getData().minigameRightKey.down())
 			{
 				if (showBrowserButton->selected)
 				{
@@ -285,12 +285,12 @@ std::shared_ptr<UIElement> TitleScene::licenseDialog()
 				}
 			}
 
-			if (getData().menuUpKey.pressed())
+			if (getData().minigameUpKey.pressed())
 			{
 				scrollbar->addScrollPos(-Scene::DeltaTime() * 1000);
 			}
 
-			if (getData().menuDownKey.pressed())
+			if (getData().minigameDownKey.pressed())
 			{
 				scrollbar->addScrollPos(Scene::DeltaTime() * 1000);
 			}

@@ -67,8 +67,8 @@ public:
 
 	bool panelFlg = false;
 
-	LongPressInput leftInput{ getData().menuLeftKey };
-	LongPressInput rightInput{ getData().menuRightKey };
+	LongPressInput leftInput{ getData().minigameLeftKey };
+	LongPressInput rightInput{ getData().minigameRightKey };
 
 
 	CharacterSystem character{ U"Characters/annna/annna.json",U"Characters/annna/motion.txt",0.25/2,{0,0},false};

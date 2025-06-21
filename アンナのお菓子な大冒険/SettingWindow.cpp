@@ -3,6 +3,167 @@
 #include"SettingWindow.h"
 #include"SoundIcon.hpp"
 
+class KeyConfigInfo
+{
+public:
+
+	static constexpr size_t maxButton = 3;
+
+	static constexpr ColorF normalTextColor = Palette::White;
+	static constexpr ColorF unconfiguredTextColor = Palette::Lightgray;
+
+	String text;
+	Array<Optional<Input>> inputs;
+	Array<std::shared_ptr<ChocolateButton>>buttons;
+
+	KeyConfigInfo(StringView text, const InputGroup& inputGroup)
+		:text{ text }, inputs( maxButton, none )
+	{
+		for (size_t i = 0; i < inputGroup.inputs().size(); ++i)
+		{
+			inputs[i] = inputGroup.inputs()[i];
+		}
+
+		for (size_t i = 0; i < maxButton; ++i)
+		{
+			buttons << ChocolateButton::Create
+			({
+				.color=Palette::Chocolate,
+				.margine=5,
+				.width = 150,
+				.relative = Relative::Center(),
+				.child
+				{
+					TextUI::Create({.text = inputs[i] ? Format(inputs[i].value()) : U"未設定",.color= inputs[i] ?normalTextColor:unconfiguredTextColor})
+				}
+			});
+		}
+	}
+
+	bool isInputting()const
+	{
+		return inputIndex.has_value();
+	}
+
+	bool update(bool inputDown,bool inputPressed,bool otherInputting)
+	{
+		if(inputIndex)
+		{
+			const Array<Input> keys = Keyboard::GetAllInputs();
+
+			for(const Input& key:keys)
+			{
+				if(key.down())
+				{
+					inputs[*inputIndex] = key;
+					buttons[*inputIndex]->color = Palette::Chocolate;
+					buttons[*inputIndex]->setChild(TextUI::Create({ .text = Format(key),.color = normalTextColor }));
+					inputIndex = none;
+					break;
+				}
+			}
+
+			if(inputPressed || MouseL.pressed())
+			{
+				inputTimer += Scene::DeltaTime();
+			}
+			else
+			{
+				inputTimer = 0;
+			}
+
+			if(2<inputTimer)
+			{
+				inputIndex = none;
+				buttons[*inputIndex]->setChild(TextUI::Create({ .text = U"未設定",.color = unconfiguredTextColor }));
+				buttons[*inputIndex]->color = Palette::Chocolate;
+			}
+
+		}
+		else
+		{
+			inputTimer = 0;
+			for(size_t i=0;i<buttons.size();++i)
+			{
+				if (buttons[i]->clicked() || (buttons[i]->selected && inputDown))
+				{
+					if(not otherInputting)
+					{
+						AudioAsset{ U"決定ボタン" }.playOneShot();
+
+						buttons[i]->color = Palette::Orange;
+						buttons[i]->setChild(TextUI::Create({ .text = U"キーを入力",.color = normalTextColor }));
+
+						inputIndex = i;
+					}
+					break;
+				}
+			}
+		}
+
+		return inputIndex.has_value();
+	}
+
+	std::shared_ptr<UIElement>getUI()const
+	{
+		auto row = Row::Create
+		({
+			.mainAxis=MainAxis::end,
+			//.width=1000,
+			.children
+			{
+				TextUI::Create({.text = text,.color = Palette::White,})
+			}
+		});
+
+		bool firstFlg = true;
+
+		for(auto& button: buttons)
+		{
+			if (firstFlg)
+			{
+				firstFlg = false;
+			}
+			else
+			{
+				row->addChild(TextUI::Create({ .text = U"or",.fontSize = 18,.color = normalTextColor }));
+			}
+			row->addChild(button);
+		}
+		
+		return row;
+	}
+
+	void setIndex(const Optional<size_t>& index)
+	{
+		if(not index)
+		{
+			if(selectedIndex)
+			{
+				buttons[selectedIndex.value()]->selected = false;
+				selectedIndex = none;
+			}
+			return;
+		}
+
+		if(selectedIndex)
+		{
+			buttons[selectedIndex.value()]->selected = false;
+		}
+		selectedIndex = index;
+
+		buttons[index.value()]->selected = true;
+	}
+
+private:
+
+	Optional<size_t>selectedIndex;
+
+	Optional<size_t>inputIndex;
+
+	double inputTimer = 0;
+};
+
 std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const InputGroup& downInputGroup, const InputGroup& leftInputGroup, const InputGroup& rightInputGroup, const std::function<void()>& onClose,GameData& gameData,UIManager& manager,size_t index)
 {
 	auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 20,.margine = 10,.width = 200, .child = TextUI::Create({.text = U"閉じる",.color = Palette::White}) });
@@ -60,6 +221,8 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 	static int32 selectIndex = 0;
 	static LongPressInput upInput;
 	static LongPressInput downInput;
+	static LongPressInput leftInput;
+	static LongPressInput rightInput;
 
 	selectIndex = index;
 	upInput = LongPressInput{ upInputGroup };
@@ -302,6 +465,41 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 
 				dialog->close();
 
+				auto col = Column::Create({});
+
+				std::shared_ptr<Array<KeyConfigInfo>>table
+				{
+					new Array<KeyConfigInfo>
+					{
+						KeyConfigInfo{U"ジャンプ",gameData.jumpKey},
+						KeyConfigInfo{U"攻撃",gameData.attackKey},
+						KeyConfigInfo{U"右移動",gameData.leftKey},
+						KeyConfigInfo{U"左移動",gameData.rightKey},
+						KeyConfigInfo{U"しゃがむ(↓)",gameData.downKey},
+						KeyConfigInfo{U"ポーズ",gameData.pauseKey},
+						KeyConfigInfo{U"ミニゲーム(メニュー)：↑",gameData.minigameUpKey},
+						KeyConfigInfo{U"ミニゲーム(メニュー)：↓",gameData.minigameDownKey},
+						KeyConfigInfo{U"ミニゲーム(メニュー)：←",gameData.minigameLeftKey},
+						KeyConfigInfo{U"ミニゲーム(メニュー)：→",gameData.minigameRightKey},
+						KeyConfigInfo{U"メニュー：決定",gameData.menuDecisionKey},
+						KeyConfigInfo{U"メニュー：戻る",gameData.menuBackKey},
+					}
+				};
+
+				for(auto& keyConfig:*table.get())
+				{
+					col->addChild(keyConfig.getUI());
+				}
+
+				(*table.get())[0].setIndex(0);
+
+				static Point pos{ 0,0 };
+				upInput = LongPressInput{ gameData.minigameUpKey };
+				downInput = LongPressInput{ gameData.minigameDownKey };
+				leftInput = LongPressInput{ gameData.minigameLeftKey };
+				rightInput = LongPressInput{ gameData.minigameRightKey };
+				pos = { 0,0 };
+
 				manager.addChild
 				({
 					SimpleDialog::Create
@@ -313,13 +511,91 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 							({
 								.children
 								{
-
-
+									TextUI::Create({.text = U"キーコンフィグ",.fontSize = 40,.color = Palette::White}),
+									col
 								}
 							})
-						})
-					})
+						}),
+						.updateFunc=[=](SimpleDialog* dialog)
+						{
+							bool isInputting = false;
 
+							for (auto& keyConfig : *table.get())
+							{
+								if (keyConfig.isInputting())
+								{
+									isInputting = true;
+								}
+							}
+
+							for (auto& keyConfig : *table.get())
+							{
+								if(keyConfig.update(gameData.menuDecisionKey.down(), gameData.menuDecisionKey.pressed(), isInputting))
+								{
+									isInputting = true;
+								}
+							}
+							if(isInputting)
+							{
+								return;
+							}
+
+							if(leftInput.down())
+							{
+								if (0 < pos.x)
+								{
+									AudioAsset{ U"カーソル移動" }.playOneShot();
+									(*table)[pos.y].setIndex(--pos.x);
+								}
+								else
+								{
+									AudioAsset{ U"ビープ音" }.playOneShot();
+								}
+							}
+
+							if (rightInput.down())
+							{
+								if (pos.x < KeyConfigInfo::maxButton - 1)
+								{
+									AudioAsset{ U"カーソル移動" }.playOneShot();
+									(*table)[pos.y].setIndex(++pos.x);
+								}
+								else
+								{
+									AudioAsset{ U"ビープ音" }.playOneShot();
+								}
+							}
+
+							if (upInput.down())
+							{
+								if (0 < pos.y)
+								{
+									AudioAsset{ U"カーソル移動" }.playOneShot();
+									(*table)[pos.y].setIndex(none);
+									(*table)[--pos.y].setIndex(pos.x);
+								}
+								else
+								{
+									AudioAsset{ U"ビープ音" }.playOneShot();
+								}
+							}
+
+							if (downInput.down())
+							{
+								if (pos.y < table->size()-1)
+								{
+									AudioAsset{ U"カーソル移動" }.playOneShot();
+									(*table)[pos.y].setIndex(none);
+									(*table)[++pos.y].setIndex(pos.x);
+								}
+								else
+								{
+									AudioAsset{ U"ビープ音" }.playOneShot();
+								}
+							}
+
+						}
+					})
 				});
 			}
 

@@ -44,8 +44,8 @@ std::shared_ptr<UIElement> MiniGameSceneBase::createPauseUI()
 	auto settingButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 200,.child = TextUI::Create({.text = U"設定",.color = Palette::White}) });
 	auto continueButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 20,.margine = 10,.width = 200,.child = TextUI::Create({.text = U"続ける",.color = Palette::White}) });
 
-	leftInput = LongPressInput{ getData().menuLeftKey };
-	rightInput = LongPressInput{ getData().menuRightKey };
+	leftInput = LongPressInput{ getData().minigameLeftKey };
+	rightInput = LongPressInput{ getData().minigameRightKey };
 
 	redoButton->selected = m_settingSelectIndex == 0;
 	endButton->selected = m_settingSelectIndex == 1;
@@ -130,7 +130,7 @@ std::shared_ptr<UIElement> MiniGameSceneBase::createPauseUI()
 			{
 				AudioAsset{ U"決定ボタン" }.playOneShot();
 				uiManager.addChild(
-					SettingWindow(getData().menuUpKey, getData().menuDownKey, getData().menuLeftKey, getData().menuRightKey, [=] {uiManager.addChild(createPauseUI()); getData().save(); },getData(), uiManager)
+					SettingWindow(getData().minigameUpKey, getData().minigameDownKey, getData().minigameLeftKey, getData().minigameRightKey, [=] {uiManager.addChild(createPauseUI()); getData().save(); },getData(), uiManager)
 				);
 				dialog->close();
 			}

@@ -35,10 +35,10 @@ public:
 
 	const Font font{ 30 };
 
-	LongPressInput leftInput{ getData().menuLeftKey };
-	LongPressInput rightInput{ getData().menuRightKey };
-	LongPressInput upInput{ getData().menuUpKey };
-	LongPressInput downInput{ getData().menuDownKey };
+	LongPressInput leftInput{ getData().minigameLeftKey };
+	LongPressInput rightInput{ getData().minigameRightKey };
+	LongPressInput upInput{ getData().minigameUpKey };
+	LongPressInput downInput{ getData().minigameDownKey };
 
 	BeltConveyorButton easyButton{ {800,500},3,80 };
 	BeltConveyorButton normalButton{ {800,600},3,80 };

@@ -84,11 +84,6 @@ struct GameData
 	InputGroup minigameLeftKey = s3d::KeyA | s3d::KeyLeft;
 	InputGroup minigameDownKey = s3d::KeyS | s3d::KeyDown;
 	InputGroup minigameRightKey = s3d::KeyD | s3d::KeyRight;
-
-	InputGroup menuUpKey = s3d::KeyW | s3d::KeyUp;
-	InputGroup menuLeftKey = s3d::KeyA | s3d::KeyLeft;
-	InputGroup menuDownKey = s3d::KeyS | s3d::KeyDown;
-	InputGroup menuRightKey = s3d::KeyD | s3d::KeyRight;
 	InputGroup menuDecisionKey = s3d::KeyEnter;
 	InputGroup menuBackKey = s3d::KeyQ;
 
