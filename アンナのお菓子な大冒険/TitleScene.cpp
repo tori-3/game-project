@@ -32,9 +32,10 @@ TitleScene::TitleScene(const InitData& init)
 	LoadAsset::RegisterTexture(U"BackGroundTexture/雲背景.png");
 	LoadAsset::RegisterTexture(U"BackGroundTexture/ラスボス背景.png");
 	LoadAsset::RegisterTexture(U"BackGroundTexture/洞窟背景.png");
+	LoadAsset::RegisterTexture(U"BackGroundTexture/宇宙背景.png");
 
 	LoadAsset::RegisterAudio(U"BGM/StageCloud_Pxtone5.2.mp3", Loop::Yes);
-	BGMManager::get().play(U"BGM/StageCloud_Pxtone5.2.mp3");
+	BGMManager::get().play(U"BGM/StageCloud_Pxtone5.2.mp3",0s);
 
 	LoadAsset::RegisterTexture(U"ロゴ.png");
 	character.addMotion(U"Walk", true);

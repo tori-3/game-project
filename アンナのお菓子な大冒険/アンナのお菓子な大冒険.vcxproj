@@ -357,6 +357,7 @@
     <ClInclude Include="EnemyAdder.h" />
     <ClInclude Include="Gimmick.h" />
     <ClInclude Include="KeyConfigUtility.h" />
+    <ClInclude Include="LightBloom.h" />
     <ClInclude Include="MyBlendState.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="Boss.h" />
@@ -398,6 +399,7 @@
     <ClInclude Include="MotionLoader.h" />
     <ClInclude Include="Movements.h" />
     <ClInclude Include="NinePatch.hpp" />
+    <ClInclude Include="OpeningScene.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RingEffect.h" />
     <ClInclude Include="setting.h" />

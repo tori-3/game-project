@@ -1,4 +1,5 @@
 ﻿#include"Common.h"
+#include"KeyConfigUtility.h"
 
 void GameData::saveMiniGameClear()
 {
@@ -65,6 +66,23 @@ void GameData::save()
 		saveDatajson[U"MiniGame"].push_back(json);
 	}
 
+	{
+		JSON json;
+		json[U"minigameUpKey"] = KeyConfigUtility::ToJSON(minigameUpKey);
+		json[U"minigameLeftKey"] = KeyConfigUtility::ToJSON(minigameLeftKey);
+		json[U"minigameDownKey"] = KeyConfigUtility::ToJSON(minigameDownKey);
+		json[U"minigameRightKey"] = KeyConfigUtility::ToJSON(minigameRightKey);
+		json[U"menuDecisionKey"] = KeyConfigUtility::ToJSON(menuDecisionKey);
+		json[U"menuBackKey"] = KeyConfigUtility::ToJSON(menuBackKey);
+		json[U"jumpKey"] = KeyConfigUtility::ToJSON(jumpKey);
+		json[U"attackKey"] = KeyConfigUtility::ToJSON(attackKey);
+		json[U"leftKey"] = KeyConfigUtility::ToJSON(leftKey);
+		json[U"downKey"] = KeyConfigUtility::ToJSON(downKey);
+		json[U"rightKey"] = KeyConfigUtility::ToJSON(rightKey);
+		json[U"pauseKey"] = KeyConfigUtility::ToJSON(pauseKey);
+		saveDatajson[U"Key"] = json;
+	}
+
 	saveDatajson.save(U"saveData.json");
 }
 
@@ -102,4 +120,21 @@ void GameData::load()
 
 		miniGameList << miniGame;
 	}
+
+	{
+		JSON json = saveDatajson[U"Key"];
+		minigameUpKey = KeyConfigUtility::FromJSON(json[U"minigameUpKey"]);
+		minigameLeftKey = KeyConfigUtility::FromJSON(json[U"minigameLeftKey"]);
+		minigameDownKey = KeyConfigUtility::FromJSON(json[U"minigameDownKey"]);
+		minigameRightKey = KeyConfigUtility::FromJSON(json[U"minigameRightKey"]);
+		menuDecisionKey = KeyConfigUtility::FromJSON(json[U"menuDecisionKey"]);
+		menuBackKey = KeyConfigUtility::FromJSON(json[U"menuBackKey"]);
+		jumpKey = KeyConfigUtility::FromJSON(json[U"jumpKey"]);
+		attackKey = KeyConfigUtility::FromJSON(json[U"attackKey"]);
+		leftKey = KeyConfigUtility::FromJSON(json[U"leftKey"]);
+		downKey = KeyConfigUtility::FromJSON(json[U"downKey"]);
+		rightKey = KeyConfigUtility::FromJSON(json[U"rightKey"]);
+		pauseKey = KeyConfigUtility::FromJSON(json[U"pauseKey"]);
+	}
+
 }

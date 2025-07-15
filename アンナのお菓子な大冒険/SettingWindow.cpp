@@ -29,15 +29,29 @@ public:
 			buttons << ChocolateButton::Create
 			({
 				.color=Palette::Chocolate,
-				.margine=5,
+				.margine = {5,8},
 				.width = 150,
 				.relative = Relative::Center(),
 				.child
 				{
-					TextUI::Create({.text = inputs[i] ? Format(inputs[i].value()) : U"未設定",.color= inputs[i] ?normalTextColor:unconfiguredTextColor})
+					TextUI::Create({.text = inputs[i] ? GetKeyName(inputs[i].value()) : U"未設定",.fontSize=23,.color= inputs[i] ?normalTextColor:unconfiguredTextColor})
 				}
 			});
 		}
+	}
+
+	InputGroup getInputGroup()const
+	{
+		InputGroup group;
+
+		for (auto& input : inputs)
+		{
+			if (input)
+			{
+				group = group | input.value();
+			}
+		}
+		return group;
 	}
 
 	bool isInputting()const
@@ -57,7 +71,7 @@ public:
 				{
 					inputs[*inputIndex] = key;
 					buttons[*inputIndex]->color = Palette::Chocolate;
-					buttons[*inputIndex]->setChild(TextUI::Create({ .text = Format(key),.color = normalTextColor }));
+					buttons[*inputIndex]->setChild(TextUI::Create({ .text = GetKeyName(key),.fontSize = 23,.color = normalTextColor }));
 					inputIndex = none;
 					break;
 				}
@@ -74,8 +88,10 @@ public:
 
 			if(2<inputTimer)
 			{
+				AudioAsset{ U"キャンセル" }.playOneShot();
+				inputs[*inputIndex] = none;
 				inputIndex = none;
-				buttons[*inputIndex]->setChild(TextUI::Create({ .text = U"未設定",.color = unconfiguredTextColor }));
+				buttons[*inputIndex]->setChild(TextUI::Create({ .text = U"未設定",.fontSize = 23,.color = unconfiguredTextColor }));
 				buttons[*inputIndex]->color = Palette::Chocolate;
 			}
 
@@ -92,7 +108,7 @@ public:
 						AudioAsset{ U"決定ボタン" }.playOneShot();
 
 						buttons[i]->color = Palette::Orange;
-						buttons[i]->setChild(TextUI::Create({ .text = U"キーを入力",.color = normalTextColor }));
+						buttons[i]->setChild(TextUI::Create({ .text = U"キーを入力",.fontSize = 23,.color = normalTextColor }));
 
 						inputIndex = i;
 					}
@@ -156,6 +172,27 @@ public:
 	}
 
 private:
+
+	static String GetKeyName(const Input& input)
+	{
+		if(input==KeyUp)
+		{
+			return U"↑";
+		}
+		if (input == KeyDown)
+		{
+			return U"↓";
+		}
+		if (input == KeyLeft)
+		{
+			return U"←";
+		}
+		if (input == KeyRight)
+		{
+			return U"→";
+		}
+		return Format(input);
+	}
 
 	Optional<size_t>selectedIndex;
 
@@ -263,7 +300,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 				}
 			}),
 		}),
-		.updateFunc = [=](SimpleDialog* dialog)mutable
+		.updateFunc = [=,&gameData](SimpleDialog* dialog)mutable
 		{
 			GlobalAudio::BusSetVolume(EffectMixBus, effectVolumeSlider->value);
 			GlobalAudio::BusSetVolume(BGMMixBus, BGMVolumeSlider->value);
@@ -371,9 +408,6 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 				});
 			}
 
-
-
-
 			if(hpModeButton->clicked() || (selectIndex == 3 && gameData.menuDecisionKey.down()))
 			{
 				AudioAsset{ U"決定ボタン" }.playOneShot();
@@ -409,7 +443,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 								}
 							}),
 						}),
-						.updateFunc = [=](SimpleDialog* dialog)mutable
+						.updateFunc = [=,&gameData](SimpleDialog* dialog)mutable
 						{
 							if(leftInputGroup.down())
 							{
@@ -491,6 +525,8 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 					col->addChild(keyConfig.getUI());
 				}
 
+				auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 10,.margine = 10,.width = 200, .child = TextUI::Create({.text = U"閉じる",.color = Palette::White}) });
+
 				(*table.get())[0].setIndex(0);
 
 				static Point pos{ 0,0 };
@@ -507,16 +543,27 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 						.erasable = false,
 						.child = SweetsPanel::Create
 						({
-							.child=Column::Create
+							.margine=5,
+							.child = Column::Create
 							({
 								.children
 								{
 									TextUI::Create({.text = U"キーコンフィグ",.fontSize = 40,.color = Palette::White}),
-									col
+									col,
+									Row::Create
+									({
+										.mainAxis=MainAxis::spaceAround,
+										.children
+										{
+											TextUI::Create({.text = U"　　　　　　",.fontSize = 30,.color = Palette::White}),
+											closeButton,
+											TextUI::Create({.text = U"長押しで削除",.fontSize = 30,.color = Palette::White}),
+										}
+									})
 								}
 							})
 						}),
-						.updateFunc=[=](SimpleDialog* dialog)
+						.updateFunc = [=,&gameData](SimpleDialog* dialog)mutable
 						{
 							bool isInputting = false;
 
@@ -530,19 +577,23 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 
 							for (auto& keyConfig : *table.get())
 							{
-								if(keyConfig.update(gameData.menuDecisionKey.down(), gameData.menuDecisionKey.pressed(), isInputting))
+								if (keyConfig.update(gameData.menuDecisionKey.down(), gameData.menuDecisionKey.pressed(), isInputting))
 								{
 									isInputting = true;
 								}
 							}
-							if(isInputting)
+							if (isInputting)
 							{
 								return;
 							}
 
-							if(leftInput.down())
+							if (leftInput.down())
 							{
-								if (0 < pos.x)
+								if (pos.y == table->size())
+								{
+									AudioAsset{ U"ビープ音" }.playOneShot();
+								}
+								else if (0 < pos.x)
 								{
 									AudioAsset{ U"カーソル移動" }.playOneShot();
 									(*table)[pos.y].setIndex(--pos.x);
@@ -555,7 +606,11 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 
 							if (rightInput.down())
 							{
-								if (pos.x < KeyConfigInfo::maxButton - 1)
+								if (pos.y == table->size())
+								{
+									AudioAsset{ U"ビープ音" }.playOneShot();
+								}
+								else if (pos.x < KeyConfigInfo::maxButton - 1)
 								{
 									AudioAsset{ U"カーソル移動" }.playOneShot();
 									(*table)[pos.y].setIndex(++pos.x);
@@ -571,7 +626,16 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 								if (0 < pos.y)
 								{
 									AudioAsset{ U"カーソル移動" }.playOneShot();
-									(*table)[pos.y].setIndex(none);
+
+									if (pos.y != table->size())
+									{
+										(*table)[pos.y].setIndex(none);
+									}
+									else
+									{
+										closeButton->selected = false;
+									}
+
 									(*table)[--pos.y].setIndex(pos.x);
 								}
 								else
@@ -579,14 +643,23 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 									AudioAsset{ U"ビープ音" }.playOneShot();
 								}
 							}
-
+						
 							if (downInput.down())
 							{
-								if (pos.y < table->size()-1)
+								if (pos.y < table->size())
 								{
 									AudioAsset{ U"カーソル移動" }.playOneShot();
 									(*table)[pos.y].setIndex(none);
-									(*table)[++pos.y].setIndex(pos.x);
+
+									if (pos.y == table->size()-1)
+									{
+										++pos.y;
+										closeButton->selected = true;
+									}
+									else
+									{
+										(*table)[++pos.y].setIndex(pos.x);
+									}
 								}
 								else
 								{
@@ -594,6 +667,28 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 								}
 							}
 
+							if(closeButton->clicked()||(pos.y== table->size() && gameData.menuDecisionKey.down()))
+							{
+								AudioAsset{ U"キャンセル" }.playOneShot();
+
+								gameData.jumpKey = (*table)[0].getInputGroup();
+								gameData.attackKey = (*table)[1].getInputGroup();
+								gameData.leftKey = (*table)[2].getInputGroup();
+								gameData.rightKey = (*table)[3].getInputGroup();
+								gameData.downKey = (*table)[4].getInputGroup();
+								gameData.pauseKey = (*table)[5].getInputGroup();
+								gameData.minigameUpKey = (*table)[6].getInputGroup();
+								gameData.minigameDownKey = (*table)[7].getInputGroup();
+								gameData.minigameLeftKey = (*table)[8].getInputGroup();
+								gameData.minigameRightKey = (*table)[9].getInputGroup();
+								gameData.menuDecisionKey = (*table)[10].getInputGroup();
+								gameData.menuBackKey = (*table)[11].getInputGroup();
+
+								gameData.save();
+
+								dialog->close();
+								manager.addChild(SettingWindow(upInputGroup, downInputGroup, leftInputGroup, rightInputGroup, onClose, gameData, manager, selectIndex));
+							}
 						}
 					})
 				});

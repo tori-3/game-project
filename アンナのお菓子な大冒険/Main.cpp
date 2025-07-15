@@ -3,6 +3,7 @@
 #include"Map.h"
 #include"FallingAnna.h"
 
+#include"OpeningScene.h"
 #include"MAZE.h"
 #include"Maze2.h"
 #include"ManjuRush.h"
@@ -36,6 +37,7 @@ void Main()
 
 	App manager;
 
+	manager.add<OpeningScene>(U"OpeningScene");
 	manager.add<TitleScene>(U"TitleScene");
 	manager.add<Map>(U"Map");
 	manager.add<MainGameScene>(U"MainGameScene");

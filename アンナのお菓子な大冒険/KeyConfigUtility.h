@@ -41,9 +41,9 @@ public:
 
 		if (json.hasElement(U"inputs") && json[U"inputs"].isArray())
 		{
-			for (const auto& inputJson : json[U"inputs"])
+			for (const auto& inputJson : json[U"inputs"].arrayView())
 			{
-				inputGroup = (inputGroup | ToInput(inputJson.value));
+				inputGroup = (inputGroup | ToInput(inputJson));
 			}
 		}
 

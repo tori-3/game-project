@@ -1,5 +1,5 @@
 ﻿{
-  "BGMVolume": 1.0,
+  "BGMVolume": 0.35043978691101074,
   "ClearComplete": [
     false,
     false,
@@ -25,8 +25,175 @@
     false
   ],
   "ClearStage": 23,
-  "EffectVolume": 1.0,
+  "EffectVolume": 0.3333677649497986,
   "IncreaseHPMode": true,
+  "Key": {
+    "attackKey": {
+      "inputs": [
+        {
+          "code": 13,
+          "device": 1,
+          "playerIndex": 0
+        }
+      ],
+      "type": "InputGroup"
+    },
+    "downKey": {
+      "inputs": [
+        {
+          "code": 40,
+          "device": 1,
+          "playerIndex": 0
+        },
+        {
+          "code": 83,
+          "device": 1,
+          "playerIndex": 0
+        }
+      ],
+      "type": "InputGroup"
+    },
+    "jumpKey": {
+      "inputs": [
+        {
+          "code": 32,
+          "device": 1,
+          "playerIndex": 0
+        },
+        {
+          "code": 38,
+          "device": 1,
+          "playerIndex": 0
+        },
+        {
+          "code": 87,
+          "device": 1,
+          "playerIndex": 0
+        }
+      ],
+      "type": "InputGroup"
+    },
+    "leftKey": {
+      "inputs": [
+        {
+          "code": 37,
+          "device": 1,
+          "playerIndex": 0
+        },
+        {
+          "code": 65,
+          "device": 1,
+          "playerIndex": 0
+        }
+      ],
+      "type": "InputGroup"
+    },
+    "menuBackKey": {
+      "inputs": [
+        {
+          "code": 81,
+          "device": 1,
+          "playerIndex": 0
+        }
+      ],
+      "type": "InputGroup"
+    },
+    "menuDecisionKey": {
+      "inputs": [
+        {
+          "code": 13,
+          "device": 1,
+          "playerIndex": 0
+        }
+      ],
+      "type": "InputGroup"
+    },
+    "minigameDownKey": {
+      "inputs": [
+        {
+          "code": 40,
+          "device": 1,
+          "playerIndex": 0
+        },
+        {
+          "code": 83,
+          "device": 1,
+          "playerIndex": 0
+        }
+      ],
+      "type": "InputGroup"
+    },
+    "minigameLeftKey": {
+      "inputs": [
+        {
+          "code": 37,
+          "device": 1,
+          "playerIndex": 0
+        },
+        {
+          "code": 65,
+          "device": 1,
+          "playerIndex": 0
+        }
+      ],
+      "type": "InputGroup"
+    },
+    "minigameRightKey": {
+      "inputs": [
+        {
+          "code": 39,
+          "device": 1,
+          "playerIndex": 0
+        },
+        {
+          "code": 68,
+          "device": 1,
+          "playerIndex": 0
+        }
+      ],
+      "type": "InputGroup"
+    },
+    "minigameUpKey": {
+      "inputs": [
+        {
+          "code": 38,
+          "device": 1,
+          "playerIndex": 0
+        },
+        {
+          "code": 87,
+          "device": 1,
+          "playerIndex": 0
+        }
+      ],
+      "type": "InputGroup"
+    },
+    "pauseKey": {
+      "inputs": [
+        {
+          "code": 27,
+          "device": 1,
+          "playerIndex": 0
+        }
+      ],
+      "type": "InputGroup"
+    },
+    "rightKey": {
+      "inputs": [
+        {
+          "code": 39,
+          "device": 1,
+          "playerIndex": 0
+        },
+        {
+          "code": 68,
+          "device": 1,
+          "playerIndex": 0
+        }
+      ],
+      "type": "InputGroup"
+    }
+  },
   "MaxHP": [
     5,
     5,
@@ -84,5 +251,5 @@
       "Normal": false
     }
   ],
-  "SelectedStage": 2
+  "SelectedStage": 9
 }

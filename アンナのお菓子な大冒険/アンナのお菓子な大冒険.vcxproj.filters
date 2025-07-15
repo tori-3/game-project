@@ -1118,5 +1118,11 @@
     <ClInclude Include="KeyConfigUtility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="OpeningScene.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="LightBloom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
