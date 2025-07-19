@@ -22,7 +22,7 @@ public:
 
 		DataManager::get().table.emplace(U"SignboardInvisible");
 
-		z = 50;
+		z = 110;
 	}
 
 	void update()override

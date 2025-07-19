@@ -1,6 +1,35 @@
 ﻿#include"MainGameScene.h"
 #include"Fairy.h"
 
+class StageEntity :public Entity
+{
+public:
+
+	StageEntity(Stage* p_stage, Vec2* p_cameraPos,Vec2* p_playerPos)
+		:Entity(U"Stage", RectF::Empty(), {}, {}, 1)
+		,p_stage{ p_stage }
+		,p_cameraPos{p_cameraPos}
+		,p_playerPos{p_playerPos}
+	{
+		z = 100;
+	}
+
+	void update()override
+	{
+		p_stage->update(*p_playerPos);
+	}
+
+	void draw()const override
+	{
+		p_stage->draw(*p_cameraPos + Scene::Center());
+	}
+
+private:
+	Stage* p_stage;
+	Vec2* p_cameraPos;
+	Vec2* p_playerPos;
+};
+
 MainGameScene::MainGameScene(const InitData& init)
 	: MiniGameSceneBase{ init }
 {
@@ -29,6 +58,8 @@ MainGameScene::MainGameScene(const InitData& init)
 	{
 		manager.add(new Fairy{});
 	}
+
+	manager.add(new StageEntity{ &stage,&camera.pos,&player->pos });
 }
 
 void MainGameScene::gameUpdate()
@@ -41,7 +72,7 @@ void MainGameScene::gameUpdate()
 		return;
 	}
 
-	stage.update(player->pos);
+	//stage.update(player->pos);
 
 	if (not bgmStart)
 	{
@@ -131,15 +162,20 @@ void MainGameScene::gameDraw() const
 		background.resized(Scene::Size()).draw();
 	}
 
-	backgroundManager.draw(camera.pos);
+	{
+		const ScopedRenderTarget2D target{ backgroundRenderTexture.clear(ColorF{1,0}) };
+		const ScopedRenderStates2D blend{ MakeBlendState() };
+		backgroundManager.draw(camera.pos);
+	}
 
-	Rect{ Scene::Size() }.draw(ColorF{ skyColor,0.2 });
+	Shader::GaussianBlur(backgroundRenderTexture, internalTexture, backgroundRenderTexture);
+	backgroundRenderTexture.draw();
 
 	{
 		//座標変換
 		const Transformer2D t{ camera.getMat3x2() };
 		manager.draw();
-		stage.draw(camera.pos + Scene::Size() / 2);
+		//stage.draw(camera.pos + Scene::Size() / 2);
 		DataManager::get().effect.update();
 
 		{

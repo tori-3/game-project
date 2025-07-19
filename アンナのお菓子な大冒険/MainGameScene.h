@@ -41,6 +41,9 @@ public:
 
 	Spotlight* light = nullptr;
 
+	RenderTexture backgroundRenderTexture{ Scene::Size() };
+	const RenderTexture internalTexture{ Scene::Size() };
+
 	bool bgmStart = false;
 
 	MainGameScene(const InitData& init);

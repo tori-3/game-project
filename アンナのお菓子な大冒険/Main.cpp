@@ -37,7 +37,6 @@ void Main()
 
 	App manager;
 
-	manager.add<OpeningScene>(U"OpeningScene");
 	manager.add<TitleScene>(U"TitleScene");
 	manager.add<Map>(U"Map");
 	manager.add<MainGameScene>(U"MainGameScene");
@@ -50,6 +49,10 @@ void Main()
 	manager.add<Maze2::mazeGame>(U"Maze2");
 	manager.add<AnnaMusicGame::AnnaMusicGame>(U"AnnaMusicGame");
 	manager.add<EndRollScene>(U"EndRollScene");
+
+
+	manager.add<OpeningScene>(U"OpeningScene");
+
 
 	LoadAsset::LoadAudio();
 

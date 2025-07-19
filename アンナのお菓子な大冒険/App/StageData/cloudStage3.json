@@ -1,5 +1,8 @@
 ﻿{
-  "BackGround": [],
+  "BackGround": [
+    "StageData/cloudStage_back1.json",
+    "StageData/cloudStage_back2.json"
+  ],
   "Block": {
     "BeltConveyorRight": [
       "(5, 6)",

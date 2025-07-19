@@ -1,6 +1,7 @@
 ﻿{
   "BackGround": [
-    "StageData/snowStage3_back.json"
+    "StageData/snowStage3_back2.json",
+    "StageData/snowStage3_back1.json"
   ],
   "Block": {
     "BeltConveyorLeft": [

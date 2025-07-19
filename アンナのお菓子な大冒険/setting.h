@@ -6,7 +6,8 @@ constexpr int change_hieght = -1000;//実質無効
 
 //画面のどこにプレイヤーを描画するか
 constexpr int draw_x = 400;
-constexpr int draw_y = 570;
+//constexpr int draw_y = 570;
+constexpr int draw_y = 450;
 
 constexpr int rect_size = 70;
 

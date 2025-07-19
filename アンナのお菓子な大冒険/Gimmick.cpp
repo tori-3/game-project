@@ -158,6 +158,7 @@ void SnowBall::draw()const
 
 Kompeito::Kompeito(const Vec2& cpos, double velX, double velY) :Entity{ U"Enemy", Circle{25},cpos,{0,0},1 }, velX{ velX }
 {
+	z = 110;
 	vel.y = velY;
 	if (not TextureAsset::IsRegistered(U"金平糖0"))
 	{
@@ -201,6 +202,8 @@ DanmakuKompeito::DanmakuKompeito(const Vec2& cpos, const Vec2& vel, double timeL
 	: Entity{ U"Enemy", Circle{25 * 0.8},cpos,vel,1 }
 	, timer{ timeLim }
 {
+	z = 110;
+
 	if (not TextureAsset::IsRegistered(U"金平糖0"))
 	{
 		TextureAsset::Register(U"金平糖0", U"Characters/cloud/金平糖/konpeitou.png");

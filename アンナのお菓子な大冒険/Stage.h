@@ -278,7 +278,10 @@ public:
 		for (auto& backGround : backGrounds)
 		{
 			backGround.draw(pos);
-			Rect{ Scene::Size() }.draw(ColorF{ Palette::Skyblue,0.1 });
+			{
+				const ScopedRenderStates2D blend{ BlendState::NonPremultiplied };
+				Rect{ Scene::Size() }.draw(ColorF{ Palette::White,0.2 });
+			}
 		}
 	}
 };

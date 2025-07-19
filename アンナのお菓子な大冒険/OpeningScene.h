@@ -28,11 +28,11 @@ public:
 	OpeningScene(const InitData& init)
 		: IScene{ init }
 	{
-		Duration firstTime = 2.2s;
-		Duration secondTime = 2.4s;
+		Duration firstTime = 3.2s;
+		Duration secondTime = 3.4s;
 
 		animation
-			.set(U"light", { 1s,0 }, { 2s, 0.7 })
+			.set(U"light", { 1s,0 }, { 3s, 0.3 })
 			.set(U"light", { firstTime,1 }, { firstTime + 0.05s, 0.5 })
 			.set(U"light", { firstTime + 0.1s, 0.5 }, { firstTime + 0.15s, 1 })
 			.set(U"light", { secondTime,1 }, { secondTime + 0.05s, 0.5 })
@@ -51,7 +51,7 @@ public:
 			animation.start();
 		}
 
-		if(7.5<time)
+		if(8.5<time)
 		{
 			changeScene(U"TitleScene",2.0s);
 		}
