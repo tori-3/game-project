@@ -229,6 +229,36 @@
             "Sentence": "<LastBoss>\n大魔女ビター・ヴァイオレット\nお菓子を独り占めしようとする\nワガママな女の子。\nお菓子は我のものなのじゃ！と、\nアンナちゃんは\nお菓子をかけた最後の戦いに挑みます。",
             "StagePos": "(1050,300)",
             "Type": "Boss"
+        },
+        "Stage24": {
+            "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
+            "BackgroundTexture": "BackgroundTexture/宇宙背景.png",
+            "MapFile": "StageData/extraStage1.json",
+            "Picture": "BackgroundTexture/宇宙背景.png",
+            "SceneName": "MainGameScene",
+            "Sentence": "<おまけ-1>",
+            "StagePos": "(80,300)",
+            "Type": "Stage"
+        },
+        "Stage25": {
+            "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
+            "BackgroundTexture": "BackgroundTexture/宇宙背景.png",
+            "MapFile": "StageData/extraStage2.json",
+            "Picture": "BackgroundTexture/宇宙背景.png",
+            "SceneName": "MainGameScene",
+            "Sentence": "<おまけ-2>",
+            "StagePos": "(125,300)",
+            "Type": "Stage"
+        },
+        "Stage26": {
+            "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
+            "BackgroundTexture": "BackgroundTexture/宇宙背景.png",
+            "MapFile": "StageData/extraStage3.json",
+            "Picture": "BackgroundTexture/宇宙背景.png",
+            "SceneName": "MainGameScene",
+            "Sentence": "<おまけ-3>",
+            "StagePos": "(170,300)",
+            "Type": "Stage"
         }
     }
 }

@@ -110,11 +110,29 @@ void StrawberrySoldierBlock::update(const Point& pos)
 	}
 }
 
+void BigStrawberrySoldierBlock::update(const Point& pos)
+{
+	if (not bornFlg)
+	{
+		DataManager::get().addEntity(U"BigStrawberrySoldier", pos * rect_size + Vec2{ 1,1 }*rect_size);
+		bornFlg = true;
+	}
+}
+
 void CookieSoldierBlock::update(const Point& pos)
 {
 	if (not bornFlg)
 	{
 		DataManager::get().addEntity(U"CookieSoldier", pos * rect_size + Vec2{ 0.5,0.5 }*rect_size);
+		bornFlg = true;
+	}
+}
+
+void BigCookieSoldierBlock::update(const Point& pos)
+{
+	if (not bornFlg)
+	{
+		DataManager::get().addEntity(U"BigCookieSoldier", pos * rect_size + Vec2{ 1,1 }*rect_size);
 		bornFlg = true;
 	}
 }
@@ -218,6 +236,14 @@ void ItigoSlaveBlock::update(const Point& pos)
 	}
 }
 
+void BigItigoSlaveBlock::update(const Point& pos)
+{
+	if (not bornFlg)
+	{
+		DataManager::get().addEntity(U"BigItigoSlave", pos * rect_size + Vec2{ 2,2 }*rect_size);
+		bornFlg = true;
+	}
+}
 
 void CloudEnemyBlock::update(const Point& pos) {
 	if (not bornFlg) {
@@ -444,14 +470,17 @@ void SignboardBlock::draw(const Point& pos)const
 		TextureAsset(U"Signboard").resized(rect_size).draw(pos * rect_size);
 	}
 
-	if (DataManager::get().playerPos.intersects(RectF{ (pos - Vec2{1,1}) * rect_size,rect_size * 3 }))
+	if (not DataManager::get().table.contains(U"TalkWindow"))
 	{
-		constexpr double thickness = 5;
+		if (DataManager::get().playerPos.intersects(RectF{ (pos - Vec2{1,1}) * rect_size,rect_size * 3 }))
+		{
+			constexpr double thickness = 5;
 
-		const RoundRect window{ RectF{ Arg::center((pos + Vec2{0.5,0.5-1}) * rect_size),rect_size*1.5,rect_size * 0.8},20 };
-		window.draw({ Palette::Black, 0.8 }).drawFrame(thickness, 0);
+			const RoundRect window{ RectF{ Arg::center((pos + Vec2{0.5,0.5 - 1}) * rect_size),rect_size * 1.5,rect_size * 0.8},20 };
+			window.draw({ Palette::Black, 0.8 }).drawFrame(thickness, 0);
 
-		FontAsset(U"WindowFont")(fairy?U"Enter話す":U"Enter:読む").drawAt(15, window.center());
+			FontAsset(U"WindowFont")(fairy ? U"Enter話す" : U"Enter:読む").drawAt(15, window.center());
+		}
 	}
 }
 

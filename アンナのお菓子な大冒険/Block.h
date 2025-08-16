@@ -167,7 +167,23 @@ public:
 	void update(const Point& pos)override;
 };
 
+class BigStrawberrySoldierBlock :public Untouchable {
+public:
+
+	bool bornFlg = false;
+
+	void update(const Point& pos)override;
+};
+
 class CookieSoldierBlock :public Untouchable {
+public:
+
+	bool bornFlg = false;
+
+	void update(const Point& pos)override;
+};
+
+class BigCookieSoldierBlock :public Untouchable {
 public:
 
 	bool bornFlg = false;
@@ -223,6 +239,13 @@ public:
 };
 
 class ItigoSlaveBlock :public Untouchable {
+public:
+	bool bornFlg = false;
+
+	void update(const Point& pos)override;
+};
+
+class BigItigoSlaveBlock :public Untouchable {
 public:
 	bool bornFlg = false;
 

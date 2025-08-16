@@ -8,9 +8,13 @@
 
 #include"StarEffect.h"
 
+struct Big {};
+
 class StrawberrySoldier:public Entity
 {
 public:
+
+	bool isBig = false;
 
 	bool left=true;
 
@@ -18,16 +22,22 @@ public:
 
 	StrawberrySoldier(const Vec2& cpos);
 
+	StrawberrySoldier(const Vec2& cpos,Big);
+
 	void update()override;
 
 	void lateUpdate()override;
 
 	void draw()const override;
+
+	void damage(int32 n, const Vec2& force, DamageType)override;
 };
 
 class CookieSoldier :public Entity
 {
 public:
+
+	bool isBig = false;
 
 	bool left = false;
 
@@ -37,11 +47,15 @@ public:
 
 	CookieSoldier(const Vec2& cpos);
 
+	CookieSoldier(const Vec2& cpos,Big);
+
 	void update()override;
 
 	void lateUpdate()override;
 
 	void draw()const override;
+
+	void damage(int32 n, const Vec2& force, DamageType)override;
 };
 
 class Snowman:public Entity
@@ -73,12 +87,16 @@ class ItigoSlave :public Entity
 public:
 	bool left = true;
 
+	bool isBig = false;
+
 	CharacterSystem character;
 
 	static constexpr double attackTime = 0.5;
 	double attackTimer = 0;
 
 	ItigoSlave(const Vec2& cpos);
+
+	ItigoSlave(const Vec2& cpos,Big);
 
 	void update()override;
 

@@ -1,4 +1,5 @@
 ﻿#include"TalkWindow.h"
+#include"DataManager.h"
 
 void TalkWindow::update()
 {
@@ -73,8 +74,8 @@ void TalkWindow::draw(const RectF& rect, const SizeF& nameSize)const
 
 	const RoundRect window{ rect,20 };
 	const RoundRect nameWindow{ rect.pos - Vec2::Down(nameSize.y - thickness),nameSize ,20 };
-	window.draw({ Palette::Black, 0.8 }).drawFrame(thickness, 0, frameColor);
-	nameWindow.draw({ Palette::Black ,0.8 }).drawFrame(thickness, 0, frameColor);
+	window.draw({ Palette::Black, 0.6 }).drawFrame(thickness, 0, frameColor);
+	nameWindow.draw({ Palette::Black ,0.6 }).drawFrame(thickness, 0, frameColor);
 
 	//確認
 

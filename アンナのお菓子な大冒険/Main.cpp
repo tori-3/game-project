@@ -37,6 +37,7 @@ void Main()
 
 	App manager;
 
+	//manager.add<OpeningScene>(U"OpeningScene");
 	manager.add<TitleScene>(U"TitleScene");
 	manager.add<Map>(U"Map");
 	manager.add<MainGameScene>(U"MainGameScene");
@@ -51,7 +52,6 @@ void Main()
 	manager.add<EndRollScene>(U"EndRollScene");
 
 
-	manager.add<OpeningScene>(U"OpeningScene");
 
 
 	LoadAsset::LoadAudio();

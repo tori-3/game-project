@@ -17,6 +17,7 @@ void Map::updatePos()
 	}
 
 	Vec2 nextPos = stagePosList[drawIndex + nextIndex];
+
 	if ((nextPos - playerPos).length() < 0.1)
 	{
 		drawIndex += nextIndex;
@@ -125,6 +126,8 @@ Map::~Map()
 
 void Map::update()
 {
+	int32 lastDrawIndex = drawIndex;
+
 	updatePos();
 
 	time.start();
@@ -138,6 +141,10 @@ void Map::update()
 
 	itigo.update(itigoPos + Vec2{ Periodic::Triangle0_1(15s,time.sF()) * itigoRoadLength,0 }, not Periodic::Square0_1(15s,time.sF()));
 	cloud.update(cloudPos + Vec2{ Periodic::Triangle0_1(16s,time.sF()) * itigoRoadLength,0 }, Periodic::Square0_1(16s, time.sF()));
+
+
+	moveCloud.update(playerPos, left);
+
 
 	if(snowKnightKiriageTimer.reachedZero())
 	{
@@ -313,6 +320,7 @@ void Map::update()
 		AudioAsset{ U"決定ボタン" }.playOneShot();
 		panelFlg = true;
 	}
+
 }
 
 void Map::draw() const
@@ -324,8 +332,14 @@ void Map::draw() const
 
 		for (int i = 0; i < rect_num - 1; i++)
 		{
-			Line{ stagePosList[i],stagePosList[i + 1] }.draw(2, ColorF{ 0.8 });
+			if(i!=22)
+			{
+				Line{ stagePosList[i],stagePosList[i + 1] }.draw(2, ColorF{ 0.8 });
+			}
 		}
+		Line{ stagePosList[22],stagePosList[22] + Vec2{60,0} }.draw(2, ColorF{ 0.8 });
+		Line{ stagePosList[23],stagePosList[23] - Vec2{60,0} }.draw(2, ColorF{ 0.8 });
+
 
 		for (int i = 0; i < rect_num; i++)
 		{
@@ -379,6 +393,11 @@ void Map::draw() const
 		itigo.draw();
 		cloud.draw();
 		character.draw();
+
+		if ((stagePosList[23].x <= playerPos.x && playerPos.x <= stagePosList[22].x) && (playerPos.y<=stagePosList[23].y+0.1 ))
+		{
+			moveCloud.draw();
+		}
 	}
 
 	if (panelFlg)

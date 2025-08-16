@@ -10,7 +10,7 @@ void Constructor() {
 		TextureAsset::Register(FileSystem::BaseName(path), path, TextureDesc::Mipped);
 	}
 
-	for (const auto& path : FileSystem::DirectoryContents(U"EntityTexture"))
+	for (const auto& path : FileSystem::DirectoryContents(U"../../ステージエディタ改/App/EntityTexture"))
 	{
 		TextureAsset::Register(FileSystem::BaseName(path), path, TextureDesc::Mipped);
 	}
@@ -74,9 +74,18 @@ void StrawberrySoldierBlock(Point pos) {
 	TextureAsset(U"StrawberrySoldier").resized(rect_size).draw(pos * rect_size);
 }
 
+void BigStrawberrySoldierBlock(Point pos) {
+	TextureAsset(U"StrawberrySoldier").resized(rect_size * 2).drawAt(pos * rect_size);
+}
+
 void CookieSoldierBlock(Point pos) {
 	TextureAsset(U"CookieSoldier").resized(rect_size).draw(pos * rect_size);
 }
+
+void BigCookieSoldierBlock(Point pos) {
+	TextureAsset(U"CookieSoldier").resized(rect_size * 2).draw(pos * rect_size);
+}
+
 
 void IceCream(Point pos) {
 	TextureAsset(U"IceCream").resized(rect_size * 2).draw(pos * rect_size);
@@ -161,6 +170,13 @@ void ItigoSlave(Point pos) {
 	TextureAsset(U"itigoSlave-lfoot").resized(rect_size ).draw(pos * rect_size);
 	TextureAsset(U"itigoSlave-body").resized(rect_size ).draw(pos * rect_size);
 	TextureAsset(U"itigoSlave-weapon").resized(rect_size ).draw(pos * rect_size);
+}
+
+void BigItigoSlave(Point pos) {
+	TextureAsset(U"itigoSlave-rfoot").resized(rect_size * 2).draw(pos * rect_size);
+	TextureAsset(U"itigoSlave-lfoot").resized(rect_size * 2).draw(pos * rect_size);
+	TextureAsset(U"itigoSlave-body").resized(rect_size * 2).draw(pos * rect_size);
+	TextureAsset(U"itigoSlave-weapon").resized(rect_size * 2).draw(pos * rect_size);
 }
 
 void CloudEnemy(Point pos) {
@@ -310,7 +326,9 @@ Array<Info>list{
 	{U"Elevator",elevator,U"縦に動くチョコレート"},
 	{U"Spring",spring,U"ばね"},
 	{U"StrawberrySoldier",StrawberrySoldierBlock,U"イチゴの兵士"},
+	{U"BigStrawberrySoldier",BigStrawberrySoldierBlock,U"巨大イチゴの兵士"},
 	{U"CookieSoldier",CookieSoldierBlock,U"クッキーの兵士"},
+	{U"BigCookieSoldier",BigCookieSoldierBlock,U"巨大クッキーの兵士"},
 	{U"IceCream",IceCream,U"アイスクリーム"},
 	//{U"LightPinkBlock",LightPinkBlock,U"薄ピンク"},
 	{U"Candle",Candle,U"キャンドル"},
@@ -327,6 +345,7 @@ Array<Info>list{
 	{U"Player",Player,U"プレイヤー"},
 	{U"Snowman",Snowman,U"雪だるま"},
 	{U"ItigoSlave",ItigoSlave,U"奴隷イチゴ"},
+	{U"BigItigoSlave",BigItigoSlave,U"巨大奴隷イチゴ"},
 	{U"CloudEnemy",CloudEnemy,U"わたあめ"},
 	{U"Corn",Corn,U"コーン"},
 	{U"CookieMuti",CookieMuti,U"鞭クッキー"},

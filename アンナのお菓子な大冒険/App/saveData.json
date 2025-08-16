@@ -22,9 +22,12 @@
     false,
     false,
     false,
+    false,
+    false,
+    false,
     false
   ],
-  "ClearStage": 23,
+  "ClearStage": 24,
   "EffectVolume": 0.3333677649497986,
   "IncreaseHPMode": true,
   "Key": {
@@ -217,6 +220,9 @@
     5,
     5,
     5,
+    5,
+    5,
+    5,
     5
   ],
   "MiniGame": [
@@ -251,5 +257,5 @@
       "Normal": false
     }
   ],
-  "SelectedStage": 17
+  "SelectedStage": 24
 }

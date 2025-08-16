@@ -8,11 +8,14 @@
 EnemyAdder::EnemyAdder()
 {
 	table[U"StrawberrySoldier"] = [](const Vec2& pos) {return new StrawberrySoldier{ pos }; };
+	table[U"BigStrawberrySoldier"] = [](const Vec2& pos) {return new StrawberrySoldier{ pos,Big{} }; };
 	table[U"CookieSoldier"] = [](const Vec2& pos) {return new CookieSoldier{ pos }; };
+	table[U"BigCookieSoldier"] = [](const Vec2& pos) {return new CookieSoldier{ pos,Big{} }; };
 	table[U"SpawnerStrawberrySoldier"] = [](const Vec2& pos) {return new ItigoSpawnerEntity{ pos }; };
 	table[U"Player"] = [](const Vec2& pos) {return new Player{ pos }; };
 	table[U"Snowman"] = [](const Vec2& pos) {return new Snowman{ pos }; };
 	table[U"ItigoSlave"] = [](const Vec2& pos) {return new ItigoSlave{ pos }; };
+	table[U"BigItigoSlave"] = [](const Vec2& pos) {return new ItigoSlave{ pos,Big{} }; };
 	table[U"CloudEnemy"] = [](const Vec2& pos) {return new CloudEnemy{ pos }; };
 	table[U"Corn"] = [](const Vec2& pos) {return new Corn{ pos }; };
 	table[U"CookieMuti"] = [](const Vec2& pos) {return new CookieMuti{ pos }; };

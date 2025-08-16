@@ -8,6 +8,15 @@ StrawberrySoldier::StrawberrySoldier(const Vec2& cpos)
 	character.addMotion(U"", true);
 }
 
+StrawberrySoldier::StrawberrySoldier(const Vec2& cpos,Big)
+	: Entity{ U"Enemy", RectF{Arg::center(0,0),70*2,69*2},cpos,{0,0},1 }
+	, character{ U"Characters/itigo/itigo.json" ,U"Characters/itigo/motion.txt" ,0.3*2,cpos,true,false }
+	,isBig(true)
+
+{
+	character.addMotion(U"", true);
+}
+
 void StrawberrySoldier::update()
 {
 	manager->stage->hit(&hitBox);
@@ -70,6 +79,13 @@ void StrawberrySoldier::draw()const
 	character.draw();
 }
 
+void StrawberrySoldier::damage(int32 n, const Vec2&, DamageType)
+{
+	if(not isBig)
+	{
+		Entity::damage(n);
+	}
+}
 
 CookieSoldier::CookieSoldier(const Vec2& cpos)
 	: Entity{ {U"Enemy"}, RectF{Arg::center(0,0),70,69},cpos,{0,0},1 }
@@ -78,31 +94,47 @@ CookieSoldier::CookieSoldier(const Vec2& cpos)
 	character.addMotion(U"", true);
 }
 
+CookieSoldier::CookieSoldier(const Vec2& cpos,Big)
+	: Entity{ {U"Enemy"}, RectF{Arg::center(0,0),70*2,69*2},cpos,{0,0},1 }
+	, character{ U"Characters/cookie/cookie.json",U"Characters/cookie/motion_cookie.txt",0.3*2,cpos,true,false }
+	, isBig(true)
+{
+	character.addMotion(U"", true);
+}
+
 void CookieSoldier::update()
 {
+	double speedScale = 1;
+	int32 range = 5;
+
+	if(isBig)
+	{
+		speedScale = 1.5;
+		range = 8;
+	}
 
 	manager->stage->hit(&hitBox);
 
-	if (Abs(manager->get(U"Player")->pos.x - pos.x) < rect_size * 5)
+	if (Abs(manager->get(U"Player")->pos.x - pos.x) < rect_size * range)
 	{
 
 		if (manager->get(U"Player")->pos.x < pos.x)
 		{
 			left = true;
 
-			speed -= 600 * Scene::DeltaTime();
+			speed -= 600 * speedScale* Scene::DeltaTime();
 		}
 		else if (manager->get(U"Player")->pos.x >= pos.x)
 		{
 			left = false;
-			speed += 600 * Scene::DeltaTime();
+			speed += 600 * speedScale* Scene::DeltaTime();
 		}
 	}
 	else {
 		speed = 0;
 	}
 
-	speed = Clamp(speed, -200.0, 200.0);
+	speed = Clamp(speed, -200.0 * speedScale, 200.0 * speedScale);
 
 	vel.x = speed;
 
@@ -134,7 +166,13 @@ void CookieSoldier::draw()const
 	character.draw();
 }
 
-
+void CookieSoldier::damage(int32 n, const Vec2&, DamageType)
+{
+	if (not isBig)
+	{
+		Entity::damage(n);
+	}
+}
 
 Snowman::Snowman(const Vec2& cpos)
 	: Entity{ U"Enemy", RectF{Arg::center(0,0),70,130},cpos,{0,0},1 }
@@ -265,6 +303,13 @@ ItigoSlave::ItigoSlave(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,
 	character.addMotion(U"walk", true);
 }
 
+ItigoSlave::ItigoSlave(const Vec2& cpos,Big) :Entity{ U"Enemy", RectF{Arg::center(0,15),70 * 1.5*2,69 * 1.5*2 },cpos,{0,0},2 }
+, character{ U"Characters/itigoSlave/itigoSlave.json" ,U"Characters/itigoSlave/motion.txt" ,0.3*2,cpos,true,false }
+,isBig(true)
+{
+	character.addMotion(U"walk", true);
+}
+
 void ItigoSlave::update()
 {
 
@@ -346,13 +391,16 @@ void ItigoSlave::lateUpdate()
 
 void ItigoSlave::damage(int32 n, const Vec2& force, DamageType)
 {
-	if (not character.hasMotion(U"Muteki"))
+	if (not isBig)
 	{
-		character.removeMotion(U"attack");
-		hp -= n;
-		character.addMotion(U"Muteki");
-		vel.y = force.y;
-		vel.x = force.x * 1.5;
+		if (not character.hasMotion(U"Muteki"))
+		{
+			character.removeMotion(U"attack");
+			hp -= n;
+			character.addMotion(U"Muteki");
+			vel.y = force.y;
+			vel.x = force.x * 1.5;
+		}
 	}
 }
 

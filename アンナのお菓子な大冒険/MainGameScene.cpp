@@ -33,6 +33,11 @@ private:
 MainGameScene::MainGameScene(const InitData& init)
 	: MiniGameSceneBase{ init }
 {
+	if(getData().stage==1)
+	{
+		TextureAsset::Register(U"kaiso",U"kaiso.png");
+	}
+
 	DataManager::get().maxHP = getData().maxHP;
 
 	adder.update(manager);
@@ -64,12 +69,27 @@ MainGameScene::MainGameScene(const InitData& init)
 
 void MainGameScene::gameUpdate()
 {
+	if(getData().stage==1)
+	{
+		if (isShowKaiso())
+		{
+			kaisouAlpha = Min(kaisouAlpha + Scene::DeltaTime() / 0.5, 1.0);
+		}
+		else
+		{
+			kaisouAlpha = Max(kaisouAlpha - Scene::DeltaTime() / 0.5, 0.0);
+		}
+	}
 
 	if (TalkManager::get().talkWindow.isContinue())
 	{
+		DataManager::get().table.insert(U"TalkWindow");
 		TalkManager::get().talkWindow.update();
-
 		return;
+	}
+	else
+	{
+		DataManager::get().table.erase(U"TalkWindow");
 	}
 
 	//stage.update(player->pos);
@@ -146,6 +166,7 @@ void MainGameScene::gameUpdate()
 	}
 
 	DataManager::get().time += Scene::DeltaTime();
+
 }
 
 void MainGameScene::gameDraw() const
@@ -211,7 +232,14 @@ void MainGameScene::gameDraw() const
 	CookieDisplay(player->itemCount, DataManager::get().tame);
 	HpDisplay(player->hp, DataManager::get().maxHP);
 
-	TalkManager::get().talkWindow.draw(RectF{ 0,500,Scene::Size().x,300 });
+	if (0 < kaisouAlpha)
+	{
+		TextureAsset{ U"kaiso" }.resized(Scene::Size()).draw(AlphaF(kaisouAlpha));
+	}
+
+	constexpr double height = 200;
+	constexpr double space = 50;
+	TalkManager::get().talkWindow.draw(RectF{ space,Scene::Height() - height - space,Scene::Width() - space * 2 ,height });
 
 	FontAsset{ U"NormalFont" }(U"[ESC]ポーズ").draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 

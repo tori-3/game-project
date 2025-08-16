@@ -46,6 +46,8 @@ public:
 
 	bool bgmStart = false;
 
+	double kaisouAlpha = 0;
+
 	MainGameScene(const InitData& init);
 
 	void gameUpdate() override;
@@ -57,6 +59,11 @@ public:
 	static void CookieDisplay(int32 count, double tame);
 
 	static void HpDisplay(int32 count, int32 maxHP);
+
+	bool isShowKaiso()const
+	{
+		return getData().stage == 1 && InRange(TalkManager::get().talkWindow.index, 3ull , 6ull) && TalkManager::get().talkWindow.talks.size() == 9;
+	}
 
 	void EndGame(bool clear)
 	{
