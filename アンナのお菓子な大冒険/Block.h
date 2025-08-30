@@ -464,6 +464,39 @@ public:
 	void draw(const Point& pos)const override;
 };
 
+class NeedleUpBlock :public Untouchable
+{
+public:
+	bool bornFlg = false;
+
+	void update(const Point& pos)override;
+};
+
+class NeedleDownBlock :public Untouchable
+{
+public:
+	bool bornFlg = false;
+
+	void update(const Point& pos)override;
+};
+
+class NeedleLeftBlock :public Untouchable
+{
+public:
+	bool bornFlg = false;
+
+	void update(const Point& pos)override;
+};
+
+class NeedleRightBlock :public Untouchable
+{
+public:
+	bool bornFlg = false;
+
+	void update(const Point& pos)override;
+};
+
+
 class FairyBlock :public Untouchable
 {
 public:

@@ -499,11 +499,26 @@
       "(36, 10)",
       "(37, 10)"
     ],
+    "ChocolateWall": [
+      "(9, 5)"
+    ],
     "CookieSoldier": [
       "(78, 7)"
     ],
     "Door": [
       "(187, 6)"
+    ],
+    "NeedleDownBlock": [
+      "(9, 6)"
+    ],
+    "NeedleLeftBlock": [
+      "(8, 5)"
+    ],
+    "NeedleRightBlock": [
+      "(10, 5)"
+    ],
+    "NeedleUpBlock": [
+      "(9, 4)"
     ],
     "Player": [
       "(3, 8)"

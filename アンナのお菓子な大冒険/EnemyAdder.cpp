@@ -28,6 +28,10 @@ EnemyAdder::EnemyAdder()
 	table[U"LastBoss"] = [](const Vec2& pos) {return new LastBoss{ pos }; };
 	table[U"FallingRocks"] = [](const Vec2& pos) {return new FallingRocks{ pos }; };
 	table[U"RollingRocks"] = [](const Vec2& pos) {return new RollingRocks{ pos }; };
+	table[U"NeedleUp"] = [](const Vec2& pos) {return new Needle{ pos,2 }; };
+	table[U"NeedleDown"] = [](const Vec2& pos) {return new Needle{ pos,0 }; };
+	table[U"NeedleLeft"] = [](const Vec2& pos) {return new Needle{ pos,1 }; };
+	table[U"NeedleRight"] = [](const Vec2& pos) {return new Needle{ pos,3 }; };
 }
 
 void EnemyAdder::update(EntityManager& manager)

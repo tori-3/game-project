@@ -546,6 +546,42 @@ void ChocoCakeWallBlock::draw(const Point& pos)const
 	TextureAsset{ U"ChocoCakeWall" }.resized(rect_size).draw(pos * rect_size);
 }
 
+void NeedleUpBlock::update(const Point& pos)
+{
+	if (not bornFlg)
+	{
+		DataManager::get().addEntity(U"NeedleUp", pos * rect_size + Vec2{ 0.5,0.5 }*rect_size);
+		bornFlg = true;
+	}
+}
+
+void NeedleDownBlock::update(const Point& pos)
+{
+	if (not bornFlg)
+	{
+		DataManager::get().addEntity(U"NeedleDown", pos * rect_size + Vec2{ 0.5,0.5 }*rect_size);
+		bornFlg = true;
+	}
+}
+
+void NeedleLeftBlock::update(const Point& pos)
+{
+	if (not bornFlg)
+	{
+		DataManager::get().addEntity(U"NeedleLeft", pos * rect_size + Vec2{ 0.5,0.5 }*rect_size);
+		bornFlg = true;
+	}
+}
+
+void NeedleRightBlock::update(const Point& pos)
+{
+	if (not bornFlg)
+	{
+		DataManager::get().addEntity(U"NeedleRight", pos * rect_size + Vec2{ 0.5,0.5 }*rect_size);
+		bornFlg = true;
+	}
+}
+
 FairyBlock::FairyBlock()
 {
 	character.addMotion(U"Floating",true);

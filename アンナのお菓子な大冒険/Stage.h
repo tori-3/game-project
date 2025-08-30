@@ -67,6 +67,10 @@ public:
 		{U"ChocoCakeBlock",[]() {return new ChocoCakeBlock(); }},
 		{U"ChocoCakeWallBlock",[]() {return new ChocoCakeWallBlock(); }},
 		{U"FairyBlock",[]() {return new FairyBlock(); }},
+		{U"NeedleUpBlock",[]() {return new NeedleUpBlock(); }},
+		{U"NeedleDownBlock",[]() {return new NeedleDownBlock(); }},
+		{U"NeedleLeftBlock",[]() {return new NeedleLeftBlock(); }},
+		{U"NeedleRightBlock",[]() {return new NeedleRightBlock(); }},
 	};
 
 	Stage(const JSON& json,bool backGround=false) {

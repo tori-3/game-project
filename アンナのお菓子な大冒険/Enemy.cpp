@@ -924,3 +924,33 @@ void Zerosen::draw()const
 {
 	character.draw();
 }
+
+Needle::Needle(const Vec2& pos, int32 angle)
+	:Entity{ U"Rocks", RectF::Empty(),pos,{0,0},1}
+	,angle{angle}
+{ }
+
+void Needle::update()
+{
+	Vec2 rectPos = pos;
+
+	switch (angle)
+	{
+	case 0:rectPos.y -= rect_size / 4.0; break;
+	case 1:rectPos.x += rect_size / 4.0; break;
+	case 2:rectPos.y += rect_size / 4.0; break;
+	case 3:rectPos.x -= rect_size / 4.0; break;
+	}
+
+	attack(U"Player", RectF{ Arg::center(rectPos),rect_size / 2.0 }, 1);
+}
+
+void Needle::draw()const
+{
+	TextureAsset{ U"PointedCorn" }.resized(rect_size).rotated(angle * 90_deg).drawAt(pos);
+}
+
+void Needle::damage(int32, const Vec2&, DamageType)
+{
+
+}

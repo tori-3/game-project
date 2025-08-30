@@ -306,6 +306,22 @@ void FairyBlock(Point pos) {
 	Rect{ pos * rect_size,rect_size }.draw(Palette::Greenyellow);
 }
 
+void NeedleUpBlock(Point pos) {
+	TextureAsset(U"PointedCorn").resized(rect_size).rotated(180_deg).draw(pos * rect_size);
+}
+
+void NeedleDownBlock(Point pos) {
+	TextureAsset(U"PointedCorn").resized(rect_size).draw(pos * rect_size);
+}
+
+void NeedleLeftBlock(Point pos) {
+	TextureAsset(U"PointedCorn").resized(rect_size).rotated(90_deg).draw(pos * rect_size);
+}
+
+void NeedleRightBlock(Point pos) {
+	TextureAsset(U"PointedCorn").resized(rect_size).rotated(-90_deg).draw(pos * rect_size);
+}
+
 
 struct Info {
 	String tag;
@@ -376,7 +392,11 @@ Array<Info>list{
 	{U"CloudRBlock",CloudRBlock,U"雲右"},
 	{U"FairyBlock",FairyBlock,U"妖精"},
 	{U"ChocoCakeWallBlock",ChocoCakeWallBlock,U"チョコケーキの壁"},
-	{U"ChocoCakeBlock",ChocoCakeBlock,U"チョコケーキの床"}
+	{U"ChocoCakeBlock",ChocoCakeBlock,U"チョコケーキの床"},
+	{U"NeedleUpBlock",NeedleUpBlock,U"とげ(上)"},
+	{U"NeedleDownBlock",NeedleDownBlock,U"とげ(下)"},
+	{U"NeedleLeftBlock",NeedleLeftBlock,U"とげ(左)"},
+	{U"NeedleRightBlock",NeedleRightBlock,U"とげ(右)"},
 };
 
 HashTable<String, std::function<void(Point)>> table;

@@ -237,3 +237,18 @@ public:
 
 	void draw()const override;
 };
+
+class Needle :public Entity
+{
+public:
+
+	int32 angle = 0;
+
+	Needle(const Vec2& cpos,int32 angle);
+
+	void update()override;
+
+	void draw()const override;
+
+	void damage(int32 n, const Vec2& force = {}, DamageType damageType = DamageType::Brakable);
+};
