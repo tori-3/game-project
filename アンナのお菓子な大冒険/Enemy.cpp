@@ -954,3 +954,68 @@ void Needle::damage(int32, const Vec2&, DamageType)
 {
 
 }
+
+BigCloudEnemy::BigCloudEnemy(const Vec2& cpos)
+	: Entity{ U"Gimmick", RectF::Empty(),cpos,{0,0},1}
+	, character{ U"Characters/cloud/cloud.json" ,U"Characters/cloud/motion.txt" ,5,cpos,true,false }
+{
+	character.addMotion(U"walk", true);
+	startY = cpos.y;
+}
+
+void BigCloudEnemy::update()
+{
+	hitBox.update();
+
+	Print << pos;
+
+	if (manager->get(U"Player")->pos.x < pos.x) {
+		vel.x -= 700 * Scene::DeltaTime();
+	}
+	else if (manager->get(U"Player")->pos.x >= pos.x) {
+		vel.x += 700 * Scene::DeltaTime();
+	}
+
+	vel.x = Clamp(vel.x, -300.0, 300.0);
+
+	pos.x += (vel.x + Periodic::Sine1_1(2, DataManager::get().time) * 100) * Scene::DeltaTime();
+
+	pos.y = startY + Periodic::Sine1_1(2, DataManager::get().time) * 30;
+
+
+	accumulatedTime += Scene::DeltaTime();
+
+	constexpr double eventInterval = 20;
+	if (eventInterval <= accumulatedTime)
+	{
+		character.addMotion(U"attack");
+
+		accumulatedTime -= eventInterval;
+	}
+
+	character.update(pos, 0 < vel.x);
+}
+
+void BigCloudEnemy::lateUpdate()
+{
+	if (not isActive())
+	{
+		DataManager::get().effect.add<StarEffect>(pos, 0);
+		manager->add(new CookieItem{ pos });
+	}
+}
+
+void BigCloudEnemy::draw()const
+{
+	ScopedColorMul2D mul{ ColorF{1,0.85} };
+
+	character.draw();
+}
+
+void BigCloudEnemy::damage(int32, const Vec2&, DamageType)
+{}
+
+bool BigCloudEnemy::isActive()
+{
+	return true;
+}

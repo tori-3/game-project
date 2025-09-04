@@ -32,6 +32,7 @@ EnemyAdder::EnemyAdder()
 	table[U"NeedleDown"] = [](const Vec2& pos) {return new Needle{ pos,0 }; };
 	table[U"NeedleLeft"] = [](const Vec2& pos) {return new Needle{ pos,1 }; };
 	table[U"NeedleRight"] = [](const Vec2& pos) {return new Needle{ pos,3 }; };
+	table[U"BigCloudEnemy"] = [](const Vec2& pos) {return new BigCloudEnemy{ pos }; };
 }
 
 void EnemyAdder::update(EntityManager& manager)

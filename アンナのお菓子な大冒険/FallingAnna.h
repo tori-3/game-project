@@ -181,7 +181,7 @@ namespace FallingAnna {
 		Texture rock{ U"MiniGameAsset/FallingAnna/tex/rockball.png" };
 		const Texture toge{ U"MiniGameAsset/FallingAnna/tex/thunderbolt.png" };
 		const Array<Texture> cloud{ Texture(U"☁"_emoji),Texture(U"MiniGameAsset/FallingAnna/tex/cloud0.png"),Texture(U"MiniGameAsset/FallingAnna/tex/cloud1.png") };
-		const Texture jimen{ U"MiniGameAsset/FallingAnna/tex/ground.bmp" };
+		const Texture jimen{ U"MiniGameAsset/FallingAnna/tex/ground.png" };
 		const Texture tower{ U"MiniGameAsset/FallingAnna/tex/tower2.png" };
 		Texture bat{ U"MiniGameAsset/FallingAnna/tex/physicbit.bmp" };
 		Array<picture>bats = Array<picture>();
@@ -195,9 +195,9 @@ namespace FallingAnna {
 		const Audio sippaiA{ U"MiniGameAsset/FallingAnna/oto/hoaa.wav" };
 		const Audio bgm{ U"MiniGameAsset/FallingAnna/oto/sandou.mp3" };
 
-		const Font Mfont{ 30 };
-		const Font Sfont{ 60 };
-		const Font Cfont{ 120 };
+		const Font Mfont{ FontMethod::MSDF,  30 };
+		const Font Sfont{ FontMethod::MSDF,  60 };
+		const Font Cfont{ FontMethod::MSDF,  120 };
 
 		const float ww = 1200, wh = 800;
 
@@ -246,6 +246,10 @@ namespace FallingAnna {
 
 		float hitstop = 0;
 		float attack = 0;
+
+		TextStyle textStyle = TextStyle::Outline(0.2, ColorF{ 0.0 });
+
+
 		float soutaix(float x)const
 		{
 			auto dx = x - annas.x + ww / 2;
@@ -764,7 +768,24 @@ namespace FallingAnna {
 		}
 		void gameDraw() const override
 		{
-			TextureAsset{ U"BackGroundTexture/雲背景.png" }.resized(Scene::Size()).draw();
+
+			switch (getData().mini_mode)
+			{
+			case Stage_Mode:
+				TextureAsset{ U"BackGroundTexture/雲背景.png" }.resized(Scene::Size()).draw();
+				break;
+			case Easy_Mode:
+				TextureAsset{ U"BackGroundTexture/雪原背景.png" }.resized(Scene::Size()).draw();
+				break;
+			case Normal_Mode:
+				TextureAsset{ U"BackGroundTexture/雲背景.png" }.resized(Scene::Size()).draw();
+				break;
+			case Hard_Mode:
+				TextureAsset{ U"BackGroundTexture/宇宙背景.png" }.resized(Scene::Size()).draw();
+				break;
+			}
+
+
 
 			//アンナちゃんとかだけは相対座標で表示することでいい感じだったりする
 			drawtower();
@@ -844,24 +865,24 @@ namespace FallingAnna {
 			{
 				if (getclear())
 				{
-					Cfont(U"クリア―――！").drawAt(ww * 0.5f, wh * 0.35f);
+					Cfont(U"クリア―――！").drawAt(textStyle, ww * 0.5f, wh * 0.35f);
 				}
 				else
 				{
-					Cfont(U"失敗……").drawAt(ww * 0.5f, wh * 0.35f);
+					Cfont(U"失敗……").drawAt(textStyle, ww * 0.5f, wh * 0.35f);
 				}
-				Sfont(U"合格ライン:", goukakuline).draw(Arg::topLeft = Vec2(ww * 0.5f, wh * 0.47f));
-				Mfont(U"Enterでおわる").drawAt(Vec2(ww * 0.5f, wh * 0.6f));
+				//Sfont(U"合格ライン:", goukakuline).draw(textStyle, Arg::topLeft = Vec2(ww * 0.5f, wh * 0.47f));
+				Sfont(U"Enterでおわる").drawAt(textStyle,Vec2(ww * 0.5f, wh * 0.6f));
 			}
 			if (getclear())
 			{
-				Sfont(Math::Round(score)).draw(Arg::topLeft = Vec2(ww * 0.05f, wh * 0.05f), Palette::Yellow);
+				Sfont(Math::Round(score), U"/", goukakuline).draw(textStyle, Arg::topLeft = Vec2(ww * 0.05f, wh * 0.05f), Palette::Yellow);
 			}
 			else
 			{
-				Sfont(Math::Round(score)).draw(Arg::topLeft = Vec2(ww * 0.05f, wh * 0.05f));
+				Sfont(Math::Round(score), U"/", goukakuline).draw(textStyle, Arg::topLeft = Vec2(ww * 0.05f, wh * 0.05f));
 			}
-			Sfont(U"残り:", Math::Round(nokori / annah * 1.6), U"m").draw(Arg::topRight = Vec2(ww * 0.95f, wh * 0.05f));
+			Sfont(U"残り:", Math::Round(nokori / annah * 1.6), U"m").draw(textStyle, Arg::topRight = Vec2(ww * 0.95f, wh * 0.05f));
 
 			FontAsset{ U"NormalFont" }(U"[ESC]ポーズ").draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 		}

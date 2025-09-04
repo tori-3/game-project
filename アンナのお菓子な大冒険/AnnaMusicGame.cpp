@@ -165,16 +165,15 @@ namespace AnnaMusicGame {
 	AnnaMusicGame::AnnaMusicGame(const InitData& init)
 		: MiniGameSceneBase{ init }
 	{
-		if (not TextureAsset::IsRegistered(U"BackGroundTexture/雲背景.png"))
+		if (not TextureAsset::IsRegistered(U"BackGroundTexture/宇宙背景.png"))
 		{
-			TextureAsset::Register(U"BackGroundTexture/雲背景.png", U"BackGroundTexture/雲背景.png");
+			TextureAsset::Register(U"BackGroundTexture/宇宙背景.png", U"BackGroundTexture/宇宙背景.png");
 		}
 
-		const Texture texture{ U"BackGroundTexture/ステージセレクト.png" };
 		const RenderTexture internalTexture{ Scene::Size() };
 		const RenderTexture internalTexture2{ Scene::Size() };
 
-		Shader::GaussianBlur(texture, internalTexture, internalTexture2);
+		Shader::GaussianBlur(TextureAsset{U"BackGroundTexture/宇宙背景.png"}, internalTexture, internalTexture2);
 		Shader::GaussianBlur(internalTexture2, internalTexture, background);
 	}
 

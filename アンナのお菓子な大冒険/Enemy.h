@@ -252,3 +252,28 @@ public:
 
 	void damage(int32 n, const Vec2& force = {}, DamageType damageType = DamageType::Brakable);
 };
+
+class BigCloudEnemy :public Entity
+{
+public:
+
+	CharacterSystem character;
+
+	double accumulatedTime = 0;
+
+	double startY = 0;
+
+	//double time = 0;
+
+	BigCloudEnemy(const Vec2& cpos);
+
+	void update()override;
+
+	void lateUpdate()override;
+
+	void draw()const override;
+
+	void damage(int32, const Vec2&, DamageType)override;
+
+	bool isActive()override;
+};

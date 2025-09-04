@@ -24,10 +24,6 @@ namespace HawkDropOut
 	HawkDropOut::HawkDropOut(const InitData& init)
 		: MiniGameSceneBase{ init }
 	{
-		if (not TextureAsset::IsRegistered(U"BackGroundTexture/雲背景.png")) {
-			TextureAsset::Register(U"BackGroundTexture/雲背景.png", U"BackGroundTexture/雲背景.png");
-		}
-
 		AudioAsset::Register(U"MiniGameBGM", U"BGM/MiniGameBGM.wav", Loop::Yes);
 		BGMManager::get().play(U"MiniGameBGM");
 
@@ -467,7 +463,7 @@ namespace HawkDropOut
 
 	}
 
-	void HawkDropOut::gameDraw() const 
+	void HawkDropOut::gameDraw() const
 	{
 		{
 			Transformer2D transformer{ Mat3x2::Scale(1.5,{0,0 }) * Mat3x2::Translate(0,-15), TransformCursor::Yes };
@@ -475,9 +471,23 @@ namespace HawkDropOut
 			//背景画面
 			Scene::SetBackground(Palette::Blue);
 
-			TextureAsset{ U"BackGroundTexture/雲背景.png" }.resized(800).draw();
+			switch (getData().mini_mode)
+			{
+			case Stage_Mode:
+				TextureAsset{ U"BackGroundTexture/雲背景.png" }.resized(800).draw();
+				break;
+			case Easy_Mode:
+				TextureAsset{ U"BackGroundTexture/雪原背景.png" }.resized(800).draw();
+				break;
+			case Normal_Mode:
+				TextureAsset{ U"BackGroundTexture/雲背景.png" }.resized(800).draw();
+				break;
+			case Hard_Mode:
+				TextureAsset{ U"BackGroundTexture/宇宙背景.png" }.resized(800).draw();
+				break;
+			}
 
-			constexpr ColorF cloudColor = ColorF{ Palette::Lightpink } + ColorF{ 0.3 };
+			const ColorF cloudColor = getData().mini_mode == Easy_Mode ? ColorF{ Palette::White } : getData().mini_mode == Hard_Mode ? ColorF{1,0.5}:ColorF{ Palette::Lightpink } + ColorF{ 0.3 };
 
 			//雲を描画する
 			cloudEmoji.scaled(1).draw(Aclouddistance, 100, cloudColor);

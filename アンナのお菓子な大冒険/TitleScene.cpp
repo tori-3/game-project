@@ -27,13 +27,6 @@ void TitleScene::drawStick(const Vec2& pos, StringView text)const
 TitleScene::TitleScene(const InitData& init)
 	: IScene{ init }
 {
-
-	LoadAsset::RegisterTexture(U"BackGroundTexture/雪原背景.png");
-	LoadAsset::RegisterTexture(U"BackGroundTexture/雲背景.png");
-	LoadAsset::RegisterTexture(U"BackGroundTexture/ラスボス背景.png");
-	LoadAsset::RegisterTexture(U"BackGroundTexture/洞窟背景.png");
-	LoadAsset::RegisterTexture(U"BackGroundTexture/宇宙背景.png");
-
 	LoadAsset::RegisterAudio(U"BGM/StageCloud_Pxtone5.2.mp3", Loop::Yes);
 	BGMManager::get().play(U"BGM/StageCloud_Pxtone5.2.mp3",0s);
 

@@ -52,7 +52,11 @@ void Main()
 	manager.add<EndRollScene>(U"EndRollScene");
 
 
-
+	LoadAsset::RegisterTexture(U"BackGroundTexture/雪原背景.png");
+	LoadAsset::RegisterTexture(U"BackGroundTexture/雲背景.png");
+	LoadAsset::RegisterTexture(U"BackGroundTexture/ラスボス背景.png");
+	LoadAsset::RegisterTexture(U"BackGroundTexture/洞窟背景.png");
+	LoadAsset::RegisterTexture(U"BackGroundTexture/宇宙背景.png");
 
 	LoadAsset::LoadAudio();
 

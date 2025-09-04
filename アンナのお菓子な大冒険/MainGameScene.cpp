@@ -38,6 +38,11 @@ MainGameScene::MainGameScene(const InitData& init)
 		TextureAsset::Register(U"kaiso",U"kaiso.png");
 	}
 
+	if (getData().stage == 24)
+	{
+		DataManager::get().addEntity(U"BigCloudEnemy",Vec2{Scene::Center()});
+	}
+
 	DataManager::get().maxHP = getData().maxHP;
 
 	adder.update(manager);
