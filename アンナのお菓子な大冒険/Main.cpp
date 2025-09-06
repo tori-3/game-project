@@ -11,6 +11,7 @@
 #include"AnnaMusicGame.h"
 #include"MiniGameSelect.h"
 #include"EndRollScene.h"
+#include"GalleryScene.h"
 
 #include"TitleScene.h"
 
@@ -50,6 +51,7 @@ void Main()
 	manager.add<Maze2::mazeGame>(U"Maze2");
 	manager.add<AnnaMusicGame::AnnaMusicGame>(U"AnnaMusicGame");
 	manager.add<EndRollScene>(U"EndRollScene");
+	manager.add<GalleryScene>(U"GalleryScene");
 
 
 	LoadAsset::RegisterTexture(U"BackGroundTexture/雪原背景.png");

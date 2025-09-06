@@ -125,6 +125,7 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="ExplosionEffect.cpp" />
     <ClCompile Include="FadeUpEffect.cpp" />
+    <ClCompile Include="GalleryScene.cpp" />
     <ClCompile Include="Gimmick.cpp" />
     <ClCompile Include="GrapesHPBar.cpp" />
     <ClCompile Include="HawkDropOut.cpp" />
@@ -355,6 +356,7 @@
     <ClInclude Include="BeltConveyorButton.h" />
     <ClInclude Include="BGMManager.hpp" />
     <ClInclude Include="EnemyAdder.h" />
+    <ClInclude Include="GalleryScene.h" />
     <ClInclude Include="Gimmick.h" />
     <ClInclude Include="KeyConfigUtility.h" />
     <ClInclude Include="LightBloom.h" />

@@ -25,6 +25,7 @@ public:
 	{
 		U"マップ",
 		U"ミニゲーム",
+		U"思い出",
 		U"設定",
 		U"ライセンス",
 		U"終了",
@@ -44,7 +45,7 @@ public:
 	Timer changeMapTimer{ 1s };
 	Timer changeMiniGameTimer{ 1s };
 
-	static constexpr Vec2 menuPos{ 800,450 + 30 };
+	static constexpr Vec2 menuPos{ 800,450 + 30-35 };
 	static constexpr double menuHeight = 60;
 
 	double time = 0;

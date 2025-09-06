@@ -27,7 +27,7 @@
     false,
     false
   ],
-  "ClearStage": 24,
+  "ClearStage": 1,
   "EffectVolume": 0.3333677649497986,
   "IncreaseHPMode": true,
   "Key": {
@@ -257,5 +257,5 @@
       "Normal": false
     }
   ],
-  "SelectedStage": 23
+  "SelectedStage": 1
 }

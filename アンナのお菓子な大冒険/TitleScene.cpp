@@ -125,12 +125,15 @@ void TitleScene::update()
 				changeMiniGameTimer.restart();
 				break;
 			case 2:
-				uiManager.addChild({ SettingWindow(getData().minigameUpKey,getData().minigameDownKey,getData().minigameLeftKey,getData().minigameRightKey,[=] {menuClicked = false; getData().save(); KeyConfigUtility::CleapInput(getData().menuDecisionKey); },getData(),uiManager) });
+				changeScene(U"GalleryScene");
 				break;
 			case 3:
-				uiManager.addChild({ licenseDialog() });
+				uiManager.addChild({ SettingWindow(getData().minigameUpKey,getData().minigameDownKey,getData().minigameLeftKey,getData().minigameRightKey,[=] {menuClicked = false; getData().save(); KeyConfigUtility::CleapInput(getData().menuDecisionKey); },getData(),uiManager) });
 				break;
 			case 4:
+				uiManager.addChild({ licenseDialog() });
+				break;
+			case 5:
 				System::Exit();
 				break;
 			default:
