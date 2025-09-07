@@ -68,6 +68,11 @@ void GalleryScene::update()
 			}
 		}
 
+		if (getData().menuBackKey.down())
+		{
+			changeScene(U"TitleScene");
+		}
+
 		bool clicked = false;
 
 		if (KeyEnter.down())
@@ -100,7 +105,7 @@ void GalleryScene::update()
 			}
 			else
 			{
-				auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 10,.margine = 0,.width = 150, .child = TextUI::Create({.text = U"閉じる",.color = Palette::White}) });
+				auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 10,.margine = 10,.width = 150, .child = TextUI::Create({.text = U"閉じる",.color = Palette::White}) });
 				closeButton->selected = true;
 
 				manager.addChild
@@ -119,20 +124,29 @@ void GalleryScene::update()
 										.texture = textureGrid[selectPoint],
 										.flex = 1
 									}),
-									TextUI::Create
+
+									Row::Create
 									({
-										.text = textCsv[selectPoint.x + selectPoint.y * textureGrid.width()][0],
-										.color = Palette::White,
-										.margine = 15,
-										.height = 180,
-									}),
-									closeButton
+										.children
+										{
+											TextUI::Create
+											({
+												.text = textCsv[selectPoint.x + selectPoint.y * textureGrid.width()][0],
+												.fontSize = 20,
+												.color = Palette::White,
+												.margine = 15,
+												.height = 140,
+												.flex=1,
+											}),
+											closeButton
+										}
+									})
 								}
 							}),
 						}),
 						.updateFunc = [=](SimpleDialog* dialog)
 						{
-							if (getData().menuBackKey.down() || closeButton->pressed())
+							if (getData().menuBackKey.down() || closeButton->pressed() || KeyEnter.down())
 							{
 								dialog->close();
 								AudioAsset{ U"キャンセル" }.playOneShot();
@@ -143,11 +157,6 @@ void GalleryScene::update()
 			}
 		}
 	}
-
-
-
-
-
 }
 
 void GalleryScene::draw() const

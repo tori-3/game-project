@@ -55,6 +55,8 @@ struct GameData
 
 	void saveMiniGameClear();
 
+	void saveMainGame(bool clear);
+
 	void save();
 
 	void load();

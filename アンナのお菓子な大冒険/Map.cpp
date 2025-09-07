@@ -32,28 +32,30 @@ Map::Map(const InitData& init)
 {
 	Scene::SetBackground(Palette::Skyblue);
 
-	clearStage = saveDatajson[U"ClearStage"].get<int32>();
+	clearStage = getData().clearStage;
 
-	if (getData().mini_clear == true && clearStage < getData().stage)
-	{
-		saveDatajson[U"ClearStage"] = getData().stage;
-		saveDatajson.save(U"saveData.json");
-		clearStage = getData().stage;
-	}
+	//clearStage = saveDatajson[U"ClearStage"].get<int32>();
 
-	if (getData().backFromMainGameScene)
-	{
-		if (getData().mini_clear || getData().quitStage)
-		{
-			saveDatajson[U"MaxHP"][getData().stage - 1] = 5;
-		}
-		else
-		{
-			saveDatajson[U"MaxHP"][getData().stage - 1] = getData().maxHP + 2;
-		}
+	//if (getData().mini_clear == true && clearStage < getData().stage)
+	//{
+	//	saveDatajson[U"ClearStage"] = getData().stage;
+	//	saveDatajson.save(U"saveData.json");
+	//	clearStage = getData().stage;
+	//}
 
-		saveDatajson.save(U"saveData.json");
-	}
+	//if (getData().backFromMainGameScene)
+	//{
+	//	if (getData().mini_clear || getData().quitStage)
+	//	{
+	//		saveDatajson[U"MaxHP"][getData().stage - 1] = 5;
+	//	}
+	//	else
+	//	{
+	//		saveDatajson[U"MaxHP"][getData().stage - 1] = getData().maxHP + 2;
+	//	}
+
+	//	saveDatajson.save(U"saveData.json");
+	//}
 
 
 

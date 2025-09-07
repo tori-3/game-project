@@ -12,7 +12,6 @@ public:
 	bool pause = false;
 	bool pauseFlg = false;
 
-	// コンストラクタ（必ず実装）
 	MiniGameSceneBase(const InitData& init)
 		: IScene{ init }
 	{
@@ -43,9 +42,23 @@ public:
 
 	void draw() const override;
 
+	void stageClear()
+	{
+		if(m_saveClearFlg)
+		{
+			return;
+		}
+
+		getData().saveMiniGameClear();
+
+		m_saveClearFlg = true;
+	}
+
 private:
 
 	LongPressInput leftInput;
 	LongPressInput rightInput;
 	int32 m_settingSelectIndex = 0;
+
+	bool m_saveClearFlg = false;
 };

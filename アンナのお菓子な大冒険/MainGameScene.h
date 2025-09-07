@@ -40,13 +40,15 @@ public:
 	GrapesHPBar hpBar{ Rect{Arg::center(Scene::Center().x,50),300,40} };
 
 	Spotlight* light = nullptr;
-
+	
 	RenderTexture backgroundRenderTexture{ Scene::Size() };
 	const RenderTexture internalTexture{ Scene::Size() };
 
 	bool bgmStart = false;
 
 	double kaisouAlpha = 0;
+
+	bool saveFlg = false;
 
 	MainGameScene(const InitData& init);
 

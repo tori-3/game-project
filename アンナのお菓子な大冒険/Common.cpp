@@ -38,6 +38,30 @@ void GameData::saveMiniGameClear()
 	}
 }
 
+void GameData::saveMainGame(bool clear)
+{
+	if (clear)
+	{
+		if(maxHPList[stage - 1]==5)
+		{
+			clearCompleteList[stage - 1] = true;
+		}
+
+		if (clearStage < stage)
+		{
+			clearStage = stage;
+		}
+
+		maxHPList[stage - 1] = 5;
+	}
+	else
+	{
+		maxHPList[stage - 1] += 2;
+	}
+
+	save();
+}
+
 void GameData::save()
 {
 	JSON saveDatajson;

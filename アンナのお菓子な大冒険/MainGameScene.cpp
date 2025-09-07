@@ -104,7 +104,7 @@ void MainGameScene::gameUpdate()
 		BGMManager::get().play(getData().BGMPath);
 		bgmStart = true;
 	}
-	ClearPrint();
+
 	DataManager::get().playerPos = player->pos;
 
 	adder.update(manager);
@@ -123,6 +123,20 @@ void MainGameScene::gameUpdate()
 		}
 	}
 
+
+	if(not saveFlg)
+	{
+		if (DataManager::get().table.contains(U"Clear"))
+		{
+			saveFlg = true;
+			getData().saveMainGame(true);
+		}
+		else if (not DataManager::get().playerAlive)
+		{
+			saveFlg = true;
+			getData().saveMainGame(false);
+		}
+	}
 
 	if (not DataManager::get().playerAlive)
 	{
