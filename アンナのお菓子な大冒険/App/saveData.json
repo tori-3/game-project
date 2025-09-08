@@ -1,9 +1,9 @@
 ﻿{
-  "BGMVolume": 0.35043978691101074,
+  "BGMVolume": 0.23406608402729034,
   "ClearComplete": [
     true,
-    false,
-    false,
+    true,
+    true,
     false,
     false,
     false,
@@ -28,8 +28,8 @@
     false,
     false
   ],
-  "ClearStage": 13,
-  "EffectVolume": 0.3996123969554901,
+  "ClearStage": 4,
+  "EffectVolume": 0.23235559463500977,
   "IncreaseHPMode": true,
   "Key": {
     "attackKey": {
@@ -258,5 +258,5 @@
       "Normal": false
     }
   ],
-  "SelectedStage": 14
+  "SelectedStage": 4
 }

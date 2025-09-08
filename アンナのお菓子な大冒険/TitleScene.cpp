@@ -222,7 +222,7 @@ void TitleScene::draw() const
 std::shared_ptr<UIElement> TitleScene::licenseDialog()
 {
 	auto showBrowserButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 220, .child = TextUI::Create({.text = U"ブラウザで見る",.color = Palette::White}) });
-	auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 20,.margine = 10,.width = 220, .child = TextUI::Create({.text = U"閉じる",.color = Palette::White}) });
+	auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 20,.margine = 10,.width = 220, .child = TextUI::Create({.text = U"\U000F05AD閉じる",.color = Palette::White}) });
 	closeButton->selected = true;
 	auto scrollbar = SimpleScrollbar::Create
 	({

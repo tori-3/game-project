@@ -241,7 +241,7 @@ public:
 
 		t += Scene::DeltaTime();
 
-		if (endRollTimeLong < t)
+		if (endRollTimeLong+2 < t)
 		{
 			changeScene(U"EndRoll8");
 		}
@@ -505,7 +505,7 @@ public:
 
 		if (10 < t)
 		{
-			changeScene(U"EndRoll15",3s, CrossFade::Yes);
+			changeScene(U"EndRoll15",3s);
 			BGMManager::get().stop(2s);
 		}
 	}
@@ -525,22 +525,65 @@ public:
 		FontAsset{ U"EndRollFont" }(U"学園祭で遊んでくれた方々").drawAt(centerX, 250+height*2, AlphaF(Clamp(t-2*1.5, 0.0, 1.0)));
 		FontAsset{ U"EndRollFont" }(U"and You").drawAt(120,centerX, 250+height*3.5, AlphaF(Clamp((t-4*1.5)/3.0, 0.0, 1.0)));
 	}
-
-	void drawFadeOut(double t) const override
-	{
-		Rect{ Scene::Size() }.draw(Palette::Black);
-		draw();
-	}
 };
 
 class EndRoll15 :public App::Scene
+{
+public:
+	TalkWindow talk;
+
+	double t = 0;
+
+	bool next = false;
+
+	EndRoll15(const InitData& init) : IScene{ init }
+	{
+		talk.setTalk
+		({
+			{ U"",U"懲らしめられた魔女は改心し、みんなのためにお菓子を作り、ふるまうようになった。"},
+			{ U"",U"アンナちゃんの勇気と食欲によって、お菓子の国に平穏が訪れたのだった。" }
+		});
+	}
+
+	void update()override
+	{
+		t += Scene::DeltaTime();
+		talk.update(false,false);
+
+		if (not next&&4 < t)
+		{
+			talk.next();
+			next = true;
+		}
+
+		if (8 < t)
+		{
+			changeScene(U"EndRoll16", 6s);
+		}
+	}
+
+	void draw()const override
+	{
+		constexpr double height = 200;
+		constexpr double space = 50;
+		talk.draw(RectF{ space,Scene::Height() - height - space,Scene::Width() - space * 2 ,height },{},true);
+	}
+
+	//void drawFadeOut(double t) const override
+	//{
+	//	Rect{ Scene::Size() }.draw(Palette::Black);
+	//	draw();
+	//}
+};
+
+class EndRoll16 :public App::Scene
 {
 public:
 	double t = 0;
 
 	Texture texture{ U"EndRoll/ハッピーエンド.png" };
 
-	EndRoll15(const InitData& init) : IScene{ init }{}
+	EndRoll16(const InitData& init) : IScene{ init }{}
 
 	void update()override
 	{
@@ -548,7 +591,7 @@ public:
 
 		if (10 < t)
 		{
-			changeScene(U"EndRoll16",2s);			
+			changeScene(U"EndRoll17",2s);			
 		}
 	}
 
@@ -568,10 +611,10 @@ public:
 	}
 };
 
-class EndRoll16 :public App::Scene
+class EndRoll17 :public App::Scene
 {
 public:
-	EndRoll16(const InitData& init) : IScene{ init } {}
+	EndRoll17(const InitData& init) : IScene{ init } {}
 
 	void update()override
 	{
@@ -607,6 +650,7 @@ public:
 		manager.add<EndRoll14>(U"EndRoll14");
 		manager.add<EndRoll15>(U"EndRoll15");
 		manager.add<EndRoll16>(U"EndRoll16");
+		manager.add<EndRoll17>(U"EndRoll17");
 	}
 
 	void update()override

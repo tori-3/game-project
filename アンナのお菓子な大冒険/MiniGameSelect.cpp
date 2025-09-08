@@ -11,6 +11,11 @@ MiniGameSelect::MiniGameSelect(const InitData& init)
 	{
 		const int32 stageNum = object.get<int32>();
 
+		if (getData().clearStage < stageNum)
+		{
+			continue;
+		}
+
 		MiniGameData data;
 
 		JSON miniGame = json[U"StageData"][U"Stage{}"_fmt(stageNum)];
@@ -28,6 +33,9 @@ MiniGameSelect::MiniGameSelect(const InitData& init)
 
 void MiniGameSelect::update()
 {
+	leftFire.update();
+	rightFire.update();
+
 	if (backButton.leftClicked() || getData().menuBackKey.down())
 	{
 		AudioAsset{ U"決定ボタン" }.playOneShot();
@@ -37,6 +45,11 @@ void MiniGameSelect::update()
 	if (backButton.mouseOver())
 	{
 		Cursor::RequestStyle(CursorStyle::Hand);
+	}
+
+	if (miniGameList.isEmpty())
+	{
+		return;
 	}
 
 	if(rightInput.down())
@@ -140,9 +153,6 @@ void MiniGameSelect::update()
 		BGMManager::get().stop();
 		AudioAsset{ U"決定ボタン" }.playOneShot();
 	}
-
-	leftFire.update();
-	rightFire.update();
 }
 
 void MiniGameSelect::draw()const
@@ -165,28 +175,41 @@ void MiniGameSelect::draw()const
 	candle.drawAt(75, 700);
 	candle.drawAt(Scene::Width() - 75, 700);
 
+
 	{
 		ScopedSpotlight target{ light,ColorF{0.4} };
 
-		int32 x = Scene::Width() / 7 * (gameIndex + 1);
-		int32 y = 150 + gameIndex % 2 * 200;
-		Circle{ x,y,200 }.draw(ColorF{ 2.0 }, ColorF{ 0.0 });
+		if (not miniGameList.isEmpty())
+		{
+
+			int32 x = Scene::Width() / 7 * (gameIndex + 1);
+			int32 y = 150 + gameIndex % 2 * 200;
+			Circle{ x,y,200 }.draw(ColorF{ 2.0 }, ColorF{ 0.0 });
+		}
 
 		Circle{ {75,600},100 }.draw(ColorF{ 1.0 }, ColorF{ 0.0 });
 		Circle{ {Scene::Width() - 75,600},100 }.draw(ColorF{ 1.0 }, ColorF{ 0.0 });
 	}
 	light.draw();
 
+
+	if (miniGameList.isEmpty())
+	{
+		FontAsset{ U"NormalFont" }(U"まだ遊べるミニゲームはありません").drawAt(50, Scene::Center());
+		FontAsset{ U"NormalFont" }(U"ミニゲームをクリアすると追加されます").drawAt(25, Scene::Center()+Vec2{0,50});
+	}
+
 	leftFire.draw();
 	rightFire.draw();
 
+	if (not miniGameList.isEmpty())
+	{
+		font(miniGameList[gameIndex].sentence).draw(150, Scene::Center().y + 100);
 
-	font(miniGameList[gameIndex].sentence).draw(150, Scene::Center().y + 100);
-
-	easyButton.draw(chocolateBeltConveyor, font, U"イージー", Palette::Greenyellow, getData().miniGameList[gameIndex].easyClear, modeIndex == 0);
-	normalButton.draw(chocolateBeltConveyor, font, U"ノーマル", Palette::Orange, getData().miniGameList[gameIndex].normalClear, modeIndex == 1);
-	hardButton.draw(chocolateBeltConveyor, font, U"ハード", Palette::Red, getData().miniGameList[gameIndex].hardClear, modeIndex == 2);
-
+		easyButton.draw(chocolateBeltConveyor, font, U"イージー", Palette::Greenyellow, getData().miniGameList[gameIndex].easyClear, modeIndex == 0);
+		normalButton.draw(chocolateBeltConveyor, font, U"ノーマル", Palette::Orange, getData().miniGameList[gameIndex].normalClear, modeIndex == 1);
+		hardButton.draw(chocolateBeltConveyor, font, U"ハード", Palette::Red, getData().miniGameList[gameIndex].hardClear, modeIndex == 2);
+	}
 	homeIcon.drawAt(backButton.center, backButton.mouseOver() ? Palette::Gray : Palette::White);
 
 	FontAsset{ U"NormalFont" }(U"[Q]タイトルに戻る").draw(Arg::leftCenter = backButton.center + Vec2{ 30,0 });

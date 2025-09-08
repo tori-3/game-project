@@ -1,10 +1,10 @@
 ﻿#include"TalkWindow.h"
 #include"DataManager.h"
 
-void TalkWindow::update()
+void TalkWindow::update(bool backFlg, bool nextFlg)
 {
-	const bool backFlg = KeyA.down() || KeyLeft.down();
-	const bool nextFlg = KeyD.down() || KeyRight.down() || KeyEnter.down();
+	//const bool backFlg = KeyA.down() || KeyLeft.down();
+	//const bool nextFlg = KeyD.down() || KeyRight.down() || KeyEnter.down();
 
 	//確認
 	if (not isContinue())return;
@@ -53,7 +53,7 @@ void TalkWindow::update()
 	}
 }
 
-void TalkWindow::draw(const RectF& rect, const SizeF& nameSize)const
+void TalkWindow::draw(const RectF& rect, const SizeF& nameSize,bool hideMode)const
 {
 	if (not isContinue())return;
 
@@ -75,20 +75,30 @@ void TalkWindow::draw(const RectF& rect, const SizeF& nameSize)const
 	const RoundRect window{ rect,20 };
 	const RoundRect nameWindow{ rect.pos - Vec2::Down(nameSize.y - thickness),nameSize ,20 };
 	window.draw({ Palette::Black, 0.6 }).drawFrame(thickness, 0, frameColor);
-	nameWindow.draw({ Palette::Black ,0.6 }).drawFrame(thickness, 0, frameColor);
 
+	if (not hideMode)
+	{
+		nameWindow.draw({ Palette::Black ,0.6 }).drawFrame(thickness, 0, frameColor);
+	}
 	//確認
 
 
 	const size_t length = static_cast<size_t>(m_accumlater);
 	FontAsset(U"WindowFont")(talk.text.substr(0, length)).draw(window.rect.stretched(-20));
-	FontAsset(U"WindowFont")(talk.name).drawAt(nameWindow.rect.center());
+
+	if(not hideMode)
+	{
+		FontAsset(U"WindowFont")(talk.name).drawAt(nameWindow.rect.center());
+	}
 
 	if (talk.text.size() < length)
 	{
 		Triangle{ window.rect.br().movedBy(-40, -40), 20, 180_deg }.draw(ColorF{ 1, Periodic::Sine0_1(2.0s) });
 	}
 
-	FontAsset(U"WindowFont")(U"←A 戻る　　次へ D→").drawBase(20, window.rect.bl() + Vec2{ 20,-20 });
+	if (not hideMode)
+	{
+		FontAsset(U"WindowFont")(U"←A 戻る　　次へ D→").drawBase(20, window.rect.bl() + Vec2{ 20,-20 });
+	}
 }
 

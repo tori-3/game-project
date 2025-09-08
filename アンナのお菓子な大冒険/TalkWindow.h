@@ -32,10 +32,10 @@ public:
 		m_lastLength = 0;
 	}
 
-	void update();
+	void update(bool backFlg, bool nextFlg);
 
 	//描画：RectF 表示する位置を指定,SizeF 名前ウィンドウのサイズ
-	void draw(const RectF& rect, const SizeF& nameSize = { 250,50 })const;
+	void draw(const RectF& rect, const SizeF& nameSize = { 250,50 },bool hideMode=false)const;
 
 	//次に進む
 	void next()

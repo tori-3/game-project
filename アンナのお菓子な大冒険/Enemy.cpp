@@ -967,8 +967,6 @@ void BigCloudEnemy::update()
 {
 	hitBox.update();
 
-	Print << pos;
-
 	if (manager->get(U"Player")->pos.x < pos.x) {
 		vel.x -= 700 * Scene::DeltaTime();
 	}

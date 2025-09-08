@@ -89,7 +89,7 @@ void MainGameScene::gameUpdate()
 	if (TalkManager::get().talkWindow.isContinue())
 	{
 		DataManager::get().table.insert(U"TalkWindow");
-		TalkManager::get().talkWindow.update();
+		TalkManager::get().talkWindow.update(getData().minigameLeftKey.down(),(getData().menuDecisionKey|getData().minigameRightKey).down());
 		return;
 	}
 	else
