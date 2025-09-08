@@ -10,7 +10,7 @@
     false,
     false,
     false,
-    false,
+    true,
     false,
     false,
     true,
@@ -28,8 +28,8 @@
     false,
     false
   ],
-  "ClearStage": 22,
-  "EffectVolume": 0.3333677649497986,
+  "ClearStage": 13,
+  "EffectVolume": 0.3996123969554901,
   "IncreaseHPMode": true,
   "Key": {
     "attackKey": {
@@ -221,7 +221,7 @@
     5,
     5,
     5,
-    5,
+    11,
     5,
     5,
     5
@@ -258,5 +258,5 @@
       "Normal": false
     }
   ],
-  "SelectedStage": 23
+  "SelectedStage": 14
 }

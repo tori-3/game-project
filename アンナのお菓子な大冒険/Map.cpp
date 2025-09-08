@@ -213,7 +213,7 @@ void Map::update()
 			//getData().mini_clear = false;
 			getData().stageFile = stageList[index];
 			getData().backgroundTexture = json[U"StageData"][U"Stage{}"_fmt(index + 1)][U"BackgroundTexture"].getString();
-			getData().maxHP = saveDatajson[U"MaxHP"][index].get<int32>();
+			//getData().maxHP = saveDatajson[U"MaxHP"][index].get<int32>();
 			getData().backFromMainGameScene = false;
 			getData().quitStage = false;
 			getData().sceneName = sceneNames[index];

@@ -24,3 +24,22 @@ bool ChocolateButton::onMouseOver()const
 {
 	return getRoundRect().mouseOver();
 }
+
+std::shared_ptr<ChocolateButton> CreateChocolateButton(const Icon& icon, StringView text, const ColorF& color)
+{
+	return ChocolateButton::Create
+	({
+		.color = color,
+		.padding = 20,
+		.margine = 10,
+		.width = 200,
+		.child = Row::Create
+		({
+			.children
+			{
+				TextureUI::Create({.texture = Texture{icon,30},.margine = {0,5}}),
+				TextUI::Create({.text = text,.color = Palette::White})
+			}
+		})
+	});
+}

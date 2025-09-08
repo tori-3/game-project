@@ -203,13 +203,13 @@ private:
 
 std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const InputGroup& downInputGroup, const InputGroup& leftInputGroup, const InputGroup& rightInputGroup, const std::function<void()>& onClose,GameData& gameData,UIManager& manager,size_t index)
 {
-	auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 20,.margine = 10,.width = 200, .child = TextUI::Create({.text = U"閉じる",.color = Palette::White}) });
+	auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 20,.margine = 10,.width = 200, .child = TextUI::Create({.text = U"\U000F05AD閉じる",.color = Palette::White}) });
 	auto effectVolumeSlider = SimpleSlider::Create({ .value = GlobalAudio::BusGetVolume(EffectMixBus) });
 	auto BGMVolumeSlider = SimpleSlider::Create({ .value = GlobalAudio::BusGetVolume(BGMMixBus) });
 	auto effectVolumeIcon = SoundIcon::Create({ .volume = effectVolumeSlider->value });
 	auto BGMVolumeIcon = SoundIcon::Create({ .volume = BGMVolumeSlider->value });
 
-	auto keyConfigButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 200, .child = TextUI::Create({.text = U"キー設定",.color = Palette::White}) });
+	auto keyConfigButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 200, .child = TextUI::Create({.text = U"\U000F030C キー設定",.color = Palette::White}) });
 
 
 	auto effectVolumeSliderPanel = RectPanel::Create
@@ -374,7 +374,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 			if (infoButton->clicked())
 			{
 				AudioAsset{ U"決定ボタン" }.playOneShot();
-				auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 20,.margine = 10,.width = 200, .child = TextUI::Create({.text = U"閉じる",.color = Palette::White}) });
+				auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 20,.margine = 10,.width = 200, .child = TextUI::Create({.text = U"\U000F05AD閉じる",.color = Palette::White}) });
 
 				dialog->close();
 
@@ -525,7 +525,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 					col->addChild(keyConfig.getUI());
 				}
 
-				auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 10,.margine = 10,.width = 200, .child = TextUI::Create({.text = U"閉じる",.color = Palette::White}) });
+				auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 10,.margine = 10,.width = 200, .child = TextUI::Create({.text = U"\U000F05AD閉じる",.color = Palette::White}) });
 
 				(*table.get())[0].setIndex(0);
 

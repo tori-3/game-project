@@ -42,7 +42,6 @@ public:
 
 	//JSONファイル
 	JSON json = JSON::Load(U"map.json");
-	JSON saveDatajson = JSON::Load(U"saveData.json");
 
 	//各ゲームのデータ
 	Array<Texture>pictures;//各ゲームの大きい画像

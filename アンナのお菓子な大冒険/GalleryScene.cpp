@@ -68,7 +68,7 @@ void GalleryScene::update()
 			}
 		}
 
-		if (getData().menuBackKey.down())
+		if (getData().menuBackKey.down()|| backButton.leftClicked())
 		{
 			changeScene(U"TitleScene");
 		}
@@ -105,16 +105,17 @@ void GalleryScene::update()
 			}
 			else
 			{
-				auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 10,.margine = 10,.width = 150, .child = TextUI::Create({.text = U"閉じる",.color = Palette::White}) });
+				auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 10,.margine = 10,.width = 150, .child = TextUI::Create({.text = U"\U000F05AD閉じる",.color = Palette::White}) });
 				closeButton->selected = true;
 
 				manager.addChild
 				({
 					SimpleDialog::Create
 					({
+						.erasable = false,
 						.child = SweetsPanel::Create
 						({
-							.margine = 10,
+							.margine = 15,
 							.child = Column::Create
 							({
 								.children
@@ -124,7 +125,6 @@ void GalleryScene::update()
 										.texture = textureGrid[selectPoint],
 										.flex = 1
 									}),
-
 									Row::Create
 									({
 										.children
@@ -134,7 +134,7 @@ void GalleryScene::update()
 												.text = textCsv[selectPoint.x + selectPoint.y * textureGrid.width()][0],
 												.fontSize = 20,
 												.color = Palette::White,
-												.margine = 15,
+												.margine = 10,
 												.height = 140,
 												.flex=1,
 											}),
@@ -146,7 +146,7 @@ void GalleryScene::update()
 						}),
 						.updateFunc = [=](SimpleDialog* dialog)
 						{
-							if (getData().menuBackKey.down() || closeButton->pressed() || KeyEnter.down())
+							if (getData().menuBackKey.down() || closeButton->pressed() || getData().menuDecisionKey.down())
 							{
 								dialog->close();
 								AudioAsset{ U"キャンセル" }.playOneShot();
@@ -177,6 +177,7 @@ void GalleryScene::draw() const
 			{
 				rect.draw(ColorF{ 0,0.5 });
 				Triangle{ center, 50 }.rotated(90_deg).draw(Palette::White);
+				FontAsset{ U"NormalFont" }(U"End roll").drawAt(rect.center()+Vec2{0,40});
 			}
 		}
 	}

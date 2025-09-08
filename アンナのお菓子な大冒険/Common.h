@@ -100,7 +100,7 @@ struct GameData
 	String backgroundTexture;
 	String BGMPath;
 	FilePath stageFile;
-	int32 maxHP = 5;
+	//int32 maxHP = 5;
 
 private:
 	bool increaseHPMode = true;

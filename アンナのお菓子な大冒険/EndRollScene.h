@@ -2,6 +2,7 @@
 #include"Common.h"
 #include"CharacterSystem.h"
 #include"BGMManager.hpp"
+#include"SweetsPanel.hpp"
 
 static constexpr double endRollTime = 2;
 static constexpr double endRollTimeLong = 3;
@@ -257,8 +258,8 @@ public:
 		const double height = FontAsset{ U"EndRollFont" }.height();
 
 		FontAsset{ U"EndRollFont" }(U"BGM・効果音\nまる").draw(50, 50);
-		FontAsset{ U"EndRollFont" }(U"効果音素材").draw(50, 50 + height * 3.5, AlphaF(Clamp(t - 1, 0.0, 1.0)));
-		FontAsset{ U"EndRollFont" }(U"効果音ラボ\nOn - Jin ～音人～\nザ・マッチメイカァズ\nOtoLogic\n夢にみた緑").draw(40,50, 50 + height * 4.5, AlphaF(Clamp(t - 1, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"効果音素材 BGM").draw(50, 50 + height * 3.5, AlphaF(Clamp(t - 1, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"効果音ラボ\nOn - Jin ～音人～\nザ・マッチメイカァズ\nOtoLogic（ミニゲーム-暗闇迷路 BGM）\n遊句 (ミニゲーム-FallingAnna BGM)").draw(40,50, 50 + height * 4.5, AlphaF(Clamp(t - 1, 0.0, 1.0)));
 	}
 };
 
@@ -583,17 +584,11 @@ class EndRollScene :public App::Scene
 public:
 	App manager;
 
+	UIManager uiManager;
+
 	EndRollScene(const InitData& init)
 		: IScene{ init }
 	{
-		JSON saveDatajson = JSON::Load(U"saveData.json");
-
-		const int32 clearStage = saveDatajson[U"ClearStage"].get<int32>();
-
-		saveDatajson[U"ClearStage"] = getData().stage;
-		saveDatajson[U"MaxHP"][getData().stage - 1] = 5;
-		saveDatajson.save(U"saveData.json");
-
 		FontAsset::Register(U"EndRollFont", FontMethod::MSDF, 60, Typeface::Heavy);
 
 		manager.add<EndRoll1>(U"EndRoll1");
@@ -616,6 +611,105 @@ public:
 
 	void update()override
 	{
+		uiManager.update();
+
+		if(0<uiManager.getChildren().size())
+		{
+			return;
+		}
+
+		bool down = false;
+
+		for (const auto& key : Keyboard::GetAllInputs())
+		{
+			if(key.down())
+			{
+				down = true;
+				break;
+			}
+		}
+
+		if(down)
+		{
+			AudioAsset{ U"決定ボタン" }.playOneShot();
+
+			auto skipButton = CreateChocolateButton(0xF04AC_icon, U"スキップ", Palette::Darkred);
+			auto continueButton = CreateChocolateButton(0xF040A_icon, U"続きを見る", Palette::Chocolate);
+			continueButton->selected = true;
+
+			uiManager.addChild
+			({
+				SimpleDialog::Create
+				({
+					.erasable=false,
+					.child = SweetsPanel::Create
+					({
+						.margine = 15,
+						.child = Column::Create
+						({
+							.children
+							{
+								TextUI::Create({.text = U"ポーズ",.fontSize=40,.color = Palette::White,}),
+								TextUI::Create({.text = U"エンドロールをスキップしますか？",.color = Palette::White,}),
+								Row::Create
+								({
+									.children
+									{
+										skipButton,
+										continueButton
+									}
+								})
+							}
+						}),
+					}),
+					.updateFunc = [=](SimpleDialog* dialog)
+					{
+						if (getData().minigameLeftKey.down())
+						{
+							if (continueButton->selected)
+							{
+								continueButton->selected = false;
+								skipButton->selected = true;
+								AudioAsset{ U"カーソル移動" }.playOneShot();
+							}
+							else
+							{
+								AudioAsset{ U"ビープ音" }.playOneShot();
+							}
+						}
+
+						if (getData().minigameRightKey.down())
+						{
+							if (skipButton->selected)
+							{
+								continueButton->selected = true;
+								skipButton->selected = false;
+								AudioAsset{ U"カーソル移動" }.playOneShot();
+							}
+							else
+							{
+								AudioAsset{ U"ビープ音" }.playOneShot();
+							}
+						}
+
+						if (getData().menuBackKey.down() || continueButton->pressed() || (continueButton->selected&&getData().menuDecisionKey.down()))
+						{
+							dialog->close();
+							AudioAsset{ U"キャンセル" }.playOneShot();
+						}
+
+						if (skipButton->pressed() || (skipButton->selected && getData().menuDecisionKey.down()))
+						{
+							dialog->close();
+							AudioAsset{ U"決定ボタン" }.playOneShot();
+							changeScene(U"TitleScene");
+						}
+					}
+				})
+			});
+		}
+
+
 		if(not manager.updateScene())
 		{
 			changeScene(U"TitleScene",2s);
@@ -627,5 +721,7 @@ public:
 		Scene::SetBackground(Palette::Black);
 
 		manager.drawScene();
+
+		uiManager.draw();
 	}
 };

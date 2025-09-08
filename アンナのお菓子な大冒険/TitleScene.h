@@ -23,7 +23,7 @@ public:
 
 	Array<String>menuList
 	{
-		U"マップ",
+		U"はじめる",
 		U"ミニゲーム",
 		U"思い出",
 		U"設定",

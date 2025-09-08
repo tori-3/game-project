@@ -53,3 +53,5 @@ private:
 		return RoundRect{ rect,rect.h / 2.0 };
 	}
 };
+
+std::shared_ptr<ChocolateButton> CreateChocolateButton(const Icon& icon, StringView text, const ColorF& color = Palette::Chocolate);

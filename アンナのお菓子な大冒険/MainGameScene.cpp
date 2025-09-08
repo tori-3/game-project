@@ -43,7 +43,7 @@ MainGameScene::MainGameScene(const InitData& init)
 		DataManager::get().addEntity(U"BigCloudEnemy",Vec2{Scene::Center()});
 	}
 
-	DataManager::get().maxHP = getData().maxHP;
+	DataManager::get().maxHP = getData().maxHPList[getData().stage - 1];
 
 	adder.update(manager);
 	player = dynamic_cast<Player*>(manager.get(U"Player"));

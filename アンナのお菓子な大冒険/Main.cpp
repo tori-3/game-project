@@ -34,6 +34,12 @@ void Main()
 	FontAsset::Register(U"TitleFont", FontMethod::MSDF, 60, Typeface::Heavy);
 
 	FontAsset::Register(U"NormalFont", FontMethod::MSDF, 25);
+
+	// アイコンを表示するためのフォントを追加
+	const Font iconFont{ FontMethod::MSDF, 25,Typeface::Icon_MaterialDesign };
+	FontAsset{ U"TitleFont" }.addFallback(iconFont);
+	FontAsset{ U"NormalFont" }.addFallback(iconFont);
+
 	TextUI::DefaultFontName = U"NormalFont";
 
 	App manager;

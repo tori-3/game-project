@@ -39,10 +39,16 @@ void MiniGameSceneBase::pauseDraw()const
 
 std::shared_ptr<UIElement> MiniGameSceneBase::createPauseUI()
 {
-	auto redoButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 200,.child = TextUI::Create({.text = U"やり直す",.color = Palette::White}) });
-	auto endButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 200, .child = TextUI::Create({.text = U"やめる",.color = Palette::White}) });
-	auto settingButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 200,.child = TextUI::Create({.text = U"設定",.color = Palette::White}) });
-	auto continueButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 20,.margine = 10,.width = 200,.child = TextUI::Create({.text = U"続ける",.color = Palette::White}) });
+	//auto redoButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 200,.child = TextUI::Create({.text = U"やり直す",.color = Palette::White}) });
+	//auto endButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 200, .child = TextUI::Create({.text = U"やめる",.color = Palette::White}) });
+	//auto settingButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 200,.child = TextUI::Create({.text = U"設定",.color = Palette::White}) });
+	//auto continueButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 20,.margine = 10,.width = 200,.child = TextUI::Create({.text = U"続ける",.color = Palette::White}) });
+
+	auto redoButton = CreateChocolateButton(0xF0453_icon,U"やり直す",Palette::Darkred);
+	auto endButton = CreateChocolateButton(0xF0A48_icon, U"やめる", Palette::Darkred);
+	auto settingButton = CreateChocolateButton(0xF0493_icon, U"設定");
+	auto continueButton = CreateChocolateButton(0xF040A_icon, U"続ける",Palette::Hotpink);
+
 
 	leftInput = LongPressInput{ getData().minigameLeftKey };
 	rightInput = LongPressInput{ getData().minigameRightKey };
