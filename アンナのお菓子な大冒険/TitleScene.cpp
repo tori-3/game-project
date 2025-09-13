@@ -196,7 +196,7 @@ void TitleScene::draw() const
 		}
 
 	}
-	FontAsset{ U"NormalFont" }(U"操作：[W]↑ [S]↓ [A]← [D]→ [Enter]決定 [Q]戻る [ESC]ポーズ").draw(Arg::bottomLeft(5, Scene::Height() - 5), AlphaF(Min(time / 2.0, 1.0)));
+	FontAsset{ U"NormalFont" }(U"操作：[W]↑ [S]↓ [A]← [D]→ [Enter]決定 [Q]戻る").draw(Arg::bottomLeft(5, Scene::Height() - 5), AlphaF(Min(time / 2.0, 1.0)));
 
 	character.draw();
 

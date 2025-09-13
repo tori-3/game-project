@@ -1,5 +1,5 @@
 ﻿{
-  "BGMVolume": 0.23406608402729034,
+  "BGMVolume": 0.5,
   "ClearComplete": [
     true,
     true,
@@ -29,7 +29,7 @@
     false
   ],
   "ClearStage": 23,
-  "EffectVolume": 0.23235559463500977,
+  "EffectVolume": 0.5,
   "IncreaseHPMode": true,
   "Key": {
     "attackKey": {
@@ -212,7 +212,6 @@
     5,
     5,
     5,
-    7,
     5,
     5,
     5,
@@ -221,44 +220,45 @@
     5,
     5,
     5,
-    11,
+    5,
+    5,
     5,
     5,
     5
   ],
   "MiniGame": [
     {
-      "Easy": true,
-      "Hard": true,
-      "Normal": true
-    },
-    {
-      "Easy": true,
-      "Hard": true,
-      "Normal": true
-    },
-    {
-      "Easy": true,
-      "Hard": true,
-      "Normal": true
-    },
-    {
-      "Easy": true,
-      "Hard": true,
-      "Normal": true
-    },
-    {
-      "Easy": true,
+      "Easy": false,
       "Hard": false,
       "Normal": false
     },
     {
-      "Easy": true,
+      "Easy": false,
+      "Hard": false,
+      "Normal": false
+    },
+    {
+      "Easy": false,
+      "Hard": false,
+      "Normal": false
+    },
+    {
+      "Easy": false,
+      "Hard": false,
+      "Normal": false
+    },
+    {
+      "Easy": false,
+      "Hard": false,
+      "Normal": false
+    },
+    {
+      "Easy": false,
       "Hard": false,
       "Normal": false
     }
   ],
   "NotifyGallery": false,
   "NotifyMiniGameSelect": false,
-  "SelectedStage": 18
+  "SelectedStage": 20
 }
