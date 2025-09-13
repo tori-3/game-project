@@ -37,7 +37,7 @@ struct GameData
 	//今いるシーンの名前
 	String sceneName;
 
-	static constexpr int32 LastBossStage = 26;
+	static constexpr int32 LastBossStage = 23;// 26
 
 	struct MiniGameState
 	{

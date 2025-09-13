@@ -28,7 +28,7 @@
     false,
     false
   ],
-  "ClearStage": 26,
+  "ClearStage": 23,
   "EffectVolume": 0.23235559463500977,
   "IncreaseHPMode": true,
   "Key": {
@@ -260,5 +260,5 @@
   ],
   "NotifyGallery": false,
   "NotifyMiniGameSelect": false,
-  "SelectedStage": 24
+  "SelectedStage": 18
 }
