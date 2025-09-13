@@ -237,6 +237,11 @@ void MainGameScene::gameDraw() const
 			if (DataManager::get().table.contains(U"SlaversCookie"))
 			{
 				Circle{ manager.get(U"SlaversCookie")->pos,100 }.draw(ColorF{ 1.0 }, ColorF{ 0.0 });
+
+				if(manager.contains(U"Rocks"))
+				{
+					Circle{ manager.get(U"Rocks")->pos,150 }.draw(ColorF{ 1.0 }, ColorF{ 0.0 });
+				}
 			}
 
 		}

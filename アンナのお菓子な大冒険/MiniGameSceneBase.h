@@ -12,8 +12,10 @@ public:
 	bool pause = false;
 	bool pauseFlg = false;
 
-	MiniGameSceneBase(const InitData& init)
-		: IScene{ init }
+	bool hideCursor;
+
+	MiniGameSceneBase(const InitData& init,bool hideCursor=true)
+		: IScene{ init }, hideCursor{ hideCursor }
 	{
 
 	}

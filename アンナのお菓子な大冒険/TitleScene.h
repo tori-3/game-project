@@ -13,7 +13,7 @@ public:
 
 	bool updateStick(const Vec2& pos);
 
-	void drawStick(const Vec2& pos, StringView text)const;
+	void drawStick(const Vec2& pos, StringView text, bool notify)const;
 
 	const Array<String>pathList{ U"BackGroundTexture/雪原背景.png",U"BackGroundTexture/洞窟背景.png",U"BackGroundTexture/雲背景.png" ,U"BackGroundTexture/ラスボス背景.png",U"BackGroundTexture/宇宙背景.png"};
 
@@ -25,10 +25,34 @@ public:
 	{
 		U"はじめる",
 		U"ミニゲーム",
-		U"思い出",
 		U"設定",
 		U"ライセンス",
 		U"終了",
+	};
+
+	Array<std::function<void()>>funcList
+	{
+		[&]{
+			playerWalkStop = true;
+			character.removeMotion(U"Walk");
+			character.addMotion(U"Tosshin", true);
+			changeMapTimer.restart();
+		},
+		[&] {
+			playerWalkStop = true;
+			character.removeMotion(U"Walk");
+			character.addMotion(U"HeadDrop");
+			changeMiniGameTimer.restart();
+		},
+		[&] {
+			uiManager.addChild({ SettingWindow(getData().minigameUpKey,getData().minigameDownKey,getData().minigameLeftKey,getData().minigameRightKey,[=] {menuClicked = false; getData().save(); KeyConfigUtility::CleapInput(getData().menuDecisionKey); },getData(),uiManager) });
+		},
+		[&] {
+			uiManager.addChild({ licenseDialog() });
+		},
+		[&]{
+			System::Exit();
+		}
 	};
 
 	size_t selectedIndex = 0;
@@ -54,6 +78,7 @@ public:
 
 	bool menuClicked = false;
 
+	Texture notifyIcon{ 0xF06BD_icon,40 };
 
 	UIManager uiManager;
 

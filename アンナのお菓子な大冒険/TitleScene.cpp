@@ -14,7 +14,7 @@ bool TitleScene::updateStick(const Vec2& pos)
 	return rrect.leftClicked();
 }
 
-void TitleScene::drawStick(const Vec2& pos, StringView text)const
+void TitleScene::drawStick(const Vec2& pos, StringView text,bool notify)const
 {
 	constexpr SizeF chocolateSize{ 300,50 };
 	const RoundRect rrect{ pos,chocolateSize,chocolateSize.y / 2.0 };
@@ -22,6 +22,11 @@ void TitleScene::drawStick(const Vec2& pos, StringView text)const
 	stickTexture.resized(chocolateSize.y * 0.7, textureWidth).rotated(90_deg).drawAt(rrect.rightCenter() + Vec2{ textureWidth / 2.0 - rrect.r,0 });
 	rrect.draw(Arg::top = Color{ 129,74,42 }, Arg::bottom = Color{ 92,43,20 });
 	FontAsset{ U"TitleFont" }(text).drawAt(chocolateSize.y * 0.7, rrect.center());
+
+	if(notify)
+	{
+		notifyIcon.drawAt(rrect.rect.pos + Vec2{ 15,15 }, Palette::Orange);
+	}
 }
 
 TitleScene::TitleScene(const InitData& init)
@@ -32,6 +37,12 @@ TitleScene::TitleScene(const InitData& init)
 
 	LoadAsset::RegisterTexture(U"ロゴ.png");
 	character.addMotion(U"Walk", true);
+
+	if(getData().clearStage==getData().LastBossStage)
+	{
+		menuList.insert(menuList.begin() + 2, U"思い出");
+		funcList.insert(funcList.begin() + 2, [&] {changeScene(U"GalleryScene"); });
+	}
 }
 
 void TitleScene::update()
@@ -110,35 +121,7 @@ void TitleScene::update()
 
 		if (menuClicked)
 		{
-			switch (selectedIndex)
-			{
-			case 0:
-				playerWalkStop = true;
-				character.removeMotion(U"Walk");
-				character.addMotion(U"Tosshin", true);
-				changeMapTimer.restart();
-				break;
-			case 1:
-				playerWalkStop = true;
-				character.removeMotion(U"Walk");
-				character.addMotion(U"HeadDrop");
-				changeMiniGameTimer.restart();
-				break;
-			case 2:
-				changeScene(U"GalleryScene");
-				break;
-			case 3:
-				uiManager.addChild({ SettingWindow(getData().minigameUpKey,getData().minigameDownKey,getData().minigameLeftKey,getData().minigameRightKey,[=] {menuClicked = false; getData().save(); KeyConfigUtility::CleapInput(getData().menuDecisionKey); },getData(),uiManager) });
-				break;
-			case 4:
-				uiManager.addChild({ licenseDialog() });
-				break;
-			case 5:
-				System::Exit();
-				break;
-			default:
-				break;
-			}
+			funcList[selectedIndex]();
 		}
 	}
 
@@ -206,7 +189,9 @@ void TitleScene::draw() const
 
 		for (size_t i = 0; i < menuList.size(); ++i)
 		{
-			drawStick(pos + (selectedIndex == i ? Vec2{ -30,0 } : Vec2{}), menuList[i]);
+			const bool notify = (i==1&&getData().notifyMiniGameSelect)||(i==2&&getData().notifyGallery);
+			drawStick(pos + (selectedIndex == i ? Vec2{ -30,0 } : Vec2{}), menuList[i],notify);
+
 			pos.y += menuHeight;
 		}
 

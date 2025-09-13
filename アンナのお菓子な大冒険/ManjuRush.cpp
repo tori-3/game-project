@@ -27,16 +27,16 @@ namespace ManjuRush
 	{
 		if (flag == false) {
 			if (stopwatch < 2s) {
-				font(U"3").draw(600, 200);
+				font(U"3").drawAt(600, 200+90);
 			}
 			else if (stopwatch < 3s) {
-				font(U"2").draw(600, 200);
+				font(U"2").drawAt(600, 200 + 90);
 			}
 			else if (stopwatch < 4s) {
-				font(U"1").draw(600, 200);
+				font(U"1").drawAt(600, 200 + 90);
 			}
 			else if (stopwatch < 5.5s) {
-				font(U"スタート!").draw(400, 200);
+				font(U"スタート!").drawAt(600, 200 + 90);
 			}
 			else if (stopwatch > 5.5s) {
 				flag = true;

@@ -22,7 +22,7 @@ namespace HawkDropOut
 	}
 
 	HawkDropOut::HawkDropOut(const InitData& init)
-		: MiniGameSceneBase{ init }
+		: MiniGameSceneBase{ init,false }
 	{
 		AudioAsset::Register(U"MiniGameBGM", U"BGM/MiniGameBGM.wav", Loop::Yes);
 		BGMManager::get().play(U"MiniGameBGM");
@@ -559,7 +559,7 @@ namespace HawkDropOut
 
 			//font(FlyDistance).draw(30, 120, 10, Palette::Black);
 
-			font(U"飛距離 {}/{}"_fmt(FlyDistance, clearScore)).draw(30, 10, 10, Palette::Black);
+			font(U"飛距離 {}/{}"_fmt(FlyDistance, clearScore)).draw(30, 10, 10,getData().mini_mode==Hard_Mode?Palette::White:Palette::Black);
 
 			if (clear)
 			{

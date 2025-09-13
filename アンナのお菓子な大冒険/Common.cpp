@@ -70,6 +70,8 @@ void GameData::save()
 	saveDatajson[U"BGMVolume"] = GlobalAudio::BusGetVolume(BGMMixBus);
 	saveDatajson[U"EffectVolume"] = GlobalAudio::BusGetVolume(EffectMixBus);
 	saveDatajson[U"IncreaseHPMode"] = increaseHPMode;
+	saveDatajson[U"NotifyMiniGameSelect"] = notifyMiniGameSelect;
+	saveDatajson[U"NotifyGallery"] = notifyGallery;
 
 	for (int32 maxHP : maxHPList)
 	{
@@ -119,6 +121,9 @@ void GameData::load()
 	GlobalAudio::BusSetVolume(BGMMixBus, saveDatajson[U"BGMVolume"].get<double>());
 	GlobalAudio::BusSetVolume(EffectMixBus, saveDatajson[U"EffectVolume"].get<double>());
 	increaseHPMode = saveDatajson[U"IncreaseHPMode"].get<bool>();
+
+	notifyMiniGameSelect = saveDatajson[U"NotifyMiniGameSelect"].get<bool>();
+	notifyGallery = saveDatajson[U"NotifyGallery"].get<bool>();
 
 	maxHPList.clear();
 	for (const auto& obj : saveDatajson[U"MaxHP"].arrayView())

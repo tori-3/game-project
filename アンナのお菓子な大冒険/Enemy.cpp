@@ -279,7 +279,7 @@ void Snowman::lateUpdate()
 {
 	if (not isActive())
 	{
-		DataManager::get().effect.add<StarEffect>(pos, 50);
+		DataManager::get().effect.add<StarEffect>(pos, 180,0.2);
 		manager->add(new CookieItem{ pos });
 	}
 }
@@ -459,7 +459,7 @@ void CloudEnemy::lateUpdate()
 {
 	if (not isActive())
 	{
-		DataManager::get().effect.add<StarEffect>(pos, 0);
+		DataManager::get().effect.add<StarEffect>(pos, 310,0.3);
 		manager->add(new CookieItem{ pos });
 	}
 }
@@ -855,7 +855,7 @@ void DropCorn::lateUpdate()
 		}
 		else
 		{
-			DataManager::get().effect.add<StarEffect>(pos, 50);
+			DataManager::get().effect.add<StarEffect>(pos, 50,0.3);
 		}
 	}
 }
@@ -915,7 +915,7 @@ void Zerosen::lateUpdate()
 {
 	if (not isActive())
 	{
-		DataManager::get().effect.add<StarEffect>(pos, 0);
+		DataManager::get().effect.add<StarEffect>(pos, 50);
 		manager->add(new CookieItem{ pos });
 	}
 }

@@ -147,7 +147,7 @@ namespace AnnaMusicGame {
 
 	public:
 
-		RenderTexture background{ Scene::Size() };
+		RenderTexture background{ Scene::Size()/4 };
 		bool saveFlg = false;
 
 		void onPauseStart()override

@@ -90,6 +90,17 @@ public:
 		entitys.each([](const PEntity& entity) {entity->draw(); });
 	}
 
+	bool contains(StringView tag)const
+	{
+		if(table.contains(tag))
+		{
+			return not table.at(tag).isEmpty();
+		}
+		else
+		{
+			return false;
+		}
+	}
 
 	Entity* get(StringView tag)
 	{

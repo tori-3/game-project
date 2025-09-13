@@ -190,6 +190,11 @@ void MiniGameSceneBase::update()
 
 void MiniGameSceneBase::draw() const
 {
+	if (hideCursor && not pause)
+	{
+		Cursor::RequestStyle(CursorStyle::Hidden);
+	}
+
 	gameDraw();
 	if (pause)pauseDraw();
 }

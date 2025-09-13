@@ -170,11 +170,22 @@ namespace AnnaMusicGame {
 			TextureAsset::Register(U"BackGroundTexture/宇宙背景.png", U"BackGroundTexture/宇宙背景.png");
 		}
 
-		const RenderTexture internalTexture{ Scene::Size() };
-		const RenderTexture internalTexture2{ Scene::Size() };
+		//const RenderTexture internalTexture{ Scene::Size() };
+		//const RenderTexture internalTexture2{ Scene::Size() };
+		//Shader::GaussianBlur(TextureAsset{ U"BackGroundTexture/宇宙背景.png" }, internalTexture, internalTexture2);
+		//Shader::GaussianBlur(internalTexture2, internalTexture, background);
 
-		Shader::GaussianBlur(TextureAsset{U"BackGroundTexture/宇宙背景.png"}, internalTexture, internalTexture2);
-		Shader::GaussianBlur(internalTexture2, internalTexture, background);
+
+		//const RenderTexture downsample2{ Scene::Size() / 2 };
+		//const RenderTexture internalTexture2{ Scene::Size() / 2 };
+		//Shader::Downsample(TextureAsset{ U"BackGroundTexture/宇宙背景.png" }, downsample2);
+		//Shader::GaussianBlur(downsample2, internalTexture2, background);
+
+
+		const RenderTexture downsample4{ Scene::Size() / 4 };
+		const RenderTexture internalTexture4{ Scene::Size() / 4 };
+		Shader::Downsample(TextureAsset{ U"BackGroundTexture/宇宙背景.png" }, downsample4);
+		Shader::GaussianBlur(downsample4, internalTexture4, background);
 	}
 
 	void AnnaMusicGame::gameUpdate()
@@ -345,7 +356,7 @@ namespace AnnaMusicGame {
 		Scene::SetBackground(Palette::Pink);
 
 		background.resized(Scene::Size()).draw();
-		Scene::Rect().draw(ColorF{ 0,0.1 });
+		Scene::Rect().draw(ColorF{ 0,0.3 });
 
 		// アニメーションを更新
 		anime[0].draw(pos);

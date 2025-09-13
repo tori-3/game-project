@@ -1,5 +1,5 @@
 ﻿{
-    "MiniGameStage": [4,8,11,15,18,22],
+    "MiniGameStage": [ 4, 8, 11, 15, 18, 22 ],
     "StageData": {
         "Stage1": {
             "BGM": "BGM/StageSnow7.wav",

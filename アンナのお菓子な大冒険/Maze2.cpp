@@ -4,7 +4,7 @@
 namespace Maze2
 {
 	mazeGame::mazeGame(const InitData& init)//名前を変更してください
-		: MiniGameSceneBase{ init }
+		: MiniGameSceneBase{ init,false }
 	{
 		if (not TextureAsset::IsRegistered(U"BackGroundTexture/洞窟背景.png")) {
 			TextureAsset::Register(U"BackGroundTexture/洞窟背景.png", U"BackGroundTexture/洞窟背景.png");

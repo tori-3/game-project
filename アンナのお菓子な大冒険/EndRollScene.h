@@ -762,6 +762,11 @@ public:
 
 	void draw()const override
 	{
+		if (uiManager.getChildren().isEmpty())
+		{
+			Cursor::RequestStyle(CursorStyle::Hidden);
+		}
+
 		Scene::SetBackground(Palette::Black);
 
 		manager.drawScene();

@@ -37,6 +37,8 @@ struct GameData
 	//今いるシーンの名前
 	String sceneName;
 
+	static constexpr int32 LastBossStage = 26;
+
 	struct MiniGameState
 	{
 		bool easyClear = false;
@@ -47,6 +49,9 @@ struct GameData
 	Array<int32>maxHPList;
 	Array<bool>clearCompleteList;
 	Array<MiniGameState>miniGameList;
+
+	bool notifyMiniGameSelect = false;
+	bool notifyGallery = false;
 
 	GameData()
 	{

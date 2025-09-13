@@ -5,6 +5,13 @@
 MiniGameSelect::MiniGameSelect(const InitData& init)
 	: IScene{ init }
 {
+	if(getData().notifyMiniGameSelect)
+	{
+		getData().notifyMiniGameSelect = false;
+		getData().save();
+	}
+
+
 	JSON json = JSON::Load(U"map.json");
 
 	for (const auto& object : json[U"MiniGameStage"].arrayView())

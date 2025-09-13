@@ -13,7 +13,7 @@ struct StarEffect : IEffect
 
 	Array<Star> m_stars;
 
-	StarEffect(const Vec2& pos, double baseHue)
+	StarEffect(const Vec2& pos, double baseHue,double s=1.0)
 	{
 		for (int32 i = 0; i < 6; ++i)
 		{
@@ -21,7 +21,7 @@ struct StarEffect : IEffect
 			Star star{
 				.start = (pos + velocity),
 				.velocity = velocity,
-				.color = HSV{ baseHue + Random(-20.0, 20.0) },
+				.color = HSV{ baseHue + Random(-20.0, 20.0),s,1.0 },
 			};
 			m_stars << star;
 		}

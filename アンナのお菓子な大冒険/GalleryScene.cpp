@@ -3,7 +3,11 @@
 GalleryScene::GalleryScene(const InitData& init) :
 	IScene{ init }
 {
-
+	if (getData().notifyGallery)
+	{
+		getData().notifyGallery = false;
+		getData().save();
+	}
 }
 
 constexpr double textureWidth = 250;
@@ -68,6 +72,11 @@ void GalleryScene::update()
 			}
 		}
 
+		if (backButton.mouseOver())
+		{
+			Cursor::RequestStyle(CursorStyle::Hand);
+		}
+
 		if (getData().menuBackKey.down()|| backButton.leftClicked())
 		{
 			changeScene(U"TitleScene");
@@ -86,6 +95,11 @@ void GalleryScene::update()
 			{
 				Vec2 center{ margineX + x * (Scene::Width() - margineX * 2) / (textureGrid.width() - 1), margineY + y * (Scene::Height() - margineY * 2) / (textureGrid.height() - 1) };
 				const RectF rect = textureGrid[y][x].resized(textureWidth).regionAt(center);
+
+				if(rect.mouseOver())
+				{
+					Cursor::RequestStyle(CursorStyle::Hand);
+				}
 
 				if (rect.leftClicked())
 				{

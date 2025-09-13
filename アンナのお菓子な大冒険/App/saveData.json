@@ -5,19 +5,19 @@
     true,
     true,
     false,
-    false,
-    false,
-    false,
-    false,
-    false,
     true,
-    false,
+    true,
+    true,
     false,
     true,
     true,
     false,
     true,
+    true,
+    true,
     false,
+    true,
+    true,
     false,
     true,
     true,
@@ -28,7 +28,7 @@
     false,
     false
   ],
-  "ClearStage": 4,
+  "ClearStage": 26,
   "EffectVolume": 0.23235559463500977,
   "IncreaseHPMode": true,
   "Key": {
@@ -212,7 +212,7 @@
     5,
     5,
     5,
-    5,
+    7,
     5,
     5,
     5,
@@ -235,12 +235,12 @@
     {
       "Easy": true,
       "Hard": true,
-      "Normal": false
+      "Normal": true
     },
     {
       "Easy": true,
       "Hard": true,
-      "Normal": false
+      "Normal": true
     },
     {
       "Easy": true,
@@ -258,5 +258,7 @@
       "Normal": false
     }
   ],
-  "SelectedStage": 4
+  "NotifyGallery": false,
+  "NotifyMiniGameSelect": false,
+  "SelectedStage": 24
 }
