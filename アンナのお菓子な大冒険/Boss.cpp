@@ -9,6 +9,8 @@ SnowKnight::SnowKnight(const Vec2& cpos)
 	: Entity{ U"Enemy", RectF{Arg::center(-20,40),70 * 1,70 * 4 - 30 },cpos,{0,0},maxHp }
 	, character{ U"Characters/yukidarunaito/yukidarunaito.json" ,U"Characters/yukidarunaito/motion.txt" ,0.2,cpos,true,false }
 {
+	DataManager::get().bossName = U"雪だるナイト";
+
 	centerX = pos.x;
 
 	rx = pos.x + 100;
@@ -369,6 +371,8 @@ SlaversCookie::SlaversCookie(const Vec2& cpos)
 	: Entity{ U"SlaversCookie", RectF{Arg::center(0,0),50,100},cpos,{0,0},maxHp }
 	, character{ U"Characters/cookieDoreisho/model.json" ,U"Characters/cookieDoreisho/motion.txt" ,0.4,cpos,true,false }
 {
+	DataManager::get().bossName = U"監督クッキー";
+
 	updateFunc = []() {};
 	endFunc = []() {};
 	timer = 3;
@@ -629,6 +633,8 @@ SlaversCookie::~SlaversCookie()
 Captain::Captain(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,-30),230,100},cpos,{0,0},maxHp }
 , character{ U"Characters/sentyo/model.json" ,U"Characters/sentyo/motion.txt" ,1,cpos,true,false }
 {
+	DataManager::get().bossName = U"わたがし船長";
+
 	rPos = { pos.x + 400,pos.y };
 	lPos = { pos.x - 400,pos.y };
 	center = pos.x;

@@ -114,6 +114,8 @@ SnowBall::SnowBall(const Vec2& pos, bool left)
 
 void SnowBall::update()
 {
+	time += Scene::DeltaTime();
+
 	bool collisionFlg = false;
 
 	manager->stage->hit(&hitBox);
@@ -152,7 +154,8 @@ void SnowBall::lateUpdate()
 
 void SnowBall::draw()const
 {
-	hitBox.Get_Box().draw(Palette::White);
+	//hitBox.Get_Box().draw(Palette::White);
+	TextureAsset{ U"snowball" }.resized(20).rotated(time * 180_deg * (left ? -1 : 1)).drawAt(hitBox.Get_Box().center());
 }
 
 

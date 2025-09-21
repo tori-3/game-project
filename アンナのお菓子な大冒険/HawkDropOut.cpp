@@ -153,37 +153,37 @@ namespace HawkDropOut
 
 		//障害物が画面外に出たら座標を戻す
 		if (astowndistance >= 900) {
-			astowndistance = -100;
+			astowndistance = -100 - 200;
 			a_stownspeed += 20;
-			a_enemyCircle.x = -60;
+			a_enemyCircle.x = -60 - 200;
 			a += 1;
 		}
 
 		if (bstowndistance >= 900) {
-			bstowndistance = -150;
+			bstowndistance = -150 - 200;
 			b_stownspeed += 20;
-			b_enemyCircle.x = -110;
+			b_enemyCircle.x = -110 - 200;
 			b += 1;
 		}
 
 		if (cstowndistance >= 900) {
-			cstowndistance = -200;
+			cstowndistance = -200 - 200;
 			c_stownspeed += 20;
-			c_enemyCircle.x = -160;
+			c_enemyCircle.x = -160 - 200;
 			c += 1;
 		}
 
 		if (dstowndistance >= 900) {
-			dstowndistance = -220;
+			dstowndistance = -220 - 200;
 			d_stownspeed += 20;
-			d_enemyCircle.x = -180;
+			d_enemyCircle.x = -180 - 200;
 			d += 1;
 		}
 
 		if (estowndistance >= 900) {
-			estowndistance = -250;
+			estowndistance = -250 - 200;
 			e_stownspeed += 20;
-			e_enemyCircle.x = -210;
+			e_enemyCircle.x = -210 - 200;
 			e += 1;
 		}
 
@@ -248,7 +248,7 @@ namespace HawkDropOut
 
 		//攻撃が画面外に出た場合の処理
 		if (attackball.x < -50 /* || attackball.intersects(a_enemyCircle) || attackball.intersects(b_enemyCircle) || attackball.intersects(c_enemyCircle) || attackball.intersects(d_enemyCircle) || attackball.intersects(e_enemyCircle)*/) {
-			attackball.x = -800;
+			attackball.x = -800-10000;
 			attack = false;
 			j = 0;
 		}
@@ -288,9 +288,9 @@ namespace HawkDropOut
 			if (upTime >= 10.0) {
 				upTime += Scene::DeltaTime() * 5;    //上昇可能時間を過ぎたら下降時に時間回復量
 			}
-			else {
-				upTime -= Scene::DeltaTime() * 0.1;	 //上昇可能時間内の時間回復量
-			}
+			//else {
+			//	upTime -= Scene::DeltaTime() * 0.1;	 //上昇可能時間内の時間回復量
+			//}
 		}
 
 

@@ -85,13 +85,12 @@ Array<Entity*> Entity::attackDamaged(StringView target, const Figure& figure, do
 
 void EntityManager::update()
 {
-
-	for (auto i : step(entitys.size()))
+	for (auto i : step_backward(entitys.size()))
 	{
 		entitys[i]->update();
 	}
 
-	for (auto i : step(entitys.size()))
+	for (auto i : step_backward(entitys.size()))
 	{
 		entitys[i]->lateUpdate();
 	}

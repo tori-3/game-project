@@ -291,7 +291,8 @@ void Snowman::draw()const
 	{
 		const Mat3x2 mat = character.character.table.at(U"arm").joint.mat;
 		const Vec2 ballPos = mat.transformPoint(Vec2{ 100, -30 });
-		Circle{ ballPos,10 }.draw(Palette::White);
+		//Circle{ ballPos,10 }.draw(Palette::White);
+		TextureAsset{ U"snowball" }.resized(20).drawAt(ballPos);
 	}
 }
 

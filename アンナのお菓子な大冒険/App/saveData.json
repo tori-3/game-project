@@ -23,7 +23,7 @@
     true,
     false,
     false,
-    false,
+    true,
     false,
     false,
     false
@@ -228,23 +228,23 @@
   ],
   "MiniGame": [
     {
-      "Easy": false,
+      "Easy": true,
       "Hard": false,
       "Normal": false
     },
     {
       "Easy": false,
+      "Hard": true,
+      "Normal": false
+    },
+    {
+      "Easy": true,
       "Hard": false,
       "Normal": false
     },
     {
-      "Easy": false,
-      "Hard": false,
-      "Normal": false
-    },
-    {
-      "Easy": false,
-      "Hard": false,
+      "Easy": true,
+      "Hard": true,
       "Normal": false
     },
     {
@@ -260,5 +260,5 @@
   ],
   "NotifyGallery": false,
   "NotifyMiniGameSelect": false,
-  "SelectedStage": 20
+  "SelectedStage": 22
 }

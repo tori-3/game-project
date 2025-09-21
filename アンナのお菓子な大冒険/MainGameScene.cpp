@@ -166,7 +166,7 @@ void MainGameScene::gameUpdate()
 
 	//ステージupdate
 
-	if (KeyEscape.down())goPause();
+	if (getData().pauseKey.down())goPause();
 
 	if (DataManager::get().cameraPos)
 	{
@@ -269,6 +269,7 @@ void MainGameScene::gameDraw() const
 
 	if (DataManager::get().bossHPRate)
 	{
+		FontAsset{ U"NormalFont" }(U"<",DataManager::get().bossName,U">").drawAt(25,Scene::Center().x, 30);
 		hpBar.draw(Palette::Purple, Palette::Red);
 	}
 

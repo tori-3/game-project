@@ -50,6 +50,8 @@ class SnowBall :public Entity
 public:
 	bool left;
 
+	double time = 0;
+
 	SnowBall(const Vec2& pos, bool left);
 
 	void update()override;

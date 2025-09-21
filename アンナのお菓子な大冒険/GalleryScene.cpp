@@ -53,6 +53,12 @@ void GalleryScene::update()
 				--selectPoint.x;
 				AudioAsset{ U"カーソル移動" }.playOneShot();
 			}
+			else if (textureGrid.height() - 1 <= selectPoint.y)
+			{
+				selectPoint.x = textureGrid.width() - 1;
+				--selectPoint.y;
+				AudioAsset{ U"カーソル移動" }.playOneShot();
+			}
 			else
 			{
 				AudioAsset{ U"ビープ音" }.playOneShot();
@@ -64,6 +70,12 @@ void GalleryScene::update()
 			if (selectPoint.x < textureGrid.width() - 1)
 			{
 				++selectPoint.x;
+				AudioAsset{ U"カーソル移動" }.playOneShot();
+			}
+			else if (selectPoint.y < textureGrid.height() - 1)
+			{
+				selectPoint.x = 0;
+				++selectPoint.y;
 				AudioAsset{ U"カーソル移動" }.playOneShot();
 			}
 			else

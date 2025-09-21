@@ -37,7 +37,7 @@
             "MapFile": "",
             "Picture": "MiniGameDisplay/まんじゅうラッシュ.png",
             "SceneName": "ManjuRush",
-            "Sentence": "<ミニゲーム-まんじゅうラッシュ>\nまんじゅうの軍団がアンナちゃんを\n襲う！\n迫りくるまんじゅうをよけよう！\n[W]ジャンプ　[S]さがる\nスコア1300でクリア",
+            "Sentence": "<ミニゲーム-まんじゅうラッシュ>\nまんじゅうの軍団がアンナちゃんを\n襲う！\n迫りくるまんじゅうをよけよう！\n着地するとスコア増加！\nスコア1300でクリア\n[W]ジャンプ　[S]さがる",
             "StagePos": "(170,700)",
             "Type": "MiniGame"
         },
@@ -147,7 +147,7 @@
             "MapFile": "",
             "Picture": "MiniGameDisplay/HawkDropOut.png",
             "SceneName": "HawkDropOut",
-            "Sentence": "<ミニゲーム-HawkDropOut>\n鷹に乗ってひとっ飛び！\n敵を避けながら地面に着かないように\n気を付けてよう！\nクッキーを取るとアイテムゲット！\n[W]上昇  [A]攻撃(クッキー×1)\n[S]降下  [D 長押し]急上昇(クッキー×2)",
+            "Sentence": "<ミニゲーム-HawkDropOut>\n鷹に乗ってひとっ飛び！\n地面に着かないように気を付けよう！\nクッキーを取るとアイテムゲット！\n[W]上昇  [S]降下(上昇可能時間が回復)\n[A]攻撃(クッキー×1)\n[D 長押し]急上昇(クッキー×2)",
             "StagePos": "(590,510)",
             "Type": "MiniGame"
         },

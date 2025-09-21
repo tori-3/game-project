@@ -211,7 +211,7 @@ void MiniGameSelect::draw()const
 
 	if (not miniGameList.isEmpty())
 	{
-		font(miniGameList[gameIndex].sentence).draw(150, Scene::Center().y + 100);
+		font(miniGameList[gameIndex].sentence).draw(150, Scene::Center().y + 100-20);
 
 		easyButton.draw(chocolateBeltConveyor, font, U"イージー", Palette::Greenyellow, getData().miniGameList[gameIndex].easyClear, modeIndex == 0);
 		normalButton.draw(chocolateBeltConveyor, font, U"ノーマル", Palette::Orange, getData().miniGameList[gameIndex].normalClear, modeIndex == 1);

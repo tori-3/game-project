@@ -662,18 +662,7 @@ public:
 			return;
 		}
 
-		bool down = false;
-
-		for (const auto& key : Keyboard::GetAllInputs())
-		{
-			if(key.down())
-			{
-				down = true;
-				break;
-			}
-		}
-
-		if(down)
+		if(getData().pauseKey.down()||getData().menuBackKey.down())
 		{
 			AudioAsset{ U"決定ボタン" }.playOneShot();
 

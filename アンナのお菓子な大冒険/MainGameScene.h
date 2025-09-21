@@ -37,7 +37,7 @@ public:
 
 	IrisOut irisOut;
 
-	GrapesHPBar hpBar{ Rect{Arg::center(Scene::Center().x,50),300,40} };
+	GrapesHPBar hpBar{ Rect{Arg::center(Scene::Center().x,50+20),300,40} };
 
 	Spotlight* light = nullptr;
 	

@@ -667,7 +667,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 								}
 							}
 
-							if(closeButton->clicked()||(pos.y== table->size() && gameData.menuDecisionKey.down()))
+							if(closeButton->clicked()||(pos.y== table->size() && gameData.menuDecisionKey.down())||gameData.menuBackKey.down())
 							{
 								AudioAsset{ U"キャンセル" }.playOneShot();
 
@@ -693,7 +693,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 					})
 				});
 			}
-
+			
 			if (closeButton->clicked() || (selectIndex == 5 && gameData.menuDecisionKey.down())|| gameData.menuBackKey.down())
 			{
 				AudioAsset{ U"キャンセル" }.playOneShot();

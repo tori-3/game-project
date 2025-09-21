@@ -1,4 +1,5 @@
 ﻿#include"Player.h"
+#include "TalkManager.h"
 
 Player::Player(const Vec2& cpos) :
 	character{ U"Characters/annna/annna.json",U"Characters/annna/motion.txt",0.25,cpos,false },

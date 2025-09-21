@@ -437,15 +437,25 @@ SignboardBlock::SignboardBlock(const Array<TalkWindow::TalkInfo>&list_)
 
 void  SignboardBlock::update(const Point& pos)
 {
+	if (DataManager::get().playerPos.intersects(RectF{ (pos - Vec2{2,2}) * rect_size,rect_size * 5 }))
+	{
+		if (DataManager::get().playerPos.x<RectF{ pos * rect_size,rect_size }.centerX())
+		{
+			DataManager::get().fairyPos = (pos + Vec2{ 1.5,0 }) * rect_size;
+		}
+		else
+		{
+			DataManager::get().fairyPos = (pos + Vec2{ -0.5,0 }) * rect_size;
+		}
+	}
+
 	if (DataManager::get().playerPos.intersects(RectF{ (pos-Vec2{1,1}) * rect_size,rect_size*3}))
 	{
-		DataManager::get().fairyPos = (pos+Vec2{1.5,0}) * rect_size;
-
 		if (KeyEnter.down())
 		{
-			TalkManager::get().talkWindow.setTalk(list);
-
 			KeyEnter.clearInput();
+
+			TalkManager::get().talkWindow.setTalk(list);
 		}
 
 	}
@@ -479,7 +489,7 @@ void SignboardBlock::draw(const Point& pos)const
 			const RoundRect window{ RectF{ Arg::center((pos + Vec2{0.5,0.5 - 1}) * rect_size),rect_size * 1.5,rect_size * 0.8},20 };
 			window.draw({ Palette::Black, 0.8 }).drawFrame(thickness, 0);
 
-			FontAsset(U"WindowFont")(fairy ? U"Enter話す" : U"Enter:読む").drawAt(15, window.center());
+			FontAsset(U"WindowFont")(fairy ? U"Enter:話す" : U"Enter:読む").drawAt(15, window.center());
 		}
 	}
 }

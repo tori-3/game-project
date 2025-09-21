@@ -98,7 +98,7 @@ class Captain :public Entity
 {
 public:
 
-	static constexpr int32 maxHp = 30;
+	static constexpr int32 maxHp = 25;
 
 	double accumulatedTime = 0;
 
