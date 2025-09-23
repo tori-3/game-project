@@ -70,7 +70,9 @@ public:
 	void EndGame(bool clear)
 	{
 		getData().mini_clear = clear;
+
 		changeScene(U"Map");
-		getData().backFromMainGameScene = true;
+
+		//getData().backFromMainGameScene = true;
 	}
 };

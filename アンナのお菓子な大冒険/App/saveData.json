@@ -1,5 +1,5 @@
 ﻿{
-  "BGMVolume": 0.5,
+  "BGMVolume": 0.0,
   "ClearComplete": [
     true,
     true,
@@ -29,8 +29,9 @@
     false
   ],
   "ClearStage": 23,
-  "EffectVolume": 0.5,
-  "IncreaseHPMode": true,
+  "EffectVolume": 0.48305758833885193,
+  "IncreaseHPMode": false,
+  "IsFullscreen": false,
   "Key": {
     "attackKey": {
       "inputs": [
@@ -233,32 +234,32 @@
       "Normal": false
     },
     {
-      "Easy": false,
+      "Easy": true,
       "Hard": true,
-      "Normal": false
+      "Normal": true
     },
     {
       "Easy": true,
       "Hard": false,
-      "Normal": false
+      "Normal": true
     },
     {
       "Easy": true,
       "Hard": true,
-      "Normal": false
+      "Normal": true
     },
     {
-      "Easy": false,
+      "Easy": true,
       "Hard": false,
-      "Normal": false
+      "Normal": true
     },
     {
-      "Easy": false,
+      "Easy": true,
       "Hard": false,
-      "Normal": false
+      "Normal": true
     }
   ],
   "NotifyGallery": false,
   "NotifyMiniGameSelect": false,
-  "SelectedStage": 22
+  "SelectedStage": 20
 }

@@ -29,18 +29,9 @@ void Main()
 
 	System::SetTerminationTriggers(UserAction::CloseButtonClicked);
 
-	Lisence::SetLisence();
+	Lisence::Init();
 
-	FontAsset::Register(U"TitleFont", FontMethod::MSDF, 60, Typeface::Heavy);
-
-	FontAsset::Register(U"NormalFont", FontMethod::MSDF, 25);
-
-	// アイコンを表示するためのフォントを追加
-	const Font iconFont{ FontMethod::MSDF, 25,Typeface::Icon_MaterialDesign };
-	FontAsset{ U"TitleFont" }.addFallback(iconFont);
-	FontAsset{ U"NormalFont" }.addFallback(iconFont);
-
-	TextUI::DefaultFontName = U"NormalFont";
+	LoadAsset::Init();
 
 	App manager;
 
@@ -58,15 +49,6 @@ void Main()
 	manager.add<AnnaMusicGame::AnnaMusicGame>(U"AnnaMusicGame");
 	manager.add<EndRollScene>(U"EndRollScene");
 	manager.add<GalleryScene>(U"GalleryScene");
-
-
-	LoadAsset::RegisterTexture(U"BackGroundTexture/雪原背景.png");
-	LoadAsset::RegisterTexture(U"BackGroundTexture/雲背景.png");
-	LoadAsset::RegisterTexture(U"BackGroundTexture/ラスボス背景.png");
-	LoadAsset::RegisterTexture(U"BackGroundTexture/洞窟背景.png");
-	LoadAsset::RegisterTexture(U"BackGroundTexture/宇宙背景.png");
-
-	LoadAsset::LoadAudio();
 
 	while (System::Update())
 	{

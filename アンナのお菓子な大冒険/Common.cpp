@@ -8,6 +8,8 @@ void GameData::saveMiniGameClear()
 	case Stage_Mode:
 		if (clearStage < stage)
 		{
+			firstClearStage = true;
+			notifyMiniGameSelect = true;
 			clearStage = stage;
 			save();
 		}
@@ -15,6 +17,7 @@ void GameData::saveMiniGameClear()
 	case Easy_Mode:
 		if (not miniGameList[miniGameIndex].easyClear)
 		{
+			firstClearMinigame = true;
 			miniGameList[miniGameIndex].easyClear = true;
 			save();
 		}
@@ -22,6 +25,7 @@ void GameData::saveMiniGameClear()
 	case Normal_Mode:
 		if (not miniGameList[miniGameIndex].normalClear)
 		{
+			firstClearMinigame = true;
 			miniGameList[miniGameIndex].normalClear = true;
 			save();
 		}
@@ -29,6 +33,7 @@ void GameData::saveMiniGameClear()
 	case Hard_Mode:
 		if (not miniGameList[miniGameIndex].hardClear)
 		{
+			firstClearMinigame = true;
 			miniGameList[miniGameIndex].hardClear = true;
 			save();
 		}
@@ -50,6 +55,13 @@ void GameData::saveMainGame(bool clear)
 		if (clearStage < stage)
 		{
 			clearStage = stage;
+
+			firstClearStage = true;
+
+			if (stage == LastBossStage)
+			{
+				notifyGallery = true;
+			}
 		}
 
 		maxHPList[stage - 1] = 5;
@@ -72,6 +84,7 @@ void GameData::save()
 	saveDatajson[U"IncreaseHPMode"] = increaseHPMode;
 	saveDatajson[U"NotifyMiniGameSelect"] = notifyMiniGameSelect;
 	saveDatajson[U"NotifyGallery"] = notifyGallery;
+	saveDatajson[U"IsFullscreen"] = Window::GetState().fullscreen;
 
 	for (int32 maxHP : maxHPList)
 	{
@@ -124,6 +137,8 @@ void GameData::load()
 
 	notifyMiniGameSelect = saveDatajson[U"NotifyMiniGameSelect"].get<bool>();
 	notifyGallery = saveDatajson[U"NotifyGallery"].get<bool>();
+
+	Window::SetFullscreen(saveDatajson[U"IsFullscreen"].get<bool>());
 
 	maxHPList.clear();
 	for (const auto& obj : saveDatajson[U"MaxHP"].arrayView())

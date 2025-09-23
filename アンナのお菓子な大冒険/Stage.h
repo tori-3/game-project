@@ -75,12 +75,6 @@ public:
 
 	Stage(const JSON& json,bool backGround=false) {
 
-		//ステージの画像ファイルをTextureAssetに登録
-		for (const auto& path : FileSystem::DirectoryContents(U"StageTexture"))
-		{
-			TextureAsset::Register(FileSystem::BaseName(path), path, TextureDesc::Mipped);
-		}
-
 		//ファイルをロード
 		if (not json)throw Error{ U"ファイルを読み込めませんでした。" };
 

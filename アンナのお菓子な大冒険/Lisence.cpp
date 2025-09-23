@@ -3,8 +3,10 @@
 
 namespace Lisence
 {
-	void SetLisence()
+	void Init()
 	{
+		LicenseManager::DisableDefaultTrigger();
+
 		LicenseManager::AddLicense
 		({
 			.title = U"効果音ラボ",

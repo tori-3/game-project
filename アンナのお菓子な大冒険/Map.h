@@ -115,6 +115,10 @@ public:
 	static constexpr double cloudRoadLength = 250;
 	CharacterSystem cloud{ U"Characters/cloud/cloud.json" ,U"Characters/cloud/motion.txt" ,0.5*0.4,cloudPos,true,false };
 
+	Texture snowPanel{ U"StageImage/雪原パネル.png" };
+	Texture chocoPanel{ U"StageImage/チョコパネル.png" };
+	Texture cloudPanel{ U"StageImage/雲パネル.png" };
+	Texture lastBossPanel{ U"StageImage/ラスボスパネル.png" };
 
 	void updatePos();
 	

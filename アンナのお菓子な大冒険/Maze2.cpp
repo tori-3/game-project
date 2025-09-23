@@ -6,11 +6,6 @@ namespace Maze2
 	mazeGame::mazeGame(const InitData& init)//名前を変更してください
 		: MiniGameSceneBase{ init,false }
 	{
-		if (not TextureAsset::IsRegistered(U"BackGroundTexture/洞窟背景.png")) {
-			TextureAsset::Register(U"BackGroundTexture/洞窟背景.png", U"BackGroundTexture/洞窟背景.png");
-		}
-
-		AudioAsset::Register(U"MiniGameBGM", U"BGM/MiniGameBGM.wav", Loop::Yes);
 		BGMManager::get().play(U"MiniGameBGM");
 
 
@@ -31,18 +26,6 @@ namespace Maze2
 		player.mazeUpdate(maze.data, maze);
 		rotate.cpos = 20 * Vec2{ maze.data[0].size(),maze.data.size() } / 2.0;
 		rotate.pos = Vec2{ 1200,800 } / 2.0;
-
-		if (not TextureAsset::IsRegistered(U"CakeGround"))
-		{
-			TextureAsset::Register(U"CakeGround", U"StageTexture/CakeGround.png");
-		}
-		TextureAsset::Load(U"CakeGround");
-
-		if (not TextureAsset::IsRegistered(U"Cloud"))
-		{
-			TextureAsset::Register(U"Cloud", U"StageTexture/Cloud.png");
-		}
-		TextureAsset::Load(U"Cloud");
 	}
 
 	void mazeGame::gameUpdate()

@@ -2,8 +2,13 @@
 
 namespace LoadAsset
 {
+	void Init();
+
+	void LoadStageTexture();
 
 	void LoadAudio();
+
+	void LoadFont();
 
 	void RegisterTexture(StringView path);
 

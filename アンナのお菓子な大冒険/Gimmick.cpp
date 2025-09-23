@@ -60,14 +60,20 @@ bool FallingRocks::isActive()
 RollingRocks::RollingRocks(const Vec2& cpos)
 	:Entity{ U"Rocks", Circle{ 0,0,rect_size },cpos,{0,0},1 }
 {
-
+	audio.playOneShot(volume());
+	time.restart();
 }
 
 void RollingRocks::update()
 {
+	ClearPrint();
 	manager->stage->hit(&hitBox);
 
-	audio.play();
+	if (audioLength< time.sF())
+	{
+		audio.playOneShot(volume());
+		time.restart();
+	}
 
 	pos.x -= Scene::DeltaTime() * 200;
 

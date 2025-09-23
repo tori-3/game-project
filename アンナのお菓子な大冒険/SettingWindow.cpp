@@ -249,10 +249,10 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 	auto windowModeButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 240, .child = TextUI::Create({.text = text,.color=Palette::White}) });
 
 
-	String text2 = gameData.getIncreaseHPMode() ? U"お助けモードをOFFにする" : U"お助けモードをONにする";
+	String text2 = gameData.getIncreaseHPMode() ? U"HP増加をOFFにする" : U"HP増加をONにする";
 	auto hpModeButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 340, .child = TextUI::Create({.text = text2,.color = Palette::White}) });
 
-	auto infoButton = ChocolateButton::Create({ .color = Palette::White, .padding = -20,.width=50,.height=50, .child = TextUI::Create({.text = U"i",.color = Palette::Gray}) });
+	//auto infoButton = ChocolateButton::Create({ .color = Palette::White, .padding = -20,.width=50,.height=50, .child = TextUI::Create({.text = U"i",.color = Palette::Gray}) });
 
 
 	static int32 selectIndex = 0;
@@ -286,15 +286,16 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 					effectVolumeSliderPanel,
 					BGMVolumeSliderPanel,
 					windowModeButton,
-					Row::Create
-					({
-						.children
-						{
-							RectUI::Create({.size{50,50},.color=Alpha(0)}),
-							hpModeButton,
-							infoButton
-						}
-					}),
+					hpModeButton,
+					//Row::Create
+					//({
+					//	.children
+					//	{
+					//		RectUI::Create({.size{50,50},.color=Alpha(0)}),
+					//		hpModeButton,
+					//		infoButton
+					//	}
+					//}),
 					keyConfigButton,
 					closeButton
 				}
@@ -368,9 +369,11 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 				const bool isFullscreen = Window::GetState().fullscreen;
 				windowModeButton->setChild(TextUI::Create({.text = isFullscreen ? U"全画面にする":U"ウィンドウにする",.color=Palette::White  }));
 				Window::SetFullscreen(not isFullscreen);
+
+				gameData.save();
 			}
 
-
+			/*
 			if (infoButton->clicked())
 			{
 				AudioAsset{ U"決定ボタン" }.playOneShot();
@@ -407,6 +410,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 					})
 				});
 			}
+			*/
 
 			if(hpModeButton->clicked() || (selectIndex == 3 && gameData.menuDecisionKey.down()))
 			{
@@ -430,8 +434,8 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 								.margine = 20,
 								.children
 								{
-									TextUI::Create({.text = U"お助けモードをOFFにしますか？",.fontSize = 40,.color = Palette::White}),
-									TextUI::Create({.text = U"いままでに増加したHPも5HPにリセットされます。\n※お助けモード：失敗するとそのステージのHPが増加する機能です。",.fontSize = 20,.color = Palette::White}),
+									TextUI::Create({.text = U"HP増加をOFFにしますか？",.fontSize = 40,.color = Palette::White}),
+									TextUI::Create({.text = U"いままでに増加したHPも5HPにリセットされます。\n※HP増加：失敗するとそのステージのHPが2つ増加する機能です。",.fontSize = 20,.color = Palette::White}),
 									Row::Create
 									({
 										.children

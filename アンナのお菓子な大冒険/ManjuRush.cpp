@@ -17,6 +17,7 @@ namespace ManjuRush
 	ManjuRush::ManjuRush(const InitData& init)
 		: MiniGameSceneBase{ init }
 	{
+
 		enemys << RectF{ 1100,player.y + player.h - 16 - 50,80,60 };
 		enemys << RectF{ 2000,player.y - 100,80,60 };
 		enemys << RectF{ 1500,player.y - 350 + 5,80,60 };

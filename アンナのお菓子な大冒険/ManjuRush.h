@@ -57,7 +57,7 @@ namespace ManjuRush {
 		Texture kumo{ U"MiniGameAsset/まんじゅうラッシュ素材/くも.png" };
 		Texture kumokumo{ U"MiniGameAsset/まんじゅうラッシュ素材/くもくも.png" };
 
-		Audio BGM{ U"BGM/MiniGameBGM.wav" };
+		Audio BGM = AudioAsset{ U"MiniGameBGM" };
 		Audio Clear{ U"MiniGameAsset/Common/クリア2.wav" };
 		Audio Touch{ U"MiniGameAsset/まんじゅうラッシュ素材/8bitダメージ8.mp3" };
 		Audio Defeat{ U"MiniGameAsset/Common/やられた.wav" };
@@ -91,6 +91,11 @@ namespace ManjuRush {
 		void onGameStart()override;
 
 		ManjuRush(const InitData& init);
+
+		~ManjuRush()
+		{
+			BGM.stop();
+		}
 
 		void gameUpdate() override;
 

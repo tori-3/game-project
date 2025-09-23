@@ -1130,5 +1130,8 @@
     <ClInclude Include="GalleryScene.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="StarDustEffect.h">
+      <Filter>Header Files\MainGameScene\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

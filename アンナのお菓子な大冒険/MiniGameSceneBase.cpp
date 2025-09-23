@@ -60,6 +60,7 @@ std::shared_ptr<UIElement> MiniGameSceneBase::createPauseUI()
 
 	return SimpleDialog::Create
 	({
+		.erasable=false,
 		.child = SweetsPanel::Create
 		({
 			.margine = 30,
@@ -161,8 +162,19 @@ void MiniGameSceneBase::goPause()
 void MiniGameSceneBase::EndGame(bool clear)
 {
 	getData().mini_clear = clear;//クリア状況保存
-	if (getData().mini_mode == Stage_Mode)changeScene(U"Map");//ステージモードならステージに帰る
-	else changeScene(U"MiniGameSelect");//ミニゲームセレクトモードならミニゲームセレクトに帰る
+
+	if (getData().clearStage == 0)
+	{
+		changeScene(U"TitleScene");
+	}
+	else if (getData().mini_mode == Stage_Mode)
+	{
+		changeScene(U"Map");//ステージモードならステージに帰る
+	}
+	else
+	{
+		changeScene(U"MiniGameSelect");//ミニゲームセレクトモードならミニゲームセレクトに帰る
+	}
 }
 
 void MiniGameSceneBase::goGame()

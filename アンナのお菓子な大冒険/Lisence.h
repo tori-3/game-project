@@ -3,7 +3,7 @@
 
 namespace Lisence
 {
-	void SetLisence();
+	void Init();
 
 	std::shared_ptr<UIElement> LicenseDisplay();
 }

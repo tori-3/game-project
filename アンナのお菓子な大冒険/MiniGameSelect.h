@@ -46,6 +46,8 @@ public:
 
 	Texture chocolateBeltConveyor{ U"StageTexture/BeltConveyor.png" };
 
+	Effect effect;
+
 	MiniGameSelect(const InitData& init);
 
 	void update()override;

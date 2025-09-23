@@ -8,9 +8,33 @@ public:
 	int32 num;
 	double blockSize;
 
-	bool update()const
+	bool firstClearMode = false;
+	double starScale = 0.0;
+
+	bool updateFirstClearMode()
+	{
+		if (firstClearMode)
+		{
+			starScale = Min(1.0, starScale + Scene::DeltaTime()*2);
+
+			if (1.0 <= starScale)
+			{
+				firstClearMode = false;
+			}
+		}
+
+		return firstClearMode;
+	}
+
+	bool update()
 	{
 		return RectF{ pos,num * blockSize,blockSize }.leftClicked();
+	}
+
+	Vec2 getStarPos()const
+	{
+		RectF rect{ pos,num * blockSize,blockSize };
+		return { rect.x + blockSize * 0.5,rect.center().y };
 	}
 
 	void draw(const Texture& texture, const Font& font, StringView text, const ColorF& color, bool star, bool selected)const
@@ -24,13 +48,18 @@ public:
 
 		rect.drawFrame(selected ? 8 : 2, color);
 
-		if (star)
+		if (firstClearMode)
 		{
-			Shape2D::Star(blockSize * 0.3, { rect.x + blockSize * 0.5,rect.center().y }).draw(Palette::Yellow);
+			Shape2D::Star(blockSize * 0.3, getStarPos()).drawFrame(3, Palette::White);
+			Shape2D::Star(blockSize * 0.3 * starScale, getStarPos()).draw(Palette::Yellow);
+		}
+		else if (star)
+		{
+			Shape2D::Star(blockSize * 0.3, getStarPos()).draw(Palette::Yellow);
 		}
 		else
 		{
-			Shape2D::Star(blockSize * 0.3, { rect.x + blockSize * 0.5,rect.center().y }).drawFrame(3, Palette::White);
+			Shape2D::Star(blockSize * 0.3, getStarPos()).drawFrame(3, Palette::White);
 		}
 
 		font(text).drawAt(RectF{ pos + Vec2{blockSize * 0.8,0},(num - 1) * blockSize,blockSize }.center());

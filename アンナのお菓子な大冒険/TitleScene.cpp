@@ -139,7 +139,25 @@ void TitleScene::update()
 
 	if (changeMapTimer.reachedZero())
 	{
-		changeScene(U"Map");
+		if (getData().clearStage == 0)
+		{
+			JSON json = JSON::Load(U"map.json");
+			getData().initGame();
+			getData().mini_mode = Stage_Mode;
+			getData().stage = 1;
+			getData().stageFile = json[U"StageData"][U"Stage1"][U"MapFile"].getString();;
+			getData().backgroundTexture = json[U"StageData"][U"Stage1"][U"BackgroundTexture"].getString();
+			getData().sceneName = json[U"StageData"][U"Stage1"][U"SceneName"].get<String>();
+			getData().description = U"Space or W：ジャンプ\nA：左\nD：右\nS：しゃがむ\nEnter：技を発動\nEnter長押し：突進(クッキーが10個貯まったら)";
+			getData().BGMPath = json[U"StageData"][U"Stage1"][U"BGM"].getString();
+			changeScene(getData().sceneName);
+			AudioAsset::Register(getData().BGMPath, getData().BGMPath, Loop::Yes);
+			BGMManager::get().stop();
+		}
+		else
+		{
+			changeScene(U"Map");
+		}
 	}
 
 	if (changeMiniGameTimer.isStarted())
@@ -218,6 +236,7 @@ std::shared_ptr<UIElement> TitleScene::licenseDialog()
 
 	return SimpleDialog::Create
 	({
+		.erasable = false,
 		.child = SweetsPanel::Create
 		({
 			.margine = 5,

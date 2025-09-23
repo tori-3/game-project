@@ -1,6 +1,7 @@
 ﻿#include"Spotlight.hpp"
 #include"MiniGameSelect.h"
 #include"BGMManager.hpp"
+#include"StarDustEffect.h"
 
 MiniGameSelect::MiniGameSelect(const InitData& init)
 	: IScene{ init }
@@ -9,6 +10,22 @@ MiniGameSelect::MiniGameSelect(const InitData& init)
 	{
 		getData().notifyMiniGameSelect = false;
 		getData().save();
+	}
+
+	if (getData().firstClearMinigame)
+	{
+		if (getData().miniGameModeIndex == 0)
+		{
+			easyButton.firstClearMode = true;
+		}
+		else if (getData().miniGameModeIndex == 1)
+		{
+			normalButton.firstClearMode = true;
+		}
+		else
+		{
+			hardButton.firstClearMode = true;
+		}
 	}
 
 
@@ -42,6 +59,36 @@ void MiniGameSelect::update()
 {
 	leftFire.update();
 	rightFire.update();
+
+	if(getData().firstClearMinigame)
+	{
+		if (getData().miniGameModeIndex == 0)
+		{
+			if(not easyButton.updateFirstClearMode())
+			{
+				effect.add<StarDustEffect>(easyButton.getStarPos());
+				getData().firstClearMinigame = false;
+			}
+		}
+		else if (getData().miniGameModeIndex == 1)
+		{
+			if (not normalButton.updateFirstClearMode())
+			{
+				effect.add<StarDustEffect>(normalButton.getStarPos());
+				getData().firstClearMinigame = false;
+			}
+		}
+		else
+		{
+			if (not hardButton.updateFirstClearMode())
+			{
+				effect.add<StarDustEffect>(hardButton.getStarPos());
+				getData().firstClearMinigame = false;
+			}
+		}
+
+		return;
+	}
 
 	if (backButton.leftClicked() || getData().menuBackKey.down())
 	{
@@ -154,6 +201,7 @@ void MiniGameSelect::update()
 
 	if (startMiniGame)
 	{
+		getData().initGame();
 		getData().sceneName = miniGameList[getData().miniGameIndex].sceneName;
 		getData().description = miniGameList[getData().miniGameIndex].sentence;
 		changeScene(miniGameList[getData().miniGameIndex].sceneName);
@@ -220,4 +268,9 @@ void MiniGameSelect::draw()const
 	homeIcon.drawAt(backButton.center, backButton.mouseOver() ? Palette::Gray : Palette::White);
 
 	FontAsset{ U"NormalFont" }(U"[Q]タイトルに戻る").draw(Arg::leftCenter = backButton.center + Vec2{ 30,0 });
+
+	{
+		const ScopedRenderStates2D blend{ BlendState::Additive };
+		effect.update();
+	}
 }

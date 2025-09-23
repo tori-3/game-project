@@ -24,7 +24,6 @@ namespace HawkDropOut
 	HawkDropOut::HawkDropOut(const InitData& init)
 		: MiniGameSceneBase{ init,false }
 	{
-		AudioAsset::Register(U"MiniGameBGM", U"BGM/MiniGameBGM.wav", Loop::Yes);
 		BGMManager::get().play(U"MiniGameBGM");
 
 

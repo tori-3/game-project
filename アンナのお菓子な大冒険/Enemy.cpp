@@ -418,6 +418,8 @@ CloudEnemy::CloudEnemy(const Vec2& cpos)
 	character.addMotion(U"walk", true);
 	startY = cpos.y;
 
+	z = 110;
+
 	time = Random(1.5, 2.5);
 }
 
@@ -476,6 +478,8 @@ Corn::Corn(const Vec2& cpos) :Entity{ {U"Enemy"}, Circle{30},cpos,{0,0},1 },
 character{ U"Characters/corn/corn.json",U"Characters/corn/motion.txt",0.3,cpos,true,false }
 {
 	character.addMotion(U"walk", true);
+
+	z = 110;
 }
 
 void Corn::update()
@@ -500,6 +504,8 @@ void Corn::update()
 				character.addMotion(U"change");
 				DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 200, HSV{ 20,1,1 });
 				AudioAsset{ U"ポップコーン爆発" }.playOneShot();
+
+				z = 0;
 
 				if ((manager->get(U"Player")->pos - pos).length() < 70 * 2)
 				{
@@ -608,6 +614,8 @@ void Corn::lateUpdate()
 
 void Corn::draw()const
 {
+	hitBox.getFigure().drawFrame(10, Palette::Red);
+
 	character.draw();
 }
 
@@ -873,6 +881,7 @@ Zerosen::Zerosen(const Vec2& cpos)
 	, character{ U"Characters/zerosen/model.json" ,U"Characters/zerosen/motion.txt" ,1,cpos,false,false }
 {
 	character.addMotion(U"susumu");
+	z = 110;
 }
 
 void Zerosen::update()

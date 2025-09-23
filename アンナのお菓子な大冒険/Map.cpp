@@ -185,7 +185,7 @@ void Map::update()
 		lastBossTimer.restart();
 	}
 
-	if (getData().menuBackKey.down())
+	if (not panelFlg&&getData().menuBackKey.down())
 	{
 		changeScene(U"TitleScene");
 		AudioAsset{ U"決定ボタン" }.playOneShot();
@@ -193,11 +193,15 @@ void Map::update()
 
 	if (not largeFlg)
 	{
-
 		if (backButton.leftClicked())
 		{
 			changeScene(U"TitleScene");
 			AudioAsset{ U"決定ボタン" }.playOneShot();
+		}
+
+		if(panelFlg&&getData().menuBackKey.down())
+		{
+			panelFlg = false;
 		}
 
 		if (panelFlg && (start.leftClicked() || getData().menuDecisionKey.down()) && index <= clearStage)
@@ -205,14 +209,11 @@ void Map::update()
 
 			AudioAsset{ U"決定ボタン" }.playOneShot();
 
+			getData().initGame();
 			getData().mini_mode = Stage_Mode;
 			getData().stage = index + 1;
-			//getData().mini_clear = false;
 			getData().stageFile = stageList[index];
 			getData().backgroundTexture = json[U"StageData"][U"Stage{}"_fmt(index + 1)][U"BackgroundTexture"].getString();
-			//getData().maxHP = saveDatajson[U"MaxHP"][index].get<int32>();
-			getData().backFromMainGameScene = false;
-			getData().quitStage = false;
 			getData().sceneName = sceneNames[index];
 
 			if (sceneNames[index] == U"MainGameScene")
@@ -224,7 +225,7 @@ void Map::update()
 				getData().description = sentences[index];
 			}
 
-			LoadAsset::RegisterTexture(getData().backgroundTexture);
+			//LoadAsset::RegisterTexture(getData().backgroundTexture);
 
 			String path = json[U"StageData"][U"Stage{}"_fmt(index + 1)][U"BGM"].getString();
 
@@ -312,7 +313,13 @@ void Map::update()
 		}
 
 	}
-	else if (MouseL.down())largeFlg = false;
+	else
+	{
+		if (MouseL.down() || getData().menuBackKey.down())
+		{
+			largeFlg = false;
+		}
+	}
 
 	if (getData().menuDecisionKey.down())
 	{
@@ -377,20 +384,68 @@ void Map::draw() const
 			}
 
 		}
-		fairy.draw();
-		snowKnight.draw();
-		cookieDoreisho.draw();
-		captain.draw();
-		lastBoss.draw();
-		itigoSlave.draw();
-		itigo.draw();
-		cloud.draw();
+
+		if (getData().ChocoMountain - 1 <= getData().clearStage)
+		{
+			snowKnight.draw();
+		}
+
+		if (getData().ChocoMountain + 1 <= getData().clearStage)
+		{
+			itigoSlave.draw();
+		}
+
+		if (2 <= getData().clearStage)
+		{
+			fairy.draw();
+			itigo.draw();
+		}
+
+		if (getData().CandyCloud - 1 <= getData().clearStage)
+		{
+			cookieDoreisho.draw();
+		}
+
+		if (getData().CandyCloud  <= getData().clearStage)
+		{
+			cloud.draw();
+		}
+
+		if (getData().LastBossStage - 2 <= getData().clearStage)
+		{
+			captain.draw();
+		}
+
+		if (getData().LastBossStage == getData().clearStage)
+		{
+			lastBoss.draw();
+		}
+
+
 		character.draw();
 	}
 
 	if (panelFlg)
 	{
-		Rect{ Arg::center(600,300),1100,450 }.draw(ColorF{ Palette::Deeppink,0.8 }).drawFrame(3, 0);
+		//Rect{ Arg::center(600,300),1100,450 }.draw(ColorF{ Palette::Deeppink,0.8 }).drawFrame(3, 0);
+
+		if (index + 1 < getData().ChocoMountain)
+		{
+			snowPanel.resized(1250).drawAt(600, 300);
+		}
+		else if (index + 1 < getData().CandyCloud)
+		{
+			chocoPanel.resized(1250).drawAt(600, 300);
+		}
+		else if (index + 1 < getData().LastBossStage)
+		{
+			cloudPanel.resized(1250).drawAt(600, 300);
+		}
+		else
+		{
+			lastBossPanel.resized(1250).drawAt(600, 300);
+		}
+
 		font(sentences[index]).draw(600, 100);
 		start.drawFrame(3);
 		font(U"開始(Enter)").drawAt(start.center(), ColorF{ 1.0, Periodic::Sine0_1(3s) });

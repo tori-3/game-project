@@ -209,8 +209,8 @@ void Main()
 				MSRenderTexture texture{ (map.size() * rect_size * r).asPoint(),ColorF{1,0} };
 
 
-				Size blurAreaSize{ (map.size() * rect_size * r).asPoint() };
-				const RenderTexture gaussianA1{ blurAreaSize }, gaussianB1{ blurAreaSize };
+				//Size blurAreaSize{ (map.size() * rect_size * r).asPoint() };
+				//const RenderTexture gaussianA1{ blurAreaSize }, gaussianB1{ blurAreaSize };
 
 
 				{
@@ -226,14 +226,14 @@ void Main()
 					}
 				}
 
-				{
-					Graphics2D::Flush();
-					texture.resolve();
-				}
+				//{
+				//	Graphics2D::Flush();
+				//	texture.resolve();
+				//}
 
-				Shader::GaussianBlur(texture, gaussianB1, gaussianA1);
+				//Shader::GaussianBlur(texture, gaussianB1, gaussianA1);
 
-				Shader::Copy(gaussianA1.resized(blurAreaSize), texture);
+				//Shader::Copy(gaussianA1.resized(blurAreaSize), texture);
 
 				{
 					Graphics2D::Flush();

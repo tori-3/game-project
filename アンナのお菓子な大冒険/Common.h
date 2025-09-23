@@ -17,11 +17,8 @@ struct GameData
 	int32 stage = 1;
 	mode mini_mode = Easy_Mode;
 	bool mini_clear = false;
-	bool boss_clear = false;
 
 	String description;
-
-	bool backFromMainGameScene = false;
 
 	//ゲームをやめるでMapに戻ってきたか
 	bool quitStage = false;
@@ -37,6 +34,8 @@ struct GameData
 	//今いるシーンの名前
 	String sceneName;
 
+	static constexpr int32 ChocoMountain = 8;
+	static constexpr int32 CandyCloud = 15;
 	static constexpr int32 LastBossStage = 23;// 26
 
 	struct MiniGameState
@@ -52,6 +51,19 @@ struct GameData
 
 	bool notifyMiniGameSelect = false;
 	bool notifyGallery = false;
+
+	//そのステージ(ミニゲームを始めてクリアしたか) 演出を完了するときにfalseにする
+	bool firstClearMinigame = false;
+	bool firstClearStage = false;
+
+	//ゲームを始める前に呼ぶ
+	void initGame()
+	{
+		//firstClearMinigame = false;
+		//firstClearStage = false;
+		mini_clear = false;//一応
+		quitStage = false;//一応
+	}
 
 	GameData()
 	{

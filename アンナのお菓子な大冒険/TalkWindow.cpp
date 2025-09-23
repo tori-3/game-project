@@ -98,7 +98,6 @@ void TalkWindow::draw(const RectF& rect, const SizeF& nameSize,bool hideMode)con
 
 	if (not hideMode)
 	{
-		FontAsset(U"WindowFont")(U"←A 戻る　　次へ D→").drawBase(20, window.rect.bl() + Vec2{ 20,-20 });
+		FontAsset(U"WindowFont")(U"次へ [Enter]").drawBase(20, window.rect.bl() + Vec2{ 20,-20 });
 	}
 }
-

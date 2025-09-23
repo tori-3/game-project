@@ -10,7 +10,10 @@ public:
 			TextureAsset::Register(U"CookieItem", U"🍪"_emoji);
 		}
 
-		AudioAsset{ U"ポップな死亡" }.playOneShot();
+		if(Abs(pos.x-DataManager::get().playerPos.x)<=rect_size*20)
+		{
+			AudioAsset{ U"ポップな死亡" }.playOneShot();
+		}
 	}
 
 	void update()override {

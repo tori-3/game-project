@@ -1,4 +1,51 @@
 ﻿#include"LoadAsset.h"
+#include"BunchoUI.hpp"
+
+void LoadAsset::Init()
+{
+	AudioAsset::Register(U"MiniGameBGM", U"BGM/MiniGameBGM.wav", Loop::Yes);
+
+	LoadAsset::RegisterTexture(U"BackGroundTexture/雪原背景.png");
+	LoadAsset::RegisterTexture(U"BackGroundTexture/雲背景.png");
+	LoadAsset::RegisterTexture(U"BackGroundTexture/ラスボス背景.png");
+	LoadAsset::RegisterTexture(U"BackGroundTexture/洞窟背景.png");
+	LoadAsset::RegisterTexture(U"BackGroundTexture/宇宙背景.png");
+
+	LoadAsset::LoadStageTexture();
+
+	LoadAsset::LoadAudio();
+
+	LoadAsset::LoadFont();
+}
+
+void LoadAsset::LoadStageTexture()
+{
+	//ステージの画像ファイルをTextureAssetに登録
+	for (const auto& path : FileSystem::DirectoryContents(U"StageTexture"))
+	{
+		TextureAsset::Register(FileSystem::BaseName(path), path, TextureDesc::Mipped);
+	}
+}
+
+void LoadAsset::LoadFont()
+{
+	FontAsset::Register(U"TitleFont", FontMethod::MSDF, 60, Typeface::Heavy);
+
+	FontAsset::Register(U"NormalFont", FontMethod::MSDF, 25);
+
+	FontAsset::Register(U"IconFont", FontMethod::MSDF, 25, Typeface::Icon_MaterialDesign);
+
+	// アイコンを表示するためのフォントを追加
+	const Font iconFont = FontAsset{ U"IconFont" };
+	FontAsset{ U"TitleFont" }.addFallback(iconFont);
+	FontAsset{ U"NormalFont" }.addFallback(iconFont);
+
+	BunchoUI::TextUI::DefaultFontName = U"NormalFont";
+
+	AudioAsset::LoadAsync(U"TitleFont");
+	AudioAsset::LoadAsync(U"NormalFont");
+	AudioAsset::LoadAsync(U"IconFont");
+}
 
 void LoadAsset::LoadAudio()
 {
