@@ -1,23 +1,26 @@
-﻿#include"Player.h"
+﻿#include "Player.h"
 #include "TalkManager.h"
+#include "ControllerManager.h"
 
 Player::Player(const Vec2& cpos) :
 	character{ U"Characters/annna/annna.json",U"Characters/annna/motion.txt",0.25,cpos,false },
 	Entity{ U"Player",defaultBody ,cpos,{0,0},DataManager::get().maxHP }
 {
+	hitBox.physics.isPlayer = true;
+
 	//最前面に持ってくるため
 	z = 100;
 
 	actMan.add(U"Walk", {
 		.startCondition = [&]() {
-			return hitBox.touch(Direction::down) and (not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer",U"HeadDropLanding",U"HeadDrop",U"Damage",U"Dead",U"Clear",U"Stop")) and (leftKey.pressed() or rightKey.pressed());
+			return hitBox.touch(Direction::down) and (not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"Summer",U"HeadDropLanding",U"HeadDrop",U"Damage",U"Dead",U"Clear",U"Stop")) and (leftKey.pressed() || rightKey.pressed()||ControllerManager::get().RightPressed()|| ControllerManager::get().LeftPressed());
 		},
 		.start = [&]() {
 			AudioAsset{U"足音"}.play();
 			character.addMotion(U"Walk",true);
 		},
 		.update = [&](double t) {
-			return not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"HeadDrop") and (leftKey.pressed() or rightKey.pressed());
+			return not actMan.hasActive(U"Jump",U"PreJump",U"Rush",U"Falling",U"Landing",U"Shagamu",U"Sliding",U"Punch",U"HeadDrop") and (leftKey.pressed() || rightKey.pressed() || ControllerManager::get().RightPressed() || ControllerManager::get().LeftPressed());
 		},
 		.end = [&]() {
 			AudioAsset{U"足音"}.stop(0.5s);
@@ -139,6 +142,8 @@ Player::Player(const Vec2& cpos) :
 			AudioAsset{ U"突進足音" }.stop(0.1s);
 			AudioAsset{ U"風" }.stop(0.1s);
 			AudioAsset{ U"突進衝突" }.playOneShot();
+			ControllerManager::get().setVibration(0.7);
+
 			speed = 400;
 			hitBox.physics.rush = false;
 		}
@@ -156,7 +161,7 @@ Player::Player(const Vec2& cpos) :
 		},
 		.end = [&]() {
 			character.removeMotion(U"Falling");
-			if (not downKey.pressed() && not actMan.hasActive(U"Dead",U"Clear"))
+			if (not (downKey.pressed()|| ControllerManager::get().DownPressed()) && not actMan.hasActive(U"Dead",U"Clear"))
 			{
 				actMan.start(U"Landing");
 			}
@@ -171,7 +176,7 @@ Player::Player(const Vec2& cpos) :
 	.update = [&](double t) {
 		speed = 250;
 
-		return not jumpKey.down() and not downKey.pressed() and not actMan.hasActive(U"Rush") and t < 0.1;
+		return not jumpKey.down() and not (downKey.pressed()|| ControllerManager::get().DownPressed()) and not actMan.hasActive(U"Rush") and t < 0.1;
 	},
 	.end = [&]() {
 		speed = 400;
@@ -196,7 +201,7 @@ Player::Player(const Vec2& cpos) :
 
 	actMan.add(U"Shagamu", {
 		.startCondition = [&]() {
-			return downKey.pressed() and (not jumpKey.pressed()) and hitBox.touch(Direction::down) and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Landing",U"HeadDropLanding",U"HeadDrop",U"Punch",U"Jump",U"PreJump",U"Falling",U"Dead",U"Clear",U"Rush",U"Stop");
+			return (downKey.pressed()|| ControllerManager::get().DownPressed()) and (not jumpKey.pressed()) and hitBox.touch(Direction::down) and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Landing",U"HeadDropLanding",U"HeadDrop",U"Punch",U"Jump",U"PreJump",U"Falling",U"Dead",U"Clear",U"Rush",U"Stop");
 		},
 		.start = [&]() {
 			character.addMotion(U"Shagamu");
@@ -205,7 +210,7 @@ Player::Player(const Vec2& cpos) :
 		},
 		.update = [&](double t) {
 			speed = 0;
-			return downKey.pressed() and not jumpKey.down() and not attackKey.pressed() && not actMan.hasActive(U"Falling");
+			return (downKey.pressed()|| ControllerManager::get().DownPressed()) and not jumpKey.down() and not attackKey.pressed() && not actMan.hasActive(U"Falling");
 		},
 		.end = [&]() {
 			character.removeMotion(U"Shagamu");
@@ -303,7 +308,7 @@ Player::Player(const Vec2& cpos) :
 
 	actMan.add(U"HeadDrop", {
 		.startCondition = [&]() {
-			return downKey.down() and not actMan.hasActive(U"Summer",U"Damage",U"Dead",U"Clear",U"Rush") and not hitBox.touch(Direction::down);
+			return (downKey.down()|| ControllerManager::get().DownDown()) and not actMan.hasActive(U"Summer",U"Damage",U"Dead",U"Clear",U"Rush") and not hitBox.touch(Direction::down);
 		},
 		.start = [&]() {
 			character.addMotion(U"HeadDrop");
@@ -334,6 +339,8 @@ Player::Player(const Vec2& cpos) :
 		.end = [&]() {
 			if (hitBox.touch(Direction::down))actMan.start(U"HeadDropLanding");
 			character.removeMotion(U"HeadDrop");
+
+			ControllerManager::get().setVibration(0.15);
 
 			AudioAsset{ U"ヘッドドロップ" }.playOneShot();
 		}
@@ -486,22 +493,22 @@ void Player::update()
 		//何もできない
 	}
 	else if (actMan.hasActive(U"Summer", U"HeadDropLanding", U"Mirror{}"_fmt(character.mirrorCount - 1))) {
-		if (leftKey.pressed())
+		if (leftKey.pressed() || ControllerManager::get().LeftPressed())
 		{
 			if (not hitBox.touch(Direction::left))vel.x = -speed;
 		}//左
-		else if (rightKey.pressed())
+		else if (rightKey.pressed() || ControllerManager::get().RightPressed())
 		{
 			if (not hitBox.touch(Direction::right))vel.x = speed;
 		}//右
 	}
 	else {
-		if (leftKey.pressed())
+		if (leftKey.pressed() || ControllerManager::get().LeftPressed())
 		{
 			if (not hitBox.touch(Direction::left))vel.x = -speed;
 			left = true;
 		}//左
-		else if (rightKey.pressed())
+		else if (rightKey.pressed() || ControllerManager::get().RightPressed())
 		{
 			if (not hitBox.touch(Direction::right))vel.x = speed;
 			left = false;
@@ -589,6 +596,8 @@ void Player::damage(int32 n, const Vec2& force, DamageType damageType)
 				actMan.start(U"Damage");
 
 				hp -= n;
+
+				ControllerManager::get().setVibration(0.3);
 
 				AudioAsset{ U"アンナダメージ" }.playOneShot();
 			}

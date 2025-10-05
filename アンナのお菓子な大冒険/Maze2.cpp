@@ -1,5 +1,6 @@
 ﻿#include"Spotlight.hpp"
 #include"Maze2.h"
+#include"ControllerManager.h"
 
 namespace Maze2
 {
@@ -32,7 +33,7 @@ namespace Maze2
 	{
 		if (clear)
 		{
-			if (KeyEnter.down())
+			if (getData().menuDecisionKey.down())
 			{
 				EndGame(true);
 			}
@@ -48,7 +49,7 @@ namespace Maze2
 			//player.mazeUpdate(maze.data,maze);
 		}
 		//player.vel = Vec2(KeyRight.pressed()-KeyLeft.pressed(), -KeyUp.pressed()+ KeyDown.pressed())/10;
-		rotate.angle_vel = 0.02 * ((KeyRight | KeyD).pressed() - (KeyLeft | KeyA).pressed());
+		rotate.angle_vel = 0.02 * ((getData().minigameRightKey.pressed()|| ControllerManager::get().RightPressed()) - (getData().minigameLeftKey.pressed()|| ControllerManager::get().LeftPressed()));
 		if (MouseL.pressed()) {
 			rotate.angle_vel = Cursor::DeltaF().x / 100.0;
 		}

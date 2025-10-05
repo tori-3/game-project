@@ -1,4 +1,6 @@
-﻿class Spotlight
+﻿#pragma once
+
+class Spotlight
 {
 public:
 	const MSRenderTexture renderTexture;

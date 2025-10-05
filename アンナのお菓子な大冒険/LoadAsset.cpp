@@ -35,10 +35,19 @@ void LoadAsset::LoadFont()
 
 	FontAsset::Register(U"IconFont", FontMethod::MSDF, 25, Typeface::Icon_MaterialDesign);
 
+	FontAsset::Register(U"EmojiFont", FontMethod::MSDF, 25, Typeface::ColorEmoji);
+
+
 	// アイコンを表示するためのフォントを追加
 	const Font iconFont = FontAsset{ U"IconFont" };
+	const Font emojiFont = FontAsset{ U"EmojiFont" };
+
 	FontAsset{ U"TitleFont" }.addFallback(iconFont);
 	FontAsset{ U"NormalFont" }.addFallback(iconFont);
+
+	FontAsset{ U"TitleFont" }.addFallback(emojiFont);
+	FontAsset{ U"NormalFont" }.addFallback(emojiFont);
+
 
 	BunchoUI::TextUI::DefaultFontName = U"NormalFont";
 
@@ -54,7 +63,7 @@ void LoadAsset::LoadAudio()
 	{
 		String name = FileSystem::BaseName(path);
 		AudioAsset::Register(name, path);
-		AudioAsset::LoadAsync(name);
+		//AudioAsset::LoadAsync(name);
 	}
 
 	AudioAsset{ U"ゲームオーバー" }.setVolume(10);
@@ -70,7 +79,7 @@ void LoadAsset::LoadAudio()
 	AudioAsset{ U"妖精" }.setVolume(3);
 
 	AudioAsset{ U"ドーナツ" }.setVolume(3);
-	AudioAsset{ U"ドーナツ" }.setLoop(true);
+	//AudioAsset{ U"ドーナツ" }.setLoop(true);
 
 	AudioAsset{ U"ドーナツ衝突" }.setVolume(3);
 

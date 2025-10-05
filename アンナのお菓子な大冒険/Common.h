@@ -46,7 +46,11 @@ struct GameData
 	};
 
 	Array<int32>maxHPList;
-	Array<bool>clearCompleteList;
+
+	Array<int32>clearHPList;
+
+
+
 	Array<MiniGameState>miniGameList;
 
 	bool notifyMiniGameSelect = false;
@@ -55,6 +59,8 @@ struct GameData
 	//そのステージ(ミニゲームを始めてクリアしたか) 演出を完了するときにfalseにする
 	bool firstClearMinigame = false;
 	bool firstClearStage = false;
+
+	double vibration = 1.0;
 
 	//ゲームを始める前に呼ぶ
 	void initGame()

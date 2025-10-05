@@ -7,6 +7,7 @@
 
 #include"RingEffect.h"
 
+#include"ControllerManager.h"
 
 class Block {
 public:
@@ -144,6 +145,12 @@ public:
 
 			//適当
 			const double volume = Clamp((15*rect_size - Abs(DataManager::get().playerPos.x - pos.x * rect_size)), 0.0, 1.0);
+
+			if (box->isPlayer)
+			{
+				ControllerManager::get().setVibration(0.15);
+			}
+
 			AudioAsset{ U"ボヨン" }.playOneShot(volume);
 		}
 

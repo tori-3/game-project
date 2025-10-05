@@ -43,6 +43,26 @@ TitleScene::TitleScene(const InitData& init)
 		menuList.insert(menuList.begin() + 2, U"思い出");
 		funcList.insert(funcList.begin() + 2, [&] {changeScene(U"GalleryScene"); });
 	}
+
+
+	if(getData().ChocoMountain<= getData().clearStage)
+	{
+		pathList << U"BackGroundTexture/洞窟背景.png";
+	}
+
+	if (getData().CandyCloud <= getData().clearStage)
+	{
+		pathList << U"BackGroundTexture/雲背景.png";
+	}
+
+	if (getData().LastBossStage <= getData().clearStage)
+	{
+		pathList << U"BackGroundTexture/ラスボス背景.png";
+		pathList << U"BackGroundTexture/宇宙背景.png";
+	}
+
+
+
 }
 
 void TitleScene::update()
@@ -182,7 +202,7 @@ void TitleScene::draw() const
 
 	constexpr double changeTime = 3.0;
 
-	if (timer.sF() <= changeTime)
+	if (1 < pathList.size() && timer.sF() <= changeTime)
 	{
 		double t = timer.sF() / changeTime;
 

@@ -17,6 +17,8 @@
 
 #include"LoadAsset.h"
 
+#include"ControllerManager.h"
+
 void Main()
 {
 	Window::SetTitle(U"アンナのお菓子な大冒険");
@@ -35,7 +37,7 @@ void Main()
 
 	App manager;
 
-	//manager.add<OpeningScene>(U"OpeningScene");
+	manager.add<OpeningScene>(U"OpeningScene");
 	manager.add<TitleScene>(U"TitleScene");
 	manager.add<Map>(U"Map");
 	manager.add<MainGameScene>(U"MainGameScene");
@@ -50,11 +52,15 @@ void Main()
 	manager.add<EndRollScene>(U"EndRollScene");
 	manager.add<GalleryScene>(U"GalleryScene");
 
+	manager.changeScene(U"OpeningScene", 0.5s);
+
 	while (System::Update())
 	{
 		if (not manager.update())
 		{
 			break;
 		}
+
+		ControllerManager::get().update();
 	}
 }

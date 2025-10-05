@@ -777,6 +777,7 @@ void Captain::update()
 
 					endFunc = [&] {
 						DataManager::get().table.emplace(U"ShakeCamera");
+						ControllerManager::get().setVibration(0.7);
 
 						//待つ
 						timer = 2.0;

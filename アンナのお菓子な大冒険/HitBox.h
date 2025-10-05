@@ -15,6 +15,9 @@ public:
 	int32* hp;
 	bool rush = false;
 
+	//ばねの振動用
+	bool isPlayer = false;
+
 	double acc1=0;
 
 	bool leftFloor=false, rightFloor=false;

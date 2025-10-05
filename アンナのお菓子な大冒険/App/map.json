@@ -1,5 +1,5 @@
 ﻿{
-    "MiniGameStage": [ 4, 8, 11, 15, 18, 22 ],
+    "MiniGameStage": [ 4, 9, 11, 16, 18, 22 ],
     "StageData": {
         "Stage1": {
             "BGM": "BGM/StageSnow7.wav",
@@ -27,7 +27,7 @@
             "MapFile": "StageData/snowStage2.json",
             "Picture": "BackgroundTexture/雪原背景.png",
             "SceneName": "MainGameScene",
-            "Sentence": "<1-2>プリンのトランポリン\nプリンでとびはねるイチゴちゃん。\n楽しそうなので、アンナちゃんも\n混ざります。\n（お菓子で遊んではいけません。）",
+            "Sentence": "<1-2>トランプリン\nプリンでとびはねるイチゴちゃん。\n楽しそうなので、アンナちゃんも\n混ざります。\n（お菓子で遊んではいけません。）",
             "StagePos": "(125,700)",
             "Type": "Stage"
         },
@@ -72,24 +72,24 @@
             "Type": "Boss"
         },
         "Stage8": {
-            "BGM": "",
-            "BackgroundTexture": "",
-            "MapFile": "",
-            "Picture": "MiniGameDisplay/MAZE.png",
-            "SceneName": "Maze1",
-            "Sentence": "<ミニゲーム-暗闇迷路>\nビスケットの匂いに誘われて真っ暗な\n迷路に迷い込んでしまった！\n明かりを頼りにビスケットを\n手に入れよう！\n[W]↑  [S]↓  [A]←  [D]→",
-            "StagePos": "(300,680)",
-            "Type": "MiniGame"
-        },
-        "Stage9": {
             "BGM": "BGM/StageChoco21.mp3",
             "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
             "MapFile": "StageData/caveStage1.json",
             "Picture": "BackgroundTexture/洞窟背景.png",
             "SceneName": "MainGameScene",
             "Sentence": "<2-1>チョコ鉱山の入口\nクリームに飽きたアンナちゃん。\n今度はチョコマウンテンに訪れました。\nでも、アンナちゃんは山登りよりも\n洞窟探検がしたいみたいです。\nアンナちゃんはウキウキしながら\n鉱山に入っていきました。",
-            "StagePos": "(350,660)",
+            "StagePos": "(300,680)",
             "Type": "Stage"
+        },
+        "Stage9": {
+            "BGM": "",
+            "BackgroundTexture": "",
+            "MapFile": "",
+            "Picture": "MiniGameDisplay/MAZE.png",
+            "SceneName": "Maze1",
+            "Sentence": "<ミニゲーム-暗闇迷路>\nビスケットの匂いに誘われて真っ暗な\n迷路に迷い込んでしまった！\n明かりを頼りにビスケットを\n手に入れよう！\n[W]↑  [S]↓  [A]←  [D]→",
+            "StagePos": "(350,660)",
+            "Type": "MiniGame"
         },
         "Stage10": {
             "BGM": "BGM/StageChoco21.mp3",
@@ -226,7 +226,7 @@
             "MapFile": "StageData/LastBoss.json",
             "Picture": "BackgroundTexture/ラスボス背景.png",
             "SceneName": "MainGameScene",
-            "Sentence": "<LastBoss>\n大魔女ビター・ヴァイオレット\nお菓子を独り占めしようとする\nワガママな女の子。\nお菓子は我のものなのじゃ！と、\nアンナちゃんは\nお菓子をかけた最後の戦いに挑みます。",
+            "Sentence": "<大魔女ビター・ヴァイオレット>\nお菓子を独り占めしようとする\nワガママな女の子。\nお菓子は我のものなのじゃ！と、\nアンナちゃんは\nお菓子をかけた最後の戦いに挑みます。",
             "StagePos": "(1050,300)",
             "Type": "Boss"
         }

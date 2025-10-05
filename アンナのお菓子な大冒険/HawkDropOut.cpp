@@ -1,5 +1,6 @@
 ﻿#include"HawkDropOut.h"
 #include"BGMManager.hpp"
+#include"ControllerManager.h"
 
 namespace HawkDropOut
 {
@@ -63,7 +64,7 @@ namespace HawkDropOut
 
 		if (clear)
 		{
-			if (KeyEnter.down())
+			if (getData().menuDecisionKey.down())
 			{
 				EndGame(true);
 			}
@@ -187,7 +188,7 @@ namespace HawkDropOut
 		}
 
 		//上昇ボタン
-		if (ButtonUpdate(Rect{ 650, 180, 60, 60 }, 0.5, 30, 30, upEmoji, font, farmCount, upTime < 10.0, enemy, true) && (Rect{ 650, 180, 60, 60 }.leftPressed() || KeyW.pressed() || KeyUp.pressed()))
+		if (ButtonUpdate(Rect{ 650, 180, 60, 60 }, 0.5, 30, 30, upEmoji, font, farmCount, upTime < 10.0, enemy, true) && (Rect{ 650, 180, 60, 60 }.leftPressed() || (getData().minigameUpKey.pressed()||ControllerManager::get().UpPressed())))
 		{
 			cookieCircle.y -= Scene::DeltaTime() * (50.0 + plasdropspeed);
 			upTime += Scene::DeltaTime();
@@ -203,7 +204,7 @@ namespace HawkDropOut
 		}
 
 		//攻撃ボタン
-		if (ButtonUpdate(Rect{ 650, 250, 60, 60 }, 0.5, 30, 30, attackfunction, font, farmCount, numofmeat >= 1, enemy, j < 1) && (Rect{ 650, 250, 60, 60 }.leftClicked() || KeyA.pressed() || KeyLeft.pressed())) {
+		if (ButtonUpdate(Rect{ 650, 250, 60, 60 }, 0.5, 30, 30, attackfunction, font, farmCount, numofmeat >= 1, enemy, j < 1) && (Rect{ 650, 250, 60, 60 }.leftClicked() || getData().minigameLeftKey.pressed())) {
 			attack = true;
 			attackball.x = cookieCircle.x - 10;
 			attackball.y = cookieCircle.y + 10;
@@ -254,7 +255,7 @@ namespace HawkDropOut
 
 
 		//超上昇ボタン
-		if (ButtonUpdate(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, numofmeat >= 2, enemy, true) && (Rect{ 715, 244, 70, 70 }.leftClicked() || KeyD.down() || KeyRight.down()))
+		if (ButtonUpdate(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, numofmeat >= 2, enemy, true) && (Rect{ 715, 244, 70, 70 }.leftClicked() || getData().minigameRightKey.down()))
 		{
 			tornadoFlg = true;
 			numofmeat -= 2;
@@ -265,7 +266,7 @@ namespace HawkDropOut
 		{
 			cookieCircle.y -= Scene::DeltaTime() * 1500.0;
 
-			const bool pressedTornado = ButtonUpdate(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, true, false, true) && (Rect{ 715, 244, 70, 70 }.leftPressed() || KeyD.pressed() || KeyRight.pressed());
+			const bool pressedTornado = ButtonUpdate(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, true, false, true) && (Rect{ 715, 244, 70, 70 }.leftPressed() || getData().minigameRightKey.pressed());
 
 			if (not pressedTornado || cookieCircle.y <= 50)
 			{
@@ -280,7 +281,7 @@ namespace HawkDropOut
 		//}
 
 		//下降ボタン
-		if (ButtonUpdate(Rect{ 650, 320, 60, 60 }, 0.5, 30, 30, downEmoji, font, factoryCount, true, enemy, true) && (Rect{ 650, 320, 60, 60 }.leftPressed() || KeyS.pressed() || KeyDown.pressed()))
+		if (ButtonUpdate(Rect{ 650, 320, 60, 60 }, 0.5, 30, 30, downEmoji, font, factoryCount, true, enemy, true) && (Rect{ 650, 320, 60, 60 }.leftPressed() || (getData().minigameDownKey.pressed())||ControllerManager::get().DownPressed()))
 		{
 			cookieCircle.y += Scene::DeltaTime() * 50.0;
 
@@ -333,6 +334,7 @@ namespace HawkDropOut
 			if (not receive)
 			{
 				AudioAsset{ U"アンナダメージ" }.playOneShot();
+				ControllerManager::get().setVibration(0.3);
 			}
 
 			receive = true;

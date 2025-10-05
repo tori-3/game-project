@@ -19,6 +19,7 @@ public:
 
 			if (1.0 <= starScale)
 			{
+				AudioAsset{ U"キラキラ" }.playOneShot();
 				firstClearMode = false;
 			}
 		}
@@ -48,10 +49,12 @@ public:
 
 		rect.drawFrame(selected ? 8 : 2, color);
 
+		
+
 		if (firstClearMode)
 		{
 			Shape2D::Star(blockSize * 0.3, getStarPos()).drawFrame(3, Palette::White);
-			Shape2D::Star(blockSize * 0.3 * starScale, getStarPos()).draw(Palette::Yellow);
+			Shape2D::Star(blockSize * 0.3 * MyEase(starScale), getStarPos()).draw(Palette::Yellow);
 		}
 		else if (star)
 		{
@@ -77,5 +80,19 @@ public:
 		texture(0, 0, size - size * d, size).resized(blockSize * (1 - d), blockSize).draw((pos + Vec2{ d * blockSize,0 }));
 	}
 
-};
+	static double MyEase(double t)
+	{
+		constexpr double a = 0.6;
+		constexpr double max = 1.5;
 
+		if (t < a)
+		{
+			return t / a * max;
+		}
+		else
+		{
+			return 1.0 - (t - a) / (1 - a) * (max - 1);
+		}
+	}
+
+};

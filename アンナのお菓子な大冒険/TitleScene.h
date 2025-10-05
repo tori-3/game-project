@@ -15,7 +15,7 @@ public:
 
 	void drawStick(const Vec2& pos, StringView text, bool notify)const;
 
-	const Array<String>pathList{ U"BackGroundTexture/雪原背景.png",U"BackGroundTexture/洞窟背景.png",U"BackGroundTexture/雲背景.png" ,U"BackGroundTexture/ラスボス背景.png",U"BackGroundTexture/宇宙背景.png"};
+	Array<String>pathList{ U"BackGroundTexture/雪原背景.png" };
 
 	size_t textureIndex = 0;
 

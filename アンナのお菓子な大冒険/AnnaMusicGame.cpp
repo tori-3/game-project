@@ -206,7 +206,7 @@ namespace AnnaMusicGame {
 		{
 			music.play(BGMMixBus);
 		}
-		if (KeyD.down() or KeyA.down() or KeyLeft.down() or KeyRight.down())
+		if (getData().minigameLeftKey.down() or getData().minigameRightKey.down())
 		{
 			effect.add<Judge>(2, 2);
 			t = stopwatch.ms() + 490;
@@ -224,7 +224,7 @@ namespace AnnaMusicGame {
 			if (rc.theta > 0)//判定　90　最初0からマイナス方向に並んでいる　回転で＋になったのだけ表示、判定
 			{
 				//判定
-				if (KeyA.down() or KeyLeft.down())
+				if (getData().minigameLeftKey.down())
 				{
 
 
@@ -280,7 +280,7 @@ namespace AnnaMusicGame {
 				Line{ gc + Vec2{-20,0},gc + Vec2{20,0} }.drawArrow(10, SizeF{ 15,15 });
 
 				//判定
-				if (KeyD.down() or KeyRight.down())
+				if (getData().minigameRightKey.down())
 				{
 
 
@@ -321,9 +321,9 @@ namespace AnnaMusicGame {
 		}
 
 		//削除
-		rcs.remove_if([&](const OffsetCircular rc) {return((KeyA.down() or KeyLeft.down()) and C0.intersects(Circle{ rc,30 }) and rc.theta > 0); });
+		rcs.remove_if([&](const OffsetCircular rc) {return((getData().minigameLeftKey.down()) and C0.intersects(Circle{rc,30}) and rc.theta > 0); });
 		rcs.remove_if([&](const OffsetCircular rc) {return(C3.contains(Circle{ rc,30 }) and rc.theta > 0); });
-		gcs.remove_if([&](const OffsetCircular gc) {return((KeyD.down() or KeyRight.down()) and C0.intersects(Circle{ gc,30 }) and gc.theta > 0); });
+		gcs.remove_if([&](const OffsetCircular gc) {return((getData().minigameRightKey.down()) and C0.intersects(Circle{ gc,30 }) and gc.theta > 0); });
 		gcs.remove_if([&](const OffsetCircular gc) {return(C3.contains(Circle{ gc,30 }) and gc.theta > 0); });
 
 		//終了
@@ -339,12 +339,12 @@ namespace AnnaMusicGame {
 			{
 				maxcombo = combo;
 			}
-			if (KeyEnter.down() and miss <= 9)//miss9以下でクリア
+			if (getData().menuDecisionKey.down() and miss <= 9)//miss9以下でクリア
 			{
 
 				EndGame(true);
 			}
-			else if (KeyEnter.down())
+			else if (getData().menuDecisionKey.down())
 			{
 				EndGame(false);
 			}

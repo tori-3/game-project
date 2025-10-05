@@ -91,12 +91,14 @@ void GalleryScene::update()
 
 		if (getData().menuBackKey.down()|| backButton.leftClicked())
 		{
+			AudioAsset{ U"決定ボタン" }.playOneShot();
+
 			changeScene(U"TitleScene");
 		}
 
 		bool clicked = false;
 
-		if (KeyEnter.down())
+		if (getData().menuDecisionKey.down())
 		{
 			clicked = true;
 		}

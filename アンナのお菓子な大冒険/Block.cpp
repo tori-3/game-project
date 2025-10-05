@@ -157,6 +157,9 @@ void WeakWall::reaction(const Point& pos, PhysicsBox* box)
 			if (box->rush)
 			{
 				breaked = true;
+
+				ControllerManager::get().setVibration(0.1);
+
 				AudioAsset{ U"突進衝突" }.play();
 				return;
 			}

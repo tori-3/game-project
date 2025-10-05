@@ -1,6 +1,7 @@
 ﻿#pragma once
 # include"Common.h"
 #include"MiniGameSceneBase.h"
+#include"ControllerManager.h"
 
 namespace FallingAnna {
 
@@ -451,6 +452,7 @@ namespace FallingAnna {
 					}
 					else if (getattack())
 					{
+						ControllerManager::get().setVibration(0.15);
 						hakaiA.playOneShot();
 						brokes.push_back(a);
 						rocks.erase(rocks.begin() + i);
@@ -560,6 +562,8 @@ namespace FallingAnna {
 		}
 		void damage()
 		{
+			ControllerManager::get().setVibration(0.3);
+
 			hitstop = hitstopT;
 			nowspy = spy;
 			damageA.playOneShot();
@@ -589,11 +593,11 @@ namespace FallingAnna {
 			float cl = 1;
 			batframe(cl);
 			rockframe(cl);
-			if (getData().minigameLeftKey.pressed())
+			if (getData().minigameLeftKey.pressed()|| ControllerManager::LeftPressed())
 			{
 				left = true;
 			}
-			else if (getData().minigameRightKey.pressed())
+			else if (getData().minigameRightKey.pressed() || ControllerManager::RightPressed())
 			{
 				left = false;
 			}
@@ -601,11 +605,11 @@ namespace FallingAnna {
 			{
 				annaframe(cl);
 
-				if (getData().minigameUpKey.pressed())
+				if (getData().minigameUpKey.pressed() || ControllerManager::UpPressed())
 				{
 					nowspy += (spy - nowspy) * breaky;
 				}
-				else if (getData().minigameDownKey.down())
+				else if (getData().minigameDownKey.down() || ControllerManager::DownDown())
 				{
 					kasoku();
 				}
@@ -615,11 +619,11 @@ namespace FallingAnna {
 				}
 
 				rakka(nowspy * cl);
-				if (getData().minigameLeftKey.pressed())
+				if (getData().minigameLeftKey.pressed() || ControllerManager::LeftPressed())
 				{
 					idou(-spx * cl);
 				}
-				if (getData().minigameRightKey.pressed())
+				if (getData().minigameRightKey.pressed() || ControllerManager::RightPressed())
 				{
 					idou(spx * cl);
 				}
@@ -674,7 +678,7 @@ namespace FallingAnna {
 				}
 				else if (getsuperend())
 				{
-					if (KeyEnter.down())
+					if (getData().menuDecisionKey.down())
 					{
 						//	changeScene(U"Fallinganna");
 						EndGame(getclear());

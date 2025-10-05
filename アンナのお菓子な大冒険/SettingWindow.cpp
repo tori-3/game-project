@@ -2,6 +2,7 @@
 #include"SweetsPanel.hpp"
 #include"SettingWindow.h"
 #include"SoundIcon.hpp"
+#include"ControllerInput.h"
 
 class KeyConfigInfo
 {
@@ -65,16 +66,23 @@ public:
 		{
 			const Array<Input> keys = Keyboard::GetAllInputs();
 
+			Optional<Input>newKey = GetDownXInput();
+
 			for(const Input& key:keys)
 			{
 				if(key.down())
 				{
-					inputs[*inputIndex] = key;
-					buttons[*inputIndex]->color = Palette::Chocolate;
-					buttons[*inputIndex]->setChild(TextUI::Create({ .text = GetKeyName(key),.fontSize = 23,.color = normalTextColor }));
-					inputIndex = none;
+					newKey = key;
 					break;
 				}
+			}
+
+			if(newKey)
+			{
+				inputs[*inputIndex] = newKey.value();
+				buttons[*inputIndex]->color = Palette::Chocolate;
+				buttons[*inputIndex]->setChild(TextUI::Create({ .text = GetKeyName(newKey.value()),.fontSize = 23,.color = normalTextColor }));
+				inputIndex = none;
 			}
 
 			if(inputPressed || MouseL.pressed())
@@ -175,23 +183,48 @@ private:
 
 	static String GetKeyName(const Input& input)
 	{
-		if(input==KeyUp)
+		const std::map<Input, String>table
 		{
-			return U"↑";
-		}
-		if (input == KeyDown)
+			{XInput(0).buttonStart,U"\U000F02B4Start"},
+			{XInput(0).buttonBack,U"\U000F02B4Back"},
+
+			{XInput(0).buttonLThumb,U"\U000F02B4\U000F0EC2(L)"},
+			{XInput(0).buttonRThumb,U"\U000F02B4\U000F0EC2(R)"},
+
+			{XInput(0).buttonLB,U"\U000F02B4LB"},
+			{XInput(0).buttonRB,U"\U000F02B4RB"},
+
+			{XInput(0).buttonUp,U"\U000F02B4\U000F0E42"},
+			{XInput(0).buttonDown,U"\U000F02B4\U000F0E39"},
+			{XInput(0).buttonLeft,U"\U000F02B4\U000F0E3A"},
+			{XInput(0).buttonRight,U"\U000F02B4\U000F0E3B"},
+			{XInput(0).buttonA,U"\U000F02B4A"},
+			{XInput(0).buttonB,U"\U000F02B4B"},
+			{XInput(0).buttonX,U"\U000F02B4X"},
+			{XInput(0).buttonY,U"\U000F02B4Y"},
+			{KeyUp,U"↑"},
+			{KeyDown,U"↓"},
+			{KeyLeft,U"←"},
+			{KeyRight,U"→"},
+
+		};
+
+		//XInput(0).buttonStart,
+		//	XInput(0).buttonBack,
+		//	XInput(0).buttonLThumb,
+		//	XInput(0).buttonRThumb,
+		//	XInput(0).buttonLB,
+		//	XInput(0).buttonRB,
+
+
+		if(table.contains(input))
 		{
-			return U"↓";
+			return table.at(input);
 		}
-		if (input == KeyLeft)
+		else
 		{
-			return U"←";
+			return Format(input);
 		}
-		if (input == KeyRight)
-		{
-			return U"→";
-		}
-		return Format(input);
 	}
 
 	Optional<size_t>selectedIndex;
@@ -250,7 +283,8 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 
 
 	String text2 = gameData.getIncreaseHPMode() ? U"HP増加をOFFにする" : U"HP増加をONにする";
-	auto hpModeButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 340, .child = TextUI::Create({.text = text2,.color = Palette::White}) });
+	auto hpModeText = TextUI::Create({ .text = text2,.color = Palette::White });
+	auto hpModeButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 340, .child = hpModeText });
 
 	//auto infoButton = ChocolateButton::Create({ .color = Palette::White, .padding = -20,.width=50,.height=50, .child = TextUI::Create({.text = U"i",.color = Palette::Gray}) });
 
@@ -416,85 +450,95 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 			{
 				AudioAsset{ U"決定ボタン" }.playOneShot();
 
-				dialog->close();
+				if (gameData.getIncreaseHPMode())
+				{
+					dialog->close();
 
-				auto yesButton = ChocolateButton::Create({ .color = Palette::Darkred, .padding = 20,.margine = 10,.width = 240, .child = TextUI::Create({.text = U"OFFにする",.color = Palette::White})});
-				auto noButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 240, .child = TextUI::Create({.text = U"キャンセル",.color = Palette::White})});
-				noButton->selected = true;
+					auto yesButton = ChocolateButton::Create({ .color = Palette::Darkred, .padding = 20,.margine = 10,.width = 240, .child = TextUI::Create({.text = U"OFFにする",.color = Palette::White}) });
+					auto noButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 240, .child = TextUI::Create({.text = U"キャンセル",.color = Palette::White}) });
+					noButton->selected = true;
 
-				manager.addChild
-				({
-					SimpleDialog::Create
+					manager.addChild
 					({
-						.erasable = false,
-						.child = SweetsPanel::Create
+						SimpleDialog::Create
 						({
-							.child = Column::Create
+							.erasable = false,
+							.child = SweetsPanel::Create
 							({
-								.margine = 20,
-								.children
-								{
-									TextUI::Create({.text = U"HP増加をOFFにしますか？",.fontSize = 40,.color = Palette::White}),
-									TextUI::Create({.text = U"いままでに増加したHPも5HPにリセットされます。\n※HP増加：失敗するとそのステージのHPが2つ増加する機能です。",.fontSize = 20,.color = Palette::White}),
-									Row::Create
-									({
-										.children
-										{
-											yesButton,
-											noButton
-										}
-									}),
-								}
+								.child = Column::Create
+								({
+									.margine = 20,
+									.children
+									{
+										TextUI::Create({.text = U"HP増加をOFFにしますか？",.fontSize = 40,.color = Palette::White}),
+										TextUI::Create({.text = U"いままでに増加したHPも5HPにリセットされます。\n※HP増加：失敗するとそのステージのHPが2つ増加する機能です。",.fontSize = 20,.color = Palette::White}),
+										Row::Create
+										({
+											.children
+											{
+												yesButton,
+												noButton
+											}
+										}),
+									}
+								}),
 							}),
-						}),
-						.updateFunc = [=,&gameData](SimpleDialog* dialog)mutable
-						{
-							if(leftInputGroup.down())
+							.updateFunc = [=,&gameData](SimpleDialog* dialog)mutable
 							{
-								if (noButton->selected)
+								if (leftInputGroup.down())
 								{
-									yesButton->selected = true;
-									noButton->selected = false;
-									AudioAsset{ U"カーソル移動" }.playOneShot();
+									if (noButton->selected)
+									{
+										yesButton->selected = true;
+										noButton->selected = false;
+										AudioAsset{ U"カーソル移動" }.playOneShot();
+									}
+									else
+									{
+										AudioAsset{ U"ビープ音" }.playOneShot();
+									}
 								}
-								else
+
+								if (rightInputGroup.down())
 								{
-									AudioAsset{ U"ビープ音" }.playOneShot();
+									if (yesButton->selected)
+									{
+										yesButton->selected = false;
+										noButton->selected = true;
+										AudioAsset{ U"カーソル移動" }.playOneShot();
+									}
+									else
+									{
+										AudioAsset{ U"ビープ音" }.playOneShot();
+									}
 								}
-							}
 
-							if (rightInputGroup.down())
-							{
-								if (yesButton->selected)
+								if ((yesButton->selected && gameData.menuDecisionKey.down()) || yesButton->clicked())
 								{
-									yesButton->selected = false;
-									noButton->selected = true;
-									AudioAsset{ U"カーソル移動" }.playOneShot();
+									gameData.setIncreaseHPMode(false);
+									AudioAsset{ U"決定ボタン" }.playOneShot();
+
+									dialog->close();
+									manager.addChild(SettingWindow(upInputGroup, downInputGroup, leftInputGroup, rightInputGroup, onClose, gameData, manager, selectIndex));
 								}
-								else
+
+								if ((noButton->selected && gameData.menuDecisionKey.down()) || noButton->clicked()||gameData.menuBackKey.down())
 								{
-									AudioAsset{ U"ビープ音" }.playOneShot();
+									AudioAsset{ U"キャンセル" }.playOneShot();
+
+									dialog->close();
+									manager.addChild(SettingWindow(upInputGroup,downInputGroup,leftInputGroup,rightInputGroup,onClose,gameData,manager, selectIndex));
 								}
+
 							}
-
-							if((yesButton->selected && gameData.menuDecisionKey.down())|| yesButton->clicked())
-							{
-								gameData.setIncreaseHPMode(false);
-								AudioAsset{ U"決定ボタン" }.playOneShot();
-							}
-
-							if ((noButton->selected && gameData.menuDecisionKey.down()) || noButton->clicked())
-							{
-								AudioAsset{ U"キャンセル" }.playOneShot();
-
-								dialog->close();
-								manager.addChild(SettingWindow(upInputGroup,downInputGroup,leftInputGroup,rightInputGroup,onClose,gameData,manager, selectIndex));
-							}
-
-						}
-					})
-				});
-
+						})
+					});
+				}
+				else
+				{
+					hpModeText->setText(U"HP増加をOFFにする");
+					gameData.setIncreaseHPMode(true);
+				}
 			}
 
 			if(keyConfigButton->clicked()|| (selectIndex == 4 && gameData.menuDecisionKey.down()))
@@ -511,8 +555,8 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 					{
 						KeyConfigInfo{U"ジャンプ",gameData.jumpKey},
 						KeyConfigInfo{U"攻撃",gameData.attackKey},
-						KeyConfigInfo{U"右移動",gameData.leftKey},
-						KeyConfigInfo{U"左移動",gameData.rightKey},
+						KeyConfigInfo{U"左移動",gameData.leftKey},
+						KeyConfigInfo{U"右移動",gameData.rightKey},
 						KeyConfigInfo{U"しゃがむ(↓)",gameData.downKey},
 						KeyConfigInfo{U"ポーズ",gameData.pauseKey},
 						KeyConfigInfo{U"ミニゲーム(メニュー)：↑",gameData.minigameUpKey},

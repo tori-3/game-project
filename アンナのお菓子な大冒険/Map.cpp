@@ -16,7 +16,7 @@ void Map::updatePos()
 		nextIndex = -1;
 	}
 
-	Vec2 nextPos = stagePosList[drawIndex + nextIndex];
+	Vec2 nextPos = stagePosList[drawIndex + nextIndex] + (typeList[drawIndex + nextIndex] == StageType::Boss ? Vec2{ -15,0 } : Vec2{ 0,0 });
 
 	if ((nextPos - playerPos).length() < 0.1)
 	{
@@ -89,8 +89,9 @@ Map::Map(const InitData& init)
 		}
 	}
 
-	playerPos = stagePosList[index];
-	character.addMotion(U"Walk");
+	playerPos = stagePosList[index] + (typeList[index] == StageType::Boss ? Vec2{ -15,0 } : Vec2{ 0,0 });
+	//character.addMotion(U"Walk");
+	character.addMotion(U"Standing");
 	character.update(playerPos - Point{ 0 ,30 }, false);
 
 
@@ -118,6 +119,13 @@ Map::Map(const InitData& init)
 	itigo.addMotion(U"", true);
 
 	cloud.addMotion(U"walk", true);
+
+	startButton->selected = true;
+
+	manager.setChildren
+	({
+		startButton
+	});
 }
 
 Map::~Map()
@@ -191,8 +199,14 @@ void Map::update()
 		AudioAsset{ U"決定ボタン" }.playOneShot();
 	}
 
-	if (not largeFlg)
+	//if (not largeFlg)
+	//{
+
+	if (panelFlg)
 	{
+		manager.update();
+	}
+
 		if (backButton.leftClicked())
 		{
 			changeScene(U"TitleScene");
@@ -254,7 +268,7 @@ void Map::update()
 			if (0 < index)
 			{
 				index--;
-				left = true;
+				//left = true;
 				walk = true;
 				panelFlg = false;
 				AudioAsset{ U"カーソル移動" }.playOneShot();
@@ -270,7 +284,7 @@ void Map::update()
 			if (index != rect_num - 1 && (index < clearStage))
 			{
 				index++;
-				left = false;
+				//left = false;
 				panelFlg = false;
 				AudioAsset{ U"カーソル移動" }.playOneShot();
 
@@ -281,11 +295,31 @@ void Map::update()
 			}
 		}
 
-		if (RectF{ 100, 100,pictures[index].resized(450).size }.leftClicked() && index < clearStage && panelFlg) {
-			largeFlg = true;
+		//if (RectF{ 100, 100,pictures[index].resized(450).size }.leftClicked() && index < clearStage && panelFlg) {
+		//	largeFlg = true;
+		//}
+
+		if (index == drawIndex)
+		{
+			if(not standing)
+			{
+				standing = true;
+				character.clearMotion();
+				character.addMotion(U"Standing");
+			}
+		}
+		else
+		{
+			if(standing)
+			{
+				standing = false;
+				character.clearMotion();
+				character.addMotion(U"Walk");
+			}
 		}
 
-		character.update(playerPos - Vec2{ 0,30 }, left);
+
+		character.update(playerPos - Vec2{ 0,30 }, index < drawIndex);
 
 
 		{
@@ -312,14 +346,14 @@ void Map::update()
 			}
 		}
 
-	}
-	else
-	{
-		if (MouseL.down() || getData().menuBackKey.down())
-		{
-			largeFlg = false;
-		}
-	}
+	//}
+	//else
+	//{
+	//	if (MouseL.down() || getData().menuBackKey.down())
+	//	{
+	//		largeFlg = false;
+	//	}
+	//}
 
 	if (getData().menuDecisionKey.down())
 	{
@@ -360,16 +394,18 @@ void Map::draw() const
 			Vec2 pos = stagePosList[i] + supplementary;
 
 
-			stageFrame.resized(r * 2).drawAt(pos);
+			const double size = typeList[i] == StageType::Boss ? r * 2 + 15 : r * 2;
 
-			stageColor.resized(r * 2).drawAt(pos, color);
+			stageFrame.resized(size).drawAt(pos);
+
+			stageColor.resized(size).drawAt(pos, color);
 
 			switch (typeList[i])
 			{
 			case StageType::Stage:
 				break;
 			case StageType::Boss:
-				stageBattle.resized(r * 2).drawAt(pos);
+				stageBattle.resized(size).drawAt(pos);
 				break;
 			case StageType::MiniGame:
 				stageGame.resized(r * 2, r * 2 * 0.7).drawAt(pos);
@@ -385,7 +421,7 @@ void Map::draw() const
 
 		}
 
-		if (getData().ChocoMountain - 1 <= getData().clearStage)
+		if (getData().ChocoMountain - 2 <= getData().clearStage)
 		{
 			snowKnight.draw();
 		}
@@ -401,7 +437,7 @@ void Map::draw() const
 			itigo.draw();
 		}
 
-		if (getData().CandyCloud - 1 <= getData().clearStage)
+		if (getData().CandyCloud - 2 <= getData().clearStage)
 		{
 			cookieDoreisho.draw();
 		}
@@ -411,12 +447,12 @@ void Map::draw() const
 			cloud.draw();
 		}
 
-		if (getData().LastBossStage - 2 <= getData().clearStage)
+		if (getData().LastBossStage - 3 <= getData().clearStage)
 		{
 			captain.draw();
 		}
 
-		if (getData().LastBossStage == getData().clearStage)
+		if (getData().LastBossStage - 1 <= getData().clearStage)
 		{
 			lastBoss.draw();
 		}
@@ -446,23 +482,34 @@ void Map::draw() const
 			lastBossPanel.resized(1250).drawAt(600, 300);
 		}
 
-		font(sentences[index]).draw(600, 100);
-		start.drawFrame(3);
-		font(U"開始(Enter)").drawAt(start.center(), ColorF{ 1.0, Periodic::Sine0_1(3s) });
+		constexpr RoundRect rrect{ 600 - 10 - 15-5,100,550,325 - 10+5,20 };
+		rrect.draw(ColorF{ 0,0.5 }).drawFrame(5, Palette::White);
 
-		if (start.mouseOver())
+		FontAsset{ U"NormalFont" }(sentences[index]).draw(30,600-15, 100+5);
+		//start.drawFrame(3);
+		//font(U"開始(Enter)").drawAt(start.center(), ColorF{ 1.0, Periodic::Sine0_1(3s) });
+
+		//if (start.mouseOver())
+		//{
+		//	start.draw(ColorF{ 0,0.1 });
+		//	Cursor::RequestStyle(CursorStyle::Hand);
+		//}
+
+		pictures[index].resized(460).regionAt(305, rrect.center().y).drawShadow(Vec2{ 0, 0 }, 20, 10,Palette::White);
+		pictures[index].resized(460).drawAt(305, rrect.center().y);
+
+		if (getData().clearHPList[index] != 0)
 		{
-			start.draw(ColorF{ 0,0.1 });
-			Cursor::RequestStyle(CursorStyle::Hand);
+			FontAsset{ U"NormalFont" }(U"❤クリアHP：{}"_fmt(getData().clearHPList[index])).regionAt(30,280, 450+15).stretched(10,5).draw(ColorF{ 0,0.5 });
+			FontAsset{ U"NormalFont" }(U"❤クリアHP：{}"_fmt(getData().clearHPList[index])).drawAt(30,280, 450+15, getData().clearHPList[index]==5?Palette::Yellow:Palette::White);
 		}
 
-		pictures[index].resized(450).draw(100, 100);
+		manager.draw();
 	}
 	else
 	{
-		font(title[index]).drawAt(Scene::Center() + Vec2{ 0,-300 });
-		font(U"← [A]              [Enter]              [D] →").drawAt(Scene::Center() + Vec2{ 0,-250 });
-
+		FontAsset{ U"NormalFont" }(title[index]).drawAt(30,Scene::Center() + Vec2{ 0,-300 });
+		FontAsset{ U"NormalFont" }(U"← [A]              [Enter]              [D] →").drawAt(30,Scene::Center() + Vec2{ 0,-250 });
 	}
 
 	if (backButton.mouseOver())
@@ -472,8 +519,9 @@ void Map::draw() const
 	homeIcon.drawAt(backButton.center, backButton.mouseOver() ? Palette::Gray : Palette::White);
 	FontAsset{ U"NormalFont" }(U"[Q]タイトルに戻る").draw(Arg::leftCenter = backButton.center + Vec2{ 30,0 });
 
-	if (largeFlg) {
-		Rect{ Scene::Size() }.draw(ColorF(0, 0.6));
-		pictures[index].resized(1000).drawAt(Scene::Center());
-	}
+
+	//if (largeFlg) {
+	//	Rect{ Scene::Size() }.draw(ColorF(0, 0.6));
+	//	pictures[index].resized(1000).drawAt(Scene::Center());
+	//}
 }

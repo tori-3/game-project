@@ -47,9 +47,13 @@ void GameData::saveMainGame(bool clear)
 {
 	if (clear)
 	{
-		if(maxHPList[stage - 1]==5)
+		if (clearHPList[stage - 1]==0)
 		{
-			clearCompleteList[stage - 1] = true;
+			clearHPList[stage - 1] = maxHPList[stage - 1];
+		}
+		else
+		{
+			clearHPList[stage - 1] = Min(maxHPList[stage - 1], clearHPList[stage - 1]);
 		}
 
 		if (clearStage < stage)
@@ -91,9 +95,9 @@ void GameData::save()
 		saveDatajson[U"MaxHP"].push_back(maxHP);
 	}
 
-	for (bool clearComplete : clearCompleteList)
+	for (int32 clearComplete : clearHPList)
 	{
-		saveDatajson[U"ClearComplete"].push_back(clearComplete);
+		saveDatajson[U"ClearHP"].push_back(clearComplete);
 	}
 
 	for (const auto& miniGame : miniGameList)
@@ -146,10 +150,10 @@ void GameData::load()
 		maxHPList << obj.get<int32>();
 	}
 
-	clearCompleteList.clear();
-	for (const auto& obj : saveDatajson[U"ClearComplete"].arrayView())
+	clearHPList.clear();
+	for (const auto& obj : saveDatajson[U"ClearHP"].arrayView())
 	{
-		clearCompleteList << obj.get<bool>();
+		clearHPList << obj.get<int32>();
 	}
 
 	miniGameList.clear();

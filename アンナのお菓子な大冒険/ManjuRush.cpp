@@ -1,4 +1,5 @@
 ﻿#include"ManjuRush.h"
+#include"ControllerManager.h"
 
 namespace ManjuRush
 {
@@ -68,7 +69,7 @@ namespace ManjuRush
 				//	EndGame(true);
 				//}
 
-				if (KeyEnter.down())
+				if (getData().menuDecisionKey.down())
 				{
 					EndGame(true);
 				}
@@ -94,7 +95,7 @@ namespace ManjuRush
 				font(U"スコア:", score).draw(600, 0);
 				//ジャンプ
 
-				if (getData().minigameUpKey.pressed() && jump == false)
+				if ((getData().minigameUpKey.pressed()||ControllerManager::get().UpPressed()) && jump == false)
 				{
 					jump = true;
 
@@ -104,13 +105,13 @@ namespace ManjuRush
 
 				}
 				//上昇
-				if (0s < jumptime && jumptime < 0.4s && 0 < v && getData().minigameUpKey.pressed()) {
+				if (0s < jumptime && jumptime < 0.4s && 0 < v && (getData().minigameUpKey.pressed() || ControllerManager::get().UpPressed())) {
 					jump = true;
 					player.y -= v;
 				}
 				else if (0 < v && player.y <= 500) {
 					//下降
-					if (getData().minigameDownKey.pressed()) {
+					if (getData().minigameDownKey.pressed() || ControllerManager::get().DownPressed()) {
 						player.y += 5;
 					}
 					//減衰
@@ -161,6 +162,8 @@ namespace ManjuRush
 						stopwatch.restart();
 						Touch.play();
 						BGM.stop();
+
+						ControllerManager::get().setVibration(0.3);
 					}
 					defeat = true;
 					if (stopwatch > 2s) {

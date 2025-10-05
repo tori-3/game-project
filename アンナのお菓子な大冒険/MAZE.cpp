@@ -1,5 +1,6 @@
 ﻿#include"Spotlight.hpp"
 #include"MAZE.h"
+#include"ControllerManager.h"
 
 namespace Maze1
 {
@@ -128,8 +129,8 @@ namespace Maze1
 	{
 
 		//ボール操作
-		ballVel.x = ((getData().minigameRightKey.pressed()) - (getData().minigameLeftKey.pressed()));
-		ballVel.y = ((getData().minigameDownKey.pressed()) - (getData().minigameUpKey.pressed()));
+		ballVel.x = ((getData().minigameRightKey.pressed() || ControllerManager::get().RightPressed()) - (getData().minigameLeftKey.pressed() || ControllerManager::get().LeftPressed()));
+		ballVel.y = ((getData().minigameDownKey.pressed()|| ControllerManager::get().DownPressed()) - (getData().minigameUpKey.pressed() || ControllerManager::get().UpPressed()));
 
 		if (ballVel != Vec2{ 0,0 })
 		{
@@ -248,7 +249,7 @@ namespace Maze1
 
 	void Clear::gameUpdate()
 	{
-		if (KeyEnter.down())
+		if (getData().menuDecisionKey.down())
 		{
 			click.play();
 			//changeScene(U"Maze1");

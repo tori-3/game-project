@@ -183,18 +183,21 @@ void MiniGameSelect::update()
 
 	if (easyButton.update() || (modeIndex == 0 && getData().menuDecisionKey.down()))
 	{
+		getData().miniGameModeIndex = 0;
 		getData().mini_mode = mode::Easy_Mode;
 		startMiniGame = true;
 	}
 
 	if (normalButton.update() || (modeIndex == 1 && getData().menuDecisionKey.down()))
 	{
+		getData().miniGameModeIndex = 1;
 		getData().mini_mode = mode::Normal_Mode;
 		startMiniGame = true;
 	}
 
 	if (hardButton.update() || (modeIndex == 2 && getData().menuDecisionKey.down()))
 	{
+		getData().miniGameModeIndex = 2;
 		getData().mini_mode = mode::Hard_Mode;
 		startMiniGame = true;
 	}

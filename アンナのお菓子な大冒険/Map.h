@@ -28,7 +28,7 @@ public:
 	Texture homeIcon{ 0xf015_icon,40 };
 
 	//フォント
-	const Font font{ 30 };
+	//const Font font{ 30 };
 
 	//画面下の四角形の情報
 	const int rect_size = 40;//四角形の大きさ
@@ -60,11 +60,13 @@ public:
 
 	int32 clearStage = 0;
 
-	bool left = false;
+	//bool left = false;
 
 	bool walk = false;
 
 	bool panelFlg = false;
+
+	bool standing = true;
 
 	LongPressInput leftInput{ getData().minigameLeftKey };
 	LongPressInput rightInput{ getData().minigameRightKey };
@@ -85,20 +87,20 @@ public:
 	static constexpr Vec2 fairyPos{ 80,700 - 30 };
 	CharacterSystem fairy{ U"Characters/yousei1/yousei.json",U"Characters/yousei1/motion.txt",0.25 * 0.5,fairyPos,true };
 
-	static constexpr Vec2 snowKnightPos{ 233,610 - 40 };
+	static constexpr Vec2 snowKnightPos{ 233+15,610 - 40 };
 	CharacterSystem snowKnight{ U"Characters/yukidarunaito/yukidarunaito.json" ,U"Characters/yukidarunaito/motion.txt" ,0.2 * 0.2,snowKnightPos,true,false };
 	Timer snowKnightKiriageTimer{ 10s };
 
-	static constexpr Vec2 cookieDoreishoPos{ 460+2,480 - 25 };
+	static constexpr Vec2 cookieDoreishoPos{ 460+2+15,480 - 25 };
 	CharacterSystem cookieDoreisho{ U"Characters/cookieDoreisho/model.json" ,U"Characters/cookieDoreisho/motion.txt" ,0.4*0.4,cookieDoreishoPos,true,false };
 	Timer cookieDoreishoTimer{ 4s };
 
-	static constexpr Vec2 captainPos{ 930-2,490 - 32 };
+	static constexpr Vec2 captainPos{ 930-2+15,490 - 32 };
 	CharacterSystem captain{ U"Characters/sentyo/model.json" ,U"Characters/sentyo/motion.txt" ,1 * 0.2,captainPos,true,false };
 	Timer captainTimer{ 8s };
 	Timer captainCloseTimer{ 4s };
 
-	static constexpr Vec2 lastBossPos{ 1050,300 - 35 };
+	static constexpr Vec2 lastBossPos{ 1050+15,300 - 35 };
 	CharacterSystem lastBoss{ U"Characters/bitter/model1.json" ,U"Characters/bitter/motion1.txt" ,0.3*0.5,lastBossPos,false,false };
 	Timer lastBossTimer{ 6s };
 	Timer lastBossStandTimer{ 4s };
@@ -119,6 +121,22 @@ public:
 	Texture chocoPanel{ U"StageImage/チョコパネル.png" };
 	Texture cloudPanel{ U"StageImage/雲パネル.png" };
 	Texture lastBossPanel{ U"StageImage/ラスボスパネル.png" };
+
+	UIManager manager;
+
+	std::shared_ptr<ChocolateButton> startButton = ChocolateButton::Create
+	({
+		.color = Palette::Orange,
+		.width = 280,
+		.height = 70,
+		.relative = Relative{0.5,0.595},
+		.child = TextUI::Create
+		({
+			.text = U"\U000F040A はじめる",
+			.fontSize = 40,
+			.color = Palette::White
+		})
+	});
 
 	void updatePos();
 	

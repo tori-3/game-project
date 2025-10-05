@@ -336,11 +336,12 @@ class EndRoll10 :public App::Scene
 public:
 	double t = 0;
 
-	Array<Texture>textureList{
-	Texture{U"MiniGameDisplay/HawkDropOut.png"},
+	Array<Texture>textureList
+	{
 	Texture{U"MiniGameDisplay/まんじゅうラッシュ.png"},
 	Texture{U"MiniGameDisplay/MAZE.png"},
 	Texture{U"MiniGameDisplay/回転迷路.png"},
+	Texture{U"MiniGameDisplay/HawkDropOut.png"},
 	Texture{U"MiniGameDisplay/音ゲー.png"},
 	Texture{U"MiniGameDisplay/FallingAnna.png"},
 	};
@@ -378,10 +379,10 @@ public:
 		Scene::Rect().draw(ColorF{ 0,0.4 });
 
 		FontAsset{ U"EndRollFont" }(U"ミニゲーム").draw(50, 50);
-		FontAsset{ U"EndRollFont" }(U"ぺってぃー").draw(50, 50 + height, AlphaF(Clamp(t, 0.0, 1.0)));
-		FontAsset{ U"EndRollFont" }(U"まる").draw(50, 50 + height * 2, AlphaF(Clamp(t - 1*1.5, 0.0, 1.0)));
-		FontAsset{ U"EndRollFont" }(U"ひー").draw(50, 50 + height * 3, AlphaF(Clamp(t - 2 * 1.5, 0.0, 1.0)));
-		FontAsset{ U"EndRollFont" }(U"なかこう").draw(50, 50 + height * 4, AlphaF(Clamp(t - 3 * 1.5, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"まる").draw(50, 50 + height, AlphaF(Clamp(t, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"ひー").draw(50, 50 + height * 2, AlphaF(Clamp(t - 1*1.5, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"なかこう").draw(50, 50 + height * 3, AlphaF(Clamp(t - 2 * 1.5, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"ぺってぃー").draw(50, 50 + height * 4, AlphaF(Clamp(t - 3 * 1.5, 0.0, 1.0)));
 		FontAsset{ U"EndRollFont" }(U"ゆーれい").draw(50, 50 + height * 5, AlphaF(Clamp(t - 4 * 1.5, 0.0, 1.0)));
 		FontAsset{ U"EndRollFont" }(U"With Ball").draw(50, 50 + height * 6, AlphaF(Clamp(t - 5 * 1.5, 0.0, 1.0)));
 	}
