@@ -1,5 +1,6 @@
 ﻿#include"TitleScene.h"
 #include"BGMManager.hpp"
+#include"KeyInfo.h"
 
 bool TitleScene::updateStick(const Vec2& pos)
 {
@@ -40,10 +41,9 @@ TitleScene::TitleScene(const InitData& init)
 
 	if(getData().clearStage==getData().LastBossStage)
 	{
-		menuList.insert(menuList.begin() + 2, U"思い出");
-		funcList.insert(funcList.begin() + 2, [&] {changeScene(U"GalleryScene"); });
+		menuList.insert(menuList.begin() + 3, U"思い出");
+		funcList.insert(funcList.begin() + 3, [&] {changeScene(U"GalleryScene"); });
 	}
-
 
 	if(getData().ChocoMountain<= getData().clearStage)
 	{
@@ -227,14 +227,16 @@ void TitleScene::draw() const
 
 		for (size_t i = 0; i < menuList.size(); ++i)
 		{
-			const bool notify = (i==1&&getData().notifyMiniGameSelect)||(i==2&&getData().notifyGallery);
+			const bool notify = (i==1&&getData().notifyMiniGameSelect)||(i==3&&getData().notifyGallery);
 			drawStick(pos + (selectedIndex == i ? Vec2{ -30,0 } : Vec2{}), menuList[i],notify);
 
 			pos.y += menuHeight;
 		}
 
 	}
-	FontAsset{ U"NormalFont" }(U"操作：[W]↑ [S]↓ [A]← [D]→ [Enter]決定 [Q]戻る").draw(Arg::bottomLeft(5, Scene::Height() - 5), AlphaF(Min(time / 2.0, 1.0)));
+
+	const String explanation = U"[{}]↑  [{}]↓  [{}]←  [{}]→  [{}]決定  [{}]戻る"_fmt(ToKeyName(getData().minigameUpKey), ToKeyName(getData().minigameDownKey), ToKeyName(getData().minigameLeftKey), ToKeyName(getData().minigameRightKey), ToKeyName(getData().menuDecisionKey), ToKeyName(getData().menuBackKey));
+	FontAsset{ U"NormalFont" }(explanation).draw(Arg::bottomLeft(5, Scene::Height() - 5), AlphaF(Min(time / 2.0, 1.0)));
 
 	character.draw();
 

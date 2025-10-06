@@ -1,5 +1,6 @@
 ﻿#include"OpeningScene.h"
 #include"ControllerInput.h"
+#include"LoadAsset.h"
 
 OpeningScene::OpeningScene(const InitData& init)
 	: IScene{ init }
@@ -13,6 +14,11 @@ OpeningScene::OpeningScene(const InitData& init)
 		.set(U"light", { firstTime + 0.1s, 0.5 }, { firstTime + 0.15s, 1 })
 		.set(U"light", { secondTime,1 }, { secondTime + 0.05s, 0.5 })
 		.set(U"light", { secondTime + 0.1s, 0.5 }, { secondTime + 0.15s, 1 });
+}
+
+OpeningScene::~OpeningScene()
+{
+	LoadAsset::Wait();
 }
 
 void OpeningScene::update()
@@ -51,7 +57,7 @@ void OpeningScene::update()
 		animation.start();
 	}
 
-	if (8.5 < time)
+	if (8.5+0.5 < time)
 	{
 		changeScene(U"TitleScene", 2.0s);
 	}

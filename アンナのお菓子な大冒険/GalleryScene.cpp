@@ -1,4 +1,5 @@
 ﻿#include "GalleryScene.h"
+#include "KeyInfo.h"
 
 GalleryScene::GalleryScene(const InitData& init) :
 	IScene{ init }
@@ -211,7 +212,7 @@ void GalleryScene::draw() const
 	}
 
 	homeIcon.drawAt(backButton.center, backButton.mouseOver() ? Palette::Gray : Palette::White);
-	FontAsset{ U"NormalFont" }(U"[Q]タイトルに戻る").draw(Arg::leftCenter = backButton.center + Vec2{ 30,0 });
+	FontAsset{ U"NormalFont" }(U"[{}]タイトルに戻る"_fmt(ToKeyName(getData().menuBackKey))).draw(Arg::leftCenter = backButton.center + Vec2{ 30,0 });
 
 
 

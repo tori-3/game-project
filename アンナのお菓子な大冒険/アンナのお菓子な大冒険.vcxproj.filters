@@ -1142,5 +1142,8 @@
     <ClInclude Include="ControllerManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="KeyInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -99,7 +99,7 @@ void ChaseUmbrella::update()
 
 	if ((not rotateFlg) and hitBox.touchAny()) {
 
-		AudioAsset{ U"傘の音" }.playOneShot(0.3);
+		//AudioAsset{ U"傘の音" }.playOneShot(0.3);
 
 		targetAngle = (manager->get(U"Player")->pos - pos).getAngle();
 

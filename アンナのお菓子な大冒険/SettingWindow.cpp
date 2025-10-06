@@ -3,6 +3,7 @@
 #include"SettingWindow.h"
 #include"SoundIcon.hpp"
 #include"ControllerInput.h"
+#include"KeyInfo.h"
 
 class KeyConfigInfo
 {
@@ -16,6 +17,8 @@ public:
 	String text;
 	Array<Optional<Input>> inputs;
 	Array<std::shared_ptr<ChocolateButton>>buttons;
+
+	std::shared_ptr<TextUI>textUI = TextUI::Create({ .text = text,.color = Palette::White, });
 
 	KeyConfigInfo(StringView text, const InputGroup& inputGroup)
 		:text{ text }, inputs( maxButton, none )
@@ -125,7 +128,23 @@ public:
 			}
 		}
 
+		if(isEmpty())
+		{
+			textUI->color = Palette::Red;
+		}
+		else
+		{
+			textUI->color = Palette::White;
+		}
+
+
 		return inputIndex.has_value();
+	}
+
+	bool isEmpty()const
+	{
+		return getInputGroup().inputs().empty();
+
 	}
 
 	std::shared_ptr<UIElement>getUI()const
@@ -136,7 +155,7 @@ public:
 			//.width=1000,
 			.children
 			{
-				TextUI::Create({.text = text,.color = Palette::White,})
+				textUI
 			}
 		});
 
@@ -180,52 +199,6 @@ public:
 	}
 
 private:
-
-	static String GetKeyName(const Input& input)
-	{
-		const std::map<Input, String>table
-		{
-			{XInput(0).buttonStart,U"\U000F02B4Start"},
-			{XInput(0).buttonBack,U"\U000F02B4Back"},
-
-			{XInput(0).buttonLThumb,U"\U000F02B4\U000F0EC2(L)"},
-			{XInput(0).buttonRThumb,U"\U000F02B4\U000F0EC2(R)"},
-
-			{XInput(0).buttonLB,U"\U000F02B4LB"},
-			{XInput(0).buttonRB,U"\U000F02B4RB"},
-
-			{XInput(0).buttonUp,U"\U000F02B4\U000F0E42"},
-			{XInput(0).buttonDown,U"\U000F02B4\U000F0E39"},
-			{XInput(0).buttonLeft,U"\U000F02B4\U000F0E3A"},
-			{XInput(0).buttonRight,U"\U000F02B4\U000F0E3B"},
-			{XInput(0).buttonA,U"\U000F02B4A"},
-			{XInput(0).buttonB,U"\U000F02B4B"},
-			{XInput(0).buttonX,U"\U000F02B4X"},
-			{XInput(0).buttonY,U"\U000F02B4Y"},
-			{KeyUp,U"↑"},
-			{KeyDown,U"↓"},
-			{KeyLeft,U"←"},
-			{KeyRight,U"→"},
-
-		};
-
-		//XInput(0).buttonStart,
-		//	XInput(0).buttonBack,
-		//	XInput(0).buttonLThumb,
-		//	XInput(0).buttonRThumb,
-		//	XInput(0).buttonLB,
-		//	XInput(0).buttonRB,
-
-
-		if(table.contains(input))
-		{
-			return table.at(input);
-		}
-		else
-		{
-			return Format(input);
-		}
-	}
 
 	Optional<size_t>selectedIndex;
 
@@ -296,8 +269,13 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 	static LongPressInput rightInput;
 
 	selectIndex = index;
-	upInput = LongPressInput{ upInputGroup };
-	downInput = LongPressInput{ downInputGroup };
+	//upInput = LongPressInput{ upInputGroup };
+	//downInput = LongPressInput{ downInputGroup };
+
+	upInput = LongPressInput{ gameData.minigameUpKey };
+	downInput = LongPressInput{ gameData.minigameDownKey };
+	leftInput = LongPressInput{ gameData.minigameLeftKey };
+	rightInput = LongPressInput{ gameData.minigameRightKey };
 
 	effectVolumeSliderPanel->color = selectIndex == 0 ? ColorF{ Palette::Skyblue } : AlphaF(0);
 	BGMVolumeSliderPanel->color = selectIndex == 1 ? ColorF{ Palette::Skyblue } : AlphaF(0);
@@ -377,9 +355,9 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 
 			if (selectIndex == 0)
 			{
-				effectVolumeSlider->value = Clamp(effectVolumeSlider->value + (rightInputGroup.pressed() - leftInputGroup.pressed()) * Scene::DeltaTime(), 0.0, 1.0);
+				effectVolumeSlider->value = Clamp(effectVolumeSlider->value + (gameData.minigameRightKey.pressed() - gameData.minigameLeftKey.pressed()) * Scene::DeltaTime(), 0.0, 1.0);
 
-				if (leftInputGroup.up()||rightInputGroup.up())
+				if (gameData.minigameLeftKey.up()|| gameData.minigameRightKey.up())
 				{
 					GlobalAudio::BusSetVolume(EffectMixBus, effectVolumeSlider->value);
 					AudioAsset{ U"パンチヒット" }.playOneShot();
@@ -387,7 +365,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 			}
 			else if (selectIndex == 1)
 			{
-				BGMVolumeSlider->value = Clamp(BGMVolumeSlider->value + (rightInputGroup.pressed() - leftInputGroup.pressed()) * Scene::DeltaTime(), 0.0, 1.0);
+				BGMVolumeSlider->value = Clamp(BGMVolumeSlider->value + (gameData.minigameRightKey.pressed() - gameData.minigameLeftKey.pressed()) * Scene::DeltaTime(), 0.0, 1.0);
 			}
 
 			if (effectVolumeSlider->sliderReleased())
@@ -485,7 +463,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 							}),
 							.updateFunc = [=,&gameData](SimpleDialog* dialog)mutable
 							{
-								if (leftInputGroup.down())
+								if (gameData.minigameLeftKey.down())
 								{
 									if (noButton->selected)
 									{
@@ -499,7 +477,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 									}
 								}
 
-								if (rightInputGroup.down())
+								if (gameData.minigameRightKey.down())
 								{
 									if (yesButton->selected)
 									{
@@ -516,6 +494,8 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 								if ((yesButton->selected && gameData.menuDecisionKey.down()) || yesButton->clicked())
 								{
 									gameData.setIncreaseHPMode(false);
+									gameData.save();
+
 									AudioAsset{ U"決定ボタン" }.playOneShot();
 
 									dialog->close();
@@ -536,8 +516,10 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 				}
 				else
 				{
-					hpModeText->setText(U"HP増加をOFFにする");
 					gameData.setIncreaseHPMode(true);
+					gameData.save();
+
+					hpModeText->setText(U"HP増加をOFFにする");
 				}
 			}
 
@@ -555,14 +537,14 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 					{
 						KeyConfigInfo{U"ジャンプ",gameData.jumpKey},
 						KeyConfigInfo{U"攻撃",gameData.attackKey},
-						KeyConfigInfo{U"左移動",gameData.leftKey},
-						KeyConfigInfo{U"右移動",gameData.rightKey},
+						//KeyConfigInfo{U"左移動",gameData.leftKey},
+						//KeyConfigInfo{U"右移動",gameData.rightKey},
 						KeyConfigInfo{U"しゃがむ(↓)",gameData.downKey},
 						KeyConfigInfo{U"ポーズ",gameData.pauseKey},
-						KeyConfigInfo{U"ミニゲーム(メニュー)：↑",gameData.minigameUpKey},
-						KeyConfigInfo{U"ミニゲーム(メニュー)：↓",gameData.minigameDownKey},
-						KeyConfigInfo{U"ミニゲーム(メニュー)：←",gameData.minigameLeftKey},
-						KeyConfigInfo{U"ミニゲーム(メニュー)：→",gameData.minigameRightKey},
+						KeyConfigInfo{U"上移動↑",gameData.minigameUpKey},
+						KeyConfigInfo{U"下移動↓",gameData.minigameDownKey},
+						KeyConfigInfo{U"左移動←",gameData.minigameLeftKey},
+						KeyConfigInfo{U"右移動→",gameData.minigameRightKey},
 						KeyConfigInfo{U"メニュー：決定",gameData.menuDecisionKey},
 						KeyConfigInfo{U"メニュー：戻る",gameData.menuBackKey},
 					}
@@ -596,7 +578,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 							({
 								.children
 								{
-									TextUI::Create({.text = U"キーコンフィグ",.fontSize = 40,.color = Palette::White}),
+									TextUI::Create({.text = U"キー設定",.fontSize = 40,.color = Palette::White}),
 									col,
 									Row::Create
 									({
@@ -715,27 +697,46 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 								}
 							}
 
-							if(closeButton->clicked()||(pos.y== table->size() && gameData.menuDecisionKey.down())||gameData.menuBackKey.down())
+							bool empty = false;
+							for (auto& key : (*table))
 							{
-								AudioAsset{ U"キャンセル" }.playOneShot();
+								if(key.isEmpty())
+								{
+									empty = true;
+									break;
+								}
+							}
 
-								gameData.jumpKey = (*table)[0].getInputGroup();
-								gameData.attackKey = (*table)[1].getInputGroup();
-								gameData.leftKey = (*table)[2].getInputGroup();
-								gameData.rightKey = (*table)[3].getInputGroup();
-								gameData.downKey = (*table)[4].getInputGroup();
-								gameData.pauseKey = (*table)[5].getInputGroup();
-								gameData.minigameUpKey = (*table)[6].getInputGroup();
-								gameData.minigameDownKey = (*table)[7].getInputGroup();
-								gameData.minigameLeftKey = (*table)[8].getInputGroup();
-								gameData.minigameRightKey = (*table)[9].getInputGroup();
-								gameData.menuDecisionKey = (*table)[10].getInputGroup();
-								gameData.menuBackKey = (*table)[11].getInputGroup();
+							closeButton->clickable = not empty;
 
-								gameData.save();
+							if (closeButton->clicked() || (pos.y == table->size() && gameData.menuDecisionKey.down()) || gameData.menuBackKey.down())
+							{
+								if (not empty)
+								{
+									AudioAsset{ U"キャンセル" }.playOneShot();
 
-								dialog->close();
-								manager.addChild(SettingWindow(upInputGroup, downInputGroup, leftInputGroup, rightInputGroup, onClose, gameData, manager, selectIndex));
+									gameData.jumpKey = (*table)[0].getInputGroup();
+									gameData.attackKey = (*table)[1].getInputGroup();
+									//gameData.leftKey = (*table)[2].getInputGroup();
+									//gameData.rightKey = (*table)[3].getInputGroup();
+									gameData.downKey = (*table)[2].getInputGroup();
+									gameData.pauseKey = (*table)[3].getInputGroup();
+									gameData.minigameUpKey = (*table)[4].getInputGroup();
+									gameData.minigameDownKey = (*table)[5].getInputGroup();
+									gameData.minigameLeftKey = (*table)[6].getInputGroup();
+									gameData.minigameRightKey = (*table)[7].getInputGroup();
+									gameData.menuDecisionKey = (*table)[8].getInputGroup();
+									gameData.menuBackKey = (*table)[9].getInputGroup();
+
+									gameData.save();
+
+									dialog->close();
+									manager.addChild(SettingWindow(upInputGroup, downInputGroup, leftInputGroup, rightInputGroup, onClose, gameData, manager, selectIndex));
+								}
+								else
+								{
+									AudioAsset{ U"ビープ音" }.playOneShot();
+								}
 							}
 						}
 					})

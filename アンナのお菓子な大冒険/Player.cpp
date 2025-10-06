@@ -373,29 +373,38 @@ Player::Player(const Vec2& cpos) :
 			character.addMotion(U"Knockback");
 		},
 		.update = [&](double t) {
+
 			vel.x = force.x;
 
-				if (0 <= force.x) {
-					if (hitBox.touch(Direction::right)) {
-						return false;
-					}
+			if (0 <= force.x)
+			{
+				if (hitBox.touch(Direction::right))
+				{
+					return false;
 				}
-				else {
-					if (hitBox.touch(Direction::left)) {
-						return false;
-					}
+			}
+			else
+			{
+				if (hitBox.touch(Direction::left))
+				{
+					return false;
 				}
+			}
 
-				if (0 < force.y) {
-					if (hitBox.touch(Direction::down)) {
-						return false;
-					}
+			if (0 < force.y)
+			{
+				if (hitBox.touch(Direction::down))
+				{
+					return false;
 				}
-				else {
-					if (hitBox.touch(Direction::up)) {
-						return false;
-					}
+			}
+			else
+			{
+				if (hitBox.touch(Direction::up))
+				{
+					return false;
 				}
+			}
 			return vel.y < 0;
 		},
 		.end = [&]() {
@@ -565,6 +574,8 @@ void Player::update()
 		actMan.cancelAll();
 		//脱法ダメージ
 		actMan.start(U"Damage");
+		DataManager::get().table.insert(U"Damage");
+
 		hp -= 1;
 
 		crushedTimer = 0;
@@ -594,6 +605,7 @@ void Player::damage(int32 n, const Vec2& force, DamageType damageType)
 				this->force = force;
 
 				actMan.start(U"Damage");
+				DataManager::get().table.insert(U"Damage");
 
 				hp -= n;
 

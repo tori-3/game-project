@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include"TalkWindow.h"
+#include"Common.h"
 
 class DataManager
 {
@@ -26,6 +27,8 @@ public:
 	Optional<double> bossHPRate = none;
 
 	String bossName;
+
+	GameData* gameData = nullptr;
 
 	void addEntity(const String& name, const Vec2& pos)
 	{

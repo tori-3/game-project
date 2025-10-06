@@ -1,5 +1,5 @@
 ﻿{
-  "BGMVolume": 0.28338417410850525,
+  "BGMVolume": 0.2994278073310852,
   "ClearHP": [
     5,
     5,
@@ -7,7 +7,7 @@
     0,
     5,
     5,
-    0,
+    5,
     5,
     0,
     5,
@@ -29,7 +29,7 @@
     0
   ],
   "ClearStage": 23,
-  "EffectVolume": 0.2555558383464813,
+  "EffectVolume": 0.65474933385849,
   "IncreaseHPMode": true,
   "IsFullscreen": false,
   "Key": {
@@ -56,6 +56,11 @@
           "playerIndex": 0
         },
         {
+          "code": 40,
+          "device": 1,
+          "playerIndex": 0
+        },
+        {
           "code": 83,
           "device": 1,
           "playerIndex": 0
@@ -72,26 +77,6 @@
         },
         {
           "code": 32,
-          "device": 1,
-          "playerIndex": 0
-        },
-        {
-          "code": 87,
-          "device": 1,
-          "playerIndex": 0
-        }
-      ],
-      "type": "InputGroup"
-    },
-    "leftKey": {
-      "inputs": [
-        {
-          "code": 2,
-          "device": 4,
-          "playerIndex": 0
-        },
-        {
-          "code": 65,
           "device": 1,
           "playerIndex": 0
         }
@@ -222,21 +207,6 @@
         }
       ],
       "type": "InputGroup"
-    },
-    "rightKey": {
-      "inputs": [
-        {
-          "code": 3,
-          "device": 4,
-          "playerIndex": 0
-        },
-        {
-          "code": 68,
-          "device": 1,
-          "playerIndex": 0
-        }
-      ],
-      "type": "InputGroup"
     }
   },
   "MaxHP": [
@@ -244,11 +214,6 @@
     5,
     5,
     5,
-    5,
-    7,
-    5,
-    5,
-    5,
     7,
     5,
     5,
@@ -256,13 +221,18 @@
     5,
     5,
     5,
-    7,
     5,
-    7,
-    11,
-    7,
     5,
-    7,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    9,
     5,
     5,
     5
@@ -280,7 +250,7 @@
     },
     {
       "Easy": true,
-      "Hard": false,
+      "Hard": true,
       "Normal": true
     },
     {
@@ -301,5 +271,5 @@
   ],
   "NotifyGallery": false,
   "NotifyMiniGameSelect": false,
-  "SelectedStage": 12
+  "SelectedStage": 21
 }

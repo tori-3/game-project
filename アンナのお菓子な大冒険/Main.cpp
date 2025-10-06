@@ -54,6 +54,7 @@ void Main()
 
 	manager.changeScene(U"OpeningScene", 0.5s);
 
+
 	while (System::Update())
 	{
 		if (not manager.update())

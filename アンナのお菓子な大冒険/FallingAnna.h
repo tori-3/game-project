@@ -2,6 +2,7 @@
 # include"Common.h"
 #include"MiniGameSceneBase.h"
 #include"ControllerManager.h"
+#include"KeyInfo.h"
 
 namespace FallingAnna {
 
@@ -876,7 +877,7 @@ namespace FallingAnna {
 					Cfont(U"失敗……").drawAt(textStyle, ww * 0.5f, wh * 0.35f);
 				}
 				//Sfont(U"合格ライン:", goukakuline).draw(textStyle, Arg::topLeft = Vec2(ww * 0.5f, wh * 0.47f));
-				Sfont(U"Enterでおわる").drawAt(textStyle,Vec2(ww * 0.5f, wh * 0.6f));
+				FontAsset{ U"NormalFont" }(U"{}でおわる"_fmt(ToKeyName(getData().menuDecisionKey))).drawAt(60,Vec2(ww * 0.5f, wh * 0.6f));
 			}
 			if (getclear())
 			{
@@ -888,7 +889,7 @@ namespace FallingAnna {
 			}
 			Sfont(U"残り:", Math::Round(nokori / annah * 1.6), U"m").draw(textStyle, Arg::topRight = Vec2(ww * 0.95f, wh * 0.05f));
 
-			FontAsset{ U"NormalFont" }(U"[ESC]ポーズ").draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
+			FontAsset{ U"NormalFont" }(U"[{}]ポーズ"_fmt(ToKeyName(getData().pauseKey))).draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 		}
 
 	};

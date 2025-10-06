@@ -45,7 +45,7 @@ public:
 			changeMiniGameTimer.restart();
 		},
 		[&] {
-			uiManager.addChild({ SettingWindow(getData().minigameUpKey,getData().minigameDownKey,getData().minigameLeftKey,getData().minigameRightKey,[=] {menuClicked = false; getData().save(); KeyConfigUtility::CleapInput(getData().menuDecisionKey); },getData(),uiManager) });
+			uiManager.addChild({ SettingWindow(getData().minigameUpKey,getData().minigameDownKey,getData().minigameLeftKey,getData().minigameRightKey,[=] {menuClicked = false; getData().save(); KeyConfigUtility::CleapInput(getData().menuDecisionKey); upInput.input = getData().minigameUpKey; downInput.input = getData().minigameDownKey; },getData(),uiManager)});
 		},
 		[&] {
 			uiManager.addChild({ licenseDialog() });

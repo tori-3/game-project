@@ -111,7 +111,7 @@ namespace AnnaMusicGame {
 
 		const Audio music{ U"MiniGameAsset/AnnaMusicGame/{}.mp3"_fmt(getData().mini_mode) ,Loop::No };
 
-		const Font font{ FontMethod::MSDF,50 };
+		//const Font font{ FontMethod::MSDF,50 };
 
 		const Circle C0{ 550,600,40 };
 		const Circle C1{ 550, 600, 35 };

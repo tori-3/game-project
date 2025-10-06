@@ -10,6 +10,8 @@ namespace LoadAsset
 
 	void LoadFont();
 
+	void Wait();
+
 	void RegisterTexture(StringView path);
 
 	void RegisterAudio(StringView path,Loop loop=Loop::No);

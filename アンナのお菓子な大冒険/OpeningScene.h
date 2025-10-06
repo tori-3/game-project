@@ -28,6 +28,8 @@ public:
 
 	OpeningScene(const InitData& init);
 
+	~OpeningScene();
+
 	void update()override;
 
 	void draw() const override;

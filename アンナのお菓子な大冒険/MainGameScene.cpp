@@ -1,5 +1,6 @@
 ﻿#include"MainGameScene.h"
 #include"Fairy.h"
+#include"KeyInfo.h"
 
 class StageEntity :public Entity
 {
@@ -33,6 +34,8 @@ private:
 MainGameScene::MainGameScene(const InitData& init)
 	: MiniGameSceneBase{ init }
 {
+	DataManager::get().gameData = &getData();
+
 	if(getData().stage==1)
 	{
 		TextureAsset::Register(U"kaiso",U"kaiso.png");
@@ -66,7 +69,8 @@ MainGameScene::MainGameScene(const InitData& init)
 
 	if (getData().stage == 2)
 	{
-		manager.add(new Fairy{});
+		fairy = new Fairy{};
+		manager.add(fairy);
 	}
 
 	manager.add(new StageEntity{ &stage,&camera.pos,&player->pos });
@@ -89,7 +93,14 @@ void MainGameScene::gameUpdate()
 	if (TalkManager::get().talkWindow.isContinue())
 	{
 		DataManager::get().table.insert(U"TalkWindow");
-		TalkManager::get().talkWindow.update(getData().minigameLeftKey.down(),(getData().menuDecisionKey|getData().minigameRightKey).down());
+		TalkManager::get().talkWindow.update(getData().minigameLeftKey.down(),(getData().attackKey|getData().minigameRightKey).down());
+
+		if(fairy)
+		{
+			fairy->update();
+			fairy->lateUpdate();
+		}
+
 		return;
 	}
 	else
@@ -186,6 +197,15 @@ void MainGameScene::gameUpdate()
 
 	DataManager::get().time += Scene::DeltaTime();
 
+
+	damageTimer = Max(damageTimer - Scene::DeltaTime(), 0.0);
+
+	if (DataManager::get().table.contains(U"Damage"))
+	{
+		damageTimer = 0.2;
+
+		DataManager::get().table.erase(U"Damage");
+	}
 }
 
 void MainGameScene::gameDraw() const
@@ -263,14 +283,19 @@ void MainGameScene::gameDraw() const
 
 	constexpr double height = 200;
 	constexpr double space = 50;
-	TalkManager::get().talkWindow.draw(RectF{ space,Scene::Height() - height - space,Scene::Width() - space * 2 ,height });
+	TalkManager::get().talkWindow.draw(RectF{ space,Scene::Height() - height - space,Scene::Width() - space * 2 ,height }, { 250,50 },false,ToKeyName(getData().attackKey));
 
-	FontAsset{ U"NormalFont" }(U"[ESC]ポーズ").draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
+	FontAsset{ U"NormalFont" }(U"[{}]ポーズ"_fmt(ToKeyName(getData().pauseKey))).draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 
 	if (DataManager::get().bossHPRate)
 	{
 		FontAsset{ U"NormalFont" }(U"<",DataManager::get().bossName,U">").drawAt(25,Scene::Center().x, 30);
 		hpBar.draw(Palette::Purple, Palette::Red);
+	}
+
+	if (0 < damageTimer)
+	{
+		Scene::Rect().drawFrame(40, 0, ColorF{ Palette::Red, 0.0 }, ColorF{ Palette::Red, 0.7 });
 	}
 
 	{
@@ -359,5 +384,4 @@ void MainGameScene::HpDisplay(int32 count, int32 maxHP)
 			}
 		}
 	}
-
 }

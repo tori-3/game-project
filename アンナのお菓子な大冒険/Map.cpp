@@ -1,4 +1,5 @@
 ﻿#include"Map.h"
+#include"KeyInfo.h"
 
 void Map::updatePos()
 {
@@ -509,7 +510,7 @@ void Map::draw() const
 	else
 	{
 		FontAsset{ U"NormalFont" }(title[index]).drawAt(30,Scene::Center() + Vec2{ 0,-300 });
-		FontAsset{ U"NormalFont" }(U"← [A]              [Enter]              [D] →").drawAt(30,Scene::Center() + Vec2{ 0,-250 });
+		FontAsset{ U"NormalFont" }(U"← [{}]              [{}]              [{}] →"_fmt(ToKeyName(getData().minigameLeftKey), ToKeyName(getData().menuDecisionKey), ToKeyName(getData().minigameRightKey))).drawAt(30,Scene::Center() + Vec2{ 0,-250 });
 	}
 
 	if (backButton.mouseOver())
@@ -517,7 +518,7 @@ void Map::draw() const
 		Cursor::RequestStyle(CursorStyle::Hand);
 	}
 	homeIcon.drawAt(backButton.center, backButton.mouseOver() ? Palette::Gray : Palette::White);
-	FontAsset{ U"NormalFont" }(U"[Q]タイトルに戻る").draw(Arg::leftCenter = backButton.center + Vec2{ 30,0 });
+	FontAsset{ U"NormalFont" }(U"[{}]タイトルに戻る"_fmt(ToKeyName(getData().menuBackKey))).draw(Arg::leftCenter = backButton.center + Vec2{ 30,0 });
 
 
 	//if (largeFlg) {

@@ -114,9 +114,9 @@ struct GameData
 
 	InputGroup jumpKey = s3d::KeyW | s3d::KeySpace | s3d::KeyUp;
 	InputGroup attackKey = s3d::KeyEnter;
-	InputGroup leftKey = s3d::KeyA | s3d::KeyLeft;
+	//InputGroup leftKey = s3d::KeyA | s3d::KeyLeft;
 	InputGroup downKey = s3d::KeyS | s3d::KeyDown;
-	InputGroup rightKey = s3d::KeyD | s3d::KeyRight;
+	//InputGroup rightKey = s3d::KeyD | s3d::KeyRight;
 	InputGroup pauseKey = KeyEscape;
 
 	//ステージ

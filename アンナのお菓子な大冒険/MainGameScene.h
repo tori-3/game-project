@@ -50,6 +50,10 @@ public:
 
 	bool saveFlg = false;
 
+	double damageTimer = 0;
+
+	Entity* fairy = nullptr;
+
 	MainGameScene(const InitData& init);
 
 	void gameUpdate() override;

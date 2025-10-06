@@ -53,7 +53,7 @@ void TalkWindow::update(bool backFlg, bool nextFlg)
 	}
 }
 
-void TalkWindow::draw(const RectF& rect, const SizeF& nameSize,bool hideMode)const
+void TalkWindow::draw(const RectF& rect, const SizeF& nameSize,bool hideMode, StringView keyName)const
 {
 	if (not isContinue())return;
 
@@ -84,11 +84,11 @@ void TalkWindow::draw(const RectF& rect, const SizeF& nameSize,bool hideMode)con
 
 
 	const size_t length = static_cast<size_t>(m_accumlater);
-	FontAsset(U"WindowFont")(talk.text.substr(0, length)).draw(window.rect.stretched(-20));
+	FontAsset(U"NormalFont")(talk.text.substr(0, length)).draw(30,window.rect.stretched(-20));
 
 	if(not hideMode)
 	{
-		FontAsset(U"WindowFont")(talk.name).drawAt(nameWindow.rect.center());
+		FontAsset(U"NormalFont")(talk.name).drawAt(30,nameWindow.rect.center());
 	}
 
 	if (talk.text.size() < length)
@@ -98,6 +98,6 @@ void TalkWindow::draw(const RectF& rect, const SizeF& nameSize,bool hideMode)con
 
 	if (not hideMode)
 	{
-		FontAsset(U"WindowFont")(U"次へ [Enter]").drawBase(20, window.rect.bl() + Vec2{ 20,-20 });
+		FontAsset(U"NormalFont")(U"次へ [{}]"_fmt(keyName)).drawBase(20, window.rect.bl() + Vec2{ 20,-20 });
 	}
 }

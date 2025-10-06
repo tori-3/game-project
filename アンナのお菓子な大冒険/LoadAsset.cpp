@@ -51,9 +51,9 @@ void LoadAsset::LoadFont()
 
 	BunchoUI::TextUI::DefaultFontName = U"NormalFont";
 
-	AudioAsset::LoadAsync(U"TitleFont");
-	AudioAsset::LoadAsync(U"NormalFont");
-	AudioAsset::LoadAsync(U"IconFont");
+	FontAsset::LoadAsync(U"TitleFont");
+	FontAsset::LoadAsync(U"NormalFont", U"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
+	FontAsset::LoadAsync(U"IconFont");
 }
 
 void LoadAsset::LoadAudio()
@@ -63,7 +63,7 @@ void LoadAsset::LoadAudio()
 	{
 		String name = FileSystem::BaseName(path);
 		AudioAsset::Register(name, path);
-		//AudioAsset::LoadAsync(name);
+		AudioAsset::LoadAsync(name);
 	}
 
 	AudioAsset{ U"ゲームオーバー" }.setVolume(10);
@@ -85,6 +85,25 @@ void LoadAsset::LoadAudio()
 
 	AudioAsset{ U"看板" }.setVolume(20);
 
+	AudioAsset::Wait(U"キャンセル2");
+}
+
+void LoadAsset::Wait()
+{
+	for (auto&& [name, info] : AudioAsset::Enumerate())
+	{
+		AudioAsset::Wait(name);
+	}
+
+	for (auto&& [name, info] : TextureAsset::Enumerate())
+	{
+		TextureAsset::Wait(name);
+	}
+
+	for (auto&& [name, info] : FontAsset::Enumerate())
+	{
+		FontAsset::Wait(name);
+	}
 }
 
 void LoadAsset::RegisterTexture(StringView path)

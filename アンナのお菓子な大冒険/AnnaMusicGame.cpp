@@ -1,4 +1,5 @@
 ﻿#include"AnnaMusicGame.h"
+#include"KeyInfo.h"
 
 namespace AnnaMusicGame {
 
@@ -390,16 +391,16 @@ namespace AnnaMusicGame {
 
 		if (rcs.empty() and gcs.empty())
 		{
-			font(U"Perfect{}\nMiss{}\nMaxcombo{}"_fmt(perfect, miss, maxcombo)).draw(60, 50, 50, Palette::Yellow);
-			font(U"Enterで戻る").draw(30, 250, 300, Palette::Skyblue);
+			FontAsset(U"NormalFont")(U"Perfect{}\nMiss{}\nMaxcombo{}"_fmt(perfect, miss, maxcombo)).draw(60, 50, 50, Palette::Yellow);
+			FontAsset(U"NormalFont")(U"{}で戻る"_fmt(ToKeyName(getData().menuDecisionKey))).draw(30, 250, 300, Palette::Skyblue);
 
 			if (miss <= 9)
 			{
-				font(U"クリア！").draw(100, Arg::bottomRight = Scene::Size() - Vec2{ 50,50 }, Palette::Yellow);
+				FontAsset(U"NormalFont")(U"クリア！").draw(100, Arg::bottomRight = Scene::Size() - Vec2{ 50,50 }, Palette::Yellow);
 			}
 			else
 			{
-				font(U"失敗、、、").draw(100, Arg::bottomRight = Scene::Size() - Vec2{ 50,50 }, Palette::Red);
+				FontAsset(U"NormalFont")(U"失敗、、、").draw(100, Arg::bottomRight = Scene::Size() - Vec2{ 50,50 }, Palette::Red);
 			}
 
 
@@ -407,13 +408,13 @@ namespace AnnaMusicGame {
 
 		effect.update();
 
-		font(U"赤は←[A]キー").draw(40, 700, 50, Palette::Red);
-		font(U"黄緑は→[D]キー").draw(40, 700, 90, Palette::Yellowgreen);
-		font(U"をタイミング良く押そう！！\nMiss9以下でクリア").draw(40, 700, 130, Palette::Skyblue);
-		font(U"{}"_fmt(credit)).draw(30, 5, 750, Palette::Skyblue);
-		font(U"Combo{}"_fmt(combo)).draw(60, 650, 380, Palette::Yellowgreen);
+		FontAsset(U"NormalFont")(U"赤(←)は[{}]"_fmt(ToKeyName(getData().minigameLeftKey))).draw(40, 700, 50, Palette::Red);
+		FontAsset(U"NormalFont")(U"黄緑(→)は[{}]"_fmt(ToKeyName(getData().minigameRightKey))).draw(40, 700, 90, Palette::Yellowgreen);
+		FontAsset(U"NormalFont")(U"をタイミング良く押そう！！\nMiss9以下でクリア").draw(40, 700, 130, Palette::Skyblue);
+		FontAsset(U"NormalFont")(U"{}"_fmt(credit)).draw(30, 5, 750, Palette::Skyblue);
+		FontAsset(U"NormalFont")(U"Combo{}"_fmt(combo)).draw(60, 650, 380, Palette::Yellowgreen);
 
-		FontAsset{ U"NormalFont" }(U"[ESC]ポーズ").draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
+		FontAsset{ U"NormalFont" }(U"[{}]ポーズ"_fmt(ToKeyName(getData().pauseKey))).draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 	}
 
 }

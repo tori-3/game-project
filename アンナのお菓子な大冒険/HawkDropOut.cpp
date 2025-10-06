@@ -1,6 +1,7 @@
 ﻿#include"HawkDropOut.h"
 #include"BGMManager.hpp"
 #include"ControllerManager.h"
+#include"KeyInfo.h"
 
 namespace HawkDropOut
 {
@@ -204,7 +205,7 @@ namespace HawkDropOut
 		}
 
 		//攻撃ボタン
-		if (ButtonUpdate(Rect{ 650, 250, 60, 60 }, 0.5, 30, 30, attackfunction, font, farmCount, numofmeat >= 1, enemy, j < 1) && (Rect{ 650, 250, 60, 60 }.leftClicked() || getData().minigameLeftKey.pressed())) {
+		if (ButtonUpdate(Rect{ 650, 250, 60, 60 }, 0.5, 30, 30, attackfunction, font, farmCount, numofmeat >= 1, enemy, j < 1) && (Rect{ 650, 250, 60, 60 }.leftClicked() || getData().attackKey.pressed())) {
 			attack = true;
 			attackball.x = cookieCircle.x - 10;
 			attackball.y = cookieCircle.y + 10;
@@ -255,7 +256,7 @@ namespace HawkDropOut
 
 
 		//超上昇ボタン
-		if (ButtonUpdate(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, numofmeat >= 2, enemy, true) && (Rect{ 715, 244, 70, 70 }.leftClicked() || getData().minigameRightKey.down()))
+		if (ButtonUpdate(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, numofmeat >= 2, enemy, true) && (Rect{ 715, 244, 70, 70 }.leftClicked() || getData().jumpKey.down()))
 		{
 			tornadoFlg = true;
 			numofmeat -= 2;
@@ -266,7 +267,7 @@ namespace HawkDropOut
 		{
 			cookieCircle.y -= Scene::DeltaTime() * 1500.0;
 
-			const bool pressedTornado = ButtonUpdate(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, true, false, true) && (Rect{ 715, 244, 70, 70 }.leftPressed() || getData().minigameRightKey.pressed());
+			const bool pressedTornado = ButtonUpdate(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, true, false, true) && (Rect{ 715, 244, 70, 70 }.leftPressed() || getData().jumpKey.pressed());
 
 			if (not pressedTornado || cookieCircle.y <= 50)
 			{
@@ -565,10 +566,10 @@ namespace HawkDropOut
 			if (clear)
 			{
 				Rect{ 800,600 }.draw(ColorF{ 0,0.5 });
-				font(U"Clear!!").drawAt(100, 400, 250);
-				font(U"Enterで戻る").drawAt(30, 400, 350);
+				FontAsset{ U"TitleFont" }(U"Clear!!").drawAt(100, 400, 250);
+				FontAsset{ U"TitleFont" }(U"{}で戻る"_fmt(ToKeyName(getData().menuDecisionKey))).drawAt(30, 400, 350);
 			}
 		}
-		FontAsset{ U"NormalFont" }(U"[ESC]ポーズ").draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
+		FontAsset{ U"NormalFont" }(U"[{}]ポーズ"_fmt(ToKeyName(getData().pauseKey))).draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 	}
 }

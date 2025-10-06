@@ -13,7 +13,7 @@ public:
 	size_t index = 0;
 	TalkWindow()
 	{
-		FontAsset::Register(U"WindowFont", 30);
+		//FontAsset::Register(U"WindowFont", 30);
 	}
 
 	void setTalk(const Array<TalkInfo>& list)
@@ -35,7 +35,7 @@ public:
 	void update(bool backFlg, bool nextFlg);
 
 	//描画：RectF 表示する位置を指定,SizeF 名前ウィンドウのサイズ
-	void draw(const RectF& rect, const SizeF& nameSize = { 250,50 },bool hideMode=false)const;
+	void draw(const RectF& rect, const SizeF& nameSize = { 250,50 },bool hideMode=false,StringView keyName=U"")const;
 
 	//次に進む
 	void next()

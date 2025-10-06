@@ -362,6 +362,7 @@
     <ClInclude Include="GalleryScene.h" />
     <ClInclude Include="Gimmick.h" />
     <ClInclude Include="KeyConfigUtility.h" />
+    <ClInclude Include="KeyInfo.h" />
     <ClInclude Include="LightBloom.h" />
     <ClInclude Include="MyBlendState.h" />
     <ClInclude Include="Block.h" />

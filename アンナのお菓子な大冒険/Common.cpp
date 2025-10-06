@@ -72,7 +72,10 @@ void GameData::saveMainGame(bool clear)
 	}
 	else
 	{
-		maxHPList[stage - 1] += 2;
+		if(increaseHPMode)
+		{
+			maxHPList[stage - 1] += 2;
+		}
 	}
 
 	save();
@@ -119,9 +122,9 @@ void GameData::save()
 		json[U"menuBackKey"] = KeyConfigUtility::ToJSON(menuBackKey);
 		json[U"jumpKey"] = KeyConfigUtility::ToJSON(jumpKey);
 		json[U"attackKey"] = KeyConfigUtility::ToJSON(attackKey);
-		json[U"leftKey"] = KeyConfigUtility::ToJSON(leftKey);
+		//json[U"leftKey"] = KeyConfigUtility::ToJSON(leftKey);
 		json[U"downKey"] = KeyConfigUtility::ToJSON(downKey);
-		json[U"rightKey"] = KeyConfigUtility::ToJSON(rightKey);
+		//json[U"rightKey"] = KeyConfigUtility::ToJSON(rightKey);
 		json[U"pauseKey"] = KeyConfigUtility::ToJSON(pauseKey);
 		saveDatajson[U"Key"] = json;
 	}
@@ -179,9 +182,9 @@ void GameData::load()
 		menuBackKey = KeyConfigUtility::FromJSON(json[U"menuBackKey"]);
 		jumpKey = KeyConfigUtility::FromJSON(json[U"jumpKey"]);
 		attackKey = KeyConfigUtility::FromJSON(json[U"attackKey"]);
-		leftKey = KeyConfigUtility::FromJSON(json[U"leftKey"]);
+		//leftKey = KeyConfigUtility::FromJSON(json[U"leftKey"]);
 		downKey = KeyConfigUtility::FromJSON(json[U"downKey"]);
-		rightKey = KeyConfigUtility::FromJSON(json[U"rightKey"]);
+		//rightKey = KeyConfigUtility::FromJSON(json[U"rightKey"]);
 		pauseKey = KeyConfigUtility::FromJSON(json[U"pauseKey"]);
 	}
 

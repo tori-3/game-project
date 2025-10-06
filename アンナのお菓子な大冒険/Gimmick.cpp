@@ -69,7 +69,7 @@ void RollingRocks::update()
 	ClearPrint();
 	manager->stage->hit(&hitBox);
 
-	if (audioLength< time.sF())
+	if (audioLength-0.4< time.sF())
 	{
 		audio.playOneShot(volume());
 		time.restart();

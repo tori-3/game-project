@@ -105,9 +105,9 @@ public:
 
 	void setDataP(GameData* data)
 	{
-		jumpKey=data->jumpKey;
-		rightKey=data->rightKey;
-		leftKey=data->leftKey;
+		jumpKey=data->jumpKey| data->minigameUpKey;
+		rightKey=data->minigameRightKey;
+		leftKey=data->minigameLeftKey;
 		downKey=data->downKey;
 		attackKey=data->attackKey;
 	}
