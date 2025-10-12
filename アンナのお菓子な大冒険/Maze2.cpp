@@ -83,6 +83,6 @@ namespace Maze2
 			FontAsset{ U"TitleFont" }(U"{}で戻る"_fmt(ToKeyName(getData().menuDecisionKey))).drawAt(45, Scene::Center() + Vec2{ 0,150 });
 		}
 
-		FontAsset{ U"NormalFont" }(U"[{}]ポーズ"_fmt(ToKeyName(getData().pauseKey))).draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
+		FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey))).draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 	}
 }

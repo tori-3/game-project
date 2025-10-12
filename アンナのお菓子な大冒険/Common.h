@@ -104,6 +104,8 @@ struct GameData
 		return increaseHPMode;
 	}
 
+	String fmt(StringView text)const;
+
 	//キー
 	InputGroup minigameUpKey = s3d::KeyW | s3d::KeyUp;
 	InputGroup minigameLeftKey = s3d::KeyA | s3d::KeyLeft;
@@ -112,8 +114,8 @@ struct GameData
 	InputGroup menuDecisionKey = s3d::KeyEnter;
 	InputGroup menuBackKey = s3d::KeyQ;
 
-	InputGroup jumpKey = s3d::KeyW | s3d::KeySpace | s3d::KeyUp;
 	InputGroup attackKey = s3d::KeyEnter;
+	InputGroup jumpKey = s3d::KeyW | s3d::KeySpace | s3d::KeyUp;
 	//InputGroup leftKey = s3d::KeyA | s3d::KeyLeft;
 	InputGroup downKey = s3d::KeyS | s3d::KeyDown;
 	//InputGroup rightKey = s3d::KeyD | s3d::KeyRight;

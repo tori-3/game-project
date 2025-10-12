@@ -259,7 +259,7 @@ public:
 
 		FontAsset{ U"EndRollFont" }(U"BGM・効果音\nまる").draw(50, 50);
 		FontAsset{ U"EndRollFont" }(U"効果音素材 BGM").draw(50, 50 + height * 3.5, AlphaF(Clamp(t - 1, 0.0, 1.0)));
-		FontAsset{ U"EndRollFont" }(U"効果音ラボ\nOn - Jin ～音人～\nザ・マッチメイカァズ\nOtoLogic（ミニゲーム-暗闇迷路 BGM）\n遊句 (ミニゲーム-FallingAnna BGM)").draw(40,50, 50 + height * 4.5, AlphaF(Clamp(t - 1, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"効果音ラボ\nOn - Jin ～音人～\nザ・マッチメイカァズ\nOtoLogic（ミニゲーム-暗闇迷路 BGM）\n夢にみた緑 (ミニゲーム-FallingAnna BGM)").draw(40,50, 50 + height * 4.5, AlphaF(Clamp(t - 1, 0.0, 1.0)));
 	}
 };
 

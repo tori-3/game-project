@@ -38,7 +38,7 @@ public:
 				.relative = Relative::Center(),
 				.child
 				{
-					TextUI::Create({.text = inputs[i] ? GetKeyName(inputs[i].value()) : U"未設定",.fontSize=23,.color= inputs[i] ?normalTextColor:unconfiguredTextColor})
+					TextUI::Create({.text = inputs[i] ? (GetKeyName(inputs[i].value())) : U"未設定",.fontSize = 23,.color = inputs[i] ? normalTextColor : unconfiguredTextColor,.height=35})
 				}
 			});
 		}
@@ -84,7 +84,7 @@ public:
 			{
 				inputs[*inputIndex] = newKey.value();
 				buttons[*inputIndex]->color = Palette::Chocolate;
-				buttons[*inputIndex]->setChild(TextUI::Create({ .text = GetKeyName(newKey.value()),.fontSize = 23,.color = normalTextColor }));
+				buttons[*inputIndex]->setChild(TextUI::Create({ .text = GetKeyName(newKey.value()),.fontSize = 23,.color = normalTextColor,.height = 35 }));
 				inputIndex = none;
 			}
 
@@ -255,7 +255,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 	auto windowModeButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 240, .child = TextUI::Create({.text = text,.color=Palette::White}) });
 
 
-	String text2 = gameData.getIncreaseHPMode() ? U"HP増加をOFFにする" : U"HP増加をONにする";
+	String text2 = gameData.getIncreaseHPMode() ? U"❤HP増加をOFFにする" : U"❤HP増加をONにする";
 	auto hpModeText = TextUI::Create({ .text = text2,.color = Palette::White });
 	auto hpModeButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 340, .child = hpModeText });
 
@@ -294,7 +294,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 				.margine = 20,
 				.children
 				{
-					TextUI::Create({.text = U"設定",.fontSize = 40,.color = Palette::White}),
+					TextUI::Create({.text = U"\U000F0493 設定",.fontSize = 40,.color = Palette::White}),
 					effectVolumeSliderPanel,
 					BGMVolumeSliderPanel,
 					windowModeButton,
@@ -519,7 +519,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 					gameData.setIncreaseHPMode(true);
 					gameData.save();
 
-					hpModeText->setText(U"HP増加をOFFにする");
+					hpModeText->setText(U"❤HP増加をOFFにする");
 				}
 			}
 
@@ -578,7 +578,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 							({
 								.children
 								{
-									TextUI::Create({.text = U"キー設定",.fontSize = 40,.color = Palette::White}),
+									TextUI::Create({.text = U"\U000F030C キー設定",.fontSize = 40,.color = Palette::White}),
 									col,
 									Row::Create
 									({

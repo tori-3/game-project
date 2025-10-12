@@ -223,11 +223,23 @@ void MainGameScene::gameDraw() const
 	}
 
 	{
-		const ScopedRenderTarget2D target{ backgroundRenderTexture.clear(ColorF{1,0}) };
-		const ScopedRenderStates2D blend{ MakeBlendState() };
-		backgroundManager.draw(camera.pos);
+		if(getData().CandyCloud<=getData().stage&& getData().stage < getData().LastBossStage)
+		{
+			const ScopedRenderTarget2D target{ backgroundRenderTexture.clear(ColorF{1.0,0}) };
+			const ScopedRenderStates2D blend{ MakeBlendState() };
+			ScopedColorMul2D mul{ ColorF{1,0.7} };
+			backgroundManager.draw(camera.pos);
+		}
+		else
+		{
+			const ScopedRenderTarget2D target{ backgroundRenderTexture.clear(ColorF{0.6,0}) };
+			const ScopedRenderStates2D blend{ MakeBlendState() };
+			backgroundManager.draw(camera.pos);
+		}
 	}
 
+	//halfRenderTexture
+	//Shader::Downsample(backgroundRenderTexture, downsample);
 	Shader::GaussianBlur(backgroundRenderTexture, internalTexture, backgroundRenderTexture);
 	backgroundRenderTexture.draw();
 
@@ -285,11 +297,13 @@ void MainGameScene::gameDraw() const
 	constexpr double space = 50;
 	TalkManager::get().talkWindow.draw(RectF{ space,Scene::Height() - height - space,Scene::Width() - space * 2 ,height }, { 250,50 },false,ToKeyName(getData().attackKey));
 
-	FontAsset{ U"NormalFont" }(U"[{}]ポーズ"_fmt(ToKeyName(getData().pauseKey))).draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
+	FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey))).draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 
 	if (DataManager::get().bossHPRate)
 	{
-		FontAsset{ U"NormalFont" }(U"<",DataManager::get().bossName,U">").drawAt(25,Scene::Center().x, 30);
+		RoundRect{ Arg::center(Scene::Center().x, 30),FontAsset{ U"NormalFont" }(DataManager::get().bossName).region().w,20,10}.drawShadow(Vec2{0,0}, 24, 10, ColorF{0,0.3});
+
+		FontAsset{ U"NormalFont" }(DataManager::get().bossName).drawAt(25,Scene::Center().x, 30);
 		hpBar.draw(Palette::Purple, Palette::Red);
 	}
 

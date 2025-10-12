@@ -437,7 +437,8 @@ void RollingRocksBlock::update(const Point& pos)
 }
 
 SignboardBlock::SignboardBlock(const Array<TalkWindow::TalkInfo>&list_)
-	:list{ list_ } {}
+	:list{ list_ }
+{}
 
 void  SignboardBlock::update(const Point& pos)
 {
@@ -460,6 +461,11 @@ void  SignboardBlock::update(const Point& pos)
 			for(auto& input: DataManager::get().gameData->attackKey.inputs())
 			{
 				input.clearInput();
+			}
+
+			for (auto& info : list)
+			{
+				info.text = DataManager::get().gameData->fmt(info.text);
 			}
 
 			TalkManager::get().talkWindow.setTalk(list);
@@ -496,7 +502,7 @@ void SignboardBlock::draw(const Point& pos)const
 			const RoundRect window{ RectF{ Arg::center((pos + Vec2{0.5,0.5 - 1}) * rect_size),rect_size * 1.5,rect_size * 0.8},20 };
 			window.draw({ Palette::Black, 0.8 }).drawFrame(thickness, 0);
 
-			FontAsset(U"NormalFont")(ToKeyName(DataManager::get().gameData->attackKey)).drawAt(15, window.center());
+			FontAsset(U"NormalFont")(ToKeyName(DataManager::get().gameData->attackKey)).drawAt(25, window.center());
 		}
 	}
 }

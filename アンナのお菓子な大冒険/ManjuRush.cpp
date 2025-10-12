@@ -57,9 +57,14 @@ namespace ManjuRush
 				level = 2;
 			}
 
+			double clearScore = 1300;
+			if(getData().mini_mode == Stage_Mode)
+			{
+				clearScore = 800;
+			}
 
 			//Clear
-			if (score == 1300) {
+			if (score == clearScore) {
 				if (clear == false) {
 					//stopwatch.restart();
 					Clear.play();
@@ -84,7 +89,7 @@ namespace ManjuRush
 				else if (player.y != 500 && !clear) {
 					player.y = 500;
 					score += 100;
-					if (score != 1300) {
+					if (score != clearScore) {
 						Score.playOneShot();
 					}
 					effect.add<BlockEffect>(Vec2(player.x + player.w / 2, player.y + player.h));
@@ -249,7 +254,7 @@ namespace ManjuRush
 			FontAsset{ U"TitleFont" }(U"{}で戻る"_fmt(ToKeyName(getData().menuDecisionKey))).drawAt(45, Scene::Center() + Vec2{ 0,150 });
 		}
 
-		FontAsset{ U"NormalFont" }(U"[{}]ポーズ"_fmt(ToKeyName(getData().pauseKey))).draw(Vec2{10,5});
+		FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey))).draw(Vec2{10,5});
 	}
 
 }

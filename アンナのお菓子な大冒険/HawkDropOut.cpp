@@ -570,6 +570,6 @@ namespace HawkDropOut
 				FontAsset{ U"TitleFont" }(U"{}で戻る"_fmt(ToKeyName(getData().menuDecisionKey))).drawAt(30, 400, 350);
 			}
 		}
-		FontAsset{ U"NormalFont" }(U"[{}]ポーズ"_fmt(ToKeyName(getData().pauseKey))).draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
+		FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey))).draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 	}
 }

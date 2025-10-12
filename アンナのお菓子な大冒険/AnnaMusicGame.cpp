@@ -90,7 +90,7 @@ namespace AnnaMusicGame {
 		if (m_jud == 0)
 		{
 
-			m_f(U"Perfect").draw(50, 650, 450, Palette::Yellow);
+			FontAsset(U"NormalFont")(U"Perfect").draw(50, 650, 450, Palette::Yellow);
 
 			for (auto& star_p : m_stars_p)
 			{
@@ -115,7 +115,7 @@ namespace AnnaMusicGame {
 		}
 		else if (m_jud == 1)
 		{
-			m_f(U"Miss").draw(50, 650, 450, Palette::Skyblue);
+			FontAsset(U"NormalFont")(U"Miss").draw(50, 650, 450, Palette::Skyblue);
 
 
 
@@ -408,13 +408,13 @@ namespace AnnaMusicGame {
 
 		effect.update();
 
-		FontAsset(U"NormalFont")(U"赤(←)は[{}]"_fmt(ToKeyName(getData().minigameLeftKey))).draw(40, 700, 50, Palette::Red);
-		FontAsset(U"NormalFont")(U"黄緑(→)は[{}]"_fmt(ToKeyName(getData().minigameRightKey))).draw(40, 700, 90, Palette::Yellowgreen);
+		FontAsset(U"NormalFont")(U"赤(←)は{}"_fmt(ToKeyName(getData().minigameLeftKey))).draw(40, 700, 50, Palette::Red);
+		FontAsset(U"NormalFont")(U"黄緑(→)は{}"_fmt(ToKeyName(getData().minigameRightKey))).draw(40, 700, 90, Palette::Yellowgreen);
 		FontAsset(U"NormalFont")(U"をタイミング良く押そう！！\nMiss9以下でクリア").draw(40, 700, 130, Palette::Skyblue);
 		FontAsset(U"NormalFont")(U"{}"_fmt(credit)).draw(30, 5, 750, Palette::Skyblue);
 		FontAsset(U"NormalFont")(U"Combo{}"_fmt(combo)).draw(60, 650, 380, Palette::Yellowgreen);
 
-		FontAsset{ U"NormalFont" }(U"[{}]ポーズ"_fmt(ToKeyName(getData().pauseKey))).draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
+		FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey))).draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 	}
 
 }

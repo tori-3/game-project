@@ -238,7 +238,7 @@ namespace Maze1
 
 		watch(stopwatch).draw(1070, -5, Palette::White);
 
-		FontAsset{ U"NormalFont" }(U"[{}]ポーズ"_fmt(ToKeyName(getData().pauseKey))).draw(Vec2{ 10,5 });
+		FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey))).draw(Vec2{ 10,5 });
 	}
 
 	Clear::Clear(const InitData& init)
@@ -247,8 +247,10 @@ namespace Maze1
 		Bgm.play(BGMMixBus);
 		clear = true;
 
-		const Font iconFont = FontAsset{ U"IconFont" };
-		text3.addFallback(iconFont);
+		const Font keyboardFont = FontAsset{ U"Keyboard" };
+		const Font xinputFont = FontAsset{ U"XInput" };
+		text3.addFallback(keyboardFont);
+		text3.addFallback(xinputFont);
 	}
 
 	void Clear::gameUpdate()

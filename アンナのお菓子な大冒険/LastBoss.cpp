@@ -207,7 +207,7 @@ void EnemyUmbrella::draw()const
 LastBoss::LastBoss(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,-5),40,150},cpos,{0,0},maxHp }
 , character{ U"Characters/bitter/model1.json" ,U"Characters/bitter/motion1.txt" ,0.3,cpos,false,false }
 {
-	DataManager::get().bossName = U"ビターちゃん";
+	DataManager::get().bossName = U"ビター・ヴァイオレット";
 
 	if (not TextureAsset::IsRegistered(U"MagicEffect0"))
 	{

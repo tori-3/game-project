@@ -1,5 +1,6 @@
 ﻿#include"Common.h"
 #include"KeyConfigUtility.h"
+#include"KeyInfo.h"
 
 void GameData::saveMiniGameClear()
 {
@@ -188,4 +189,9 @@ void GameData::load()
 		pauseKey = KeyConfigUtility::FromJSON(json[U"pauseKey"]);
 	}
 
+}
+
+String GameData::fmt(StringView text)const
+{
+	return Fmt(text)(ToKeyName(minigameUpKey), ToKeyName(minigameLeftKey), ToKeyName(minigameDownKey), ToKeyName(minigameRightKey), ToKeyName(attackKey), ToKeyName(jumpKey), ToKeyName(downKey));
 }

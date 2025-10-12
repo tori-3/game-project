@@ -1,5 +1,5 @@
 ﻿{
-  "BGMVolume": 0.2994278073310852,
+  "BGMVolume": 0.2001412957906723,
   "ClearHP": [
     5,
     5,
@@ -16,12 +16,12 @@
     5,
     5,
     5,
-    0,
+    5,
     5,
     0,
     5,
-    0,
-    0,
+    7,
+    7,
     0,
     7,
     0,
@@ -29,7 +29,7 @@
     0
   ],
   "ClearStage": 23,
-  "EffectVolume": 0.65474933385849,
+  "EffectVolume": 0.18386510014533997,
   "IncreaseHPMode": true,
   "IsFullscreen": false,
   "Key": {
@@ -214,8 +214,6 @@
     5,
     5,
     5,
-    7,
-    5,
     5,
     5,
     5,
@@ -233,6 +231,8 @@
     5,
     5,
     9,
+    5,
+    5,
     5,
     5,
     5
@@ -271,5 +271,5 @@
   ],
   "NotifyGallery": false,
   "NotifyMiniGameSelect": false,
-  "SelectedStage": 21
+  "SelectedStage": 19
 }

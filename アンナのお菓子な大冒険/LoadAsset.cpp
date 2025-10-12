@@ -29,18 +29,25 @@ void LoadAsset::LoadStageTexture()
 
 void LoadAsset::LoadFont()
 {
-	FontAsset::Register(U"TitleFont", FontMethod::MSDF, 60, Typeface::Heavy);
+	FontAsset::Register(U"TitleFont", FontMethod::MSDF, 25, Typeface::Heavy);
 
-	FontAsset::Register(U"NormalFont", FontMethod::MSDF, 25);
+	FontAsset::Register(U"NormalFont", FontMethod::MSDF, 25+5, Typeface::Heavy);
 
 	FontAsset::Register(U"IconFont", FontMethod::MSDF, 25, Typeface::Icon_MaterialDesign);
 
 	FontAsset::Register(U"EmojiFont", FontMethod::MSDF, 25, Typeface::ColorEmoji);
 
+	FontAsset::Register(U"Keyboard",  25+5, U"Keyboard.ttf");
+
+	FontAsset::Register(U"XInput", 25+5, U"XInput.ttf");
+
 
 	// アイコンを表示するためのフォントを追加
 	const Font iconFont = FontAsset{ U"IconFont" };
 	const Font emojiFont = FontAsset{ U"EmojiFont" };
+	const Font keyboardFont = FontAsset{ U"Keyboard" };
+	const Font xinputFont = FontAsset{ U"XInput" };
+
 
 	FontAsset{ U"TitleFont" }.addFallback(iconFont);
 	FontAsset{ U"NormalFont" }.addFallback(iconFont);
@@ -48,8 +55,14 @@ void LoadAsset::LoadFont()
 	FontAsset{ U"TitleFont" }.addFallback(emojiFont);
 	FontAsset{ U"NormalFont" }.addFallback(emojiFont);
 
+	FontAsset{ U"TitleFont" }.addFallback(keyboardFont);
+	FontAsset{ U"NormalFont" }.addFallback(keyboardFont);
 
-	BunchoUI::TextUI::DefaultFontName = U"NormalFont";
+	FontAsset{ U"TitleFont" }.addFallback(xinputFont);
+	FontAsset{ U"NormalFont" }.addFallback(xinputFont);
+
+
+	BunchoUI::TextUI::DefaultFontName = U"TitleFont";
 
 	FontAsset::LoadAsync(U"TitleFont");
 	FontAsset::LoadAsync(U"NormalFont", U"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");

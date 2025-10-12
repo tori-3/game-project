@@ -206,13 +206,13 @@ void GalleryScene::draw() const
 			{
 				rect.draw(ColorF{ 0,0.5 });
 				Triangle{ center, 50 }.rotated(90_deg).draw(Palette::White);
-				FontAsset{ U"NormalFont" }(U"End roll").drawAt(rect.center()+Vec2{0,40});
+				FontAsset{ U"NormalFont" }(U"エンドロール").drawAt(rect.center()+Vec2{0,40});
 			}
 		}
 	}
 
 	homeIcon.drawAt(backButton.center, backButton.mouseOver() ? Palette::Gray : Palette::White);
-	FontAsset{ U"NormalFont" }(U"[{}]タイトルに戻る"_fmt(ToKeyName(getData().menuBackKey))).draw(Arg::leftCenter = backButton.center + Vec2{ 30,0 });
+	FontAsset{ U"NormalFont" }(U"{}-タイトルに戻る"_fmt(ToKeyName(getData().menuBackKey))).draw(Arg::leftCenter = backButton.center + Vec2{ 30,0 });
 
 
 

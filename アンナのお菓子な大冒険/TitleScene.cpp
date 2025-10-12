@@ -193,6 +193,15 @@ void TitleScene::update()
 		changeScene(U"MiniGameSelect");
 	}
 
+	if (omakeTimer.reachedZero())
+	{
+		omakeTimer.restart();
+
+		if(RandomBool(0.3))
+		{
+			character.addMotion(U"Akubi");
+		}
+	}
 
 	character.update(playerPos, false);
 }
@@ -235,18 +244,18 @@ void TitleScene::draw() const
 
 	}
 
-	const String explanation = U"[{}]↑  [{}]↓  [{}]←  [{}]→  [{}]決定  [{}]戻る"_fmt(ToKeyName(getData().minigameUpKey), ToKeyName(getData().minigameDownKey), ToKeyName(getData().minigameLeftKey), ToKeyName(getData().minigameRightKey), ToKeyName(getData().menuDecisionKey), ToKeyName(getData().menuBackKey));
-	FontAsset{ U"NormalFont" }(explanation).draw(Arg::bottomLeft(5, Scene::Height() - 5), AlphaF(Min(time / 2.0, 1.0)));
-
 	character.draw();
 
 
 	uiManager.draw();
+
+	const String explanation = U" {}-上  {}-下  {}-左  {}-右 {}-決定  {}-戻る"_fmt(ToKeyName(getData().minigameUpKey), ToKeyName(getData().minigameDownKey), ToKeyName(getData().minigameLeftKey), ToKeyName(getData().minigameRightKey), ToKeyName(getData().menuDecisionKey), ToKeyName(getData().menuBackKey));
+	FontAsset{ U"NormalFont" }(explanation).draw(Arg::bottomLeft(5, Scene::Height() - 5), AlphaF(Min(time / 2.0, 1.0)));
 }
 
 std::shared_ptr<UIElement> TitleScene::licenseDialog()
 {
-	auto showBrowserButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 220, .child = TextUI::Create({.text = U"ブラウザで見る",.color = Palette::White}) });
+	auto showBrowserButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 220, .child = TextUI::Create({.text = U"\U000F059FLicenses",.color = Palette::White}) });
 	auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 20,.margine = 10,.width = 220, .child = TextUI::Create({.text = U"\U000F05AD閉じる",.color = Palette::White}) });
 	closeButton->selected = true;
 	auto scrollbar = SimpleScrollbar::Create

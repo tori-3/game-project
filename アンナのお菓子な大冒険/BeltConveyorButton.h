@@ -65,7 +65,7 @@ public:
 			Shape2D::Star(blockSize * 0.3, getStarPos()).drawFrame(3, Palette::White);
 		}
 
-		font(text).drawAt(RectF{ pos + Vec2{blockSize * 0.8,0},(num - 1) * blockSize,blockSize }.center());
+		font(text).drawAt(30,RectF{ pos + Vec2{blockSize * 0.8,0},(num - 1) * blockSize,blockSize }.center());
 	}
 
 	static void beltConveyorLeft(const Texture& texture, const Vec2& pos, double blockSize, bool move)

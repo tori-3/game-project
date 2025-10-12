@@ -486,7 +486,7 @@ void Map::draw() const
 		constexpr RoundRect rrect{ 600 - 10 - 15-5,100,550,325 - 10+5,20 };
 		rrect.draw(ColorF{ 0,0.5 }).drawFrame(5, Palette::White);
 
-		FontAsset{ U"NormalFont" }(sentences[index]).draw(30,600-15, 100+5);
+		FontAsset{ U"NormalFont" }(getData().fmt(sentences[index])).draw(30,600-15, 100+5);
 		//start.drawFrame(3);
 		//font(U"開始(Enter)").drawAt(start.center(), ColorF{ 1.0, Periodic::Sine0_1(3s) });
 
@@ -501,8 +501,10 @@ void Map::draw() const
 
 		if (getData().clearHPList[index] != 0)
 		{
-			FontAsset{ U"NormalFont" }(U"❤クリアHP：{}"_fmt(getData().clearHPList[index])).regionAt(30,280, 450+15).stretched(10,5).draw(ColorF{ 0,0.5 });
-			FontAsset{ U"NormalFont" }(U"❤クリアHP：{}"_fmt(getData().clearHPList[index])).drawAt(30,280, 450+15, getData().clearHPList[index]==5?Palette::Yellow:Palette::White);
+			//Vec2 pos{ 280, 465 + 20-2 };
+			const Vec2 pos{ 280, 465 };
+			FontAsset{ U"NormalFont" }(U"❤クリアHP：{}"_fmt(getData().clearHPList[index])).regionAt(30, pos).stretched(10,5).draw(ColorF{ 0,0.5 });
+			FontAsset{ U"NormalFont" }(U"❤クリアHP：{}"_fmt(getData().clearHPList[index])).drawAt(30, pos, getData().clearHPList[index]==5?Palette::Yellow:Palette::White);
 		}
 
 		manager.draw();
@@ -510,15 +512,16 @@ void Map::draw() const
 	else
 	{
 		FontAsset{ U"NormalFont" }(title[index]).drawAt(30,Scene::Center() + Vec2{ 0,-300 });
-		FontAsset{ U"NormalFont" }(U"← [{}]              [{}]              [{}] →"_fmt(ToKeyName(getData().minigameLeftKey), ToKeyName(getData().menuDecisionKey), ToKeyName(getData().minigameRightKey))).drawAt(30,Scene::Center() + Vec2{ 0,-250 });
+		FontAsset{ U"NormalFont" }(U"{}                {}                {}"_fmt(ToKeyName(getData().minigameLeftKey), ToKeyName(getData().menuDecisionKey), ToKeyName(getData().minigameRightKey))).drawAt(30,Scene::Center() + Vec2{ 0,-250 });
 	}
 
 	if (backButton.mouseOver())
 	{
 		Cursor::RequestStyle(CursorStyle::Hand);
 	}
+	
 	homeIcon.drawAt(backButton.center, backButton.mouseOver() ? Palette::Gray : Palette::White);
-	FontAsset{ U"NormalFont" }(U"[{}]タイトルに戻る"_fmt(ToKeyName(getData().menuBackKey))).draw(Arg::leftCenter = backButton.center + Vec2{ 30,0 });
+	FontAsset{ U"NormalFont" }(U"{}-タイトルに戻る"_fmt(ToKeyName(getData().menuBackKey))).draw(Arg::leftCenter = backButton.center + Vec2{ 30,0 });
 
 
 	//if (largeFlg) {

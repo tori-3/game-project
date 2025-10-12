@@ -167,8 +167,11 @@ public:
 		}
 
 		//ステージの右端と左端にも当たり判定
-		hitbox->physics.hit(RectF{ Arg::rightCenter(Vec2{0,0}),rect_size*1000 });
-		hitbox->physics.hit(RectF{ Arg::leftCenter(Vec2{map.width()*rect_size,0}),rect_size * 1000 });
+		for (int32 i = -10; i < (int32)map.height() + 10; ++i)
+		{
+			hitbox->physics.hit(RectF{ Vec2{-rect_size,i*rect_size},rect_size });
+			hitbox->physics.hit(RectF{ Vec2{map.width() * rect_size,i * rect_size},rect_size });
+		}
 	}
 
 	void update(const Vec2& vec,int32 left= range_left,int32 right= range_right) {

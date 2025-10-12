@@ -26,7 +26,7 @@ public:
 		U"はじめる",
 		U"ミニゲーム",
 		U"設定",
-		U"ライセンス",
+		U"詳細情報",
 		U"終了",
 	};
 
@@ -34,13 +34,13 @@ public:
 	{
 		[&]{
 			playerWalkStop = true;
-			character.removeMotion(U"Walk");
+			character.clearMotion();
 			character.addMotion(U"Tosshin", true);
 			changeMapTimer.restart();
 		},
 		[&] {
 			playerWalkStop = true;
-			character.removeMotion(U"Walk");
+			character.clearMotion();
 			character.addMotion(U"HeadDrop");
 			changeMiniGameTimer.restart();
 		},
@@ -60,7 +60,7 @@ public:
 	LongPressInput upInput{ getData().minigameUpKey };
 	LongPressInput downInput{ getData().minigameDownKey };
 
-	static constexpr Vec2 startPlace{ -100,630+15 };
+	static constexpr Vec2 startPlace{ -100,630+15-10 };
 	static constexpr Vec2 targetPlace{ 400,startPlace.y };
 	Vec2 playerPos = startPlace;
 
@@ -81,6 +81,8 @@ public:
 	Texture notifyIcon{ 0xF06BD_icon,40 };
 
 	UIManager uiManager;
+
+	Timer omakeTimer{ 15s,StartImmediately::Yes };
 
 	double translate()const
 	{

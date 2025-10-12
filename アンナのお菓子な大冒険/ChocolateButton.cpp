@@ -9,7 +9,8 @@ void ChocolateButton::onDraw(const RectF& drawingArea)const
 {
 	if (selected)
 	{
-		getRoundRect().drawFrame(0, 5, Palette::Skyblue);
+		//getRoundRect().drawFrame(0, 5, Palette::Skyblue);
+		getRoundRect().drawFrame(0, 5, Palette::Lightcyan);
 	}
 	getRoundRect().draw(color + ColorF{ 0.1 }, color - ColorF{ 0.2 });
 	childDraw(drawingArea);

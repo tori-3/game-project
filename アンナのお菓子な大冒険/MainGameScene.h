@@ -43,6 +43,7 @@ public:
 	
 	RenderTexture backgroundRenderTexture{ Scene::Size() };
 	const RenderTexture internalTexture{ Scene::Size() };
+	//const RenderTexture downsample{ Scene::Size() / 2 };
 
 	bool bgmStart = false;
 

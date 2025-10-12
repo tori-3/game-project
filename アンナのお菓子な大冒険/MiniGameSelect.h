@@ -33,7 +33,7 @@ public:
 	Fire leftFire{ {75,620},HSV{ 20,0.8,1 },40,{ 0, -30 } };
 	Fire rightFire{ {Scene::Width() - 75,620},HSV{ 20,0.8,1 },40,{ 0, -30 } };
 
-	const Font font{ 30 };
+	//const Font font{ 30 };
 
 	LongPressInput leftInput{ getData().minigameLeftKey };
 	LongPressInput rightInput{ getData().minigameRightKey };

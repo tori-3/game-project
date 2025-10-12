@@ -24,7 +24,7 @@ namespace AnnaMusicGame {
 
 		Array<Star> m_stars;
 		Array<Star> m_stars_p;
-		const Font m_f{ FontMethod::MSDF,50 };
+		//const Font m_f{ FontMethod::MSDF,50 };
 
 		explicit Judge(const int32& jud, const int32& rg);
 
