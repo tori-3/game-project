@@ -35,8 +35,8 @@ struct GameData
 	String sceneName;
 
 	static constexpr int32 ChocoMountain = 8;
-	static constexpr int32 CandyCloud = 15;
-	static constexpr int32 LastBossStage = 23;// 26
+	static constexpr int32 CandyCloud = 17;
+	static constexpr int32 LastBossStage = 25;// 26
 
 	struct MiniGameState
 	{
@@ -49,8 +49,6 @@ struct GameData
 
 	Array<int32>clearHPList;
 
-
-
 	Array<MiniGameState>miniGameList;
 
 	bool notifyMiniGameSelect = false;
@@ -59,8 +57,6 @@ struct GameData
 	//そのステージ(ミニゲームを始めてクリアしたか) 演出を完了するときにfalseにする
 	bool firstClearMinigame = false;
 	bool firstClearStage = false;
-
-	double vibration = 1.0;
 
 	//ゲームを始める前に呼ぶ
 	void initGame()
@@ -72,7 +68,13 @@ struct GameData
 	}
 
 	GameData()
+		:maxHPList(LastBossStage, 5)
+		,clearHPList(LastBossStage, 0)
+		, miniGameList(6,MiniGameState{})
 	{
+		GlobalAudio::BusSetVolume(MixBus0, 0.5);
+		GlobalAudio::BusSetVolume(MixBus1, 0.5);
+
 		load();
 	}
 
@@ -107,19 +109,17 @@ struct GameData
 	String fmt(StringView text)const;
 
 	//キー
-	InputGroup minigameUpKey = s3d::KeyW | s3d::KeyUp;
-	InputGroup minigameLeftKey = s3d::KeyA | s3d::KeyLeft;
-	InputGroup minigameDownKey = s3d::KeyS | s3d::KeyDown;
-	InputGroup minigameRightKey = s3d::KeyD | s3d::KeyRight;
-	InputGroup menuDecisionKey = s3d::KeyEnter;
-	InputGroup menuBackKey = s3d::KeyQ;
+	InputGroup minigameUpKey = KeyW | KeyUp | XInput(0).buttonUp;
+	InputGroup minigameLeftKey = KeyA | KeyLeft | XInput(0).buttonLeft;
+	InputGroup minigameDownKey = KeyS | KeyDown | XInput(0).buttonDown;
+	InputGroup minigameRightKey = KeyD | KeyRight | XInput(0).buttonRight;
+	InputGroup menuDecisionKey = KeyEnter | XInput(0).buttonA;
+	InputGroup menuBackKey = KeyQ | XInput(0).buttonB;
 
-	InputGroup attackKey = s3d::KeyEnter;
-	InputGroup jumpKey = s3d::KeyW | s3d::KeySpace | s3d::KeyUp;
-	//InputGroup leftKey = s3d::KeyA | s3d::KeyLeft;
-	InputGroup downKey = s3d::KeyS | s3d::KeyDown;
-	//InputGroup rightKey = s3d::KeyD | s3d::KeyRight;
-	InputGroup pauseKey = KeyEscape;
+	InputGroup attackKey = KeyEnter | XInput(0).buttonA;
+	InputGroup jumpKey = KeySpace | XInput(0).buttonB;
+	InputGroup downKey = KeyS | KeyDown | XInput(0).buttonDown;
+	InputGroup pauseKey = KeyEscape | XInput(0).buttonStart;
 
 	//ステージ
 	String backgroundTexture;

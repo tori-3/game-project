@@ -1,5 +1,5 @@
 ﻿{
-    "MiniGameStage": [4, 9, 11, 16, 18, 22 ],
+    "MiniGameStage": [4, 10, 13, 18, 20, 24 ],
     "StageData": {
         "Stage1": {
             "BGM": "BGM/StageSnow7.wav",
@@ -82,26 +82,46 @@
             "Type": "Stage"
         },
         "Stage9": {
-            "BGM": "",
-            "BackgroundTexture": "",
-            "MapFile": "",
-            "Picture": "MiniGameDisplay/MAZE.png",
-            "SceneName": "Maze1",
-            "Sentence": "🕹️ まっくら迷路\nビスケットの匂いに誘われて真っ暗な\n迷路に迷い込んでしまった！\n明かりを頼りにビスケットを\n手に入れよう！\n{0}-上  {2}-下  {1}-左  {3}-右",
-            "StagePos": "(350,660)",
-            "Type": "MiniGame"
-        },
-        "Stage10": {
             "BGM": "BGM/StageChoco21.mp3",
             "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
             "MapFile": "StageData/caveStage2.json",
             "Picture": "BackgroundTexture/洞窟背景.png",
             "SceneName": "MainGameScene",
             "Sentence": "<2-2>チョコ鉱山\n鉱山を掘り進める奴隷イチゴ、\nコーンを使って爆破させたり、\n洞窟の中は意外と賑やかです。\nどうやらこの先に、手下をこき使う\n悪いボスがいるみたい...",
+            "StagePos": "(325,650)",
+            "Type": "Stage"
+        },
+        "Stage10": {
+            "BGM": "",
+            "BackgroundTexture": "",
+            "MapFile": "",
+            "Picture": "MiniGameDisplay/MAZE.png",
+            "SceneName": "Maze1",
+            "Sentence": "🕹️ まっくら迷路\nビスケットの匂いに誘われて真っ暗な\n迷路に迷い込んでしまった！\n明かりを頼りにビスケットを\n手に入れよう！\n{0}-上  {2}-下  {1}-左  {3}-右",
+            "StagePos": "(350,680)",
+            "Type": "MiniGame"
+        },
+        "Stage11": {
+            "BGM": "BGM/StageChoco21.mp3",
+            "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
+            "MapFile": "StageData/caveStage3.json",
+            "Picture": "BackgroundTexture/洞窟背景.png",
+            "SceneName": "MainGameScene",
+            "Sentence": "<2-3>チョコ鉱山\n迫りくる天井！\nつぶされないように駆け抜けよう！",
+            "StagePos": "(375,650)",
+            "Type": "Stage"
+        },
+        "Stage12": {
+            "BGM": "BGM/StageChoco21.mp3",
+            "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
+            "MapFile": "StageData/caveStage4.json",
+            "Picture": "BackgroundTexture/洞窟背景.png",
+            "SceneName": "MainGameScene",
+            "Sentence": "<2-4>チョコ鉱山\n迫りくる天井！\nつぶされないように駆け抜けよう！",
             "StagePos": "(400,680)",
             "Type": "Stage"
         },
-        "Stage11": {
+        "Stage13": {
             "BGM": "",
             "BackgroundTexture": "",
             "MapFile": "",
@@ -111,27 +131,27 @@
             "StagePos": "(415,630)",
             "Type": "MiniGame"
         },
-        "Stage12": {
+        "Stage14": {
             "BGM": "BGM/StageChoco21.mp3",
             "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
-            "MapFile": "StageData/caveStage3.json",
+            "MapFile": "StageData/caveStage5.json",
             "Picture": "BackgroundTexture/洞窟背景.png",
             "SceneName": "MainGameScene",
-            "Sentence": "<2-3>チョコ鉱山\n迫りくる天井！\nつぶされないように駆け抜けよう！",
+            "Sentence": "<2-5>チョコ鉱山\n天井のとんがりコーンは崩れ落ち、\n巨大なドーナッツは坂を転がります。\nなんて危険な洞窟なのでしょう...\nチョコとスリルを味わいながら、\nアンナちゃんは奥へ奥へと、\n進んでゆきました。",
             "StagePos": "(430,580)",
             "Type": "Stage"
         },
-        "Stage13": {
+        "Stage15": {
             "BGM": "BGM/StageChoco21.mp3",
             "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
-            "MapFile": "StageData/caveStage4.json",
+            "MapFile": "StageData/caveStage6.json",
             "Picture": "BackgroundTexture/洞窟背景.png",
             "SceneName": "MainGameScene",
-            "Sentence": "<2-4>チョコ鉱山\n天井のとんがりコーンは崩れ落ち、\n巨大なドーナッツは坂を転がります。\nなんて危険な洞窟なのでしょう...\nチョコとスリルを味わいながら、\nアンナちゃんは奥へ奥へと、\n進んでゆきました。",
+            "Sentence": "<2-6>チョコ鉱山\n天井のとんがりコーンは崩れ落ち、\n巨大なドーナッツは坂を転がります。\nなんて危険な洞窟なのでしょう...\nチョコとスリルを味わいながら、\nアンナちゃんは奥へ奥へと、\n進んでゆきました。",
             "StagePos": "(445,530)",
             "Type": "Stage"
         },
-        "Stage14": {
+        "Stage16": {
             "BGM": "BGM/StageBoss6.wav",
             "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
             "MapFile": "StageData/caveStageBoss.json",
@@ -141,34 +161,14 @@
             "StagePos": "(460,480)",
             "Type": "Boss"
         },
-        "Stage15": {
+        "Stage17": {
             "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
             "BackgroundTexture": "BackgroundTexture/雲背景.png",
-            "MapFile": "StageData/cloudStage1.json",
+            "MapFile": "StageData/cloudStageX.json",
             "Picture": "BackgroundTexture/雲背景.png",
             "SceneName": "MainGameScene",
             "Sentence": "<3-1>綿菓子スカイ\n鉱山から山頂に出たアンナちゃん。\nなんと、この世界の雲は綿菓子でした！\nアンナちゃんはよだれが止まりません。\nでも、空から攻撃してくる敵たちに\n気を付けてアンナちゃん！",
             "StagePos": "(590,510)",
-            "Type": "Stage"
-        },
-        "Stage16": {
-            "BGM": "",
-            "BackgroundTexture": "",
-            "MapFile": "",
-            "Picture": "MiniGameDisplay/HawkDropOut.png",
-            "SceneName": "HawkDropOut",
-            "Sentence": "🕹️ 大鷹飛び\n鷹に乗ってひとっ飛び！\n地面に着かないように気を付けよう！\n🍪を取るとアイテムゲット！\n{0}-上昇  {2}-降下(上昇可能時間が回復)\n{4}-攻撃(🍪×1)\n{5}長押し-急上昇(🍪×2)",
-            "StagePos": "(650,480)",
-            "Type": "MiniGame"
-        },
-        "Stage17": {
-            "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
-            "BackgroundTexture": "BackgroundTexture/雲背景.png",
-            "MapFile": "StageData/cloudStage2.json",
-            "Picture": "BackgroundTexture/雲背景.png",
-            "SceneName": "MainGameScene",
-            "Sentence": "<3-2> あっちこっち大空襲\nたいへん！\n空から大量のおかしたちが、\n押し寄せてきた！\nゆっくりお菓子を食べてるヒマは、\nもうありません！\nにげて、にげて、アンナちゃん！",
-            "StagePos": "(730,490)",
             "Type": "Stage"
         },
         "Stage18": {
@@ -178,10 +178,30 @@
             "Picture": "MiniGameDisplay/音ゲー.png",
             "SceneName": "AnnaMusicGame",
             "Sentence": "🕹️ リズムDEアンナちゃん\nたくさんのキャンディーが落ちてきた！\nタイミングよく{1}(←)と{3}(→)を押して\nキャンディーを手に入れよう！",
-            "StagePos": "(780,450)",
+            "StagePos": "(650,480)",
             "Type": "MiniGame"
         },
         "Stage19": {
+            "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
+            "BackgroundTexture": "BackgroundTexture/雲背景.png",
+            "MapFile": "StageData/cloudStage2.json",
+            "Picture": "BackgroundTexture/雲背景.png",
+            "SceneName": "MainGameScene",
+            "Sentence": "<3-2> あっちこっち大空襲\nたいへん！\n空から大量のおかしたちが、\n押し寄せてきた！\nゆっくりお菓子を食べてるヒマは、\nもうありません！\nにげて、にげて、アンナちゃん！",
+            "StagePos": "(730,490)",
+            "Type": "Stage"
+        },
+        "Stage20": {
+            "BGM": "",
+            "BackgroundTexture": "",
+            "MapFile": "",
+            "Picture": "MiniGameDisplay/HawkDropOut.png",
+            "SceneName": "HawkDropOut",
+            "Sentence": "🕹️ 大鷹飛び\n鷹に乗ってひとっ飛び！\n地面に着かないように気を付けよう！\n🍪を取るとアイテムゲット！\n{0}-上昇  {2}-降下(上昇可能時間が回復)\n{4}-攻撃(🍪×1)\n{5}長押し-急上昇(🍪×2)",
+            "StagePos": "(780,450)",
+            "Type": "MiniGame"
+        },
+        "Stage21": {
             "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
             "BackgroundTexture": "BackgroundTexture/雲背景.png",
             "MapFile": "StageData/cloudStage3.json",
@@ -191,7 +211,7 @@
             "StagePos": "(830,490)",
             "Type": "Stage"
         },
-        "Stage20": {
+        "Stage22": {
             "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
             "BackgroundTexture": "BackgroundTexture/雲背景.png",
             "MapFile": "StageData/cloudStage4.json",
@@ -200,7 +220,7 @@
             "Sentence": "<3-4>綿菓子の雲に飛び乗って\nだんだん陽が暮れてきました。\n雲海の先に見えるのは、\nお菓子のお城でしょうか。\nお城を目指して、\nアンナちゃんは港に向かいました。",
             "StagePos": "(880,450)"
         },
-        "Stage21": {
+        "Stage23": {
             "BGM": "BGM/StageBoss6.wav",
             "BackgroundTexture": "BackgroundTexture/雲背景.png",
             "MapFile": "StageData/cloudStageBoss.json",
@@ -210,7 +230,7 @@
             "StagePos": "(930,490)",
             "Type": "Boss"
         },
-        "Stage22": {
+        "Stage24": {
             "BGM": "",
             "BackgroundTexture": "",
             "MapFile": "",
@@ -220,7 +240,7 @@
             "StagePos": "(950,430)",
             "Type": "MiniGame"
         },
-        "Stage23": {
+        "Stage25": {
             "BGM": "BGM/StageBossLast1.wav",
             "BackgroundTexture": "BackgroundTexture/ラスボス背景.png",
             "MapFile": "StageData/LastBoss.json",

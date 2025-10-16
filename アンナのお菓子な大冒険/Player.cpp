@@ -9,7 +9,7 @@ Player::Player(const Vec2& cpos) :
 	hitBox.physics.isPlayer = true;
 
 	//最前面に持ってくるため
-	z = 100;
+	z = 100-1;
 
 	actMan.add(U"Walk", {
 		.startCondition = [&]() {
@@ -324,7 +324,14 @@ Player::Player(const Vec2& cpos) :
 					m.add(new RotateTo{ U"body",40_deg,0 });
 					character.character.addMotion(U"Rotate", m);
 					speed = 400;
+
+					canSummer = true;
+
 					return false;
+				}
+				else
+				{
+					ControllerManager::get().setVibration(0.15);
 				}
 			}
 
@@ -373,6 +380,8 @@ Player::Player(const Vec2& cpos) :
 			character.addMotion(U"Knockback");
 		},
 		.update = [&](double t) {
+
+			Print << U"Damage";
 
 			vel.x = force.x;
 
@@ -477,6 +486,9 @@ Player::Player(const Vec2& cpos) :
 
 void Player::update()
 {
+	//キーコンフィグがすぐに反応するように
+	setDataP(DataManager::get().gameData);
+
 	manager->stage->hit(&hitBox);
 
 	actMan.update();

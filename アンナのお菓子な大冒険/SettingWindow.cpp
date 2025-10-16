@@ -4,6 +4,7 @@
 #include"SoundIcon.hpp"
 #include"ControllerInput.h"
 #include"KeyInfo.h"
+#include"ControllerManager.h"
 
 class KeyConfigInfo
 {
@@ -218,13 +219,16 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 	auto keyConfigButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 200, .child = TextUI::Create({.text = U"\U000F030C キー設定",.color = Palette::White}) });
 
 
+	auto vibrationSlider = SimpleSlider::Create({ .value = ControllerManager::get().vibration });
+
+
 	auto effectVolumeSliderPanel = RectPanel::Create
 	({
 		.color=Palette::Skyblue,
-		.margine = 10,
+		.margine = {10,0,0,0},
 		.child = Row::Create
 		({
-			.margine=10,
+			.margine = {0,10},
 			.children
 			{
 				TextUI::Create({.text=U"効果音 音量",.color=Palette::White,.width = 150}),
@@ -238,10 +242,10 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 	auto BGMVolumeSliderPanel = RectPanel::Create
 	({
 		.color = AlphaF(0),
-		.margine = 10,
+		.margine = 0,
 		.child = Row::Create
 		({
-			.margine = 10,
+			.margine = {0,10},
 			.children
 			{
 				TextUI::Create({.text=U"BGM 音量",.color = Palette::White,.width = 150}),
@@ -250,6 +254,24 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 			}
 		})
 	});
+
+
+	auto vibrationSliderPanel = RectPanel::Create
+	({
+		.color = AlphaF(0),
+		.margine = 0,
+		.child = Row::Create
+		({
+			.margine = {0,10},
+			.children
+			{
+				TextUI::Create({.text = U"振動 \U000F02B4",.color = Palette::White,.width = 150}),
+				vibrationSlider,
+				RectUI::Create({.size{50,50},.color = AlphaF(0)})
+			}
+		})
+	});
+
 
 	String text = Window::GetState().fullscreen ? U"ウィンドウにする" : U"全画面にする";
 	auto windowModeButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 240, .child = TextUI::Create({.text = text,.color=Palette::White}) });
@@ -279,10 +301,11 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 
 	effectVolumeSliderPanel->color = selectIndex == 0 ? ColorF{ Palette::Skyblue } : AlphaF(0);
 	BGMVolumeSliderPanel->color = selectIndex == 1 ? ColorF{ Palette::Skyblue } : AlphaF(0);
-	windowModeButton->selected = selectIndex == 2;
-	hpModeButton->selected = selectIndex == 3;
-	keyConfigButton->selected = selectIndex == 4;
-	closeButton->selected = selectIndex == 5;
+	vibrationSliderPanel->color = selectIndex == 2 ? ColorF{ Palette::Skyblue } : AlphaF(0);
+	windowModeButton->selected = selectIndex == 3;
+	hpModeButton->selected = selectIndex == 4;
+	keyConfigButton->selected = selectIndex == 5;
+	closeButton->selected = selectIndex == 6;
 
 	return SimpleDialog::Create
 	({
@@ -297,6 +320,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 					TextUI::Create({.text = U"\U000F0493 設定",.fontSize = 40,.color = Palette::White}),
 					effectVolumeSliderPanel,
 					BGMVolumeSliderPanel,
+					vibrationSliderPanel,
 					windowModeButton,
 					hpModeButton,
 					//Row::Create
@@ -317,6 +341,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 		{
 			GlobalAudio::BusSetVolume(EffectMixBus, effectVolumeSlider->value);
 			GlobalAudio::BusSetVolume(BGMMixBus, BGMVolumeSlider->value);
+			ControllerManager::get().vibration = vibrationSlider->value;
 			effectVolumeIcon->volume = effectVolumeSlider->value;
 			BGMVolumeIcon->volume = BGMVolumeSlider->value;
 
@@ -335,7 +360,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 
 			if (downInput.down())
 			{
-				if (selectIndex<5)
+				if (selectIndex<6)
 				{
 					AudioAsset{ U"カーソル移動" }.playOneShot();
 					++selectIndex;
@@ -348,10 +373,11 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 
 			effectVolumeSliderPanel->color = selectIndex == 0 ? ColorF{ Palette::Skyblue } : AlphaF(0);
 			BGMVolumeSliderPanel->color = selectIndex == 1 ? ColorF{ Palette::Skyblue } : AlphaF(0);
-			windowModeButton->selected = selectIndex == 2;
-			hpModeButton->selected = selectIndex == 3;
-			keyConfigButton->selected = selectIndex == 4;
-			closeButton->selected = selectIndex == 5;
+			vibrationSliderPanel->color = selectIndex == 2 ? ColorF{ Palette::Skyblue } : AlphaF(0);
+			windowModeButton->selected = selectIndex == 3;
+			hpModeButton->selected = selectIndex == 4;
+			keyConfigButton->selected = selectIndex == 5;
+			closeButton->selected = selectIndex == 6;
 
 			if (selectIndex == 0)
 			{
@@ -367,6 +393,16 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 			{
 				BGMVolumeSlider->value = Clamp(BGMVolumeSlider->value + (gameData.minigameRightKey.pressed() - gameData.minigameLeftKey.pressed()) * Scene::DeltaTime(), 0.0, 1.0);
 			}
+			else if (selectIndex == 2)
+			{
+				vibrationSlider->value = Clamp(vibrationSlider->value + (gameData.minigameRightKey.pressed() - gameData.minigameLeftKey.pressed()) * Scene::DeltaTime(), 0.0, 1.0);
+
+				if (gameData.minigameLeftKey.up() || gameData.minigameRightKey.up())
+				{
+					ControllerManager::get().vibration = vibrationSlider->value;
+					ControllerManager::get().setVibration(0.3);
+				}
+			}
 
 			if (effectVolumeSlider->sliderReleased())
 			{
@@ -374,7 +410,14 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 				AudioAsset{ U"パンチヒット" }.playOneShot();
 			}
 
-			if (windowModeButton->clicked() || (selectIndex == 2 && gameData.menuDecisionKey.down()))
+			if(vibrationSlider->sliderReleased())
+			{
+				ControllerManager::get().vibration = vibrationSlider->value;
+				ControllerManager::get().setVibration(0.3);
+			}
+
+
+			if (windowModeButton->clicked() || (selectIndex == 3 && gameData.menuDecisionKey.down()))
 			{
 				AudioAsset{ U"決定ボタン" }.playOneShot();
 
@@ -424,7 +467,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 			}
 			*/
 
-			if(hpModeButton->clicked() || (selectIndex == 3 && gameData.menuDecisionKey.down()))
+			if(hpModeButton->clicked() || (selectIndex == 4 && gameData.menuDecisionKey.down()))
 			{
 				AudioAsset{ U"決定ボタン" }.playOneShot();
 
@@ -523,7 +566,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 				}
 			}
 
-			if(keyConfigButton->clicked()|| (selectIndex == 4 && gameData.menuDecisionKey.down()))
+			if(keyConfigButton->clicked()|| (selectIndex == 5 && gameData.menuDecisionKey.down()))
 			{
 				AudioAsset{ U"決定ボタン" }.playOneShot();
 
@@ -743,7 +786,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 				});
 			}
 			
-			if (closeButton->clicked() || (selectIndex == 5 && gameData.menuDecisionKey.down())|| gameData.menuBackKey.down())
+			if (closeButton->clicked() || (selectIndex == 6 && gameData.menuDecisionKey.down())|| gameData.menuBackKey.down())
 			{
 				AudioAsset{ U"キャンセル" }.playOneShot();
 

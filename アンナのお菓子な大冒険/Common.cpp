@@ -1,6 +1,7 @@
 ﻿#include"Common.h"
 #include"KeyConfigUtility.h"
 #include"KeyInfo.h"
+#include"ControllerManager.h"
 
 void GameData::saveMiniGameClear()
 {
@@ -93,6 +94,7 @@ void GameData::save()
 	saveDatajson[U"NotifyMiniGameSelect"] = notifyMiniGameSelect;
 	saveDatajson[U"NotifyGallery"] = notifyGallery;
 	saveDatajson[U"IsFullscreen"] = Window::GetState().fullscreen;
+	saveDatajson[U"Vibration"] = ControllerManager::get().vibration;
 
 	for (int32 maxHP : maxHPList)
 	{
@@ -123,9 +125,7 @@ void GameData::save()
 		json[U"menuBackKey"] = KeyConfigUtility::ToJSON(menuBackKey);
 		json[U"jumpKey"] = KeyConfigUtility::ToJSON(jumpKey);
 		json[U"attackKey"] = KeyConfigUtility::ToJSON(attackKey);
-		//json[U"leftKey"] = KeyConfigUtility::ToJSON(leftKey);
 		json[U"downKey"] = KeyConfigUtility::ToJSON(downKey);
-		//json[U"rightKey"] = KeyConfigUtility::ToJSON(rightKey);
 		json[U"pauseKey"] = KeyConfigUtility::ToJSON(pauseKey);
 		saveDatajson[U"Key"] = json;
 	}
@@ -137,11 +137,18 @@ void GameData::load()
 {
 	JSON saveDatajson = JSON::Load(U"saveData.json");
 
+	if(not saveDatajson)
+	{
+		return;
+	}
+
 	stage = saveDatajson[U"SelectedStage"].get<int32>();
 	clearStage = saveDatajson[U"ClearStage"].get<int32>();
 	GlobalAudio::BusSetVolume(BGMMixBus, saveDatajson[U"BGMVolume"].get<double>());
 	GlobalAudio::BusSetVolume(EffectMixBus, saveDatajson[U"EffectVolume"].get<double>());
 	increaseHPMode = saveDatajson[U"IncreaseHPMode"].get<bool>();
+
+	ControllerManager::get().vibration = saveDatajson[U"Vibration"].get<double>();
 
 	notifyMiniGameSelect = saveDatajson[U"NotifyMiniGameSelect"].get<bool>();
 	notifyGallery = saveDatajson[U"NotifyGallery"].get<bool>();
@@ -183,9 +190,7 @@ void GameData::load()
 		menuBackKey = KeyConfigUtility::FromJSON(json[U"menuBackKey"]);
 		jumpKey = KeyConfigUtility::FromJSON(json[U"jumpKey"]);
 		attackKey = KeyConfigUtility::FromJSON(json[U"attackKey"]);
-		//leftKey = KeyConfigUtility::FromJSON(json[U"leftKey"]);
 		downKey = KeyConfigUtility::FromJSON(json[U"downKey"]);
-		//rightKey = KeyConfigUtility::FromJSON(json[U"rightKey"]);
 		pauseKey = KeyConfigUtility::FromJSON(json[U"pauseKey"]);
 	}
 

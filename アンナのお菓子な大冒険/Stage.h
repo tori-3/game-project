@@ -5,6 +5,9 @@
 constexpr int32 range_right = 15;
 constexpr int32 range_left = 12;
 
+constexpr int32 range_up = 15;
+constexpr int32 range_down = 15;
+
 class Stage
 {
 public:
@@ -172,12 +175,18 @@ public:
 			hitbox->physics.hit(RectF{ Vec2{-rect_size,i*rect_size},rect_size });
 			hitbox->physics.hit(RectF{ Vec2{map.width() * rect_size,i * rect_size},rect_size });
 		}
+
+		if(DataManager::get().isElevatorStage)
+		{
+			hitbox->physics.hit(RectF{ 0,DataManager::get().elevatorPosY,map.width() * rect_size,rect_size });
+		}
+
 	}
 
 	void update(const Vec2& vec,int32 left= range_left,int32 right= range_right) {
 
 		Point pos = vec.asPoint() / Point(rect_size, rect_size);//プレイヤーの座標をマップ番号に変換
-		for (int y = 0; y < map.height(); y++)
+		for (int y = Max(0, pos.y - range_up); y < Min((int)map.height(), pos.y + range_down); y++)
 		{
 			for (int x = Max(0, pos.x - left); x < Min((int)map.width(), pos.x + right); x++) {
 				Point p(x, y);
@@ -189,7 +198,7 @@ public:
 	void draw(const Vec2& vec, int32 left = range_left, int32 right = range_right)const {
 		//ブロックの描写
 		Point pos = vec.asPoint() / Point(rect_size, rect_size);//プレイヤーの座標をマップ番号に変換
-		for (int y = 0; y < map.height(); y++)
+		for (int y = Max(0, pos.y - range_up); y < Min((int)map.height(), pos.y + range_down); y++)
 		{
 			for (int x = Max(0, pos.x - left); x < Min((int)map.width(), pos.x + right); x++)
 			{
@@ -199,18 +208,18 @@ public:
 		}
 	}
 
-	void updateAsBackGround(const Vec2& vec, int32 left = range_left, int32 right = range_right)
-	{
-		Point pos = vec.asPoint() / Point(rect_size, rect_size);//プレイヤーの座標をマップ番号に変換
-		for (int y = 0; y < map.height(); y++)
-		{
-			for (int x = Max(0, pos.x - left); x < pos.x + right; x++)
-			{
-				Point p(x % map.width(), y);
-				if (map[p] != NULL)map[p]->update(Point{ x,y });
-			}
-		}
-	}
+	//void updateAsBackGround(const Vec2& vec, int32 left = range_left, int32 right = range_right)
+	//{
+	//	Point pos = vec.asPoint() / Point(rect_size, rect_size);//プレイヤーの座標をマップ番号に変換
+	//	for (int y = 0; y < map.height(); y++)
+	//	{
+	//		for (int x = Max(0, pos.x - left); x < pos.x + right; x++)
+	//		{
+	//			Point p(x % map.width(), y);
+	//			if (map[p] != NULL)map[p]->update(Point{ x,y });
+	//		}
+	//	}
+	//}
 
 	void drawAsBackGround(const Vec2& vec, int32 left = range_left, int32 right = range_right)const
 	{

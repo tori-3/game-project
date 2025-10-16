@@ -30,6 +30,9 @@ public:
 
 	GameData* gameData = nullptr;
 
+	bool isElevatorStage = false;
+	double elevatorPosY = 0;
+
 	void addEntity(const String& name, const Vec2& pos)
 	{
 		list << std::pair<String, Vec2>{name,pos};

@@ -18,7 +18,7 @@ bool Entity::isActive()
 		hp = 0;
 	}
 
-	return 0 < hp && pos.y < 2000 and alive;
+	return 0 < hp && (pos.y < DataManager::get().stageSize.y + 1000) && alive;
 }
 
 Array<Entity*> Entity::attack(StringView target, const Figure& figure, int32 damage, double power, DamageType damageType, int32 kaisuu)

@@ -1,6 +1,7 @@
 ﻿#include"MainGameScene.h"
 #include"Fairy.h"
 #include"KeyInfo.h"
+#include"Gimmick.h"
 
 class StageEntity :public Entity
 {
@@ -36,6 +37,16 @@ MainGameScene::MainGameScene(const InitData& init)
 {
 	DataManager::get().gameData = &getData();
 
+	if (getData().stage == 12)
+	{
+		DataManager::get().table.insert(U"Falling");
+	}
+
+	if (getData().stage == 17)
+	{
+		manager.add(new BigElevator{ {stage.width(),stage.height()} });
+	}
+
 	if(getData().stage==1)
 	{
 		TextureAsset::Register(U"kaiso",U"kaiso.png");
@@ -59,7 +70,20 @@ MainGameScene::MainGameScene(const InitData& init)
 
 	camera.setStageWidth(stage.width() * rect_size);
 	camera.setStageHeight(stage.height() * rect_size);
-	camera.update({ player->pos.x - draw_x,player->pos.y - draw_y });
+
+	if (DataManager::get().table.contains(U"Falling"))
+	{
+		camera.update({ player->pos.x - draw_x,player->pos.y - 150 });
+	}
+	else if(DataManager::get().isElevatorStage)
+	{
+		camera.update({ player->pos.x - Scene::Center().x,player->pos.y - 500 });
+	}
+	else
+	{
+		camera.update({ player->pos.x - draw_x,player->pos.y - draw_y });
+	}
+
 
 
 	if (getData().backgroundTexture == U"BackgroundTexture/洞窟背景.png")
@@ -185,7 +209,18 @@ void MainGameScene::gameUpdate()
 	}
 	else
 	{
-		camera.update({ player->pos.x - draw_x,player->pos.y - draw_y });
+		if (DataManager::get().table.contains(U"Falling"))
+		{
+			camera.update({ player->pos.x - draw_x,player->pos.y - 150 });
+		}
+		else if (DataManager::get().isElevatorStage)
+		{
+			camera.update({ player->pos.x - Scene::Center().x,player->pos.y - 500 });
+		}
+		else
+		{
+			camera.update({ player->pos.x - draw_x,player->pos.y - draw_y });
+		}
 	}
 
 	irisOut.update();

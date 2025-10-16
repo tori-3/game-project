@@ -105,3 +105,44 @@ public:
 
 	bool isActive()override;
 };
+
+class BigElevator:public Entity
+{
+public:
+
+	Size stageSize;
+
+	BigElevator(const Size& stageSize)
+		:Entity{ U"BigElevator",RectF{0,0,0,0},pos,{0,0},1 }, stageSize{ stageSize }
+	{
+		DataManager::get().isElevatorStage = true;
+		DataManager::get().elevatorPosY = (stageSize.y - 1) * rect_size;
+
+		z = 100;
+	}
+
+	void update()override
+	{
+		DataManager::get().elevatorPosY = Max<double>(DataManager::get().elevatorPosY - Scene::DeltaTime() * 100, rect_size * 10);
+	}
+
+	void lateUpdate()override
+	{
+
+	}
+
+	void draw()const override
+	{
+		for (int32 i = 1; i < stageSize.x - 1; ++i)
+		{
+			TextureAsset{ U"ChocolateWall" }.resized(rect_size).draw(i * rect_size, DataManager::get().elevatorPosY);
+		}
+
+
+	}
+
+	bool isActive()override
+	{
+		return true;
+	}
+};

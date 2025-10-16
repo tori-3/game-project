@@ -1,5 +1,5 @@
 ﻿{
-  "BGMVolume": 0.2001412957906723,
+  "BGMVolume": 0.3656123876571655,
   "ClearHP": [
     5,
     5,
@@ -9,27 +9,26 @@
     5,
     5,
     5,
-    0,
     5,
     0,
     5,
     5,
+    0,
     5,
     5,
     5,
+    5,
+    0,
     5,
     0,
     5,
     7,
-    7,
+    13,
     0,
-    7,
-    0,
-    0,
-    0
+    9
   ],
-  "ClearStage": 23,
-  "EffectVolume": 0.18386510014533997,
+  "ClearStage": 25,
+  "EffectVolume": 0.34999188780784607,
   "IncreaseHPMode": true,
   "IsFullscreen": false,
   "Key": {
@@ -230,7 +229,6 @@
     5,
     5,
     5,
-    9,
     5,
     5,
     5,
@@ -241,35 +239,36 @@
     {
       "Easy": true,
       "Hard": false,
-      "Normal": true
-    },
-    {
-      "Easy": true,
-      "Hard": true,
-      "Normal": true
-    },
-    {
-      "Easy": true,
-      "Hard": true,
-      "Normal": true
-    },
-    {
-      "Easy": true,
-      "Hard": true,
-      "Normal": true
+      "Normal": false
     },
     {
       "Easy": true,
       "Hard": false,
-      "Normal": true
+      "Normal": false
+    },
+    {
+      "Easy": false,
+      "Hard": false,
+      "Normal": false
+    },
+    {
+      "Easy": false,
+      "Hard": false,
+      "Normal": false
+    },
+    {
+      "Easy": false,
+      "Hard": false,
+      "Normal": false
     },
     {
       "Easy": true,
       "Hard": false,
-      "Normal": true
+      "Normal": false
     }
   ],
   "NotifyGallery": false,
   "NotifyMiniGameSelect": false,
-  "SelectedStage": 19
+  "SelectedStage": 19,
+  "Vibration": 1.0
 }

@@ -768,6 +768,17 @@ DropCorn::DropCorn(const Vec2& cpos, double velX)
 	: Entity{ {U"Enemy"}, Circle{30},cpos,{0,0},1 }
 	, character{ U"Characters/corn/corn.json",U"Characters/corn/motion.txt",0.3,cpos,true,false }, velX{ velX }
 {
+	++count;
+
+	if(50<count)
+	{
+		kill();
+	}
+}
+
+DropCorn::~DropCorn()
+{
+	--count;
 }
 
 void DropCorn::update()
@@ -874,6 +885,7 @@ void DropCorn::draw()const
 	character.draw();
 }
 
+int32 DropCorn::count = 0;
 
 
 Zerosen::Zerosen(const Vec2& cpos)
@@ -1022,8 +1034,3 @@ void BigCloudEnemy::draw()const
 
 void BigCloudEnemy::damage(int32, const Vec2&, DamageType)
 {}
-
-bool BigCloudEnemy::isActive()
-{
-	return true;
-}

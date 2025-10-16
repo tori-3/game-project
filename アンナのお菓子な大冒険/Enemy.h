@@ -214,11 +214,16 @@ public:
 
 	DropCorn(const Vec2& cpos, double velX);
 
+	~DropCorn();
+
 	void update()override;
 
 	void lateUpdate()override;
 
 	void draw()const override;
+
+	static int32 count;
+
 };
 
 class Zerosen :public Entity
@@ -274,6 +279,4 @@ public:
 	void draw()const override;
 
 	void damage(int32, const Vec2&, DamageType)override;
-
-	bool isActive()override;
 };

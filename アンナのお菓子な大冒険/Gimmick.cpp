@@ -138,7 +138,7 @@ void SnowBall::update()
 
 	if (manager->get(U"Player")->hitBox.intersects(hitBox))
 	{
-		manager->get(U"Player")->damage(1, Vec2{ left ? -100 : 100,-20 });
+		manager->get(U"Player")->damage(1, Vec2{ left ? -100 : 100,-200 });
 		collisionFlg = true;
 	}
 

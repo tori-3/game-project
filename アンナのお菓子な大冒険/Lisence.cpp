@@ -84,9 +84,9 @@ namespace Lisence
 
 		const Array<std::pair<String, String>>texts
 		{
-			{U"・とりさん  ",U"🚩プロジェクト進行　💻プログラミング　🧱ステージ"},
-			{U"・やっさん  ",U"💡企画　💻プログラミング　🎨イラスト(背景、ステージ素材、キャラクター)　🧱ステージ　💫モーション"},
-			{U"・まる  ",U"🎵BGM/効果音　🎨イラスト(ステージ素材、キャラクター)　🧱ステージ　🕹️ まんじゅうラッシュ　💫モーション"},
+			{U"・とりさん  ",U"🚩プロジェクト進行　💻プログラミング　🔨ステージ"},
+			{U"・やっさん  ",U"💡企画　💻プログラミング　🎨イラスト(背景、ステージ素材、キャラクター)　🔨ステージ　💫モーション"},
+			{U"・まる  ",U"🎵BGM/効果音　🎨イラスト(ステージ素材、キャラクター)　🔨ステージ　🕹️ まんじゅうラッシュ　💫モーション"},
 			{U"・With Ball  ",U"👤アドバイザー　🕹️ ふぉーりんぐアンナちゃん"},
 			{U"・Sco Ttishfold  ",U"🎨イラスト(ステージ素材)"},
 			{U"・ひー  ",U"🕹️ まっくら迷路"},
@@ -106,7 +106,7 @@ namespace Lisence
 			{U"・Kenney Input Prompts  ",U"キーの画像"},
 		};
 
-		auto col = Column::Create({.crossAxis=CrossAxis::start,.margine=20});
+		auto col = Column::Create({.crossAxis=CrossAxis::start,.margine=18});
 
 		//col->addChild(TextUI::Create({ .text = U"詳細情報",.fontSize = 30,.color = ColorF{1},.margine = 20,.relative=Relative::Center()}));
 
@@ -118,7 +118,7 @@ namespace Lisence
 		{
 			auto row = Row::Create({.mainAxis=MainAxis::start});
 			row->addChild(TextUI::Create({ .text = text.first,.fontSize = 20,.color = ColorF{1} }));
-			row->addChild(TextUI::Create({ .text = text.second,.fontSize = 18,.color = ColorF{0.7} }));
+			row->addChild(TextUI::Create({ .text = text.second,.fontSize = 17,.color = ColorF{0.7} }));
 			col->addChild(row);
 		}
 
@@ -130,7 +130,7 @@ namespace Lisence
 		{
 			auto row = Row::Create({ .mainAxis = MainAxis::start });
 			row->addChild(TextUI::Create({ .text = text.first,.fontSize = 20,.color = ColorF{1} }));
-			row->addChild(TextUI::Create({ .text = text.second,.fontSize = 18,.color = ColorF{0.7} }));
+			row->addChild(TextUI::Create({ .text = text.second,.fontSize = 17,.color = ColorF{0.7} }));
 			col->addChild(row);
 		}
 

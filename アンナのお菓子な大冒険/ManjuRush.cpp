@@ -60,7 +60,7 @@ namespace ManjuRush
 			double clearScore = 1300;
 			if(getData().mini_mode == Stage_Mode)
 			{
-				clearScore = 800;
+				clearScore = 600;
 			}
 
 			//Clear
