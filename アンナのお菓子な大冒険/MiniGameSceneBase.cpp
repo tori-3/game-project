@@ -50,8 +50,8 @@ std::shared_ptr<UIElement> MiniGameSceneBase::createPauseUI()
 	auto continueButton = CreateChocolateButton(0xF040A_icon, U"続ける",Palette::Hotpink);
 
 
-	leftInput = LongPressInput{ getData().minigameLeftKey };
-	rightInput = LongPressInput{ getData().minigameRightKey };
+	leftInput = LongPressInput{ getData().minigameLeftKey,ControllerManager::Direction::Left };
+	rightInput = LongPressInput{ getData().minigameRightKey,ControllerManager::Direction::Right };
 
 	redoButton->selected = m_settingSelectIndex == 0;
 	endButton->selected = m_settingSelectIndex == 1;

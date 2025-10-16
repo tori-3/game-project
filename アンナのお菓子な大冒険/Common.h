@@ -72,6 +72,8 @@ struct GameData
 		,clearHPList(LastBossStage, 0)
 		, miniGameList(6,MiniGameState{})
 	{
+		initKeyConfig();
+
 		GlobalAudio::BusSetVolume(MixBus0, 0.5);
 		GlobalAudio::BusSetVolume(MixBus1, 0.5);
 
@@ -108,18 +110,31 @@ struct GameData
 
 	String fmt(StringView text)const;
 
-	//キー
-	InputGroup minigameUpKey = KeyW | KeyUp | XInput(0).buttonUp;
-	InputGroup minigameLeftKey = KeyA | KeyLeft | XInput(0).buttonLeft;
-	InputGroup minigameDownKey = KeyS | KeyDown | XInput(0).buttonDown;
-	InputGroup minigameRightKey = KeyD | KeyRight | XInput(0).buttonRight;
-	InputGroup menuDecisionKey = KeyEnter | XInput(0).buttonA;
-	InputGroup menuBackKey = KeyQ | XInput(0).buttonB;
+	void initKeyConfig()
+	{
+		minigameUpKey = KeyW | KeyUp | XInput(0).buttonUp;
+		minigameLeftKey = KeyA | KeyLeft | XInput(0).buttonLeft;
+		minigameDownKey = KeyS | KeyDown | XInput(0).buttonDown;
+		minigameRightKey = KeyD | KeyRight | XInput(0).buttonRight;
+		menuDecisionKey = KeyEnter | XInput(0).buttonA;
+		menuBackKey = KeyQ | XInput(0).buttonB;
+		attackKey = KeyEnter | XInput(0).buttonA;
+		jumpKey = KeySpace | XInput(0).buttonB;
+		downKey = KeyS | KeyDown | XInput(0).buttonDown;
+		pauseKey = KeyEscape | XInput(0).buttonStart;
+	}
 
-	InputGroup attackKey = KeyEnter | XInput(0).buttonA;
-	InputGroup jumpKey = KeySpace | XInput(0).buttonB;
-	InputGroup downKey = KeyS | KeyDown | XInput(0).buttonDown;
-	InputGroup pauseKey = KeyEscape | XInput(0).buttonStart;
+	//キー
+	InputGroup minigameUpKey;
+	InputGroup minigameLeftKey;
+	InputGroup minigameDownKey;
+	InputGroup minigameRightKey;
+	InputGroup menuDecisionKey;
+	InputGroup menuBackKey;
+	InputGroup attackKey;
+	InputGroup jumpKey;
+	InputGroup downKey;
+	InputGroup pauseKey;
 
 	//ステージ
 	String backgroundTexture;

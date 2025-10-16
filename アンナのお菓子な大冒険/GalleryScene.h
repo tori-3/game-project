@@ -31,8 +31,8 @@ public:
 
 	UIManager manager;
 
-	LongPressInput leftInput{ getData().minigameLeftKey };
-	LongPressInput rightInput{ getData().minigameRightKey };
+	LongPressInput leftInput{ getData().minigameLeftKey,ControllerManager::Direction::Left };
+	LongPressInput rightInput{ getData().minigameRightKey,ControllerManager::Direction::Right };
 
 	CSV textCsv{ U"図鑑.txt" };
 

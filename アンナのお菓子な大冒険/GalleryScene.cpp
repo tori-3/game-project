@@ -21,7 +21,7 @@ void GalleryScene::update()
 
 	if (0 == manager.getChildren().size())
 	{
-		if (getData().minigameUpKey.down())
+		if (getData().minigameUpKey.down()||ControllerManager::UpDown())
 		{
 			if (0 < selectPoint.y)
 			{
@@ -34,7 +34,7 @@ void GalleryScene::update()
 			}
 		}
 
-		if (getData().minigameDownKey.down())
+		if (getData().minigameDownKey.down() || ControllerManager::DownDown())
 		{
 			if (selectPoint.y < textureGrid.height() - 1)
 			{

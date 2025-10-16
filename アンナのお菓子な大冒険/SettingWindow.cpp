@@ -294,10 +294,10 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 	//upInput = LongPressInput{ upInputGroup };
 	//downInput = LongPressInput{ downInputGroup };
 
-	upInput = LongPressInput{ gameData.minigameUpKey };
-	downInput = LongPressInput{ gameData.minigameDownKey };
-	leftInput = LongPressInput{ gameData.minigameLeftKey };
-	rightInput = LongPressInput{ gameData.minigameRightKey };
+	upInput = LongPressInput{ gameData.minigameUpKey,ControllerManager::Direction::Up };
+	downInput = LongPressInput{ gameData.minigameDownKey,ControllerManager::Direction::Down };
+	leftInput = LongPressInput{ gameData.minigameLeftKey,ControllerManager::Direction::Left };
+	rightInput = LongPressInput{ gameData.minigameRightKey,ControllerManager::Direction::Right };
 
 	effectVolumeSliderPanel->color = selectIndex == 0 ? ColorF{ Palette::Skyblue } : AlphaF(0);
 	BGMVolumeSliderPanel->color = selectIndex == 1 ? ColorF{ Palette::Skyblue } : AlphaF(0);
@@ -381,9 +381,9 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 
 			if (selectIndex == 0)
 			{
-				effectVolumeSlider->value = Clamp(effectVolumeSlider->value + (gameData.minigameRightKey.pressed() - gameData.minigameLeftKey.pressed()) * Scene::DeltaTime(), 0.0, 1.0);
+				effectVolumeSlider->value = Clamp(effectVolumeSlider->value + ((gameData.minigameRightKey.pressed() || ControllerManager::RightPressed()) - (gameData.minigameLeftKey.pressed() || ControllerManager::LeftPressed())) * Scene::DeltaTime(), 0.0, 1.0);
 
-				if (gameData.minigameLeftKey.up()|| gameData.minigameRightKey.up())
+				if (gameData.minigameLeftKey.up()|| gameData.minigameRightKey.up()|| ControllerManager::LeftUp()|| ControllerManager::RightUp())
 				{
 					GlobalAudio::BusSetVolume(EffectMixBus, effectVolumeSlider->value);
 					AudioAsset{ U"パンチヒット" }.playOneShot();
@@ -391,13 +391,13 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 			}
 			else if (selectIndex == 1)
 			{
-				BGMVolumeSlider->value = Clamp(BGMVolumeSlider->value + (gameData.minigameRightKey.pressed() - gameData.minigameLeftKey.pressed()) * Scene::DeltaTime(), 0.0, 1.0);
+				BGMVolumeSlider->value = Clamp(BGMVolumeSlider->value + ((gameData.minigameRightKey.pressed() || ControllerManager::RightPressed()) - (gameData.minigameLeftKey.pressed() || ControllerManager::LeftPressed())) * Scene::DeltaTime(), 0.0, 1.0);
 			}
 			else if (selectIndex == 2)
 			{
-				vibrationSlider->value = Clamp(vibrationSlider->value + (gameData.minigameRightKey.pressed() - gameData.minigameLeftKey.pressed()) * Scene::DeltaTime(), 0.0, 1.0);
+				vibrationSlider->value = Clamp(vibrationSlider->value + ((gameData.minigameRightKey.pressed() || ControllerManager::RightPressed()) - (gameData.minigameLeftKey.pressed() || ControllerManager::LeftPressed())) * Scene::DeltaTime(), 0.0, 1.0);
 
-				if (gameData.minigameLeftKey.up() || gameData.minigameRightKey.up())
+				if (gameData.minigameLeftKey.up() || gameData.minigameRightKey.up() || ControllerManager::LeftUp() || ControllerManager::RightUp())
 				{
 					ControllerManager::get().vibration = vibrationSlider->value;
 					ControllerManager::get().setVibration(0.3);
@@ -427,45 +427,6 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 
 				gameData.save();
 			}
-
-			/*
-			if (infoButton->clicked())
-			{
-				AudioAsset{ U"決定ボタン" }.playOneShot();
-				auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 20,.margine = 10,.width = 200, .child = TextUI::Create({.text = U"\U000F05AD閉じる",.color = Palette::White}) });
-
-				dialog->close();
-
-				manager.addChild
-				({
-					SimpleDialog::Create
-					({
-						.erasable = false,
-						.child = SweetsPanel::Create
-						({
-							.child=Column::Create
-							({
-								.children
-								{
-									TextUI::Create({.text = U"お助けモードとは",.fontSize = 40,.color = Palette::White}),
-									TextUI::Create({.text = U"失敗するとそのステージのHPが増加する機能です。",.fontSize = 20,.color = Palette::White}),
-									closeButton
-								}
-							})
-						}),
-						.updateFunc=[=](SimpleDialog* dialog)mutable
-						{
-							if(closeButton->clicked()||gameData.menuDecisionKey.down())
-							{
-								AudioAsset{ U"キャンセル" }.playOneShot();
-								dialog->close();
-								manager.addChild(SettingWindow(upInputGroup, downInputGroup, leftInputGroup, rightInputGroup, onClose, gameData, manager, selectIndex));
-							}
-						}
-					})
-				});
-			}
-			*/
 
 			if(hpModeButton->clicked() || (selectIndex == 4 && gameData.menuDecisionKey.down()))
 			{
@@ -506,7 +467,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 							}),
 							.updateFunc = [=,&gameData](SimpleDialog* dialog)mutable
 							{
-								if (gameData.minigameLeftKey.down())
+								if (gameData.minigameLeftKey.down() || ControllerManager::LeftDown())
 								{
 									if (noButton->selected)
 									{
@@ -520,7 +481,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 									}
 								}
 
-								if (gameData.minigameRightKey.down())
+								if (gameData.minigameRightKey.down() || ControllerManager::RightDown())
 								{
 									if (yesButton->selected)
 									{
@@ -598,16 +559,19 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 					col->addChild(keyConfig.getUI());
 				}
 
-				auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 10,.margine = 10,.width = 200, .child = TextUI::Create({.text = U"\U000F05AD閉じる",.color = Palette::White}) });
+				auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 10,.margine = 0,.width = 200, .child = TextUI::Create({.text = U"\U000F05AD閉じる",.color = Palette::White}) });
 
 				(*table.get())[0].setIndex(0);
 
 				static Point pos{ 0,0 };
-				upInput = LongPressInput{ gameData.minigameUpKey };
-				downInput = LongPressInput{ gameData.minigameDownKey };
-				leftInput = LongPressInput{ gameData.minigameLeftKey };
-				rightInput = LongPressInput{ gameData.minigameRightKey };
+				upInput = LongPressInput{ gameData.minigameUpKey,ControllerManager::Direction::Up };
+				downInput = LongPressInput{ gameData.minigameDownKey,ControllerManager::Direction::Down };
+				leftInput = LongPressInput{ gameData.minigameLeftKey,ControllerManager::Direction::Left };
+				rightInput = LongPressInput{ gameData.minigameRightKey,ControllerManager::Direction::Right };
 				pos = { 0,0 };
+
+				auto initializeButon = ChocolateButton::Create({ .color = Palette::Darkred, .padding = 10,.margine = 0,.width = 200, .child = TextUI::Create({.text = U"初期化",.color = Palette::White}) });
+
 
 				manager.addChild
 				({
@@ -625,10 +589,12 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 									col,
 									Row::Create
 									({
-										.mainAxis=MainAxis::spaceAround,
+										.mainAxis = MainAxis::spaceEvenly,
+										.margine = 10,
 										.children
 										{
-											TextUI::Create({.text = U"　　　　　　",.fontSize = 30,.color = Palette::White}),
+											//TextUI::Create({.text = U"　　　　　　",.fontSize = 30,.color = Palette::White}),
+											initializeButon,
 											closeButton,
 											TextUI::Create({.text = U"長押しで削除",.fontSize = 30,.color = Palette::White}),
 										}
@@ -664,7 +630,16 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 							{
 								if (pos.y == table->size())
 								{
-									AudioAsset{ U"ビープ音" }.playOneShot();
+									if(closeButton->selected)
+									{
+										closeButton->selected = false;
+										initializeButon->selected = true;
+										AudioAsset{ U"カーソル移動" }.playOneShot();
+									}
+									else
+									{
+										AudioAsset{ U"ビープ音" }.playOneShot();
+									}
 								}
 								else if (0 < pos.x)
 								{
@@ -681,7 +656,16 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 							{
 								if (pos.y == table->size())
 								{
-									AudioAsset{ U"ビープ音" }.playOneShot();
+									if (initializeButon->selected)
+									{
+										closeButton->selected = true;
+										initializeButon->selected = false;
+										AudioAsset{ U"カーソル移動" }.playOneShot();
+									}
+									else
+									{
+										AudioAsset{ U"ビープ音" }.playOneShot();
+									}
 								}
 								else if (pos.x < KeyConfigInfo::maxButton - 1)
 								{
@@ -706,6 +690,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 									}
 									else
 									{
+										initializeButon -> selected = false;
 										closeButton->selected = false;
 									}
 
@@ -752,7 +737,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 
 							closeButton->clickable = not empty;
 
-							if (closeButton->clicked() || (pos.y == table->size() && gameData.menuDecisionKey.down()) || gameData.menuBackKey.down())
+							if (closeButton->clicked() || (closeButton->selected && gameData.menuDecisionKey.down()) || gameData.menuBackKey.down())
 							{
 								if (not empty)
 								{
@@ -760,8 +745,6 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 
 									gameData.jumpKey = (*table)[0].getInputGroup();
 									gameData.attackKey = (*table)[1].getInputGroup();
-									//gameData.leftKey = (*table)[2].getInputGroup();
-									//gameData.rightKey = (*table)[3].getInputGroup();
 									gameData.downKey = (*table)[2].getInputGroup();
 									gameData.pauseKey = (*table)[3].getInputGroup();
 									gameData.minigameUpKey = (*table)[4].getInputGroup();
@@ -779,6 +762,40 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 								else
 								{
 									AudioAsset{ U"ビープ音" }.playOneShot();
+								}
+							}
+
+							if (initializeButon->clicked() || (initializeButon->selected && gameData.menuDecisionKey.down()))
+							{
+								AudioAsset{ U"決定ボタン" }.playOneShot();
+								gameData.initKeyConfig();
+
+								col->setChildren({});
+
+								table = std::shared_ptr<Array<KeyConfigInfo>>{
+									new Array<KeyConfigInfo>
+									{
+										KeyConfigInfo{U"ジャンプ",gameData.jumpKey},
+										KeyConfigInfo{U"攻撃",gameData.attackKey},
+										KeyConfigInfo{U"しゃがむ(↓)",gameData.downKey},
+										KeyConfigInfo{U"ポーズ",gameData.pauseKey},
+										KeyConfigInfo{U"上移動↑",gameData.minigameUpKey},
+										KeyConfigInfo{U"下移動↓",gameData.minigameDownKey},
+										KeyConfigInfo{U"左移動←",gameData.minigameLeftKey},
+										KeyConfigInfo{U"右移動→",gameData.minigameRightKey},
+										KeyConfigInfo{U"メニュー：決定",gameData.menuDecisionKey},
+										KeyConfigInfo{U"メニュー：戻る",gameData.menuBackKey},
+									}
+								};
+
+								for (auto& keyConfig : *table.get())
+								{
+									col->addChild(keyConfig.getUI());
+								}
+
+								if (pos.y != table->size())
+								{
+									(*table)[pos.y].setIndex(pos.x);
 								}
 							}
 						}

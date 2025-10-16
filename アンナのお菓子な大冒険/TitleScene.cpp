@@ -289,7 +289,7 @@ std::shared_ptr<UIElement> TitleScene::licenseDialog()
 		}),
 		.updateFunc = [=](SimpleDialog* dialog)
 		{
-			if (getData().minigameLeftKey.down())
+			if (getData().minigameLeftKey.down()|| ControllerManager::LeftDown())
 			{
 				if (closeButton->selected)
 				{
@@ -303,7 +303,7 @@ std::shared_ptr<UIElement> TitleScene::licenseDialog()
 				}
 			}
 
-			if (getData().minigameRightKey.down())
+			if (getData().minigameRightKey.down()||ControllerManager::RightDown())
 			{
 				if (showBrowserButton->selected)
 				{
@@ -317,12 +317,12 @@ std::shared_ptr<UIElement> TitleScene::licenseDialog()
 				}
 			}
 
-			if (getData().minigameUpKey.pressed())
+			if (getData().minigameUpKey.pressed()|| ControllerManager::UpPressed())
 			{
 				scrollbar->addScrollPos(-Scene::DeltaTime() * 1000);
 			}
 
-			if (getData().minigameDownKey.pressed())
+			if (getData().minigameDownKey.pressed()|| ControllerManager::DownPressed())
 			{
 				scrollbar->addScrollPos(Scene::DeltaTime() * 1000);
 			}

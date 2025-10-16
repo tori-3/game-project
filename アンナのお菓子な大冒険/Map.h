@@ -68,8 +68,8 @@ public:
 
 	bool standing = true;
 
-	LongPressInput leftInput{ getData().minigameLeftKey };
-	LongPressInput rightInput{ getData().minigameRightKey };
+	LongPressInput leftInput{ getData().minigameLeftKey,ControllerManager::Direction::Left };
+	LongPressInput rightInput{ getData().minigameRightKey,ControllerManager::Direction::Right };
 
 
 	CharacterSystem character{ U"Characters/annna/annna.json",U"Characters/annna/motion.txt",0.25/2,{0,0},false};

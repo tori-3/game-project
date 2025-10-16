@@ -98,6 +98,6 @@ void TalkWindow::draw(const RectF& rect, const SizeF& nameSize,bool hideMode, St
 
 	if (not hideMode)
 	{
-		FontAsset(U"NormalFont")(U"次へ [{}]"_fmt(keyName)).drawBase(20, window.rect.bl() + Vec2{ 20,-20 });
+		FontAsset(U"NormalFont")(U"次へ {}"_fmt(keyName)).drawBase(25, window.rect.bl() + Vec2{ 20,-20 });
 	}
 }
