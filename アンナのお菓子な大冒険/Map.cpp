@@ -233,7 +233,7 @@ void Map::update()
 
 			if (sceneNames[index] == U"MainGameScene")
 			{
-				getData().description = U"Space or W：ジャンプ\nA：左\nD：右\nS：しゃがむ\nEnter：技を発動\nEnter長押し：突進(クッキーが10個貯まったら)";
+				getData().description = U"{5} または {0}-ジャンプ\n{1}-左移動\n{3}-右移動\n{2}-しゃがむ\n{4}-技を発動\n{4}長押し-突進(🍪が10個貯まったら)";
 			}
 			else
 			{
@@ -512,7 +512,7 @@ void Map::draw() const
 	else
 	{
 		FontAsset{ U"NormalFont" }(title[index]).drawAt(30,Scene::Center() + Vec2{ 0,-300 });
-		FontAsset{ U"NormalFont" }(U"{}                {}                {}"_fmt(ToKeyName(getData().minigameLeftKey), ToKeyName(getData().menuDecisionKey), ToKeyName(getData().minigameRightKey))).drawAt(30,Scene::Center() + Vec2{ 0,-250 });
+		FontAsset{ U"NormalFont" }(U"{}                {}                {}"_fmt(ToKeyName(getData().minigameLeftKey, getData().gamepadMode), ToKeyName(getData().menuDecisionKey, getData().gamepadMode), ToKeyName(getData().minigameRightKey, getData().gamepadMode))).drawAt(30,Scene::Center() + Vec2{ 0,-250 });
 	}
 
 	if (backButton.mouseOver())
@@ -521,7 +521,7 @@ void Map::draw() const
 	}
 	
 	homeIcon.drawAt(backButton.center, backButton.mouseOver() ? Palette::Gray : Palette::White);
-	FontAsset{ U"NormalFont" }(U"{}-タイトルに戻る"_fmt(ToKeyName(getData().menuBackKey))).draw(Arg::leftCenter = backButton.center + Vec2{ 30,0 });
+	FontAsset{ U"NormalFont" }(U"{}-タイトルに戻る"_fmt(ToKeyName(getData().menuBackKey,getData().gamepadMode))).draw(30,Arg::leftCenter = backButton.center + Vec2{ 30,0 });
 
 
 	//if (largeFlg) {

@@ -4,6 +4,7 @@
 #include"Lisence.h"
 #include"SettingWindow.h"
 #include"KeyConfigUtility.h"
+#include"NotificationAddon.h"
 
 using namespace BunchoUI;
 
@@ -58,6 +59,16 @@ struct GameData
 	bool firstClearMinigame = false;
 	bool firstClearStage = false;
 
+
+	bool pressAnyKeyFlg = true;
+
+
+	bool gamepadMode = false;
+
+	bool screenshotNotify = false;
+	bool garellyNotificationAddonFlg = false;
+
+
 	//ゲームを始める前に呼ぶ
 	void initGame()
 	{
@@ -79,6 +90,8 @@ struct GameData
 
 		load();
 	}
+
+	void update();
 
 	void saveMiniGameClear();
 
@@ -122,6 +135,7 @@ struct GameData
 		jumpKey = KeySpace | XInput(0).buttonB;
 		downKey = KeyS | KeyDown | XInput(0).buttonDown;
 		pauseKey = KeyEscape | XInput(0).buttonStart;
+		screenshotKey = KeyF12 | XInput(0).buttonBack;
 	}
 
 	//キー
@@ -135,6 +149,7 @@ struct GameData
 	InputGroup jumpKey;
 	InputGroup downKey;
 	InputGroup pauseKey;
+	InputGroup screenshotKey;
 
 	//ステージ
 	String backgroundTexture;

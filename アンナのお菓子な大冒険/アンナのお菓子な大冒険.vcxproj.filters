@@ -1145,5 +1145,8 @@
     <ClInclude Include="KeyInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="NotificationAddon.h">
+      <Filter>Header Files\MainGameScene\GameLib</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

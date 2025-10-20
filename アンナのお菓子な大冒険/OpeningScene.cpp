@@ -14,6 +14,13 @@ OpeningScene::OpeningScene(const InitData& init)
 		.set(U"light", { firstTime + 0.1s, 0.5 }, { firstTime + 0.15s, 1 })
 		.set(U"light", { secondTime,1 }, { secondTime + 0.05s, 0.5 })
 		.set(U"light", { secondTime + 0.1s, 0.5 }, { secondTime + 0.15s, 1 });
+
+	animation
+		.set(U"light2", { 1s,0 }, { 3s, 0.1 })
+		.set(U"light2", { firstTime,1 }, { firstTime + 0.05s, 0.5 })
+		.set(U"light2", { firstTime + 0.1s, 0.5 }, { firstTime + 0.15s, 1 })
+		.set(U"light2", { secondTime,1 }, { secondTime + 0.05s, 0.5 })
+		.set(U"light2", { secondTime + 0.1s, 0.5 }, { secondTime + 0.15s, 1 });
 }
 
 OpeningScene::~OpeningScene()
@@ -28,7 +35,7 @@ void OpeningScene::update()
 		AudioAsset{ U"キャンセル2" }.playOneShot();
 		changeScene(U"TitleScene", 2.0s);
 	}
-	else if (GetDownXInput())
+	else if (AnyXInputPressed())
 	{
 		AudioAsset{ U"キャンセル2" }.playOneShot();
 		changeScene(U"TitleScene", 2.0s);
@@ -63,6 +70,25 @@ void OpeningScene::update()
 	}
 }
 
+void Brick(const Rect& rect, int32 n, const ColorF& color = Color(162, 72, 43), const ColorF& back_color = Palette::White) {
+
+	const ScopedViewport2D viewport{ rect.draw(back_color) };
+	const double hight = rect.h / (double)n;
+	const double width = hight * 2;
+	const double d = hight * 0.1;
+
+	for (auto x : step((int32)(rect.w / hight) + 2))
+	{
+		for (auto y : step(n))
+		{
+			if (IsEven(x + y))
+			{
+				RectF{ (x * hight + d / 2 - hight), (y * hight + d / 2), width - d,hight - d }.draw(color);
+			}
+		}
+	}
+}
+
 void OpeningScene::draw() const
 {
 	Scene::SetBackground(ColorF{ 0.0 });
@@ -84,12 +110,16 @@ void OpeningScene::draw() const
 	else
 	{
 		const double alpha = animation[U"light"];
+		const double alpha2 = animation[U"light2"];
 
-		siv3dLogo.resized(Scene::Width() * 0.7).drawAt(Scene::Center(), AlphaF(alpha));
+		//Brick(Rect{ Scene::Size() }, 10, ColorF{ 0.1 }, ColorF{ 0.2 });
+
+		siv3dLogoFrame.drawAt(Scene::Center(), AlphaF(alpha));
 
 		{
 			ScopedLightBloom target{ light };
-			siv3dLogo.resized(Scene::Width() * 0.7).drawAt(Scene::Center(), ColorF(1, alpha));
+			siv3dLogoFrameBold.drawAt(Scene::Center(), ColorF(Palette::Cyan, alpha2));
+			//siv3dLogo.drawAt(Scene::Center(), ColorF(Palette::Cyan, alpha2));
 		}
 		light.draw();
 

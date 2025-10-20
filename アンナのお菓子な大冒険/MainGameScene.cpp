@@ -98,6 +98,9 @@ MainGameScene::MainGameScene(const InitData& init)
 	}
 
 	manager.add(new StageEntity{ &stage,&camera.pos,&player->pos });
+
+	//トークウィンドウを初期化
+	TalkManager::get().talkWindow.setTalk({});
 }
 
 void MainGameScene::gameUpdate()
@@ -330,9 +333,9 @@ void MainGameScene::gameDraw() const
 
 	constexpr double height = 200;
 	constexpr double space = 50;
-	TalkManager::get().talkWindow.draw(RectF{ space,Scene::Height() - height - space,Scene::Width() - space * 2 ,height }, { 250,50 },false,ToKeyName(getData().attackKey));
+	TalkManager::get().talkWindow.draw(RectF{ space,Scene::Height() - height - space,Scene::Width() - space * 2 ,height }, { 250,50 },false,ToKeyName(getData().attackKey, getData().gamepadMode));
 
-	FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey))).draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
+	FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30,Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 
 	if (DataManager::get().bossHPRate)
 	{
@@ -417,7 +420,7 @@ void MainGameScene::HpDisplay(int32 count, int32 maxHP)
 			}
 		}
 
-		FontAsset(U"TitleFont")(U"＋{}"_fmt(count - 10)).draw(35, 25 + 10 * 40 - 10, 0);
+		FontAsset(U"NormalFont")(U"＋{}"_fmt(count - 10)).draw(35, 25 + 10 * 40 - 10, 0);
 	}
 	else
 	{

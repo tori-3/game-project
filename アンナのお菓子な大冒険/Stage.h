@@ -74,6 +74,7 @@ public:
 		{U"NeedleDownBlock",[]() {return new NeedleDownBlock(); }},
 		{U"NeedleLeftBlock",[]() {return new NeedleLeftBlock(); }},
 		{U"NeedleRightBlock",[]() {return new NeedleRightBlock(); }},
+		{U"FloatingCookieItem",[]() {return new FloatingCookieItemBlock(); }},
 	};
 
 	Stage(const JSON& json,bool backGround=false) {

@@ -19,7 +19,7 @@ public:
 
 	size_t textureIndex = 0;
 
-	Timer timer{ 10s,StartImmediately::Yes };
+	Timer timer{ 10s };
 
 	Array<String>menuList
 	{
@@ -82,7 +82,15 @@ public:
 
 	UIManager uiManager;
 
-	Timer omakeTimer{ 15s,StartImmediately::Yes };
+	Timer omakeTimer{ 15s };
+
+	RenderTexture downsample;
+
+	Timer anyKeyTimer{ 1.0s };
+
+	double rogoTimer = 0;
+
+	static constexpr Vec2 anyKeyPos{ 600,610 };
 
 	double translate()const
 	{

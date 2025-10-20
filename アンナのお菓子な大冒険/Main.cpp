@@ -31,6 +31,8 @@ void Main()
 
 	System::SetTerminationTriggers(UserAction::CloseButtonClicked);
 
+	ScreenCapture::SetShortcutKeys({});
+
 	Lisence::Init();
 
 	LoadAsset::Init();
@@ -54,6 +56,9 @@ void Main()
 
 	manager.changeScene(U"OpeningScene", 0.5s);
 
+	Addon::Register<NotificationAddon>(U"NotificationAddon");
+
+	NotificationAddon::SetLifeTime(4);
 
 	while (System::Update())
 	{
@@ -65,5 +70,7 @@ void Main()
 		}
 
 		ControllerManager::get().update();
+
+		manager.get()->update();
 	}
 }

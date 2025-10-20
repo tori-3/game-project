@@ -166,11 +166,6 @@ namespace AnnaMusicGame {
 	AnnaMusicGame::AnnaMusicGame(const InitData& init)
 		: MiniGameSceneBase{ init }
 	{
-		if (not TextureAsset::IsRegistered(U"BackGroundTexture/宇宙背景.png"))
-		{
-			TextureAsset::Register(U"BackGroundTexture/宇宙背景.png", U"BackGroundTexture/宇宙背景.png");
-		}
-
 		//const RenderTexture internalTexture{ Scene::Size() };
 		//const RenderTexture internalTexture2{ Scene::Size() };
 		//Shader::GaussianBlur(TextureAsset{ U"BackGroundTexture/宇宙背景.png" }, internalTexture, internalTexture2);
@@ -185,12 +180,15 @@ namespace AnnaMusicGame {
 
 		const RenderTexture downsample4{ Scene::Size() / 4 };
 		const RenderTexture internalTexture4{ Scene::Size() / 4 };
-		Shader::Downsample(TextureAsset{ U"BackGroundTexture/宇宙背景.png" }, downsample4);
+		Shader::Downsample(TextureAsset{ U"BackGroundTexture/雲背景.png" }, downsample4);
 		Shader::GaussianBlur(downsample4, internalTexture4, background);
 	}
 
 	void AnnaMusicGame::gameUpdate()
 	{
+		cloud.update(cloudPos, true);
+
+
 		// 経過時間を取得
 		double deltaTime = Scene::DeltaTime();
 		anime[nowanimation].update(deltaTime);
@@ -217,6 +215,7 @@ namespace AnnaMusicGame {
 			change = true;
 		}
 
+		bool cloudAttack = false;
 		for (auto& rc : rcs)
 		{
 
@@ -224,6 +223,11 @@ namespace AnnaMusicGame {
 
 			if (rc.theta > 0)//判定　90　最初0からマイナス方向に並んでいる　回転で＋になったのだけ表示、判定
 			{
+				if (cloudPos.y + 10 < Vec2{ rc }.y && Vec2{ rc }.y < cloudPos.y + 30)
+				{
+					cloudAttack = true;
+				}
+
 				//判定
 				if (getData().minigameLeftKey.down())
 				{
@@ -267,6 +271,7 @@ namespace AnnaMusicGame {
 
 			}
 		}
+
 		for (auto& gc : gcs)
 		{
 
@@ -274,6 +279,11 @@ namespace AnnaMusicGame {
 
 			if (gc.theta > 0)//判定　90　最初0からマイナス方向に並んでいる　回転で＋になったのだけ表示、判定
 			{
+
+				if(cloudPos.y + 10 < Vec2{ gc }.y&& Vec2{ gc }.y< cloudPos.y + 30)
+				{
+					cloudAttack = true;
+				}
 
 
 				//candyg.drawAt(gc);
@@ -321,6 +331,20 @@ namespace AnnaMusicGame {
 			}
 		}
 
+		if ((not cloud.hasMotion(U"musickAttack"))&& (not cloud.hasMotion(U"musickAttackBack")))
+		{
+			if (cloudAttack&& not small)
+			{
+				small = true;
+				cloud.addMotion(U"musickAttack");
+			}
+			else if((not cloudAttack) && small)
+			{
+				small = false;
+				cloud.addMotion(U"musickAttackBack");
+			}
+		}
+
 		//削除
 		rcs.remove_if([&](const OffsetCircular rc) {return((getData().minigameLeftKey.down()) and C0.intersects(Circle{rc,30}) and rc.theta > 0); });
 		rcs.remove_if([&](const OffsetCircular rc) {return(C3.contains(Circle{ rc,30 }) and rc.theta > 0); });
@@ -357,7 +381,8 @@ namespace AnnaMusicGame {
 		Scene::SetBackground(Palette::Pink);
 
 		background.resized(Scene::Size()).draw();
-		Scene::Rect().draw(ColorF{ 0,0.3 });
+		//Scene::Rect().draw(ColorF{ 0,0.3 });
+		Scene::Rect().draw(ColorF{ Palette::Lightpink,0.4 });
 
 		// アニメーションを更新
 		anime[0].draw(pos);
@@ -372,7 +397,7 @@ namespace AnnaMusicGame {
 
 		for (auto& rc : rcs)
 		{
-			if (rc.theta > 0)//判定　90　最初0からマイナス方向に並んでいる　回転で＋になったのだけ表示、判定
+			if (rc.theta > 0&&cloudPos.y+10<Vec2{rc}.y)//判定　90　最初0からマイナス方向に並んでいる　回転で＋になったのだけ表示、判定
 			{
 				candyr.drawAt(rc);
 
@@ -381,7 +406,7 @@ namespace AnnaMusicGame {
 		}
 		for (auto& gc : gcs)
 		{
-			if (gc.theta > 0)//判定　90　最初0からマイナス方向に並んでいる　回転で＋になったのだけ表示、判定
+			if (gc.theta > 0&& cloudPos.y+10 < Vec2{ gc }.y)//判定　90　最初0からマイナス方向に並んでいる　回転で＋になったのだけ表示、判定
 			{
 				candyg.drawAt(gc);
 
@@ -389,10 +414,12 @@ namespace AnnaMusicGame {
 			}
 		}
 
+		cloud.draw();
+
 		if (rcs.empty() and gcs.empty())
 		{
 			FontAsset(U"NormalFont")(U"Perfect{}\nMiss{}\nMaxcombo{}"_fmt(perfect, miss, maxcombo)).draw(60, 50, 50, Palette::Yellow);
-			FontAsset(U"NormalFont")(U"{}で戻る"_fmt(ToKeyName(getData().menuDecisionKey))).draw(30, 250, 300, Palette::Skyblue);
+			FontAsset(U"NormalFont")(U"{}で戻る"_fmt(ToKeyName(getData().menuDecisionKey,getData().gamepadMode))).draw(30, 250, 300, Palette::Skyblue);
 
 			if (miss <= 9)
 			{
@@ -408,13 +435,13 @@ namespace AnnaMusicGame {
 
 		effect.update();
 
-		FontAsset(U"NormalFont")(U"赤(←)は{}"_fmt(ToKeyName(getData().minigameLeftKey))).draw(40, 700, 50, Palette::Red);
-		FontAsset(U"NormalFont")(U"黄緑(→)は{}"_fmt(ToKeyName(getData().minigameRightKey))).draw(40, 700, 90, Palette::Yellowgreen);
-		FontAsset(U"NormalFont")(U"をタイミング良く押そう！！\nMiss9以下でクリア").draw(40, 700, 130, Palette::Skyblue);
+		FontAsset(U"NormalFont")(U"赤(←)は{}"_fmt(ToKeyName(getData().minigameLeftKey, getData().gamepadMode))).draw(40, 700, 50, Palette::Red);
+		FontAsset(U"NormalFont")(U"黄緑(→)は{}"_fmt(ToKeyName(getData().minigameRightKey, getData().gamepadMode))).draw(40, 700, 90, Palette::Yellowgreen);
+		FontAsset(U"NormalFont")(U"をタイミング良く押そう！\nMiss9以下でクリア").draw(40, 700, 130, Palette::Skyblue);
 		FontAsset(U"NormalFont")(U"{}"_fmt(credit)).draw(30, 5, 750, Palette::Skyblue);
 		FontAsset(U"NormalFont")(U"Combo{}"_fmt(combo)).draw(60, 650, 380, Palette::Yellowgreen);
 
-		FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey))).draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
+		FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30,Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 	}
 
 }

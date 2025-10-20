@@ -265,13 +265,13 @@ void MiniGameSelect::draw()const
 	{
 		FontAsset{ U"NormalFont" }(getData().fmt(miniGameList[gameIndex].sentence)).draw(30,150, Scene::Center().y + 100-20);
 
-		easyButton.draw(chocolateBeltConveyor, FontAsset{ U"TitleFont" }, U"イージー", Palette::Greenyellow, getData().miniGameList[gameIndex].easyClear, modeIndex == 0);
-		normalButton.draw(chocolateBeltConveyor, FontAsset{ U"TitleFont" }, U"ノーマル", Palette::Orange, getData().miniGameList[gameIndex].normalClear, modeIndex == 1);
-		hardButton.draw(chocolateBeltConveyor, FontAsset{ U"TitleFont" }, U"ハード", Palette::Red, getData().miniGameList[gameIndex].hardClear, modeIndex == 2);
+		easyButton.draw(chocolateBeltConveyor, FontAsset{ U"NormalFont" }, U"イージー", Palette::Greenyellow, getData().miniGameList[gameIndex].easyClear, modeIndex == 0);
+		normalButton.draw(chocolateBeltConveyor, FontAsset{ U"NormalFont" }, U"ノーマル", Palette::Orange, getData().miniGameList[gameIndex].normalClear, modeIndex == 1);
+		hardButton.draw(chocolateBeltConveyor, FontAsset{ U"NormalFont" }, U"ハード", Palette::Red, getData().miniGameList[gameIndex].hardClear, modeIndex == 2);
 	}
 	homeIcon.drawAt(backButton.center, backButton.mouseOver() ? Palette::Gray : Palette::White);
 
-	FontAsset{ U"NormalFont" }(U"{}-タイトルに戻る"_fmt(ToKeyName(getData().menuBackKey))).draw(Arg::leftCenter = backButton.center + Vec2{ 30,0 });
+	FontAsset{ U"NormalFont" }(U"{}-タイトルに戻る"_fmt(ToKeyName(getData().menuBackKey, getData().gamepadMode))).draw(30,Arg::leftCenter = backButton.center + Vec2{ 30,0 });
 
 	{
 		const ScopedRenderStates2D blend{ BlendState::Additive };

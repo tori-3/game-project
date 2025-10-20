@@ -516,3 +516,12 @@ public:
 
 	void draw(const Point& pos)const override;
 };
+
+class FloatingCookieItemBlock :public Untouchable
+{
+public:
+
+	bool bornFlg = false;
+
+	void update(const Point& pos)override;
+};

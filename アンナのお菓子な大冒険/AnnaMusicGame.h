@@ -1,6 +1,7 @@
 ﻿#pragma once
 # include"Common.h"
 #include"MiniGameSceneBase.h"
+#include"CharacterSystem.h"
 
 namespace AnnaMusicGame {
 
@@ -144,6 +145,10 @@ namespace AnnaMusicGame {
 		double t = 0;
 		bool change = false;
 
+		Vec2 cloudPos{ 480,50 };
+		CharacterSystem cloud{ U"Characters/cloud/cloud.json" ,U"Characters/cloud/motion.txt" ,0.8,cloudPos,true,true};
+
+		bool small = false;
 
 	public:
 

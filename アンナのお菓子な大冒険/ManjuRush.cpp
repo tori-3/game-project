@@ -250,11 +250,11 @@ namespace ManjuRush
 		if (clear)
 		{
 			Scene::Rect().draw(ColorF{ 0,0.5 });
-			FontAsset{ U"TitleFont" }(U"Clear!!").drawAt(150, Scene::Center());
-			FontAsset{ U"TitleFont" }(U"{}で戻る"_fmt(ToKeyName(getData().menuDecisionKey))).drawAt(45, Scene::Center() + Vec2{ 0,150 });
+			FontAsset{ U"NormalFont" }(U"Clear!!").drawAt(150, Scene::Center());
+			FontAsset{ U"NormalFont" }(U"{}で戻る"_fmt(ToKeyName(getData().menuDecisionKey, getData().gamepadMode))).drawAt(45, Scene::Center() + Vec2{ 0,150 });
 		}
 
-		FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey))).draw(Vec2{10,5});
+		FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30,Vec2{10,5});
 	}
 
 }

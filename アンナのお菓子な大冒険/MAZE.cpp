@@ -238,7 +238,7 @@ namespace Maze1
 
 		watch(stopwatch).draw(1070, -5, Palette::White);
 
-		FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey))).draw(Vec2{ 10,5 });
+		FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30,Vec2{ 10,5 },ColorF{1,0.5});
 	}
 
 	Clear::Clear(const InitData& init)
@@ -270,7 +270,7 @@ namespace Maze1
 		otologic(U"BGM by OtoLogic").draw(2, 772, Palette::Black);
 		text(U"クリア！").draw(415, 100, Palette::Yellow);
 		text2(U"タイム: ", stopwatch).draw(215, 300, Palette::Black);
-		text3(U"{}を押してマップに戻る"_fmt(ToKeyName(getData().menuDecisionKey))).drawAt(Scene::Center().x, 510 + 30, Palette::Blue);
+		text3(U"{}を押してマップに戻る"_fmt(ToKeyName(getData().menuDecisionKey, getData().gamepadMode))).drawAt(Scene::Center().x, 510 + 30, Palette::Blue);
 	}
 
 }

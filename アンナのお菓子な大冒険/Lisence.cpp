@@ -28,12 +28,12 @@ namespace Lisence
 		//	.text = U"https://osabisi.sakura.ne.jp/m2/index.html"
 		//});
 
-		LicenseManager::AddLicense
-		({
-			.title = U"OtoLogic",
-			.copyright = U"Copyright (c) OtoLogic",
-			.text = U"License: CC BY 4.0\nhttps://otologic.jp"
-		});
+		//LicenseManager::AddLicense
+		//({
+		//	.title = U"OtoLogic",
+		//	.copyright = U"Copyright (c) OtoLogic",
+		//	.text = U"License: CC BY 4.0\nhttps://otologic.jp"
+		//});
 
 		//LicenseManager::AddLicense({
 		//	.title = U"夢にみた緑",
@@ -55,8 +55,14 @@ namespace Lisence
 	}
 
 
+	std::shared_ptr<UIElement>InfoPanel()
+	{
+		
 
 
+		auto col = Column::Create({});
+
+	}
 
 	std::shared_ptr<UIElement> LicenseDisplay()
 	{
@@ -85,9 +91,9 @@ namespace Lisence
 		const Array<std::pair<String, String>>texts
 		{
 			{U"・とりさん  ",U"🚩プロジェクト進行　💻プログラミング　🔨ステージ"},
-			{U"・やっさん  ",U"💡企画　💻プログラミング　🎨イラスト(背景、ステージ素材、キャラクター)　🔨ステージ　💫モーション"},
+			{U"・やっさん  ",U"💡企画　💻プログラミング　🎨イラスト(背景、ステージ素材、キャラクター)　💫モーション"},
 			{U"・まる  ",U"🎵BGM/効果音　🎨イラスト(ステージ素材、キャラクター)　🔨ステージ　🕹️ まんじゅうラッシュ　💫モーション"},
-			{U"・With Ball  ",U"👤アドバイザー　🕹️ ふぉーりんぐアンナちゃん"},
+			{U"・With Ball  ",U"👤監修　🕹️ ふぉーりんぐアンナちゃん"},
 			{U"・Sco Ttishfold  ",U"🎨イラスト(ステージ素材)"},
 			{U"・ひー  ",U"🕹️ まっくら迷路"},
 			{U"・なかこう  ",U"🕹️ ぐるぐる迷路"},
@@ -112,11 +118,11 @@ namespace Lisence
 
 		//col->addChild(TextUI::Create({ .text = U"制作",.fontSize = 30,.color = ColorF{1} }));
 
-		col->addChild(TextUI::Create({ .text = U"制作：東京都市大学コンピュータ技術研究会",.fontSize = 30,.color = ColorF{1} }));
+		col->addChild(TextUI::Create({ .text = U"使用させていただいた素材",.fontSize = 30,.color = ColorF{1} }));
 
-		for(const auto& text:texts)
+		for (const auto& text : texts2)
 		{
-			auto row = Row::Create({.mainAxis=MainAxis::start});
+			auto row = Row::Create({ .mainAxis = MainAxis::start });
 			row->addChild(TextUI::Create({ .text = text.first,.fontSize = 20,.color = ColorF{1} }));
 			row->addChild(TextUI::Create({ .text = text.second,.fontSize = 17,.color = ColorF{0.7} }));
 			col->addChild(row);
@@ -124,11 +130,11 @@ namespace Lisence
 
 		col->addChild(TextUI::Create({ .fontSize = 20 }));
 
-		col->addChild(TextUI::Create({ .text = U"使用させていただいた素材",.fontSize = 30,.color = ColorF{1} }));
+		col->addChild(TextUI::Create({ .text = U"制作：東京都市大学コンピュータ技術研究会",.fontSize = 30,.color = ColorF{1} }));
 
-		for (const auto& text : texts2)
+		for(const auto& text:texts)
 		{
-			auto row = Row::Create({ .mainAxis = MainAxis::start });
+			auto row = Row::Create({.mainAxis=MainAxis::start});
 			row->addChild(TextUI::Create({ .text = text.first,.fontSize = 20,.color = ColorF{1} }));
 			row->addChild(TextUI::Create({ .text = text.second,.fontSize = 17,.color = ColorF{0.7} }));
 			col->addChild(row);

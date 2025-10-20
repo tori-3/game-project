@@ -405,6 +405,7 @@
     <ClInclude Include="MotionLoader.h" />
     <ClInclude Include="Movements.h" />
     <ClInclude Include="NinePatch.hpp" />
+    <ClInclude Include="NotificationAddon.h" />
     <ClInclude Include="OpeningScene.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RingEffect.h" />

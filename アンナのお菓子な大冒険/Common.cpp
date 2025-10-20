@@ -2,6 +2,7 @@
 #include"KeyConfigUtility.h"
 #include"KeyInfo.h"
 #include"ControllerManager.h"
+#include"ControllerInput.h"
 
 void GameData::saveMiniGameClear()
 {
@@ -12,6 +13,7 @@ void GameData::saveMiniGameClear()
 		{
 			firstClearStage = true;
 			notifyMiniGameSelect = true;
+			NotificationAddon::Show(U"新しいミニゲームが追加！", U"[ミニゲーム]から様々な難易度で遊べます", NotificationAddon::Type::Minigame);
 			clearStage = stage;
 			save();
 		}
@@ -67,6 +69,7 @@ void GameData::saveMainGame(bool clear)
 			if (stage == LastBossStage)
 			{
 				notifyGallery = true;
+				garellyNotificationAddonFlg = true;
 			}
 		}
 
@@ -77,10 +80,57 @@ void GameData::saveMainGame(bool clear)
 		if(increaseHPMode)
 		{
 			maxHPList[stage - 1] += 2;
+			NotificationAddon::Show(U"HPが増加しました", U"[設定]→[HPの増加]で\nこの機能をOFFにできます", NotificationAddon::Type::Heart);
 		}
 	}
 
 	save();
+}
+
+void GameData::update()
+{
+	if (not XInput(0).isConnected())
+	{
+		gamepadMode = false;
+	}
+	else if (Scene::Rect().leftClicked() || Scene::Rect().rightClicked()||not Cursor::Delta().isZero())
+	{
+		gamepadMode = false;
+	}
+	else if (AnyXInputPressed())
+	{
+		gamepadMode = true;
+	}
+	else
+	{
+		for (const auto& key : Keyboard::GetAllInputs())
+		{
+			if (key.down())
+			{
+				gamepadMode = false;
+				break;
+			}
+		}
+	}
+
+	if(gamepadMode)
+	{
+		Cursor::RequestStyle(CursorStyle::Hidden);
+	}
+
+	//スクリーンショット
+	//screenshotNotifyを使って通知は1フレームずらす
+	if(screenshotNotify)
+	{
+		NotificationAddon::Show(U"スクリーンショットを保存", U"Screenshotフォルダに保存されています", NotificationAddon::Type::Screenshot);
+		screenshotNotify = false;
+	}
+
+	if(screenshotKey.down())
+	{
+		screenshotNotify = true;
+		ScreenCapture::SaveCurrentFrame();
+	}
 }
 
 void GameData::save()
@@ -127,6 +177,7 @@ void GameData::save()
 		json[U"attackKey"] = KeyConfigUtility::ToJSON(attackKey);
 		json[U"downKey"] = KeyConfigUtility::ToJSON(downKey);
 		json[U"pauseKey"] = KeyConfigUtility::ToJSON(pauseKey);
+		json[U"screenshotKey"] = KeyConfigUtility::ToJSON(screenshotKey);
 		saveDatajson[U"Key"] = json;
 	}
 
@@ -192,11 +243,12 @@ void GameData::load()
 		attackKey = KeyConfigUtility::FromJSON(json[U"attackKey"]);
 		downKey = KeyConfigUtility::FromJSON(json[U"downKey"]);
 		pauseKey = KeyConfigUtility::FromJSON(json[U"pauseKey"]);
+		screenshotKey = KeyConfigUtility::FromJSON(json[U"screenshotKey"]);
 	}
 
 }
 
 String GameData::fmt(StringView text)const
 {
-	return Fmt(text)(ToKeyName(minigameUpKey), ToKeyName(minigameLeftKey), ToKeyName(minigameDownKey), ToKeyName(minigameRightKey), ToKeyName(attackKey), ToKeyName(jumpKey), ToKeyName(downKey));
+	return Fmt(text)(ToKeyName(minigameUpKey,gamepadMode), ToKeyName(minigameLeftKey, gamepadMode), ToKeyName(minigameDownKey, gamepadMode), ToKeyName(minigameRightKey, gamepadMode), ToKeyName(attackKey, gamepadMode), ToKeyName(jumpKey, gamepadMode), ToKeyName(downKey, gamepadMode));
 }

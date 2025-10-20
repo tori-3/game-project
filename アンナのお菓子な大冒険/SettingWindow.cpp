@@ -103,7 +103,7 @@ public:
 				AudioAsset{ U"キャンセル" }.playOneShot();
 				inputs[*inputIndex] = none;
 				inputIndex = none;
-				buttons[*inputIndex]->setChild(TextUI::Create({ .text = U"未設定",.fontSize = 23,.color = unconfiguredTextColor }));
+				buttons[*inputIndex]->setChild(TextUI::Create({ .text = U"未設定",.fontSize = 23,.color = unconfiguredTextColor,.height = 35 }));
 				buttons[*inputIndex]->color = Palette::Chocolate;
 			}
 
@@ -120,7 +120,7 @@ public:
 						AudioAsset{ U"決定ボタン" }.playOneShot();
 
 						buttons[i]->color = Palette::Orange;
-						buttons[i]->setChild(TextUI::Create({ .text = U"キーを入力",.fontSize = 23,.color = normalTextColor }));
+						buttons[i]->setChild(TextUI::Create({ .text = U"キーを入力",.fontSize = 23,.color = normalTextColor,.height = 35 }));
 
 						inputIndex = i;
 					}
@@ -210,7 +210,7 @@ private:
 
 std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const InputGroup& downInputGroup, const InputGroup& leftInputGroup, const InputGroup& rightInputGroup, const std::function<void()>& onClose,GameData& gameData,UIManager& manager,size_t index)
 {
-	auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 20,.margine = 10,.width = 200, .child = TextUI::Create({.text = U"\U000F05AD閉じる",.color = Palette::White}) });
+	auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding =20,.margine = {10,0,0,0},.width = 200, .child = TextUI::Create({.text = U"\U000F05AD閉じる",.color = Palette::White})});
 	auto effectVolumeSlider = SimpleSlider::Create({ .value = GlobalAudio::BusGetVolume(EffectMixBus) });
 	auto BGMVolumeSlider = SimpleSlider::Create({ .value = GlobalAudio::BusGetVolume(BGMMixBus) });
 	auto effectVolumeIcon = SoundIcon::Create({ .volume = effectVolumeSlider->value });
@@ -314,7 +314,8 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 		({
 			.child = Column::Create
 			({
-				.margine = 20,
+				.margine = {10,20},
+				
 				.children
 				{
 					TextUI::Create({.text = U"\U000F0493 設定",.fontSize = 40,.color = Palette::White}),
@@ -551,6 +552,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 						KeyConfigInfo{U"右移動→",gameData.minigameRightKey},
 						KeyConfigInfo{U"メニュー：決定",gameData.menuDecisionKey},
 						KeyConfigInfo{U"メニュー：戻る",gameData.menuBackKey},
+						KeyConfigInfo{U"スクリーンショット",gameData.screenshotKey},
 					}
 				};
 
@@ -598,7 +600,8 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 											closeButton,
 											TextUI::Create({.text = U"長押しで削除",.fontSize = 30,.color = Palette::White}),
 										}
-									})
+									}),
+								TextUI::Create({.text = U"※上移動↑でもジャンプができます  ※左スティックでも移動ができます",.fontSize = 20,.color = ColorF{0.8}})
 								}
 							})
 						}),
@@ -753,6 +756,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 									gameData.minigameRightKey = (*table)[7].getInputGroup();
 									gameData.menuDecisionKey = (*table)[8].getInputGroup();
 									gameData.menuBackKey = (*table)[9].getInputGroup();
+									gameData.screenshotKey = (*table)[10].getInputGroup();
 
 									gameData.save();
 
@@ -785,6 +789,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 										KeyConfigInfo{U"右移動→",gameData.minigameRightKey},
 										KeyConfigInfo{U"メニュー：決定",gameData.menuDecisionKey},
 										KeyConfigInfo{U"メニュー：戻る",gameData.menuBackKey},
+										KeyConfigInfo{U"スクリーンショット",gameData.screenshotKey},
 									}
 								};
 

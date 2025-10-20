@@ -33,3 +33,13 @@ Move,body,-4,0,0.25
 
 ChangeScale,body,1.10586768,1.10586768,0.1
 ChangeTexture,face1,Characters/cloud/face1.png
+
+#musickAttack
+ChangeTexture,face1,Characters/cloud/face2.png
+ChangeScale,body,0.9,0.9,0.1
+
+#musickAttackBack
+ChangeTexture,face1,Characters/cloud/face1.png
+ChangeScale,body,1.1111111111111,1.1111111111111,0.1
+
+Base body

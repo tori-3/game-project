@@ -35,7 +35,7 @@ namespace HawkDropOut
 		switch (getData().mini_mode)
 		{
 		case Stage_Mode:
-			clearScore = 3000;
+			clearScore = 2500;
 			break;
 		case Easy_Mode:
 			clearScore = 2000;
@@ -566,10 +566,10 @@ namespace HawkDropOut
 			if (clear)
 			{
 				Rect{ 800,600 }.draw(ColorF{ 0,0.5 });
-				FontAsset{ U"TitleFont" }(U"Clear!!").drawAt(100, 400, 250);
-				FontAsset{ U"TitleFont" }(U"{}で戻る"_fmt(ToKeyName(getData().menuDecisionKey))).drawAt(30, 400, 350);
+				FontAsset{ U"NormalFont" }(U"Clear!!").drawAt(100, 400, 250);
+				FontAsset{ U"NormalFont" }(U"{}で戻る"_fmt(ToKeyName(getData().menuDecisionKey, getData().gamepadMode))).drawAt(30, 400, 350);
 			}
 		}
-		FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey))).draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
+		FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30,Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 	}
 }

@@ -22,43 +22,12 @@ inline String GetKeyName(const Input& input)
 	}
 
 	return input.name();
-
-	//const std::map<Input, String>table
-	//{
-	//	{XInput(0).buttonStart,U"\U000F02B4Start"},
-	//	{XInput(0).buttonBack,U"\U000F02B4Back"},
-	//	{XInput(0).buttonLThumb,U"\U000F02B4\U000F0EC2(L)"},
-	//	{XInput(0).buttonRThumb,U"\U000F02B4\U000F0EC2(R)"},
-	//	{XInput(0).buttonLB,U"\U000F02B4LB"},
-	//	{XInput(0).buttonRB,U"\U000F02B4RB"},
-	//	{XInput(0).buttonUp,U"\U000F02B4\U000F0E42"},
-	//	{XInput(0).buttonDown,U"\U000F02B4\U000F0E39"},
-	//	{XInput(0).buttonLeft,U"\U000F02B4\U000F0E3A"},
-	//	{XInput(0).buttonRight,U"\U000F02B4\U000F0E3B"},
-	//	{XInput(0).buttonA,U"\U000F02B4A"},
-	//	{XInput(0).buttonB,U"\U000F02B4B"},
-	//	{XInput(0).buttonX,U"\U000F02B4X"},
-	//	{XInput(0).buttonY,U"\U000F02B4Y"},
-	//	{KeyUp,U"↑"},
-	//	{KeyDown,U"↓"},
-	//	{KeyLeft,U"←"},
-	//	{KeyRight,U"→"},
-	//};
-
-	//if (table.contains(input))
-	//{
-	//	return table.at(input);
-	//}
-	//else
-	//{
-	//	return Format(input);
-	//}
 }
 
-inline Input SelectKey(const InputGroup& inputGroup)
+inline Input SelectKey(const InputGroup& inputGroup,bool gamepadMode)
 {
 	//コントローラーモードでコントローラーのキーがあったら返す
-	if (XInput(0).isConnected())
+	if (gamepadMode)
 	{
 		for(auto& input: inputGroup.inputs())
 		{
@@ -96,7 +65,7 @@ inline Input SelectKey(const InputGroup& inputGroup)
 	return inputGroup.inputs().front();
 }
 
-inline String ToKeyName(const InputGroup& inputGroup)
+inline String ToKeyName(const InputGroup& inputGroup, bool gamepadMode)
 {
-	return GetKeyName(SelectKey(inputGroup));
+	return GetKeyName(SelectKey(inputGroup, gamepadMode));
 }

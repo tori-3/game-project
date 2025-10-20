@@ -303,7 +303,7 @@ void SnowKnight::damage(int32 n, const Vec2& _force, DamageType damageType)
 					}
 				}
 
-				DataManager::get().effect.add<FadeUpEffect>(pos,text, FontAsset(U"TitleFont"),Palette::Blue);
+				DataManager::get().effect.add<FadeUpEffect>(pos,text, FontAsset(U"NormalFont"),Palette::Blue);
 
 				++attackCount;
 			}

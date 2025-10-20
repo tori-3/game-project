@@ -33,3 +33,8 @@ inline Optional<Input> GetDownXInput()
 
 	return none;
 }
+
+inline bool AnyXInputPressed()
+{
+	return GetDownXInput() || XInput(0).leftThumbD4() || XInput(0).rightThumbD4();
+}

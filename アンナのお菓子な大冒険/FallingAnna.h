@@ -296,7 +296,7 @@ namespace FallingAnna {
 			{
 			case Stage_Mode:
 				nokori *= 1.0;
-				goukakuline *= 1.0;
+				goukakuline *= 0.9;//1.0
 				perrock *= 1.25;
 				pertoge *= 0.75;
 				percloud *= 1.0;
@@ -877,7 +877,7 @@ namespace FallingAnna {
 					Cfont(U"失敗……").drawAt(textStyle, ww * 0.5f, wh * 0.35f);
 				}
 				//Sfont(U"合格ライン:", goukakuline).draw(textStyle, Arg::topLeft = Vec2(ww * 0.5f, wh * 0.47f));
-				FontAsset{ U"NormalFont" }(U"{}でおわる"_fmt(ToKeyName(getData().menuDecisionKey))).drawAt(60,Vec2(ww * 0.5f, wh * 0.6f));
+				FontAsset{ U"NormalFont" }(U"{}でおわる"_fmt(ToKeyName(getData().menuDecisionKey, getData().gamepadMode))).drawAt(60,Vec2(ww * 0.5f, wh * 0.6f));
 			}
 			if (getclear())
 			{
@@ -889,7 +889,7 @@ namespace FallingAnna {
 			}
 			Sfont(U"残り:", Math::Round(nokori / annah * 1.6), U"m").draw(textStyle, Arg::topRight = Vec2(ww * 0.95f, wh * 0.05f));
 
-			FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey))).draw(Arg::topRight = Vec2{ Scene::Width() - 10,5 });
+			FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30,Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 		}
 
 	};

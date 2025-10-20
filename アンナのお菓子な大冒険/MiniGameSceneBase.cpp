@@ -71,7 +71,7 @@ std::shared_ptr<UIElement> MiniGameSceneBase::createPauseUI()
 				.children
 				{
 					TextUI::Create({.text=U"ポーズ",.fontSize = 40,.color=Palette::White}),
-					TextUI::Create({.text = getData().description,.fontSize = 30,.color = Palette::White,.flex = 1,}),
+					TextUI::Create({.text = getData().fmt(getData().description),.fontSize = 30,.color = Palette::White,.flex = 1,}),
 					Row::Create
 					({
 						.children

@@ -322,6 +322,10 @@ void NeedleRightBlock(Point pos) {
 	TextureAsset(U"PointedCorn").resized(rect_size).rotated(-90_deg).draw(pos * rect_size);
 }
 
+void FloatingCookieItem(Point pos)
+{
+	TextureAsset(U"FloatingCookieItem").resized(rect_size*0.8).draw(pos * rect_size);
+}
 
 struct Info {
 	String tag;
@@ -397,6 +401,7 @@ Array<Info>list{
 	{U"NeedleDownBlock",NeedleDownBlock,U"とげ(下)"},
 	{U"NeedleLeftBlock",NeedleLeftBlock,U"とげ(左)"},
 	{U"NeedleRightBlock",NeedleRightBlock,U"とげ(右)"},
+	{U"FloatingCookieItem",FloatingCookieItem,U"フォーチュンクッキー"}
 };
 
 HashTable<String, std::function<void(Point)>> table;

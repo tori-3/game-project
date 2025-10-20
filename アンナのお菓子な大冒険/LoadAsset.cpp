@@ -29,9 +29,9 @@ void LoadAsset::LoadStageTexture()
 
 void LoadAsset::LoadFont()
 {
-	FontAsset::Register(U"TitleFont", FontMethod::MSDF, 25, Typeface::Heavy);
+	//FontAsset::Register(U"TitleFont", FontMethod::MSDF, 25, Typeface::Heavy);
 
-	FontAsset::Register(U"NormalFont", FontMethod::MSDF, 25+5, Typeface::Heavy);
+	FontAsset::Register(U"NormalFont", FontMethod::MSDF, 25, Typeface::Heavy);
 
 	FontAsset::Register(U"IconFont", FontMethod::MSDF, 25, Typeface::Icon_MaterialDesign);
 
@@ -49,28 +49,24 @@ void LoadAsset::LoadFont()
 	const Font xinputFont = FontAsset{ U"XInput" };
 
 
-	FontAsset{ U"TitleFont" }.addFallback(iconFont);
 	FontAsset{ U"NormalFont" }.addFallback(iconFont);
 
-	FontAsset{ U"TitleFont" }.addFallback(emojiFont);
 	FontAsset{ U"NormalFont" }.addFallback(emojiFont);
 
-	FontAsset{ U"TitleFont" }.addFallback(keyboardFont);
 	FontAsset{ U"NormalFont" }.addFallback(keyboardFont);
 
-	FontAsset{ U"TitleFont" }.addFallback(xinputFont);
 	FontAsset{ U"NormalFont" }.addFallback(xinputFont);
 
+	BunchoUI::TextUI::DefaultFontName = U"NormalFont";
 
-	BunchoUI::TextUI::DefaultFontName = U"TitleFont";
-
-	FontAsset::LoadAsync(U"TitleFont");
 	FontAsset::LoadAsync(U"NormalFont", U"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
 	FontAsset::LoadAsync(U"IconFont");
 }
 
 void LoadAsset::LoadAudio()
 {
+
+	AudioAsset::Register(U"足音",U"Audio/足音.mp3", Loop::Yes);
 
 	for (auto& path : FileSystem::DirectoryContents(U"Audio"))
 	{
@@ -79,9 +75,13 @@ void LoadAsset::LoadAudio()
 		AudioAsset::LoadAsync(name);
 	}
 
+	LoadAsset::RegisterAudio(U"BGM/StageCloud_Pxtone5.2.mp3", Loop::Yes);
+
+	AudioAsset::LoadAsync(U"BGM/StageCloud_Pxtone5.2.mp3");
+
 	AudioAsset{ U"ゲームオーバー" }.setVolume(10);
 
-	AudioAsset{ U"足音" }.setVolume(3);
+	AudioAsset{ U"足音" }.setVolume(5);
 
 	AudioAsset{ U"ビーム" }.setVolume(3);
 
