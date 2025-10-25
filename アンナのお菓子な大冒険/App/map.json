@@ -177,14 +177,14 @@
             "MapFile": "",
             "Picture": "MiniGameDisplay/音ゲー.png",
             "SceneName": "AnnaMusicGame",
-            "Sentence": "🕹️ リズムDEアンナちゃん\nたくさんのキャンディーが落ちてきた！\nタイミングよく{1}(←)と{3}(→)を押して\nキャンディーを手に入れよう！",
+            "Sentence": "🕹️ リズムDEアンナちゃん\nたくさんのキャンディーが落ちてきた！\nタイミングよく{7}(←)と{8}(→)を押して\nキャンディーを手に入れよう！",
             "StagePos": "(650,480)",
             "Type": "MiniGame"
         },
         "Stage19": {
             "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
             "BackgroundTexture": "BackgroundTexture/雲背景.png",
-            "MapFile": "StageData/cloudStage2.json",
+            "MapFile": "StageData/cloudStageY.json",
             "Picture": "BackgroundTexture/雲背景.png",
             "SceneName": "MainGameScene",
             "Sentence": "<3-2> あっちこっち大空襲\nたいへん！\n空から大量のおかしたちが、\n押し寄せてきた！\nゆっくりお菓子を食べてるヒマは、\nもうありません！\nにげて、にげて、アンナちゃん！",
@@ -197,7 +197,7 @@
             "MapFile": "",
             "Picture": "MiniGameDisplay/HawkDropOut.png",
             "SceneName": "HawkDropOut",
-            "Sentence": "🕹️ 大鷹飛び\n鷹に乗ってひとっ飛び！\n地面に着かないように気を付けよう！\n🍪を取るとアイテムゲット！\n{0}-上昇  {2}-降下(上昇可能時間が回復)\n{4}-攻撃(🍪×1)\n{5}長押し-急上昇(🍪×2)",
+            "Sentence": "🕹️ 大鷹飛び\n鷹に乗ってひとっ飛び！\n地面に着かないように気を付けよう！\n🍪を取るとアイテムゲット！\n{0}-上昇  {2}-降下(上昇可能時間が回復)\n{7}-攻撃(🍪×1)\n{8}長押し-急上昇(🍪×2)",
             "StagePos": "(780,450)",
             "Type": "MiniGame"
         },

@@ -58,7 +58,7 @@ void Main()
 
 	Addon::Register<NotificationAddon>(U"NotificationAddon");
 
-	NotificationAddon::SetLifeTime(4);
+	NotificationAddon::SetLifeTime(5);
 
 	while (System::Update())
 	{

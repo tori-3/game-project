@@ -1,5 +1,5 @@
 ﻿{
-  "BGMVolume": 0.0,
+  "BGMVolume": 0.4495784044265747,
   "ClearHP": [
     5,
     5,
@@ -28,20 +28,20 @@
     5
   ],
   "ClearStage": 25,
-  "EffectVolume": 1.0,
+  "EffectVolume": 0.48330649733543396,
   "IncreaseHPMode": true,
   "IsFullscreen": false,
   "Key": {
     "attackKey": {
       "inputs": [
         {
-          "code": 12,
-          "device": 4,
+          "code": 13,
+          "device": 1,
           "playerIndex": 0
         },
         {
-          "code": 13,
-          "device": 1,
+          "code": 14,
+          "device": 4,
           "playerIndex": 0
         }
       ],
@@ -70,12 +70,17 @@
     "jumpKey": {
       "inputs": [
         {
-          "code": 13,
+          "code": 12,
           "device": 4,
           "playerIndex": 0
         },
         {
           "code": 32,
+          "device": 1,
+          "playerIndex": 0
+        },
+        {
+          "code": 87,
           "device": 1,
           "playerIndex": 0
         }
@@ -231,6 +236,14 @@
     5,
     5,
     5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    9,
     9,
     5,
     5,
@@ -238,17 +251,9 @@
     5,
     5,
     5,
-    7,
     5,
     5,
-    5,
-    5,
-    5,
-    5,
-    5,
-    5,
-    5,
-    5
+    7
   ],
   "MiniGame": [
     {
@@ -258,11 +263,11 @@
     },
     {
       "Easy": true,
-      "Hard": false,
+      "Hard": true,
       "Normal": false
     },
     {
-      "Easy": false,
+      "Easy": true,
       "Hard": true,
       "Normal": true
     },
@@ -284,6 +289,6 @@
   ],
   "NotifyGallery": false,
   "NotifyMiniGameSelect": false,
-  "SelectedStage": 21,
+  "SelectedStage": 19,
   "Vibration": 1.0
 }

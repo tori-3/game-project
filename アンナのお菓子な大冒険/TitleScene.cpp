@@ -353,8 +353,18 @@ void TitleScene::draw() const
 
 std::shared_ptr<UIElement> TitleScene::licenseDialog()
 {
-	auto showBrowserButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 220, .child = TextUI::Create({.text = U"\U000F059FLicenses",.color = Palette::White}) });
-	auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink, .padding = 20,.margine = 10,.width = 220, .child = TextUI::Create({.text = U"\U000F05AD閉じる",.color = Palette::White}) });
+
+	auto col = Column::Create
+	({
+		.children
+		{
+			TextUI::Create({.text = U"\U000F059F公式サイト",.color = Palette::White}),
+			TextUI::Create({.text = U"外部リンクを開きます",.fontSize=20,.color = Palette::White}),
+		}
+	});
+
+	auto showBrowserButton = ChocolateButton::Create({ .color = Palette::Chocolate,.margine = 10,.width = 220+50,.height = 70, .child = col });
+	auto closeButton = ChocolateButton::Create({ .color = Palette::Hotpink,.margine = 10,.width = 220-20,.height=70, .child = TextUI::Create({.text = U"\U000F05AD閉じる",.color = Palette::White}) });
 	closeButton->selected = true;
 	auto scrollbar = SimpleScrollbar::Create
 	({
@@ -425,11 +435,13 @@ std::shared_ptr<UIElement> TitleScene::licenseDialog()
 				scrollbar->addScrollPos(Scene::DeltaTime() * 1000);
 			}
 
+			constexpr URLView url= U"https://sites.google.com/d/1dMjqli16P4zKfF51msO9gAoU5u_rDn2Z/p/1Sba9LIq3GjTa1REJNKni17z0Cimr2d3L/edit";
+
 			if (getData().menuDecisionKey.down())
 			{
 				if (showBrowserButton->selected)
 				{
-					LicenseManager::ShowInBrowser();
+					System::LaunchBrowser(url);
 					AudioAsset{ U"決定ボタン" }.playOneShot();
 				}
 				else
@@ -452,7 +464,7 @@ std::shared_ptr<UIElement> TitleScene::licenseDialog()
 				}
 				else if (showBrowserButton->clicked())
 				{
-					LicenseManager::ShowInBrowser();
+					System::LaunchBrowser(url);
 					AudioAsset{ U"決定ボタン" }.playOneShot();
 				}
 			}

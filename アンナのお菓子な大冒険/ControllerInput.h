@@ -36,5 +36,5 @@ inline Optional<Input> GetDownXInput()
 
 inline bool AnyXInputPressed()
 {
-	return GetDownXInput() || XInput(0).leftThumbD4() || XInput(0).rightThumbD4();
+	return GetDownXInput() || XInput(0).leftThumbD4(0.5) || XInput(0).rightThumbD4(0.5);
 }

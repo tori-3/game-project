@@ -280,3 +280,26 @@ public:
 
 	void damage(int32, const Vec2&, DamageType)override;
 };
+
+class StrawberrySoldierTower :public Entity
+{
+public:
+
+	bool left = true;
+
+	bool bornFlg;
+
+	CharacterSystem character;
+
+	StrawberrySoldierTower* parent = nullptr;
+
+	StrawberrySoldierTower(const Vec2& cpos, bool root = false);
+
+	void update()override;
+
+	void lateUpdate()override;
+
+	void draw()const override;
+
+	void damage(int32 n, const Vec2& force, DamageType)override;
+};

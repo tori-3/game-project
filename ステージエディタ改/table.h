@@ -327,6 +327,12 @@ void FloatingCookieItem(Point pos)
 	TextureAsset(U"FloatingCookieItem").resized(rect_size*0.8).draw(pos * rect_size);
 }
 
+void StrawberrySoldierTower(Point pos) {
+	TextureAsset(U"StrawberrySoldier").resized(rect_size).draw(pos * rect_size);
+	Rect{ pos * rect_size,rect_size }.drawFrame(5, 0, Palette::Blue);
+}
+
+
 struct Info {
 	String tag;
 	std::function<void(Point)>func;
@@ -401,7 +407,8 @@ Array<Info>list{
 	{U"NeedleDownBlock",NeedleDownBlock,U"とげ(下)"},
 	{U"NeedleLeftBlock",NeedleLeftBlock,U"とげ(左)"},
 	{U"NeedleRightBlock",NeedleRightBlock,U"とげ(右)"},
-	{U"FloatingCookieItem",FloatingCookieItem,U"フォーチュンクッキー"}
+	{U"FloatingCookieItem",FloatingCookieItem,U"フォーチュンクッキー"},
+	{U"StrawberrySoldierTower",StrawberrySoldierTower,U"イチゴタワー"},
 };
 
 HashTable<String, std::function<void(Point)>> table;

@@ -34,6 +34,7 @@ EnemyAdder::EnemyAdder()
 	table[U"NeedleRight"] = [](const Vec2& pos) {return new Needle{ pos,3 }; };
 	table[U"BigCloudEnemy"] = [](const Vec2& pos) {return new BigCloudEnemy{ pos }; };
 	table[U"FloatingCookieItem"]=[](const Vec2& pos) {return new FloatingCookieItem{ pos }; };
+	table[U"StrawberrySoldierTower"] = [](const Vec2& pos) {return new StrawberrySoldierTower{ pos,true }; };
 }
 
 void EnemyAdder::update(EntityManager& manager)

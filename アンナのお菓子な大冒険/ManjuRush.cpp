@@ -67,7 +67,7 @@ namespace ManjuRush
 			if (score == clearScore) {
 				if (clear == false) {
 					//stopwatch.restart();
-					Clear.play();
+					AudioAsset{ U"ミニゲームクリア" }.play();
 					getData().saveMiniGameClear();
 				}
 				clear = true;
@@ -173,7 +173,7 @@ namespace ManjuRush
 					}
 					defeat = true;
 					if (stopwatch > 2s) {
-						Defeat.play();
+						AudioAsset{ U"ミニゲームやられた" }.play();
 					}
 					if (stopwatch > 4s) {
 						EndGame(false);

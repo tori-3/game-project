@@ -525,3 +525,11 @@ public:
 
 	void update(const Point& pos)override;
 };
+
+class StrawberrySoldierTowerBlock :public Untouchable {
+public:
+
+	bool bornFlg = false;
+
+	void update(const Point& pos)override;
+};

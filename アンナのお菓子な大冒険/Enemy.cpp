@@ -614,8 +614,6 @@ void Corn::lateUpdate()
 
 void Corn::draw()const
 {
-	hitBox.getFigure().drawFrame(10, Palette::Red);
-
 	character.draw();
 }
 
@@ -1034,3 +1032,110 @@ void BigCloudEnemy::draw()const
 
 void BigCloudEnemy::damage(int32, const Vec2&, DamageType)
 {}
+
+
+StrawberrySoldierTower::StrawberrySoldierTower(const Vec2& cpos, bool root)
+	: Entity{ U"Enemy", RectF{Arg::center(0,0),70,69},cpos,{0,0},1 }
+	, character{ U"Characters/itigo/itigo.json" ,U"Characters/itigo/motion.txt" ,0.3,cpos,true,false }
+	,bornFlg{not root}
+{
+	character.addMotion(U"", true);
+}
+
+void StrawberrySoldierTower::update()
+{
+	if (not bornFlg)
+	{
+		bornFlg = true;
+
+		StrawberrySoldierTower* tale = this;
+		for (int32 i = 0; i < 7; ++i)
+		{
+			StrawberrySoldierTower* p = new StrawberrySoldierTower(pos + Vec2{ 0,-65 * (1 + i) });
+			p->parent = tale;
+			manager->add(p);
+			tale = p;
+		}
+	}
+
+	if(parent)
+	{
+		pos = parent->pos + Vec2{ 0,-65 };
+		left = parent->left;
+	}
+	else
+	{
+		manager->stage->hit(&hitBox);
+
+		if (hitBox.touch(Direction::right))
+		{
+			left = true;
+		}
+		else if (hitBox.touch(Direction::left))
+		{
+			left = false;
+		}
+
+		if (hitBox.touch(Direction::down))
+		{
+			if (left)
+			{
+				if (not hitBox.leftFloor())
+				{
+					left = false;
+				}
+			}
+			else
+			{
+				if (not hitBox.rightFloor())
+				{
+					left = true;
+				}
+			}
+		}
+
+		if (left)
+		{
+			vel.x = -100;
+		}
+		else
+		{
+			vel.x = 100;
+		}
+
+		hitBox.physicsUpdate();
+	}
+
+	hitBox.update();
+
+	attack(U"Player", hitBox.getFigure(), 1);
+
+	character.update(pos, left);
+}
+
+void StrawberrySoldierTower::lateUpdate()
+{
+	if (parent)
+	{
+		if (not parent->isActive())
+		{
+			parent = nullptr;
+		}
+	}
+
+	if (not isActive())
+	{
+		DataManager::get().effect.add<StarEffect>(pos, 0);
+		manager->add(new CookieItem{ pos });
+	}
+}
+
+void StrawberrySoldierTower::draw()const
+{
+	character.draw();
+}
+
+void StrawberrySoldierTower::damage(int32 n, const Vec2&, DamageType)
+{
+	Entity::damage(n);
+}

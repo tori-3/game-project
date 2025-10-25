@@ -3,6 +3,7 @@
 #include"CharacterSystem.h"
 #include"BGMManager.hpp"
 #include"SweetsPanel.hpp"
+#include"ControllerManager.h"
 
 static constexpr double endRollTime = 2;
 static constexpr double endRollTimeLong = 3;
@@ -698,7 +699,7 @@ public:
 					}),
 					.updateFunc = [=](SimpleDialog* dialog)
 					{
-						if (getData().minigameLeftKey.down())
+						if (getData().minigameLeftKey.down() || ControllerManager::LeftDown())
 						{
 							if (continueButton->selected)
 							{
@@ -712,7 +713,7 @@ public:
 							}
 						}
 
-						if (getData().minigameRightKey.down())
+						if (getData().minigameRightKey.down() || ControllerManager::RightDown())
 						{
 							if (skipButton->selected)
 							{

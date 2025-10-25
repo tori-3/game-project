@@ -10,9 +10,6 @@ namespace HawkDropOut {
 
 		int32 clearScore = 0;
 
-		Audio clearAudio{ U"MiniGameAsset/Common/クリア2.wav" };
-		Audio defeatAudio{ U"MiniGameAsset/Common/やられた.wav" };
-
 		bool clear = false;
 		bool gameover = false;
 		Timer gameOverTimer{ 2s };

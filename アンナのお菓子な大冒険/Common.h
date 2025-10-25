@@ -131,10 +131,12 @@ struct GameData
 		minigameRightKey = KeyD | KeyRight | XInput(0).buttonRight;
 		menuDecisionKey = KeyEnter | XInput(0).buttonA;
 		menuBackKey = KeyQ | XInput(0).buttonB;
-		attackKey = KeyEnter | XInput(0).buttonA;
-		jumpKey = KeySpace | XInput(0).buttonB;
+		attackKey = KeyEnter | XInput(0).buttonX;
+		jumpKey = KeySpace | KeyW | XInput(0).buttonA;
 		downKey = KeyS | KeyDown | XInput(0).buttonDown;
 		pauseKey = KeyEscape | XInput(0).buttonStart;
+		minigameLB = KeyA | KeyLeft | XInput(0).buttonLB;
+		minigameRB = KeyD | KeyRight | XInput(0).buttonRB;
 		screenshotKey = KeyF12 | XInput(0).buttonBack;
 	}
 
@@ -149,7 +151,10 @@ struct GameData
 	InputGroup jumpKey;
 	InputGroup downKey;
 	InputGroup pauseKey;
+	InputGroup minigameLB;
+	InputGroup minigameRB;
 	InputGroup screenshotKey;
+
 
 	//ステージ
 	String backgroundTexture;

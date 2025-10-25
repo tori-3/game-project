@@ -5,7 +5,7 @@ namespace Lisence
 {
 	void Init()
 	{
-		LicenseManager::DisableDefaultTrigger();
+		//LicenseManager::DisableDefaultTrigger();
 
 		//LicenseManager::AddLicense
 		//({
@@ -104,12 +104,12 @@ namespace Lisence
 
 		const Array<std::pair<String,String>>texts2
 		{
-			{U"・効果音ラボ  ",U"効果音素材"},
-			{U"・On-Jin ～音人～  ",U"効果音素材"},
-			{U"・ザ・マッチメイカァズ  ",U"効果音素材"},
-			{U"・OtoLogic [License: CC BY 4.0]  ",U"🕹️ まっくら迷路 BGM"},
-			{U"・夢にみた緑  ",U"🕹️ ふぉーりんぐアンナちゃん BGM"},
-			{U"・Kenney Input Prompts  ",U"キーの画像"},
+			{U"・効果音ラボ (https://soundeffect-lab.info)  ",U"効果音素材"},
+			{U"・On-Jin ～音人～ (https://on-jin.com)  ",U"効果音素材"},
+			{U"・ザ・マッチメイカァズ (https://osabisi.sakura.ne.jp/m2/index.html)  ",U"効果音素材"},
+			{U"・OtoLogic (https://otologic.jp)  ",U"🕹️ まっくら迷路 BGM"},
+			{U"・夢にみた緑 (https://yougou.sonnabakana.com)  ",U"🕹️ ふぉーりんぐアンナちゃん BGM"},
+			{U"・Kenney Input Prompts (https://kenney.nl/assets/input-prompts)  ",U"キーの画像"},
 		};
 
 		auto col = Column::Create({.crossAxis=CrossAxis::start,.margine=18});

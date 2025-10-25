@@ -58,9 +58,7 @@ namespace ManjuRush {
 		Texture kumokumo{ U"MiniGameAsset/まんじゅうラッシュ素材/くもくも.png" };
 
 		Audio BGM = AudioAsset{ U"MiniGameBGM" };
-		Audio Clear{ U"MiniGameAsset/Common/クリア2.wav" };
 		Audio Touch{ U"MiniGameAsset/まんじゅうラッシュ素材/8bitダメージ8.mp3" };
-		Audio Defeat{ U"MiniGameAsset/Common/やられた.wav" };
 		Audio Score{ U"MiniGameAsset/まんじゅうラッシュ素材/スコア.wav" };
 
 		RectF player{ 70, 500, 70,100 };

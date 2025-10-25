@@ -73,22 +73,22 @@ public:
 
 	static bool RightPressed()
 	{
-		return  PressedHelper(XInput(0).leftThumbD8(), 1, 2, 3);
+		return  PressedHelper(XInput(0).leftThumbD8(0.5), 1, 2, 3);
 	}
 
 	static bool LeftPressed()
 	{
-		return  PressedHelper(XInput(0).leftThumbD8(), 5, 6, 7);
+		return  PressedHelper(XInput(0).leftThumbD8(0.5), 5, 6, 7);
 	}
 
 	static bool UpPressed()
 	{
-		return  PressedHelper(XInput(0).leftThumbD8(), 7, 0, 1);
+		return  PressedHelper(XInput(0).leftThumbD8(0.5), 7, 0, 1);
 	}
 
 	static bool DownPressed()
 	{
-		return  PressedHelper(XInput(0).leftThumbD8(), 3, 4,5);
+		return  PressedHelper(XInput(0).leftThumbD8(0.5), 3, 4,5);
 	}
 
 	static bool DownDown()

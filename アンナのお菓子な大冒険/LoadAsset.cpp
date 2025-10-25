@@ -79,25 +79,6 @@ void LoadAsset::LoadAudio()
 
 	AudioAsset::LoadAsync(U"BGM/StageCloud_Pxtone5.2.mp3");
 
-	AudioAsset{ U"ゲームオーバー" }.setVolume(10);
-
-	AudioAsset{ U"足音" }.setVolume(5);
-
-	AudioAsset{ U"ビーム" }.setVolume(3);
-
-	AudioAsset{ U"雪玉壊れる" }.setVolume(5);
-
-	AudioAsset{ U"アンナちゃん" }.setVolume(3);
-
-	AudioAsset{ U"妖精" }.setVolume(3);
-
-	AudioAsset{ U"ドーナツ" }.setVolume(3);
-	//AudioAsset{ U"ドーナツ" }.setLoop(true);
-
-	AudioAsset{ U"ドーナツ衝突" }.setVolume(3);
-
-	AudioAsset{ U"看板" }.setVolume(20);
-
 	AudioAsset::Wait(U"キャンセル2");
 }
 
@@ -117,6 +98,30 @@ void LoadAsset::Wait()
 	{
 		FontAsset::Wait(name);
 	}
+
+	AudioAsset{ U"ゲームオーバー" }.setVolume(10);
+
+	AudioAsset{ U"足音" }.setVolume(5);
+
+	AudioAsset{ U"ビーム" }.setVolume(3);
+
+	AudioAsset{ U"雪玉壊れる" }.setVolume(5);
+
+	AudioAsset{ U"アンナちゃん" }.setVolume(3);
+
+	AudioAsset{ U"妖精" }.setVolume(3);
+
+	AudioAsset{ U"ドーナツ" }.setVolume(3);
+
+	AudioAsset{ U"ドーナツ衝突" }.setVolume(3);
+
+	AudioAsset{ U"看板" }.setVolume(20);
+
+	AudioAsset{ U"ミニゲームクリア" }.setVolume(0.5);
+
+	AudioAsset{ U"ミニゲームやられた" }.setVolume(0.5);
+
+	AudioAsset{ U"看板" }.setVolume(20);
 }
 
 void LoadAsset::RegisterTexture(StringView path)

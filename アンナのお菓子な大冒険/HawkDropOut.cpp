@@ -30,8 +30,6 @@ namespace HawkDropOut
 
 
 
-
-
 		switch (getData().mini_mode)
 		{
 		case Stage_Mode:
@@ -205,7 +203,7 @@ namespace HawkDropOut
 		}
 
 		//攻撃ボタン
-		if (ButtonUpdate(Rect{ 650, 250, 60, 60 }, 0.5, 30, 30, attackfunction, font, farmCount, numofmeat >= 1, enemy, j < 1) && (Rect{ 650, 250, 60, 60 }.leftClicked() || getData().attackKey.pressed())) {
+		if (ButtonUpdate(Rect{ 650, 250, 60, 60 }, 0.5, 30, 30, attackfunction, font, farmCount, numofmeat >= 1, enemy, j < 1) && (Rect{ 650, 250, 60, 60 }.leftClicked() || getData().minigameLB.pressed())) {
 			attack = true;
 			attackball.x = cookieCircle.x - 10;
 			attackball.y = cookieCircle.y + 10;
@@ -256,7 +254,7 @@ namespace HawkDropOut
 
 
 		//超上昇ボタン
-		if (ButtonUpdate(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, numofmeat >= 2, enemy, true) && (Rect{ 715, 244, 70, 70 }.leftClicked() || getData().jumpKey.down()))
+		if (ButtonUpdate(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, numofmeat >= 2, enemy, true) && (Rect{ 715, 244, 70, 70 }.leftClicked() || getData().minigameRB.down()))
 		{
 			tornadoFlg = true;
 			numofmeat -= 2;
@@ -267,7 +265,7 @@ namespace HawkDropOut
 		{
 			cookieCircle.y -= Scene::DeltaTime() * 1500.0;
 
-			const bool pressedTornado = ButtonUpdate(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, true, false, true) && (Rect{ 715, 244, 70, 70 }.leftPressed() || getData().jumpKey.pressed());
+			const bool pressedTornado = ButtonUpdate(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, true, false, true) && (Rect{ 715, 244, 70, 70 }.leftPressed() || getData().minigameRB.pressed());
 
 			if (not pressedTornado || cookieCircle.y <= 50)
 			{
@@ -304,13 +302,13 @@ namespace HawkDropOut
 		if (clearScore <= FlyDistance) {
 			getData().saveMiniGameClear();
 			clear = true;
-			clearAudio.playOneShot();
+			AudioAsset{U"ミニゲームクリア"}.playOneShot();
 		}
 		else if (cookieCircle.y >= 450)
 		{
 			gameOverTimer.restart();
 			gameover = true;
-			defeatAudio.playOneShot();
+			AudioAsset{ U"ミニゲームやられた" }.playOneShot();
 			BGMManager::get().stop(0.2s);
 		}
 

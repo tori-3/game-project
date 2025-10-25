@@ -42,7 +42,7 @@ namespace Maze2
 		}
 
 		if (judge.reacts(player.pos, player.size, maze.gpos, Vec2(1, 1))) {
-			clearAudio.playOneShot();
+			AudioAsset{ U"ミニゲームクリア" }.playOneShot();
 			clear = true;
 			getData().saveMiniGameClear();
 			//maze.make(23);

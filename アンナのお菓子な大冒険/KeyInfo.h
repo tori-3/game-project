@@ -40,12 +40,12 @@ inline Input SelectKey(const InputGroup& inputGroup,bool gamepadMode)
 
 	Optional<Input> directionKey;
 
-	//矢印キー以外のキーボードがあれば返す
+	//矢印とspaceキー以外のキーボードがあれば返す
 	for (auto& input : inputGroup.inputs())
 	{
 		if (input.deviceType() == InputDeviceType::Keyboard)
 		{
-			if (input == KeyUp || input == KeyDown || input == KeyLeft || input == KeyRight)
+			if (input == KeyUp || input == KeyDown || input == KeyLeft || input == KeyRight || input == KeySpace)
 			{
 				directionKey = input;
 			}
@@ -56,7 +56,7 @@ inline Input SelectKey(const InputGroup& inputGroup,bool gamepadMode)
 		}
 	}
 
-	//矢印キーを返す
+	//矢印とspaceキーを返す
 	if(directionKey)
 	{
 		return directionKey.value();
@@ -68,4 +68,27 @@ inline Input SelectKey(const InputGroup& inputGroup,bool gamepadMode)
 inline String ToKeyName(const InputGroup& inputGroup, bool gamepadMode)
 {
 	return GetKeyName(SelectKey(inputGroup, gamepadMode));
+}
+
+inline Array<Input>ToKeyArray(const InputGroup& inputGroup)
+{
+	Array<Input>result;
+
+	auto list = inputGroup.inputs();
+
+	int32 size = list.size();
+	for (int32 i = 0; i < size; ++i)
+	{
+		InputGroup group;
+		for (int32 k = 0; k < list.size(); ++k)
+		{
+			group = (group | list[k]);
+		}
+
+		auto input = SelectKey(group, true);
+		result.push_back(input);
+		list.remove(input);
+	}
+
+	return result;
 }

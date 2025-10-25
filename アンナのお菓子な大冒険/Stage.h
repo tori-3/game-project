@@ -75,6 +75,7 @@ public:
 		{U"NeedleLeftBlock",[]() {return new NeedleLeftBlock(); }},
 		{U"NeedleRightBlock",[]() {return new NeedleRightBlock(); }},
 		{U"FloatingCookieItem",[]() {return new FloatingCookieItemBlock(); }},
+		{U"StrawberrySoldierTower",[]() {return new StrawberrySoldierTowerBlock(); }}
 	};
 
 	Stage(const JSON& json,bool backGround=false) {

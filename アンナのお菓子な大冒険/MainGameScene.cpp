@@ -120,7 +120,7 @@ void MainGameScene::gameUpdate()
 	if (TalkManager::get().talkWindow.isContinue())
 	{
 		DataManager::get().table.insert(U"TalkWindow");
-		TalkManager::get().talkWindow.update(getData().minigameLeftKey.down(),(getData().attackKey|getData().minigameRightKey).down());
+		TalkManager::get().talkWindow.update(getData().minigameLeftKey.down(),(getData().menuDecisionKey|getData().minigameRightKey).down());
 
 		if(fairy)
 		{
@@ -333,7 +333,7 @@ void MainGameScene::gameDraw() const
 
 	constexpr double height = 200;
 	constexpr double space = 50;
-	TalkManager::get().talkWindow.draw(RectF{ space,Scene::Height() - height - space,Scene::Width() - space * 2 ,height }, { 250,50 },false,ToKeyName(getData().attackKey, getData().gamepadMode));
+	TalkManager::get().talkWindow.draw(RectF{ space,Scene::Height() - height - space,Scene::Width() - space * 2 ,height }, { 250,50 },false,ToKeyName(getData().menuDecisionKey, getData().gamepadMode));
 
 	FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30,Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 

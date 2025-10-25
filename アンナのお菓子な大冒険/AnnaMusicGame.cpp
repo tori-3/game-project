@@ -90,7 +90,7 @@ namespace AnnaMusicGame {
 		if (m_jud == 0)
 		{
 
-			FontAsset(U"NormalFont")(U"Perfect").draw(50, 650, 450, Palette::Yellow);
+			FontAsset(U"NormalFont")(U"Perfect").draw(50, 650+30, 450, Palette::Yellow);
 
 			for (auto& star_p : m_stars_p)
 			{
@@ -115,7 +115,7 @@ namespace AnnaMusicGame {
 		}
 		else if (m_jud == 1)
 		{
-			FontAsset(U"NormalFont")(U"Miss").draw(50, 650, 450, Palette::Skyblue);
+			FontAsset(U"NormalFont")(U"Miss").draw(50, 650+30, 450, Palette::Skyblue);
 
 
 
@@ -205,7 +205,7 @@ namespace AnnaMusicGame {
 		{
 			music.play(BGMMixBus);
 		}
-		if (getData().minigameLeftKey.down() or getData().minigameRightKey.down())
+		if (getData().minigameLB.down() or getData().minigameRB.down())
 		{
 			effect.add<Judge>(2, 2);
 			t = stopwatch.ms() + 490;
@@ -229,7 +229,7 @@ namespace AnnaMusicGame {
 				}
 
 				//判定
-				if (getData().minigameLeftKey.down())
+				if (getData().minigameLB.down())
 				{
 
 
@@ -291,7 +291,7 @@ namespace AnnaMusicGame {
 				Line{ gc + Vec2{-20,0},gc + Vec2{20,0} }.drawArrow(10, SizeF{ 15,15 });
 
 				//判定
-				if (getData().minigameRightKey.down())
+				if (getData().minigameRB.down())
 				{
 
 
@@ -346,9 +346,9 @@ namespace AnnaMusicGame {
 		}
 
 		//削除
-		rcs.remove_if([&](const OffsetCircular rc) {return((getData().minigameLeftKey.down()) and C0.intersects(Circle{rc,30}) and rc.theta > 0); });
+		rcs.remove_if([&](const OffsetCircular rc) {return((getData().minigameLB.down()) and C0.intersects(Circle{rc,30}) and rc.theta > 0); });
 		rcs.remove_if([&](const OffsetCircular rc) {return(C3.contains(Circle{ rc,30 }) and rc.theta > 0); });
-		gcs.remove_if([&](const OffsetCircular gc) {return((getData().minigameRightKey.down()) and C0.intersects(Circle{ gc,30 }) and gc.theta > 0); });
+		gcs.remove_if([&](const OffsetCircular gc) {return((getData().minigameRB.down()) and C0.intersects(Circle{ gc,30 }) and gc.theta > 0); });
 		gcs.remove_if([&](const OffsetCircular gc) {return(C3.contains(Circle{ gc,30 }) and gc.theta > 0); });
 
 		//終了
@@ -435,11 +435,11 @@ namespace AnnaMusicGame {
 
 		effect.update();
 
-		FontAsset(U"NormalFont")(U"赤(←)は{}"_fmt(ToKeyName(getData().minigameLeftKey, getData().gamepadMode))).draw(40, 700, 50, Palette::Red);
-		FontAsset(U"NormalFont")(U"黄緑(→)は{}"_fmt(ToKeyName(getData().minigameRightKey, getData().gamepadMode))).draw(40, 700, 90, Palette::Yellowgreen);
+		FontAsset(U"NormalFont")(U"赤(←)は{}"_fmt(ToKeyName(getData().minigameLB, getData().gamepadMode))).draw(40, 700, 50, Palette::Red);
+		FontAsset(U"NormalFont")(U"黄緑(→)は{}"_fmt(ToKeyName(getData().minigameRB, getData().gamepadMode))).draw(40, 700, 90, Palette::Yellowgreen);
 		FontAsset(U"NormalFont")(U"をタイミング良く押そう！\nMiss9以下でクリア").draw(40, 700, 130, Palette::Skyblue);
 		FontAsset(U"NormalFont")(U"{}"_fmt(credit)).draw(30, 5, 750, Palette::Skyblue);
-		FontAsset(U"NormalFont")(U"Combo{}"_fmt(combo)).draw(60, 650, 380, Palette::Yellowgreen);
+		FontAsset(U"NormalFont")(U"Combo{}"_fmt(combo)).draw(60, 650+30, 380, Palette::Yellowgreen);
 
 		FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30,Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 	}

@@ -105,7 +105,7 @@ public:
 
 	void setDataP(GameData* data)
 	{
-		jumpKey=data->jumpKey| data->minigameUpKey;
+		jumpKey=data->jumpKey;
 		rightKey=data->minigameRightKey;
 		leftKey=data->minigameLeftKey;
 		downKey=data->downKey;
@@ -113,6 +113,8 @@ public:
 	}
 
 	Player(const Vec2& cpos);
+
+	~Player();
 
 	void update()override;
 

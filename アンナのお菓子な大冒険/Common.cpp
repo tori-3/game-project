@@ -80,7 +80,7 @@ void GameData::saveMainGame(bool clear)
 		if(increaseHPMode)
 		{
 			maxHPList[stage - 1] += 2;
-			NotificationAddon::Show(U"HPが増加しました", U"[設定]→[HPの増加]で\nこの機能をOFFにできます", NotificationAddon::Type::Heart);
+			NotificationAddon::Show(U"HPが増加しました", U"失敗するとHPが2つ増加します\n[設定]からこの機能をOFFにできます", NotificationAddon::Type::Heart);
 		}
 	}
 
@@ -93,7 +93,7 @@ void GameData::update()
 	{
 		gamepadMode = false;
 	}
-	else if (Scene::Rect().leftClicked() || Scene::Rect().rightClicked()||not Cursor::Delta().isZero())
+	else if (Scene::Rect().leftClicked() || Scene::Rect().rightClicked()||not Cursor::DeltaRaw().isZero())
 	{
 		gamepadMode = false;
 	}
@@ -250,5 +250,5 @@ void GameData::load()
 
 String GameData::fmt(StringView text)const
 {
-	return Fmt(text)(ToKeyName(minigameUpKey,gamepadMode), ToKeyName(minigameLeftKey, gamepadMode), ToKeyName(minigameDownKey, gamepadMode), ToKeyName(minigameRightKey, gamepadMode), ToKeyName(attackKey, gamepadMode), ToKeyName(jumpKey, gamepadMode), ToKeyName(downKey, gamepadMode));
+	return Fmt(text)(ToKeyName(minigameUpKey,gamepadMode), ToKeyName(minigameLeftKey, gamepadMode), ToKeyName(minigameDownKey, gamepadMode), ToKeyName(minigameRightKey, gamepadMode), ToKeyName(attackKey, gamepadMode), ToKeyName(jumpKey, gamepadMode), ToKeyName(downKey, gamepadMode), ToKeyName(minigameLB, gamepadMode), ToKeyName(minigameRB, gamepadMode));
 }

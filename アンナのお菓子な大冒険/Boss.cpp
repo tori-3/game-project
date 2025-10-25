@@ -290,7 +290,7 @@ void SnowKnight::damage(int32 n, const Vec2& _force, DamageType damageType)
 					{
 						if (10 <= dynamic_cast<Player*>(manager->get(U"Player"))->itemCount)
 						{
-							text = U"Enter長押し！";
+							text = U"攻撃ボタン長押し！";
 						}
 						else
 						{

@@ -296,8 +296,6 @@ namespace Maze2
 
 		bool clear = false;
 
-		Audio clearAudio{ U"MiniGameAsset/Common/クリア2.wav" };
-
 		mazeGame(const InitData& init);
 
 		void gameUpdate() override;

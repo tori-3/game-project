@@ -1,6 +1,7 @@
 ﻿#include"Block.h"
 #include"TalkManager.h"
 #include"KeyInfo.h"
+#include"ExplosionEffect.h"
 
 void Block::reaction(const Point& pos, PhysicsBox* box)
 {
@@ -160,7 +161,7 @@ void WeakWall::reaction(const Point& pos, PhysicsBox* box)
 				breaked = true;
 
 				ControllerManager::get().setVibration(0.1);
-
+				DataManager::get().additiveEffect.add<ExplosionEffect>(rect.center(), 80, ColorF{Palette::Lightyellow,0.3});
 				AudioAsset{ U"突進衝突" }.play();
 				return;
 			}
@@ -456,9 +457,9 @@ void  SignboardBlock::update(const Point& pos)
 
 	if (DataManager::get().playerPos.intersects(RectF{ (pos-Vec2{1,1}) * rect_size,rect_size*3}))
 	{
-		if (DataManager::get().gameData->attackKey.down())
+		if (DataManager::get().gameData->menuDecisionKey.down())
 		{
-			for(auto& input: DataManager::get().gameData->attackKey.inputs())
+			for(auto& input: DataManager::get().gameData->menuDecisionKey.inputs())
 			{
 				input.clearInput();
 			}
@@ -502,7 +503,7 @@ void SignboardBlock::draw(const Point& pos)const
 			const RoundRect window{ RectF{ Arg::center((pos + Vec2{0.5,0.5 - 1}) * rect_size),rect_size * 1.5,rect_size * 0.8},20 };
 			window.draw({ Palette::Black, 0.8 }).drawFrame(thickness, 0);
 
-			FontAsset(U"NormalFont")(ToKeyName(DataManager::get().gameData->attackKey, DataManager::get().gameData->gamepadMode)).drawAt(25, window.center());
+			FontAsset(U"NormalFont")(ToKeyName(DataManager::get().gameData->menuDecisionKey, DataManager::get().gameData->gamepadMode)).drawAt(25, window.center());
 		}
 	}
 }
@@ -626,6 +627,15 @@ void FloatingCookieItemBlock::update(const Point& pos)
 	if (not bornFlg)
 	{
 		DataManager::get().addEntity(U"FloatingCookieItem", pos * rect_size + Vec2{ 0.5,0.5 }*rect_size);
+		bornFlg = true;
+	}
+}
+
+void StrawberrySoldierTowerBlock::update(const Point& pos)
+{
+	if (not bornFlg)
+	{
+		DataManager::get().addEntity(U"StrawberrySoldierTower", pos * rect_size + Vec2{ 0.5,0.5 }*rect_size);
 		bornFlg = true;
 	}
 }

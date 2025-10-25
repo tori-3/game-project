@@ -15,6 +15,8 @@ public:
 	static constexpr ColorF normalTextColor = Palette::White;
 	static constexpr ColorF unconfiguredTextColor = Palette::Lightgray;
 
+	static constexpr double buttonHeight = 33;
+
 	String text;
 	Array<Optional<Input>> inputs;
 	Array<std::shared_ptr<ChocolateButton>>buttons;
@@ -24,9 +26,10 @@ public:
 	KeyConfigInfo(StringView text, const InputGroup& inputGroup)
 		:text{ text }, inputs( maxButton, none )
 	{
-		for (size_t i = 0; i < inputGroup.inputs().size(); ++i)
+		const auto list = ToKeyArray(inputGroup);
+		for (size_t i = 0; i < list.size(); ++i)
 		{
-			inputs[i] = inputGroup.inputs()[i];
+			inputs[i] = list[i];
 		}
 
 		for (size_t i = 0; i < maxButton; ++i)
@@ -34,16 +37,29 @@ public:
 			buttons << ChocolateButton::Create
 			({
 				.color=Palette::Chocolate,
-				.margine = {5,8},
+				.margine = {4,8},
 				.width = 150,
 				.relative = Relative::Center(),
 				.child
 				{
-					TextUI::Create({.text = inputs[i] ? (GetKeyName(inputs[i].value())) : U"未設定",.fontSize = 23,.color = inputs[i] ? normalTextColor : unconfiguredTextColor,.height=35})
+					TextUI::Create({.text = inputs[i] ? (MyGetKeyName(inputs[i].value())) : U"未設定",.fontSize = 23,.color = inputs[i] ? normalTextColor : unconfiguredTextColor,.height= buttonHeight})
 				}
 			});
 		}
 	}
+
+	static String MyGetKeyName(const Input&input)
+	{
+		if (input.deviceType() == InputDeviceType::XInput)
+		{
+			return U"🎮" + GetKeyName(input);
+		}
+		else
+		{
+			return GetKeyName(input);
+		}
+	}
+
 
 	InputGroup getInputGroup()const
 	{
@@ -85,7 +101,7 @@ public:
 			{
 				inputs[*inputIndex] = newKey.value();
 				buttons[*inputIndex]->color = Palette::Chocolate;
-				buttons[*inputIndex]->setChild(TextUI::Create({ .text = GetKeyName(newKey.value()),.fontSize = 23,.color = normalTextColor,.height = 35 }));
+				buttons[*inputIndex]->setChild(TextUI::Create({ .text = MyGetKeyName(newKey.value()),.fontSize = 23,.color = normalTextColor,.height = buttonHeight }));
 				inputIndex = none;
 			}
 
@@ -103,7 +119,7 @@ public:
 				AudioAsset{ U"キャンセル" }.playOneShot();
 				inputs[*inputIndex] = none;
 				inputIndex = none;
-				buttons[*inputIndex]->setChild(TextUI::Create({ .text = U"未設定",.fontSize = 23,.color = unconfiguredTextColor,.height = 35 }));
+				buttons[*inputIndex]->setChild(TextUI::Create({ .text = U"未設定",.fontSize = 23,.color = unconfiguredTextColor,.height = buttonHeight }));
 				buttons[*inputIndex]->color = Palette::Chocolate;
 			}
 
@@ -120,7 +136,7 @@ public:
 						AudioAsset{ U"決定ボタン" }.playOneShot();
 
 						buttons[i]->color = Palette::Orange;
-						buttons[i]->setChild(TextUI::Create({ .text = U"キーを入力",.fontSize = 23,.color = normalTextColor,.height = 35 }));
+						buttons[i]->setChild(TextUI::Create({ .text = U"キーを入力",.fontSize = 23,.color = normalTextColor,.height = buttonHeight }));
 
 						inputIndex = i;
 					}
@@ -281,8 +297,6 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 	auto hpModeText = TextUI::Create({ .text = text2,.color = Palette::White });
 	auto hpModeButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 340, .child = hpModeText });
 
-	//auto infoButton = ChocolateButton::Create({ .color = Palette::White, .padding = -20,.width=50,.height=50, .child = TextUI::Create({.text = U"i",.color = Palette::Gray}) });
-
 
 	static int32 selectIndex = 0;
 	static LongPressInput upInput;
@@ -291,8 +305,6 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 	static LongPressInput rightInput;
 
 	selectIndex = index;
-	//upInput = LongPressInput{ upInputGroup };
-	//downInput = LongPressInput{ downInputGroup };
 
 	upInput = LongPressInput{ gameData.minigameUpKey,ControllerManager::Direction::Up };
 	downInput = LongPressInput{ gameData.minigameDownKey,ControllerManager::Direction::Down };
@@ -542,8 +554,6 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 					{
 						KeyConfigInfo{U"ジャンプ",gameData.jumpKey},
 						KeyConfigInfo{U"攻撃",gameData.attackKey},
-						//KeyConfigInfo{U"左移動",gameData.leftKey},
-						//KeyConfigInfo{U"右移動",gameData.rightKey},
 						KeyConfigInfo{U"しゃがむ(↓)",gameData.downKey},
 						KeyConfigInfo{U"ポーズ",gameData.pauseKey},
 						KeyConfigInfo{U"上移動↑",gameData.minigameUpKey},
@@ -552,6 +562,8 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 						KeyConfigInfo{U"右移動→",gameData.minigameRightKey},
 						KeyConfigInfo{U"メニュー：決定",gameData.menuDecisionKey},
 						KeyConfigInfo{U"メニュー：戻る",gameData.menuBackKey},
+						KeyConfigInfo{U"ミニゲーム①",gameData.minigameLB},
+						KeyConfigInfo{U"ミニゲーム②",gameData.minigameRB},
 						KeyConfigInfo{U"スクリーンショット",gameData.screenshotKey},
 					}
 				};
@@ -592,7 +604,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 									Row::Create
 									({
 										.mainAxis = MainAxis::spaceEvenly,
-										.margine = 10,
+										.margine = 4,
 										.children
 										{
 											//TextUI::Create({.text = U"　　　　　　",.fontSize = 30,.color = Palette::White}),
@@ -601,7 +613,6 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 											TextUI::Create({.text = U"長押しで削除",.fontSize = 30,.color = Palette::White}),
 										}
 									}),
-								TextUI::Create({.text = U"※上移動↑でもジャンプができます  ※左スティックでも移動ができます",.fontSize = 20,.color = ColorF{0.8}})
 								}
 							})
 						}),
@@ -756,7 +767,9 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 									gameData.minigameRightKey = (*table)[7].getInputGroup();
 									gameData.menuDecisionKey = (*table)[8].getInputGroup();
 									gameData.menuBackKey = (*table)[9].getInputGroup();
-									gameData.screenshotKey = (*table)[10].getInputGroup();
+									gameData.minigameLB = (*table)[10].getInputGroup();
+									gameData.minigameRB = (*table)[11].getInputGroup();
+									gameData.screenshotKey = (*table)[12].getInputGroup();
 
 									gameData.save();
 
@@ -789,6 +802,8 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 										KeyConfigInfo{U"右移動→",gameData.minigameRightKey},
 										KeyConfigInfo{U"メニュー：決定",gameData.menuDecisionKey},
 										KeyConfigInfo{U"メニュー：戻る",gameData.menuBackKey},
+										KeyConfigInfo{U"ミニゲーム①",gameData.minigameLB},
+										KeyConfigInfo{U"ミニゲーム②",gameData.minigameRB},
 										KeyConfigInfo{U"スクリーンショット",gameData.screenshotKey},
 									}
 								};
