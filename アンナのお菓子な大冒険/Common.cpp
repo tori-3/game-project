@@ -93,7 +93,7 @@ void GameData::update()
 	{
 		gamepadMode = false;
 	}
-	else if (Scene::Rect().leftClicked() || Scene::Rect().rightClicked()||not Cursor::DeltaRaw().isZero())
+	else if (Scene::Rect().leftClicked() || Scene::Rect().rightClicked()||not Cursor::ScreenDelta().isZero())
 	{
 		gamepadMode = false;
 	}
@@ -113,7 +113,12 @@ void GameData::update()
 		}
 	}
 
-	if(gamepadMode)
+	if(hideCursor&& not Cursor::ScreenDelta().isZero())
+	{
+		hideCursor = false;
+	}
+
+	if(gamepadMode||hideCursor)
 	{
 		Cursor::RequestStyle(CursorStyle::Hidden);
 	}

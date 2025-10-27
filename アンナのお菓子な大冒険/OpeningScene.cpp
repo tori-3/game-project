@@ -5,22 +5,15 @@
 OpeningScene::OpeningScene(const InitData& init)
 	: IScene{ init }
 {
-	Duration firstTime = 3.2s;
-	Duration secondTime = 3.4s;
-
 	animation
-		.set(U"light", { 1s,0 }, { 3s, 0.3 })
-		.set(U"light", { firstTime,1 }, { firstTime + 0.05s, 0.5 })
-		.set(U"light", { firstTime + 0.1s, 0.5 }, { firstTime + 0.15s, 1 })
-		.set(U"light", { secondTime,1 }, { secondTime + 0.05s, 0.5 })
-		.set(U"light", { secondTime + 0.1s, 0.5 }, { secondTime + 0.15s, 1 });
-
-	animation
-		.set(U"light2", { 1s,0 }, { 3s, 0.1 })
-		.set(U"light2", { firstTime,1 }, { firstTime + 0.05s, 0.5 })
-		.set(U"light2", { firstTime + 0.1s, 0.5 }, { firstTime + 0.15s, 1 })
-		.set(U"light2", { secondTime,1 }, { secondTime + 0.05s, 0.5 })
-		.set(U"light2", { secondTime + 0.1s, 0.5 }, { secondTime + 0.15s, 1 });
+		.set(U"angle", { 1.751s,0 }, { 1.8s,5_deg })
+		.set(U"angle", { 1.801s,5_deg }, { 1.9s,-5_deg })
+		.set(U"angle", { 1.901s,-5_deg }, { 2.0s,5_deg })
+		.set(U"angle", { 2.001s,5_deg }, { 2.1s,-5_deg })
+		.set(U"angle", { 2.101s,-5_deg }, { 2.2s,5_deg })
+		.set(U"angle", { 2.201s,5_deg }, { 2.3s,-5_deg })
+		.set(U"angle", { 2.301s,-5_deg }, { 2.35s,0_deg })
+		.set(U"alpha", { 3.5s,1 }, { 4.5s, 0 });
 }
 
 OpeningScene::~OpeningScene()
@@ -30,6 +23,8 @@ OpeningScene::~OpeningScene()
 
 void OpeningScene::update()
 {
+	animation.start();
+
 	if (Scene::Rect().leftClicked() || Scene::Rect().rightClicked())
 	{
 		AudioAsset{ U"キャンセル2" }.playOneShot();
@@ -59,45 +54,19 @@ void OpeningScene::update()
 	spotLightLeft = Math::SmoothDamp(spotLightLeft, Scene::Center() + Vec2{ -20,10 }, spotLightLeftVel, 0.5);
 	spotLightRight = Math::SmoothDamp(spotLightRight, Scene::Center() + Vec2{ 20,-10 }, spotLightRightVel, 0.5);
 
-	if (3.5 <= time)
-	{
-		animation.start();
-	}
-
-	if (8.5+0.5 < time)
+	if (6.5 < time)
 	{
 		changeScene(U"TitleScene", 2.0s);
 	}
 }
 
-void Brick(const Rect& rect, int32 n, const ColorF& color = Color(162, 72, 43), const ColorF& back_color = Palette::White) {
-
-	const ScopedViewport2D viewport{ rect.draw(back_color) };
-	const double hight = rect.h / (double)n;
-	const double width = hight * 2;
-	const double d = hight * 0.1;
-
-	for (auto x : step((int32)(rect.w / hight) + 2))
-	{
-		for (auto y : step(n))
-		{
-			if (IsEven(x + y))
-			{
-				RectF{ (x * hight + d / 2 - hight), (y * hight + d / 2), width - d,hight - d }.draw(color);
-			}
-		}
-	}
-}
-
 void OpeningScene::draw() const
 {
-	Scene::SetBackground(ColorF{ 0.0 });
-
 	if (time < 3.5)
 	{
-		Scene::Rect().draw(ColorF{ 0.2 });
+		Scene::SetBackground(ColorF{ 0.2 });
 
-		ctrlLogo.resized(Scene::Width() * 0.4).drawAt(Scene::Center() + Vec2{ 0,-30 });
+		ctrlLogo.resized(Scene::Width() * 0.4).rotated(animation[U"angle"]).drawAt(Scene::Center() + Vec2{ 0,-30 });
 		{
 			ScopedSpotlight target{ spotLight,ColorF{0} };
 
@@ -109,22 +78,11 @@ void OpeningScene::draw() const
 	}
 	else
 	{
-		const double alpha = animation[U"light"];
-		const double alpha2 = animation[U"light2"];
+		Scene::SetBackground(Palette::White);
 
-		//Brick(Rect{ Scene::Size() }, 10, ColorF{ 0.1 }, ColorF{ 0.2 });
+		siv3dLogo.resized(Scene::Width() * 0.8).drawAt(Scene::Center());
 
-		siv3dLogoFrame.drawAt(Scene::Center(), AlphaF(alpha));
-
-		{
-			ScopedLightBloom target{ light };
-			siv3dLogoFrameBold.drawAt(Scene::Center(), ColorF(Palette::Cyan, alpha2));
-			//siv3dLogo.drawAt(Scene::Center(), ColorF(Palette::Cyan, alpha2));
-		}
-		light.draw();
+		Scene::Rect().draw(ColorF{0,animation[U"alpha"]});
 
 	}
 }
-
-
-

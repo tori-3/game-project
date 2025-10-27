@@ -73,7 +73,9 @@ Map::Map(const InitData& init)
 		Point pos = json[U"StageData"][str][U"StagePos"].get<Point>();
 		stagePosList << pos;
 		stageList << json[U"StageData"][str][U"MapFile"].getString();
-
+		tagList << json[U"StageData"][str][U"Tag"].getString();
+		textList << json[U"StageData"][str][U"Text"].getString();
+		
 		title << sentences[i].split_lines()[0];
 
 		if (json[U"StageData"][str][U"Type"] == U"Boss")
@@ -230,6 +232,8 @@ void Map::update()
 			getData().stageFile = stageList[index];
 			getData().backgroundTexture = json[U"StageData"][U"Stage{}"_fmt(index + 1)][U"BackgroundTexture"].getString();
 			getData().sceneName = sceneNames[index];
+			getData().tag = tagList[index];
+			getData().text = textList[index];
 
 			if (sceneNames[index] == U"MainGameScene")
 			{
@@ -249,14 +253,14 @@ void Map::update()
 			//BGMの読み込み
 			if (path)
 			{
-				if (FileSystem::BaseName(path) == U"StageBossLast1") {
-					constexpr uint64 sampleRate = 44100;
-					AudioAsset::Register(path, path, Arg::loopBegin = 22.588 * sampleRate);
-				}
-				else
-				{
+				//if (FileSystem::BaseName(path) == U"StageBossLast1") {
+				//	constexpr uint64 sampleRate = 44100;
+				//	AudioAsset::Register(path, path, Arg::loopBegin = 22.588 * sampleRate);
+				//}
+				//else
+				//{
 					AudioAsset::Register(path, path, Loop::Yes);
-				}
+				//}
 			}
 
 			BGMManager::get().stop();

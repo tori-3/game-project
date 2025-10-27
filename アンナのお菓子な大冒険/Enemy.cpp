@@ -1103,6 +1103,16 @@ void StrawberrySoldierTower::update()
 			vel.x = 100;
 		}
 
+		if(stop)
+		{
+			vel.x = 0;
+
+			if(hitBox.touch(Direction::down))
+			{
+				stop = false;
+			}
+		}
+
 		hitBox.physicsUpdate();
 	}
 
@@ -1119,6 +1129,8 @@ void StrawberrySoldierTower::lateUpdate()
 	{
 		if (not parent->isActive())
 		{
+			stop = true;
+			vel.y = -300;
 			parent = nullptr;
 		}
 	}
@@ -1138,4 +1150,73 @@ void StrawberrySoldierTower::draw()const
 void StrawberrySoldierTower::damage(int32 n, const Vec2&, DamageType)
 {
 	Entity::damage(n);
+}
+
+
+BigCorn::BigCorn(const Vec2& cpos) :Entity{ {U"Gimmick"}, Circle{0},cpos,{0,0},1 },
+character{ U"Characters/corn/corn.json",U"Characters/corn/motion.txt",0.3*10,cpos,true,false }
+{
+	character.addMotion(U"bigExplode");
+
+	//z = 110;
+}
+
+BigCorn::~BigCorn()
+{
+	AudioAsset{ U"風が吹く2" }.stop(0.5s);
+}
+
+void BigCorn::update()
+{
+	if(DataManager::get().blast)
+	{
+		AudioAsset{ U"風が吹く2" }.play();
+
+		accumulateTime += Scene::DeltaTime();
+
+		if(0.15<accumulateTime)
+		{
+			accumulateTime -= 0.15;
+
+			const Vec2 pos = Vec2{ DataManager::get().playerPos.x - 400,Random(Scene::Height())};
+
+			DataManager::get().effect.add([pos=pos](double t)mutable
+			{
+				Line{ pos - Vec2{150,0},pos }.draw(LineStyle::RoundCap,4,ColorF(0.95,0.5));
+				pos.x += Scene::DeltaTime() * 1200;
+				return (t < 3.0);
+			});
+		}
+
+		if (DataManager::get().stageSize.x - 10 * rect_size < DataManager::get().playerPos.x)
+		{
+			DataManager::get().blast = false;
+			kill();
+		}
+
+	}
+	else
+	{
+		if (not character.hasMotion(U"bigExplode"))
+		{
+			character.addMotion(U"change");
+			DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 200 * 3, HSV{ 20,1,1 });
+
+			DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 200 * 2);
+			DataManager::get().additiveEffect.add<ExplosionEffect>(pos + Vec2{ 50,50 }*2, 100 * 2);
+			DataManager::get().additiveEffect.add<ExplosionEffect>(pos - Vec2{ 50,50 }*2, 100 * 2);
+			AudioAsset{ U"爆発4" }.playOneShot();
+			DataManager::get().blast = true;
+		}
+
+		character.update(pos, true);
+	}
+}
+
+void BigCorn::draw()const
+{
+	if(not DataManager::get().blast)
+	{
+		character.draw();
+	}
 }

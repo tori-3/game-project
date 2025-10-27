@@ -123,7 +123,7 @@ public:
 
 	void update()override
 	{
-		DataManager::get().elevatorPosY = Max<double>(DataManager::get().elevatorPosY - Scene::DeltaTime() * 100, rect_size * 10);
+		DataManager::get().elevatorPosY = Max<double>(DataManager::get().elevatorPosY - Scene::DeltaTime() * 100, rect_size * 11);
 	}
 
 	void lateUpdate()override

@@ -643,6 +643,10 @@ Captain::Captain(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,-30),2
 	endFunc = []() {};
 	timer = 3;
 	character.addMotion(U"Mokumoku", true);
+
+	//始まった瞬間にも目を向けるように
+	character.character.table[U"me"].joint.pos = (DataManager::get().playerPos - pos).setLength(15);
+	character.update(pos, true);
 }
 
 

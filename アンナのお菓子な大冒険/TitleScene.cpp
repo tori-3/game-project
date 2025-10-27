@@ -156,6 +156,8 @@ void TitleScene::update()
 	uiManager.update();
 	time += Scene::DeltaTime();
 
+	getData().hideCursor = false;
+
 	if (not playerWalkStop)
 	{
 		playerPos = startPlace.lerp(targetPlace, Min(time / 3.0, 1.0));
@@ -249,6 +251,7 @@ void TitleScene::update()
 			getData().sceneName = json[U"StageData"][U"Stage1"][U"SceneName"].get<String>();
 			getData().description = U"Space or W：ジャンプ\nA：左\nD：右\nS：しゃがむ\nEnter：技を発動\nEnter長押し：突進(クッキーが10個貯まったら)";
 			getData().BGMPath = json[U"StageData"][U"Stage1"][U"BGM"].getString();
+			getData().tag = json[U"StageData"][U"Stage1"][U"Tag"].getString();
 			changeScene(getData().sceneName);
 			AudioAsset::Register(getData().BGMPath, getData().BGMPath, Loop::Yes);
 			BGMManager::get().stop();

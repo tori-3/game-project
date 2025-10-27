@@ -71,6 +71,10 @@ void TalkWindow::draw(const RectF& rect, const SizeF& nameSize,bool hideMode, St
 	{
 		frameColor = Palette::Greenyellow;
 	}
+	else if(talk.name==U"雪だるナイト"||talk.name==U"監督クッキー"||talk.name==U"わたがし船長"||talk.name==U"ビター")
+	{
+		frameColor = Palette::Purple;
+	}
 
 	const RoundRect window{ rect,20 };
 	const RoundRect nameWindow{ rect.pos - Vec2::Down(nameSize.y - thickness),nameSize ,20 };

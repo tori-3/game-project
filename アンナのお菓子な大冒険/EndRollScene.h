@@ -294,7 +294,7 @@ public:
 
 		const double height = FontAsset{ U"EndRollFont" }.height();
 
-		FontAsset{ U"EndRollFont" }(U"イラスト素材\nやっさん\nまる\nたわし\nSco Ttishfold").draw(50, 50);
+		FontAsset{ U"EndRollFont" }(U"イラスト制作\nやっさん\nまる\nたわし\nSco Ttishfold\n\nイラスト素材\nいらすとや").draw(50, 50);
 	}
 };
 

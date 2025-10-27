@@ -8,12 +8,9 @@ class OpeningScene : public App::Scene
 {
 public:
 
-	Texture siv3dLogoFrame{ U"Siv3DLogoFrame.png" };
-	Texture siv3dLogoFrameBold{ U"Siv3DLogoFrameBold.png" };
+	Texture siv3dLogo{ U"Siv3DLogo.png" };
 
 	Texture ctrlLogo{ U"CTRLLogo.png" };
-
-	LightBloom light{ Scene::Size() };
 
 	Spotlight spotLight{ Scene::Size() };
 

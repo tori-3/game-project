@@ -103,6 +103,9 @@ public:
 
 	bool summerHited = false;
 
+	double rushEffectAccumulateTime = 0;
+	double windEffectAccumulateTime = 0;
+
 	void setDataP(GameData* data)
 	{
 		jumpKey=data->jumpKey;

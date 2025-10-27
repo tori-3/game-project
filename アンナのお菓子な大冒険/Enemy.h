@@ -289,6 +289,9 @@ public:
 
 	bool bornFlg;
 
+	//分裂時に空間を歩かないように止める
+	bool stop = false;
+
 	CharacterSystem character;
 
 	StrawberrySoldierTower* parent = nullptr;
@@ -302,4 +305,21 @@ public:
 	void draw()const override;
 
 	void damage(int32 n, const Vec2& force, DamageType)override;
+};
+
+class BigCorn :public Entity
+{
+public:
+
+	CharacterSystem character;
+
+	double accumulateTime = 0;
+
+	BigCorn(const Vec2& cpos);
+
+	~BigCorn();
+
+	void update()override;
+
+	void draw()const override;
 };

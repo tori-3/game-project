@@ -51,6 +51,8 @@ public:
 	Array<String>title;
 	Array<String>stageList;
 	Array<StageType>typeList;
+	Array<String>tagList;
+	Array<String>textList;
 
 	//どのゲームを選択しているか
 	int index = 0;
@@ -87,7 +89,7 @@ public:
 	static constexpr Vec2 fairyPos{ 80,700 - 30 };
 	CharacterSystem fairy{ U"Characters/yousei1/yousei.json",U"Characters/yousei1/motion.txt",0.25 * 0.5,fairyPos,true };
 
-	static constexpr Vec2 snowKnightPos{ 233+15,610 - 40 };
+	static constexpr Vec2 snowKnightPos{ 233+15,610 - 40+5 };
 	CharacterSystem snowKnight{ U"Characters/yukidarunaito/yukidarunaito.json" ,U"Characters/yukidarunaito/motion.txt" ,0.2 * 0.2,snowKnightPos,true,false };
 	Timer snowKnightKiriageTimer{ 10s };
 
@@ -95,7 +97,7 @@ public:
 	CharacterSystem cookieDoreisho{ U"Characters/cookieDoreisho/model.json" ,U"Characters/cookieDoreisho/motion.txt" ,0.4*0.4,cookieDoreishoPos,true,false };
 	Timer cookieDoreishoTimer{ 4s };
 
-	static constexpr Vec2 captainPos{ 930-2+15,490 - 32 };
+	static constexpr Vec2 captainPos{ 930-2+15-15,490 - 32-60 };
 	CharacterSystem captain{ U"Characters/sentyo/model.json" ,U"Characters/sentyo/motion.txt" ,1 * 0.2,captainPos,true,false };
 	Timer captainTimer{ 8s };
 	Timer captainCloseTimer{ 4s };

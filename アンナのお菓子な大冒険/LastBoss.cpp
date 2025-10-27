@@ -205,8 +205,14 @@ void EnemyUmbrella::draw()const
 
 
 LastBoss::LastBoss(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,-5),40,150},cpos,{0,0},maxHp }
-, character{ U"Characters/bitter/model1.json" ,U"Characters/bitter/motion1.txt" ,0.3,cpos,false,false }
+, character{ U"Characters/bitter/model1.json" ,U"Characters/bitter/motion1.txt" ,0.3,cpos,true,true }
 {
+	constexpr uint64 sampleRate = 44100;
+
+	FilePathView path = U"BGM/StageBossLast1.wav";
+	AudioAsset::Register(path, path, Arg::loopBegin = 22.588 * sampleRate);
+	AudioAsset::LoadAsync(path);
+
 	DataManager::get().bossName = U"ビター・ヴァイオレット";
 
 	if (not TextureAsset::IsRegistered(U"MagicEffect0"))
@@ -717,7 +723,12 @@ void LastBoss::update()
 		damageTimer -= Scene::DeltaTime();
 	}
 
-
+	if((not playLastBGM)&&isLastSpart())
+	{
+		AudioAsset::Wait(U"BGM/StageBossLast1.wav");
+		BGMManager::get().play(U"BGM/StageBossLast1.wav");
+		playLastBGM = true;
+	}
 
 	magicCircle.update();
 
@@ -730,6 +741,9 @@ void LastBoss::lateUpdate()
 
 	if (not isActive()) {
 		DataManager::get().table.emplace(U"Clear");
+		DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 200);
+		DataManager::get().additiveEffect.add<ExplosionEffect>(pos + Vec2{ 50,50 }, 100);
+		DataManager::get().additiveEffect.add<ExplosionEffect>(pos - Vec2{ 50,50 }, 100);
 	}
 }
 

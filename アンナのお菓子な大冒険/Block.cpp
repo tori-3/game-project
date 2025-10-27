@@ -295,7 +295,7 @@ void SnowKnightBlock::update(const Point& pos)
 {
 	if (not bornFlg)
 	{
-		DataManager::get().addEntity(U"SnowKnight", pos * rect_size + Vec2{ 0.5,0 }*rect_size);
+		DataManager::get().addEntity(U"SnowKnight", pos * rect_size + Vec2{ 0.5,0 }*rect_size + Vec2{ 0,30 });
 		bornFlg = true;
 	}
 }
@@ -415,7 +415,7 @@ void FallingRocksBlock::update(const Point& pos)
 		{
 			fallingFlg = true;
 
-			DataManager::get().addEntity(U"FallingRocks",(pos+Vec2{0.5,0.5})*rect_size);
+			DataManager::get().addEntity(U"FallingRocks", (pos + Vec2{ 0.5,0.5 }) * rect_size);
 		}
 	}
 };
@@ -457,9 +457,9 @@ void  SignboardBlock::update(const Point& pos)
 
 	if (DataManager::get().playerPos.intersects(RectF{ (pos-Vec2{1,1}) * rect_size,rect_size*3}))
 	{
-		if (DataManager::get().gameData->menuDecisionKey.down())
+		if (DataManager::get().gameData->attackKey.down())
 		{
-			for(auto& input: DataManager::get().gameData->menuDecisionKey.inputs())
+			for(auto& input: DataManager::get().gameData->attackKey.inputs())
 			{
 				input.clearInput();
 			}
@@ -503,7 +503,7 @@ void SignboardBlock::draw(const Point& pos)const
 			const RoundRect window{ RectF{ Arg::center((pos + Vec2{0.5,0.5 - 1}) * rect_size),rect_size * 1.5,rect_size * 0.8},20 };
 			window.draw({ Palette::Black, 0.8 }).drawFrame(thickness, 0);
 
-			FontAsset(U"NormalFont")(ToKeyName(DataManager::get().gameData->menuDecisionKey, DataManager::get().gameData->gamepadMode)).drawAt(25, window.center());
+			FontAsset(U"NormalFont")(ToKeyName(DataManager::get().gameData->attackKey, DataManager::get().gameData->gamepadMode)).drawAt(25, window.center());
 		}
 	}
 }

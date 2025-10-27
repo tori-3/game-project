@@ -55,7 +55,11 @@ public:
 
 	Entity* fairy = nullptr;
 
+	bool setBossTalkFlg = false;
+
 	MainGameScene(const InitData& init);
+
+	~MainGameScene();
 
 	void gameUpdate() override;
 

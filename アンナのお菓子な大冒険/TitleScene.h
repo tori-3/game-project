@@ -51,6 +51,7 @@ public:
 			uiManager.addChild({ licenseDialog() });
 		},
 		[&]{
+			getData().exitButton = true;
 			System::Exit();
 		}
 	};

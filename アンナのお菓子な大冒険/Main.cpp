@@ -73,4 +73,9 @@ void Main()
 
 		manager.get()->update();
 	}
+
+	if(manager.get()->exitButton)
+	{
+		System::Sleep(200ms);
+	}
 }

@@ -122,6 +122,8 @@ void LoadAsset::Wait()
 	AudioAsset{ U"ミニゲームやられた" }.setVolume(0.5);
 
 	AudioAsset{ U"看板" }.setVolume(20);
+
+	AudioAsset{ U"爆発4" }.setVolume(2);
 }
 
 void LoadAsset::RegisterTexture(StringView path)

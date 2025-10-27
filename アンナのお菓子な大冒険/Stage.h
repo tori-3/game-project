@@ -93,7 +93,7 @@ public:
 				block_name << block.key;
 				if (block.key == U"Player")
 				{
-					DataManager::get().addEntity(U"Player", (block.value[0].get<Point>() + Vec2{ 0.5,1 })*rect_size);
+					DataManager::get().addEntity(U"Player", (block.value[0].get<Point>() + Vec2{ 0.5,1 })*rect_size + Vec2{ 0,10 });
 					hasPlayer = true;
 				}
 			}

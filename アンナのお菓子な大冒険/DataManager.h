@@ -33,6 +33,12 @@ public:
 	bool isElevatorStage = false;
 	double elevatorPosY = 0;
 
+	Vec2 cameraTopLeft{};
+
+	//爆風
+	bool blast = false;
+
+
 	void addEntity(const String& name, const Vec2& pos)
 	{
 		list << std::pair<String, Vec2>{name,pos};

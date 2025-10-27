@@ -1,23 +1,10 @@
 ﻿{
-  "BGMVolume": 0.4495784044265747,
+  "BGMVolume": 0.0,
   "ClearHP": [
     5,
-    5,
-    5,
     0,
-    5,
-    5,
-    5,
-    5,
-    5,
     0,
-    5,
-    5,
     0,
-    5,
-    5,
-    5,
-    5,
     0,
     5,
     0,
@@ -25,10 +12,30 @@
     5,
     5,
     0,
-    5
+    5,
+    5,
+    0,
+    0,
+    0,
+    11,
+    5,
+    5,
+    5,
+    0,
+    5,
+    5,
+    5,
+    0,
+    5,
+    0,
+    0,
+    0,
+    5,
+    9,
+    0
   ],
-  "ClearStage": 25,
-  "EffectVolume": 0.48330649733543396,
+  "ClearStage": 31,
+  "EffectVolume": 0.2333042025566101,
   "IncreaseHPMode": true,
   "IsFullscreen": false,
   "Key": {
@@ -233,6 +240,7 @@
     5,
     5,
     5,
+    7,
     5,
     5,
     5,
@@ -243,8 +251,10 @@
     5,
     5,
     5,
-    9,
-    9,
+    5,
+    5,
+    5,
+    7,
     5,
     5,
     5,
@@ -253,7 +263,11 @@
     5,
     5,
     5,
-    7
+    5,
+    5,
+    5,
+    5,
+    5
   ],
   "MiniGame": [
     {
@@ -262,14 +276,19 @@
       "Normal": false
     },
     {
-      "Easy": true,
-      "Hard": true,
+      "Easy": false,
+      "Hard": false,
+      "Normal": false
+    },
+    {
+      "Easy": false,
+      "Hard": false,
       "Normal": false
     },
     {
       "Easy": true,
       "Hard": true,
-      "Normal": true
+      "Normal": false
     },
     {
       "Easy": true,
@@ -277,12 +296,7 @@
       "Normal": false
     },
     {
-      "Easy": true,
-      "Hard": true,
-      "Normal": true
-    },
-    {
-      "Easy": true,
+      "Easy": false,
       "Hard": false,
       "Normal": false
     }

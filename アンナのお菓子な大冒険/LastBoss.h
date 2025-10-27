@@ -120,6 +120,8 @@ public:
 
 	int32 throwUmbrellaCount = 0;
 
+	bool playLastBGM = false;
+
 	LastBoss(const Vec2& cpos);
 
 	void update()override;

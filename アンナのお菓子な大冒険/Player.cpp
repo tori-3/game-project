@@ -93,6 +93,9 @@ Player::Player(const Vec2& cpos) :
 			AudioAsset{ U"突進足音" }.play();
 			AudioAsset{ U"風" }.play();
 
+			rushEffectAccumulateTime = 0;
+			windEffectAccumulateTime = 0;
+
 			//前のフレームのtouchが残っているためここで当たり判定を取っておく
 			manager->stage->hit(&hitBox);
 		},
@@ -100,8 +103,44 @@ Player::Player(const Vec2& cpos) :
 
 			speed = 1000;
 
+			//狭いところでは風の演出が出ないように1秒待つ
+			if (1.2 < t)
+			{
+				windEffectAccumulateTime += Scene::DeltaTime();
+
+				if (0.1 < windEffectAccumulateTime)
+				{
+					windEffectAccumulateTime -= 0.1;
+
+					const Vec2 pos = Vec2{ DataManager::get().cameraTopLeft + Vec2{left ? (-20) : (Scene::Width() + 20),Random(Scene::Height())} };
+
+					DataManager::get().effect.add([pos = pos, left = left, speed = &speed](double t)mutable
+					{
+							if (left)
+							{
+								Line{ pos - Vec2{ 150,0 },pos }.draw(LineStyle::RoundCap, 4, ColorF(0.95, 0.5));
+								pos.x += Scene::DeltaTime() * 800;
+							}
+							else
+							{
+								Line{ pos , pos + Vec2{ 150,0 } }.draw(LineStyle::RoundCap, 4, ColorF(0.95, 0.5));
+								pos.x -= Scene::DeltaTime() * 800;
+							}
+							return (t < 3.0 && *speed == 1000);
+					});
+				}
+			}
+
 			if (hitBox.touch(Direction::down))
 			{
+				rushEffectAccumulateTime += Scene::DeltaTime();
+
+				if(0.07< rushEffectAccumulateTime)
+				{
+					rushEffectAccumulateTime -= 0.07;
+					DataManager::get().additiveEffect.add<ExplosionEffect>(hitBox.getFigure().getRectF().bottomCenter(), 40, ColorF{ Palette::White,0.3 });
+				}
+
 				AudioAsset{ U"突進足音" }.play();
 			}
 			else
@@ -513,7 +552,19 @@ void Player::update()
 		vel.y = Min(vel.y, 800.0);
 	}
 
-	if (actMan.hasActive(U"Sliding", U"Rush"))
+	if(DataManager::get().blast)
+	{
+		left = true;
+		if (hitBox.touch(Direction::left)|| hitBox.touch(Direction::up)|| hitBox.touch(Direction::right))
+		{
+			vel.x = 0;
+		}
+		else
+		{
+			vel.x = 800;
+		}
+	}
+	else if (actMan.hasActive(U"Sliding", U"Rush"))
 	{
 		if (left)
 		{

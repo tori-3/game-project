@@ -19,6 +19,7 @@ namespace ManjuRush
 	ManjuRush::ManjuRush(const InitData& init)
 		: MiniGameSceneBase{ init }
 	{
+		Touch.setVolume(0.4);
 
 		enemys << RectF{ 1100,player.y + player.h - 16 - 50,80,60 };
 		enemys << RectF{ 2000,player.y - 100,80,60 };

@@ -2,6 +2,7 @@
 #include"Fairy.h"
 #include"KeyInfo.h"
 #include"Gimmick.h"
+#include"Enemy.h"
 
 class StageEntity :public Entity
 {
@@ -37,22 +38,27 @@ MainGameScene::MainGameScene(const InitData& init)
 {
 	DataManager::get().gameData = &getData();
 
-	if (getData().stage == 12)
+	if (getData().tag == U"Falling")
 	{
 		DataManager::get().table.insert(U"Falling");
 	}
 
-	if (getData().stage == 17)
+	if (getData().tag == U"Elevator")
 	{
 		manager.add(new BigElevator{ {stage.width(),stage.height()} });
 	}
 
-	if(getData().stage==1)
+	if (getData().tag == U"Blast")
 	{
-		TextureAsset::Register(U"kaiso",U"kaiso.png");
+		manager.add(new BigCorn{ {5 * rect_size,5 * rect_size} });
 	}
 
-	if (getData().stage == 24)
+	if (getData().stage == 1)
+	{
+		TextureAsset::Register(U"kaiso", U"kaiso.png");
+	}
+
+	if (getData().tag == U"BigCloud")
 	{
 		DataManager::get().addEntity(U"BigCloudEnemy",Vec2{Scene::Center()});
 	}
@@ -62,6 +68,7 @@ MainGameScene::MainGameScene(const InitData& init)
 	adder.update(manager);
 	player = dynamic_cast<Player*>(manager.get(U"Player"));
 	player->setDataP(&getData());
+	DataManager::get().playerPos = player->pos;
 
 	stage.update(player->pos);
 	adder.update(manager);
@@ -77,14 +84,13 @@ MainGameScene::MainGameScene(const InitData& init)
 	}
 	else if(DataManager::get().isElevatorStage)
 	{
-		camera.update({ player->pos.x - Scene::Center().x,player->pos.y - 500 });
+		camera.update({ player->pos.x - Scene::Center().x,DataManager::get().elevatorPosY - Scene::Height() + rect_size });
 	}
 	else
 	{
 		camera.update({ player->pos.x - draw_x,player->pos.y - draw_y });
 	}
-
-
+	DataManager::get().cameraTopLeft = camera.pos;
 
 	if (getData().backgroundTexture == U"BackgroundTexture/洞窟背景.png")
 	{
@@ -99,8 +105,16 @@ MainGameScene::MainGameScene(const InitData& init)
 
 	manager.add(new StageEntity{ &stage,&camera.pos,&player->pos });
 
-	//トークウィンドウを初期化
+		//トークウィンドウを初期化
 	TalkManager::get().talkWindow.setTalk({});
+}
+
+MainGameScene::~MainGameScene()
+{
+	if (getData().text)
+	{
+		BGMManager::get().stop();
+	}
 }
 
 void MainGameScene::gameUpdate()
@@ -117,10 +131,30 @@ void MainGameScene::gameUpdate()
 		}
 	}
 
+	if (getData().text)
+	{
+		if (not setBossTalkFlg)
+		{
+			Array<TalkWindow::TalkInfo>list;
+
+			const CSV csv{ getData().text };
+
+			for (size_t row = 0; row < csv.rows(); ++row)
+			{
+				list << TalkWindow::TalkInfo{ csv[row][0] ,csv[row][1] };
+
+			}
+
+			TalkManager::get().talkWindow.setTalk(list);
+
+			setBossTalkFlg = true;
+		}
+	}
+
 	if (TalkManager::get().talkWindow.isContinue())
 	{
 		DataManager::get().table.insert(U"TalkWindow");
-		TalkManager::get().talkWindow.update(getData().minigameLeftKey.down(),(getData().menuDecisionKey|getData().minigameRightKey).down());
+		TalkManager::get().talkWindow.update(getData().minigameLeftKey.down(),(getData().menuDecisionKey|getData().minigameRightKey|getData().attackKey).down());
 
 		if(fairy)
 		{
@@ -218,13 +252,15 @@ void MainGameScene::gameUpdate()
 		}
 		else if (DataManager::get().isElevatorStage)
 		{
-			camera.update({ player->pos.x - Scene::Center().x,player->pos.y - 500 });
+			camera.update({ player->pos.x - Scene::Center().x,DataManager::get().elevatorPosY-Scene::Height()+rect_size});
 		}
 		else
 		{
 			camera.update({ player->pos.x - draw_x,player->pos.y - draw_y });
 		}
 	}
+
+	DataManager::get().cameraTopLeft = camera.pos;
 
 	irisOut.update();
 
@@ -333,7 +369,7 @@ void MainGameScene::gameDraw() const
 
 	constexpr double height = 200;
 	constexpr double space = 50;
-	TalkManager::get().talkWindow.draw(RectF{ space,Scene::Height() - height - space,Scene::Width() - space * 2 ,height }, { 250,50 },false,ToKeyName(getData().menuDecisionKey, getData().gamepadMode));
+	TalkManager::get().talkWindow.draw(RectF{ space,Scene::Height() - height - space,Scene::Width() - space * 2 ,height }, { 250,50 },false,ToKeyName(getData().attackKey, getData().gamepadMode));
 
 	FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30,Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 

@@ -35,9 +35,15 @@ struct GameData
 	//今いるシーンの名前
 	String sceneName;
 
+	//ステージタグ
+	String tag;
+
+	//ステージの最初のテキスト
+	String text;
+
 	static constexpr int32 ChocoMountain = 8;
-	static constexpr int32 CandyCloud = 17;
-	static constexpr int32 LastBossStage = 25;// 26
+	static constexpr int32 CandyCloud = 18;
+	static constexpr int32 LastBossStage = 32;// 26
 
 	struct MiniGameState
 	{
@@ -67,6 +73,15 @@ struct GameData
 
 	bool screenshotNotify = false;
 	bool garellyNotificationAddonFlg = false;
+
+
+	//カーソルを隠すか
+	//Titleにいくかカーソルを動かしたらfalseにする
+	bool hideCursor = true;
+
+
+	//ボタンで終了したか
+	bool exitButton = false;
 
 
 	//ゲームを始める前に呼ぶ

@@ -93,7 +93,7 @@ namespace Lisence
 			{U"・とりさん  ",U"🚩プロジェクト進行　💻プログラミング　🔨ステージ"},
 			{U"・やっさん  ",U"💡企画　💻プログラミング　🎨イラスト(背景、ステージ素材、キャラクター)　💫モーション"},
 			{U"・まる  ",U"🎵BGM/効果音　🎨イラスト(ステージ素材、キャラクター)　🔨ステージ　🕹️ まんじゅうラッシュ　💫モーション"},
-			{U"・With Ball  ",U"👤監修　🕹️ ふぉーりんぐアンナちゃん"},
+			{U"・With Ball  ",U"👤ディレクター　🕹️ ふぉーりんぐアンナちゃん"},
 			{U"・Sco Ttishfold  ",U"🎨イラスト(ステージ素材)"},
 			{U"・ひー  ",U"🕹️ まっくら迷路"},
 			{U"・なかこう  ",U"🕹️ ぐるぐる迷路"},
@@ -107,9 +107,12 @@ namespace Lisence
 			{U"・効果音ラボ (https://soundeffect-lab.info)  ",U"効果音素材"},
 			{U"・On-Jin ～音人～ (https://on-jin.com)  ",U"効果音素材"},
 			{U"・ザ・マッチメイカァズ (https://osabisi.sakura.ne.jp/m2/index.html)  ",U"効果音素材"},
-			{U"・OtoLogic (https://otologic.jp)  ",U"🕹️ まっくら迷路 BGM"},
 			{U"・夢にみた緑 (https://yougou.sonnabakana.com)  ",U"🕹️ ふぉーりんぐアンナちゃん BGM"},
-			{U"・Kenney Input Prompts (https://kenney.nl/assets/input-prompts)  ",U"キーの画像"},
+			{U"・いらすとや (https://www.irasutoya.com)  ",U"一部ミニゲーム素材"},
+			{U"・OtoLogic (https://otologic.jp)  ",U"🕹️ まっくら迷路 BGM"},
+			{U"・TAM Music Factory (https://www.tam-music.com/)",U"🕹️ まっくら迷路 効果音"},
+			{U"・エスフェクツ (https://esffects.net/)",U"🕹️ まっくら迷路 効果音"},
+			{U"・Input Prompts · Kenney (https://kenney.nl/assets/input-prompts)  ",U"キーの画像"},
 		};
 
 		auto col = Column::Create({.crossAxis=CrossAxis::start,.margine=18});
