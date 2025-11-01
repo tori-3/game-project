@@ -242,7 +242,7 @@ public:
 
 		t += Scene::DeltaTime();
 
-		if (endRollTimeLong+2 < t)
+		if (endRollTimeLong+3 < t)
 		{
 			changeScene(U"EndRoll8");
 		}
@@ -259,8 +259,8 @@ public:
 		const double height = FontAsset{ U"EndRollFont" }.height();
 
 		FontAsset{ U"EndRollFont" }(U"BGM・効果音\nまる").draw(50, 50);
-		FontAsset{ U"EndRollFont" }(U"効果音素材 BGM").draw(50, 50 + height * 3.5, AlphaF(Clamp(t - 1, 0.0, 1.0)));
-		FontAsset{ U"EndRollFont" }(U"効果音ラボ\nOn - Jin ～音人～\nザ・マッチメイカァズ\nOtoLogic（ミニゲーム-暗闇迷路 BGM）\n夢にみた緑 (ミニゲーム-FallingAnna BGM)").draw(40,50, 50 + height * 4.5, AlphaF(Clamp(t - 1, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"効果音素材・ミニゲームBGM").draw(50, 50 + height * 2.5, AlphaF(Clamp(t - 1, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"効果音ラボ\nOn - Jin ～音人～\nザ・マッチメイカァズ\nOtoLogic\n夢にみた緑\nTAM Music Factory\nエスフェクツ").draw(40,50, 50 + height * 3.5, AlphaF(Clamp(t - 1, 0.0, 1.0)));
 	}
 };
 
@@ -278,7 +278,7 @@ public:
 
 		t += Scene::DeltaTime();
 
-		if (endRollTimeLong < t)
+		if (endRollTimeLong+2 < t)
 		{
 			changeScene(U"EndRoll9");
 		}
@@ -339,18 +339,19 @@ public:
 
 	Array<Texture>textureList
 	{
-	Texture{U"MiniGameDisplay/まんじゅうラッシュ.png"},
-	Texture{U"MiniGameDisplay/MAZE.png"},
-	Texture{U"MiniGameDisplay/回転迷路.png"},
-	Texture{U"MiniGameDisplay/音ゲー.png"},
-	Texture{U"MiniGameDisplay/HawkDropOut.png"},
-	Texture{U"MiniGameDisplay/FallingAnna.png"},
+		Texture{U"MiniGameDisplay/まんじゅうラッシュ.png"},
+		Texture{U"MiniGameDisplay/MAZE.png"},
+		Texture{U"MiniGameDisplay/回転迷路.png"},
+		Texture{U"MiniGameDisplay/HawkDropOut.png"},
+		Texture{U"MiniGameDisplay/FallingAnna.png"},
+		Texture{U"MiniGameDisplay/音ゲー.png"},
 	};
 
 	EndRoll10(const InitData& init) : IScene{ init }
 	{
-		LoadAsset::RegisterAudio(U"BGM/MiniGameBGM.wav", Loop::Yes);
-		BGMManager::get().play(U"BGM/MiniGameBGM.wav",2s);
+		//LoadAsset::RegisterAudio(U"BGM/MiniGameBGM.mp3", Loop::Yes);
+		//BGMManager::get().play(U"BGM/MiniGameBGM.mp3",2s);
+		BGMManager::get().play(U"MiniGameBGM",2s);
 	}
 
 	void update()override
@@ -383,9 +384,9 @@ public:
 		FontAsset{ U"EndRollFont" }(U"まる").draw(50, 50 + height, AlphaF(Clamp(t, 0.0, 1.0)));
 		FontAsset{ U"EndRollFont" }(U"ひー").draw(50, 50 + height * 2, AlphaF(Clamp(t - 1*1.5, 0.0, 1.0)));
 		FontAsset{ U"EndRollFont" }(U"なかこう").draw(50, 50 + height * 3, AlphaF(Clamp(t - 2 * 1.5, 0.0, 1.0)));
-		FontAsset{ U"EndRollFont" }(U"ゆーれい").draw(50, 50 + height * 4, AlphaF(Clamp(t - 3 * 1.5, 0.0, 1.0)));
-		FontAsset{ U"EndRollFont" }(U"ぺってぃー").draw(50, 50 + height * 5, AlphaF(Clamp(t - 4 * 1.5, 0.0, 1.0)));
-		FontAsset{ U"EndRollFont" }(U"With Ball").draw(50, 50 + height * 6, AlphaF(Clamp(t - 5 * 1.5, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"ぺってぃー").draw(50, 50 + height * 4, AlphaF(Clamp(t - 3 * 1.5, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"With Ball").draw(50, 50 + height * 5, AlphaF(Clamp(t - 4 * 1.5, 0.0, 1.0)));
+		FontAsset{ U"EndRollFont" }(U"ゆーれい").draw(50, 50 + height * 6, AlphaF(Clamp(t - 5 * 1.5, 0.0, 1.0)));
 	}
 };
 
@@ -398,8 +399,8 @@ public:
 
 	EndRoll11(const InitData& init) : IScene{ init }
 	{
-		LoadAsset::RegisterAudio(U"BGM/StageBoss6.wav", Loop::Yes);
-		BGMManager::get().play(U"BGM/StageBoss6.wav", 2s);
+		LoadAsset::RegisterAudio(U"BGM/StageBoss6.mp3", Loop::Yes);
+		BGMManager::get().play(U"BGM/StageBoss6.mp3", 2s);
 	}
 
 	void update()override
@@ -433,8 +434,6 @@ public:
 
 	EndRoll12(const InitData& init) : IScene{ init }
 	{
-		LoadAsset::RegisterAudio(U"BGM/StageBoss6.wav", Loop::Yes);
-		BGMManager::get().play(U"BGM/StageBoss6.wav", 2s);
 	}
 
 	void update()override

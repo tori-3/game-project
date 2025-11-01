@@ -148,9 +148,6 @@
     <Filter Include="Header Files\MainGameScene\Entity">
       <UniqueIdentifier>{bd66ec42-b77c-4bbc-9398-1af9d22f76e7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\MainGameScene\GameLib">
-      <UniqueIdentifier>{db246fae-65b3-4969-aab1-9ded29fb9286}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\MiniGame">
       <UniqueIdentifier>{ef690b7d-2904-42c3-834d-ab31c0d42426}</UniqueIdentifier>
     </Filter>
@@ -177,6 +174,9 @@
     </Filter>
     <Filter Include="Source Files\MiniGame">
       <UniqueIdentifier>{0d8aa2d8-eff4-415e-8d28-3f7200bc8f98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameLib">
+      <UniqueIdentifier>{db246fae-65b3-4969-aab1-9ded29fb9286}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -972,7 +972,7 @@
       <Filter>Header Files\MainGameScene\StageSystem</Filter>
     </ClInclude>
     <ClInclude Include="Figure.hpp">
-      <Filter>Header Files\MainGameScene\GameLib</Filter>
+      <Filter>Header Files\GameLib</Filter>
     </ClInclude>
     <ClInclude Include="AnimationSystem.h">
       <Filter>Header Files\AnimationSystem</Filter>
@@ -984,7 +984,7 @@
       <Filter>Header Files\MainGameScene\Entity</Filter>
     </ClInclude>
     <ClInclude Include="TalkWindow.h">
-      <Filter>Header Files\MainGameScene\GameLib</Filter>
+      <Filter>Header Files\GameLib</Filter>
     </ClInclude>
     <ClInclude Include="CharacterSystem.h">
       <Filter>Header Files\AnimationSystem</Filter>
@@ -1002,7 +1002,7 @@
       <Filter>Header Files\MainGameScene</Filter>
     </ClInclude>
     <ClInclude Include="BGMManager.hpp">
-      <Filter>Header Files\MainGameScene\GameLib</Filter>
+      <Filter>Header Files\GameLib</Filter>
     </ClInclude>
     <ClInclude Include="FallingAnna.h">
       <Filter>Header Files\MiniGame</Filter>
@@ -1029,10 +1029,10 @@
       <Filter>Header Files\MainGameScene\Effect</Filter>
     </ClInclude>
     <ClInclude Include="MagicCircle.h">
-      <Filter>Header Files\MainGameScene\GameLib</Filter>
+      <Filter>Header Files\GameLib</Filter>
     </ClInclude>
     <ClInclude Include="LinerMove.h">
-      <Filter>Header Files\MainGameScene\GameLib</Filter>
+      <Filter>Header Files\GameLib</Filter>
     </ClInclude>
     <ClInclude Include="Boss.h">
       <Filter>Header Files\MainGameScene\Entity</Filter>
@@ -1053,13 +1053,13 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Spotlight.hpp">
-      <Filter>Header Files\MainGameScene\GameLib</Filter>
+      <Filter>Header Files\GameLib</Filter>
     </ClInclude>
     <ClInclude Include="Fire.hpp">
-      <Filter>Header Files\MainGameScene\GameLib</Filter>
+      <Filter>Header Files\GameLib</Filter>
     </ClInclude>
     <ClInclude Include="LongPressInput.hpp">
-      <Filter>Header Files\MainGameScene\GameLib</Filter>
+      <Filter>Header Files\GameLib</Filter>
     </ClInclude>
     <ClInclude Include="MiniGameSceneBase.h">
       <Filter>Header Files\MiniGame</Filter>
@@ -1074,7 +1074,7 @@
       <Filter>Header Files\UISystem</Filter>
     </ClInclude>
     <ClInclude Include="NinePatch.hpp">
-      <Filter>Header Files\MainGameScene\GameLib</Filter>
+      <Filter>Header Files\GameLib</Filter>
     </ClInclude>
     <ClInclude Include="SweetsPanel.hpp">
       <Filter>Header Files\UISystem</Filter>
@@ -1137,7 +1137,7 @@
       <Filter>Header Files\MainGameScene\Effect</Filter>
     </ClInclude>
     <ClInclude Include="ControllerInput.h">
-      <Filter>Header Files\MainGameScene\GameLib</Filter>
+      <Filter>Header Files\GameLib</Filter>
     </ClInclude>
     <ClInclude Include="ControllerManager.h">
       <Filter>Header Files</Filter>
@@ -1146,7 +1146,16 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NotificationAddon.h">
-      <Filter>Header Files\MainGameScene\GameLib</Filter>
+      <Filter>Header Files\GameLib</Filter>
+    </ClInclude>
+    <ClInclude Include="ToggleButton.h">
+      <Filter>Header Files\UISystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Shadow.h">
+      <Filter>Header Files\GameLib</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayMode.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

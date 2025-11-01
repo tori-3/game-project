@@ -209,7 +209,7 @@ LastBoss::LastBoss(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,-5),
 {
 	constexpr uint64 sampleRate = 44100;
 
-	FilePathView path = U"BGM/StageBossLast1.wav";
+	FilePathView path = U"BGM/StageBossLast1.mp3";
 	AudioAsset::Register(path, path, Arg::loopBegin = 22.588 * sampleRate);
 	AudioAsset::LoadAsync(path);
 
@@ -725,8 +725,8 @@ void LastBoss::update()
 
 	if((not playLastBGM)&&isLastSpart())
 	{
-		AudioAsset::Wait(U"BGM/StageBossLast1.wav");
-		BGMManager::get().play(U"BGM/StageBossLast1.wav");
+		AudioAsset::Wait(U"BGM/StageBossLast1.mp3");
+		BGMManager::get().play(U"BGM/StageBossLast1.mp3");
 		playLastBGM = true;
 	}
 

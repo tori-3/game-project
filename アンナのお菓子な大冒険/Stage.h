@@ -75,7 +75,9 @@ public:
 		{U"NeedleLeftBlock",[]() {return new NeedleLeftBlock(); }},
 		{U"NeedleRightBlock",[]() {return new NeedleRightBlock(); }},
 		{U"FloatingCookieItem",[]() {return new FloatingCookieItemBlock(); }},
-		{U"StrawberrySoldierTower",[]() {return new StrawberrySoldierTowerBlock(); }}
+		{U"StrawberrySoldierTower",[]() {return new StrawberrySoldierTowerBlock(); }},
+		{U"BackgroundDoor",[]() {return new BackgroundDoor(); }},
+		{ U"WindowBlock",[]() {return new WindowBlock(); } }
 	};
 
 	Stage(const JSON& json,bool backGround=false) {
@@ -172,7 +174,7 @@ public:
 		}
 
 		//ステージの右端と左端にも当たり判定
-		for (int32 i = -10; i < (int32)map.height() + 10; ++i)
+		for (int32 i = point.y -10; i < point.y + 10; ++i)
 		{
 			hitbox->physics.hit(RectF{ Vec2{-rect_size,i*rect_size},rect_size });
 			hitbox->physics.hit(RectF{ Vec2{map.width() * rect_size,i * rect_size},rect_size });
@@ -223,14 +225,16 @@ public:
 	//	}
 	//}
 
-	void drawAsBackGround(const Vec2& vec, int32 left = range_left, int32 right = range_right)const
+
+	//vecは左上の座標みたい
+	void drawAsBackGround(const Vec2& vec, int32 left, int32 right,int32 top,int32 bottom)const
 	{
 		//ブロックの描写
 		Point pos = vec.asPoint() / Point(rect_size, rect_size);//プレイヤーの座標をマップ番号に変換
-		for (int y = 0; y < map.height(); y++)
+		for (int y = Max(0, pos.y - top); y < pos.y + bottom; y++)
 		{
 			for (int x = Max(0, pos.x - left); x < pos.x + right; x++) {
-				Point p(x % map.width(), y);
+				Point p(x % map.width(), y % map.height());
 				if (map[p] != NULL)map[p]->draw(Point{x,y});
 			}
 		}
@@ -264,13 +268,18 @@ public:
 		{
 			const Transformer2D transformer1{ Mat3x2::Scale(rate, Vec2{0,0}) };
 			const Transformer2D transformer2{ Mat3x2::Translate(Vec2{-pos * rate}) };
-			stage.drawAsBackGround(pos * rate, 4, brockNum());
+			stage.drawAsBackGround(pos * rate, 4, brockNumX(),4,brockNumY());
 		}
 	}
 
-	int32 brockNum()const
+	int32 brockNumX()const
 	{
 		return int32(Scene::Width()/ (rect_size*rate)+4.0);
+	}
+
+	int32 brockNumY()const
+	{
+		return int32(Scene::Height() / (rect_size * rate) + 4.0);
 	}
 };
 
@@ -295,7 +304,7 @@ public:
 			backGround.draw(pos);
 			{
 				const ScopedRenderStates2D blend{ BlendState::NonPremultiplied };
-				Rect{ Scene::Size() }.draw(ColorF{ Palette::White,0.2 });
+				Rect{ Scene::Size() }.draw(ColorF{ Palette::White,0.25 });//0.2
 			}
 		}
 	}

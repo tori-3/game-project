@@ -52,8 +52,8 @@ MiniGameSelect::MiniGameSelect(const InitData& init)
 		miniGameList << data;
 	}
 
-	AudioAsset::Register(U"WorldBGM", U"BGM/WorldMap2.mp3", Loop::Yes);
-	BGMManager::get().play(U"WorldBGM");
+	//AudioAsset::Register(U"WorldBGM", U"BGM/WorldMap2.mp3", Loop::Yes);
+	BGMManager::get().play(U"BGM/WorldMap2.mp3");
 }
 
 void MiniGameSelect::update()
@@ -255,7 +255,7 @@ void MiniGameSelect::draw()const
 	if (miniGameList.isEmpty())
 	{
 		FontAsset{ U"NormalFont" }(U"まだ遊べるミニゲームはありません").drawAt(50, Scene::Center());
-		FontAsset{ U"NormalFont" }(U"ミニゲームをクリアすると追加されます").drawAt(25, Scene::Center()+Vec2{0,50});
+		FontAsset{ U"NormalFont" }(U"ミニゲームをクリアすると追加されます").drawAt(25, Scene::Center() + Vec2{ 0,50 });
 	}
 
 	leftFire.draw();
@@ -263,18 +263,35 @@ void MiniGameSelect::draw()const
 
 	if (not miniGameList.isEmpty())
 	{
-		FontAsset{ U"NormalFont" }(getData().fmt(miniGameList[gameIndex].sentence)).draw(30,150, Scene::Center().y + 100-20);
+		FontAsset{ U"NormalFont" }(getData().fmt(miniGameList[gameIndex].sentence)).draw(30, 150, Scene::Center().y + 100 - 20);
 
 		easyButton.draw(chocolateBeltConveyor, FontAsset{ U"NormalFont" }, U"イージー", Palette::Greenyellow, getData().miniGameList[gameIndex].easyClear, modeIndex == 0);
 		normalButton.draw(chocolateBeltConveyor, FontAsset{ U"NormalFont" }, U"ノーマル", Palette::Orange, getData().miniGameList[gameIndex].normalClear, modeIndex == 1);
 		hardButton.draw(chocolateBeltConveyor, FontAsset{ U"NormalFont" }, U"ハード", Palette::Red, getData().miniGameList[gameIndex].hardClear, modeIndex == 2);
+
+		drawKey(Vec2{ 750,560 }, getData().minigameUpKey, U"難易度↑");
+		drawKey(Vec2{ 750,640 }, getData().menuDecisionKey, U"はじめる");
+		drawKey(Vec2{ 750,720 }, getData().minigameDownKey, U"難易度↓");
 	}
+
+	if (1 < miniGameList.size())
+	{
+		drawKey(Vec2{ 100,350 }, getData().minigameLeftKey, U"←");
+		drawKey(Vec2{ Scene::Width() - 100,150 }, getData().minigameRightKey, U"→");
+	}
+
 	homeIcon.drawAt(backButton.center, backButton.mouseOver() ? Palette::Gray : Palette::White);
 
-	FontAsset{ U"NormalFont" }(U"{}-タイトルに戻る"_fmt(ToKeyName(getData().menuBackKey, getData().gamepadMode))).draw(30,Arg::leftCenter = backButton.center + Vec2{ 30,0 });
+	FontAsset{ U"NormalFont" }(U"{}-タイトルに戻る"_fmt(ToKeyName(getData().menuBackKey, getData().gamepadMode))).draw(30, Arg::leftCenter = backButton.center + Vec2{ 30,0 });
 
 	{
 		const ScopedRenderStates2D blend{ BlendState::Additive };
 		effect.update();
 	}
+}
+
+void MiniGameSelect::drawKey(const Vec2& pos,const InputGroup& inputs, StringView text)const
+{
+	FontAsset{ U"NormalFont" }(ToKeyName(inputs, getData().gamepadMode)).drawAt(30, pos);
+	FontAsset{ U"NormalFont" }(text).drawAt(20, pos + Vec2{ 0,30 });
 }

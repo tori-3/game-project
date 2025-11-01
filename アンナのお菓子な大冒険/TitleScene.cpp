@@ -3,6 +3,7 @@
 #include"KeyInfo.h"
 #include"ControllerInput.h"
 #include"MyBlendState.h"
+#include"ExplosionEffect.h"
 
 bool TitleScene::updateStick(const Vec2& pos)
 {
@@ -92,6 +93,10 @@ TitleScene::TitleScene(const InitData& init)
 		//timer.start();
 		omakeTimer.start();
 	}
+}
+
+TitleScene::~TitleScene()
+{
 }
 
 void TitleScene::update()
@@ -233,13 +238,26 @@ void TitleScene::update()
 	}
 
 
-	if (changeMapTimer.isStarted())
+	if (changeMapFlg)
 	{
 		playerPos.x += Scene::DeltaTime() * 500 * 2;
+
+		rushEffectAccumulateTime += Scene::DeltaTime();
+
+		if (0.07 < rushEffectAccumulateTime)
+		{
+			rushEffectAccumulateTime -= 0.07;
+			effect.add<ExplosionEffect>(playerPos+Vec2{0,100}, 80, ColorF{Palette::White,0.3});
+		}
+
+		AudioAsset{ U"突進足音" }.play();
 	}
 
-	if (changeMapTimer.reachedZero())
+	if (changeMapFlg && Scene::Width()+170<playerPos.x)
 	{
+		AudioAsset{ U"突進衝突" }.playOneShot();
+		AudioAsset{ U"突進足音" }.stop(0.2s);
+
 		if (getData().clearStage == 0)
 		{
 			JSON json = JSON::Load(U"map.json");
@@ -272,6 +290,8 @@ void TitleScene::update()
 
 	if (changeMiniGameTimer.reachedZero())
 	{
+		AudioAsset{ U"ヘッドドロップ" }.playOneShot();
+
 		changeScene(U"MiniGameSelect");
 	}
 
@@ -308,8 +328,37 @@ void TitleScene::draw() const
 
 	const Vec2 rogoPos{ Scene::Center() + Vec2{ 0,-150 } };
 
-	TextureAsset{ U"ロゴ.png" }.scaled(1.3).drawAt(rogoPos, ColorF{ 1,Min(rogoTimer / 2.0,1.0) });
 
+	//影用
+	{
+		ScopedShadow s{ shadow };
+
+		TextureAsset{ U"ロゴ.png" }.scaled(1.3).drawAt(rogoPos);
+
+		if (not getData().pressAnyKeyFlg)
+		{
+			character.draw();
+
+			Transformer2D target{ Mat3x2::Translate(translate(),0),TransformCursor::Yes };
+
+			Vec2 pos = menuPos;
+
+			for (size_t i = 0; i < menuList.size(); ++i)
+			{
+				const bool notify = (i == 1 && getData().notifyMiniGameSelect) || (i == 3 && getData().notifyGallery);
+				drawStick(pos + (selectedIndex == i ? Vec2{ -30,0 } : Vec2{}), U"", notify);
+
+				pos.y += menuHeight;
+			}
+		}
+	}
+
+	{
+		ScopedColorMul2D mul{ AlphaF(Min(rogoTimer / 2.0,1.0)) };
+		shadow.draw();
+	}
+
+	TextureAsset{ U"ロゴ.png" }.scaled(1.3).drawAt(rogoPos, ColorF{ 1,Min(rogoTimer / 2.0,1.0) });
 
 	if (getData().pressAnyKeyFlg)
 	{
@@ -332,25 +381,34 @@ void TitleScene::draw() const
 	{
 		Transformer2D target{ Mat3x2::Translate(translate(),0),TransformCursor::Yes };
 
-
 		Vec2 pos = menuPos;
 
 		for (size_t i = 0; i < menuList.size(); ++i)
 		{
-			const bool notify = (i==1&&getData().notifyMiniGameSelect)||(i==3&&getData().notifyGallery);
-			drawStick(pos + (selectedIndex == i ? Vec2{ -30,0 } : Vec2{}), menuList[i],notify);
+			const bool notify = (i == 1 && getData().notifyMiniGameSelect) || (i == 3 && getData().notifyGallery);
+			drawStick(pos + (selectedIndex == i ? Vec2{ -30,0 } : Vec2{}), menuList[i], notify);
 
 			pos.y += menuHeight;
 		}
-
 	}
+
 
 	character.draw();
 
-	const String explanation = U" {}-上  {}-下  {}-左  {}-右 {}-決定  {}-戻る"_fmt(ToKeyName(getData().minigameUpKey, getData().gamepadMode), ToKeyName(getData().minigameDownKey, getData().gamepadMode), ToKeyName(getData().minigameLeftKey, getData().gamepadMode), ToKeyName(getData().minigameRightKey, getData().gamepadMode), ToKeyName(getData().menuDecisionKey, getData().gamepadMode), ToKeyName(getData().menuBackKey, getData().gamepadMode));
-	FontAsset{ U"NormalFont" }(explanation).draw(30,Arg::bottomLeft(5, Scene::Height() - 5), AlphaF(Min(time / 2.0, 1.0)));
+	{
+		const ScopedRenderTarget2D target{ rTexture.clear(ColorF{0.5,0}) };
+		const ScopedRenderStates2D blend{ MakeTransparentBlendState() };
+		effect.update();
+	}
+	Graphics2D::Flush();
+	rTexture.resolve();
+	rTexture.draw();
 
 	uiManager.draw();
+
+	const String explanation = U" {}-上  {}-下  {}-左  {}-右 {}-決定  {}-戻る"_fmt(ToKeyName(getData().minigameUpKey, getData().gamepadMode), ToKeyName(getData().minigameDownKey, getData().gamepadMode), ToKeyName(getData().minigameLeftKey, getData().gamepadMode), ToKeyName(getData().minigameRightKey, getData().gamepadMode), ToKeyName(getData().menuDecisionKey, getData().gamepadMode), ToKeyName(getData().menuBackKey, getData().gamepadMode));
+	FontAsset{ U"NormalFont" }(explanation).region(30, Arg::bottomLeft(5, Scene::Height())).stretched(5,3).draw(ColorF{0,0.3* Min(time / 2.0, 1.0) });
+	FontAsset{ U"NormalFont" }(explanation).draw(30, Arg::bottomLeft(5, Scene::Height()), AlphaF(Min(time / 2.0, 1.0)));
 
 }
 

@@ -284,6 +284,15 @@ Player::Player(const Vec2& cpos) :
 
 			attack(U"Enemy", character.character.table.at(U"Hitbox").joint.getQuad(), 1, 1000);
 
+
+			slidingEffectAccumulateTime += Scene::DeltaTime();
+
+			if(0.13< slidingEffectAccumulateTime)
+			{
+				slidingEffectAccumulateTime -= 0.13;
+				DataManager::get().additiveEffect.add<ExplosionEffect>(hitBox.getFigure().getRectF().bottomCenter()+Vec2{left?-90:90,0}, 30, ColorF{Palette::White,0.3});
+			}
+
 			speed = 600 * (1 - t / 0.8);
 
 			if (t < 0.8) {
@@ -390,7 +399,18 @@ Player::Player(const Vec2& cpos) :
 			else {
 				vel.y = 1200.0;
 			}
-			return not hitBox.touch(Direction::down);
+
+			if(hitBox.touch(Direction::down))
+			{
+				DataManager::get().additiveEffect.add<ExplosionEffect>(hitBox.getFigure().getRectF().bottomCenter(), 30, ColorF{ Palette::White,0.3 });
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+
+			//return not hitBox.touch(Direction::down);
 		},
 		.end = [&]() {
 			if (hitBox.touch(Direction::down))actMan.start(U"HeadDropLanding");

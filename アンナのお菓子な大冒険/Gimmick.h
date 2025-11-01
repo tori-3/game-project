@@ -133,10 +133,12 @@ public:
 
 	void draw()const override
 	{
-		for (int32 i = 1; i < stageSize.x - 1; ++i)
-		{
-			TextureAsset{ U"ChocolateWall" }.resized(rect_size).draw(i * rect_size, DataManager::get().elevatorPosY);
-		}
+		TextureAsset{ U"船体" }.draw(-rect_size, DataManager::get().elevatorPosY);
+
+		//for (int32 i = 1; i < stageSize.x - 1; ++i)
+		//{
+		//	TextureAsset{ U"ChocolateWall" }.resized(rect_size).draw(i * rect_size, DataManager::get().elevatorPosY);
+		//}
 
 
 	}

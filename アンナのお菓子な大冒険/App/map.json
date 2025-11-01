@@ -1,11 +1,11 @@
 ﻿{
-    "MiniGameStage": [ 4, 11, 14, 21, 25, 29 ],
+    "MiniGameStage": [ 5, 10, 13, 19, 23, 27 ],
     "StageData": {
         "Stage1": {
-            "BGM": "BGM/StageSnow7.wav",
+            "BGM": "BGM/StageSnow7.mp3",
             "BackgroundTexture": "BackgroundTexture/雪原背景.png",
             "MapFile": "StageData/startStage.json",
-            "Picture": "BackgroundTexture/雪原背景.png",
+            "Picture": "StageDisplay/Start.png",
             "SceneName": "MainGameScene",
             "Sentence": "<1-0>お菓子の国\nアンナちゃんはお菓子の国に有名な\nケーキを食べに来ました。\nしかし、、、",
             "StagePos": "(35,695)",
@@ -14,70 +14,70 @@
             "Type": "Stage"
         },
         "Stage2": {
-            "BGM": "BGM/StageSnow7.wav",
+            "BGM": "BGM/StageSnow7.mp3",
             "BackgroundTexture": "BackgroundTexture/雪原背景.png",
             "MapFile": "StageData/snowStage1.json",
-            "Picture": "BackgroundTexture/雪原背景.png",
+            "Picture": "StageDisplay/Snow1.png",
             "SceneName": "MainGameScene",
             "Sentence": "<1-1>冒険のはじまり\nそこにはお菓子の世界が広がって\nいました。\nどんなお菓子が待ち受けているのか、\nわくわくしながら\nアンナちゃんは進みます。",
-            "StagePos": "(70,705)",
+            "StagePos": "(75,705)",
             "Tag": "",
             "Text": "",
             "Type": "Stage"
         },
         "Stage3": {
-            "BGM": "BGM/StageSnow7.wav",
+            "BGM": "BGM/StageSnow7.mp3",
             "BackgroundTexture": "BackgroundTexture/雪原背景.png",
             "MapFile": "StageData/snowStage2.json",
-            "Picture": "BackgroundTexture/雪原背景.png",
+            "Picture": "StageDisplay/Snow2.png",
             "SceneName": "MainGameScene",
-            "Sentence": "<1-2>トランプリン\nプリンでとびはねるイチゴちゃん。\n楽しそうなので、アンナちゃんも\n混ざります。\n（お菓子で遊んではいけません。）",
-            "StagePos": "(105,695)",
+            "Sentence": "<1-2>トランプリン\nプリンでとびはねるイチゴちゃん。\n楽しそうなので、アンナちゃんも\n混ざります。",
+            "StagePos": "(115,695)",
             "Tag": "",
             "Text": "",
             "Type": "Stage"
         },
         "Stage4": {
+            "BGM": "BGM/StageSnow7.mp3",
+            "BackgroundTexture": "BackgroundTexture/雪原背景.png",
+            "MapFile": "StageData/snowStage3.json",
+            "Picture": "StageDisplay/Snow3.png",
+            "SceneName": "MainGameScene",
+            "Sentence": "<1-3>いちごラッシュ！\nケーキ雪原のスポンジの中を進むアンナちゃん\nいちごの軍団\n全力で駆け抜けよう！",
+            "StagePos": "(140,720)",
+            "Tag": "",
+            "Text": "",
+            "Type": "Stage"
+        },
+        "Stage5": {
             "BGM": "",
             "BackgroundTexture": "",
             "MapFile": "",
             "Picture": "MiniGameDisplay/まんじゅうラッシュ.png",
             "SceneName": "ManjuRush",
             "Sentence": "🕹️ まんじゅうラッシュ\nまんじゅうの軍団がアンナちゃんを\n襲う！\n迫りくるまんじゅうをよけよう！\n着地するとスコア増加！\n{0}-ジャンプ　{2}-さがる",
-            "StagePos": "(140,705)",
+            "StagePos": "(175,695)",
             "Tag": "",
             "Text": "",
             "Type": "MiniGame"
         },
-        "Stage5": {
-            "BGM": "BGM/StageSnow7.wav",
+        "Stage6": {
+            "BGM": "BGM/StageSnow7.mp3",
             "BackgroundTexture": "BackgroundTexture/雪原背景.png",
             "MapFile": "StageData/snowStage4.json",
-            "Picture": "BackgroundTexture/雪原背景.png",
+            "Picture": "StageDisplay/Snow4.png",
             "SceneName": "MainGameScene",
-            "Sentence": "<1-3>ゆきだるまの布陣\nこの先には行かせないぞ！\n意気込んだゆきだるまたちが\nアンナちゃんの行く手を阻みます。",
-            "StagePos": "(175,695)",
-            "Tag": "",
-            "Text": "",
-            "Type": "Stage"
-        },
-        "Stage6": {
-            "BGM": "BGM/StageSnow7.wav",
-            "BackgroundTexture": "BackgroundTexture/雪原背景.png",
-            "MapFile": "StageData/snowStage3.json",
-            "Picture": "BackgroundTexture/雪原背景.png",
-            "SceneName": "MainGameScene",
-            "Sentence": "<1-4>いちごラッシュ！\nいちごの軍団が行く手を阻む！\n全力で駆け抜けよう！",
-            "StagePos": "(200,720)",
+            "Sentence": "<1-4>ゆきだるまの布陣\nこの先には行かせないぞ！\n意気込んだゆきだるまたちが\nアンナちゃんの行く手を阻みます。",
+            "StagePos": "(210,705)",
             "Tag": "",
             "Text": "",
             "Type": "Stage"
         },
         "Stage7": {
-            "BGM": "BGM/StageBoss6.wav",
+            "BGM": "BGM/StageBoss6.mp3",
             "BackgroundTexture": "BackgroundTexture/雪原背景.png",
             "MapFile": "StageData/snowStageBoss.json",
-            "Picture": "BackgroundTexture/雪原背景.png",
+            "Picture": "StageDisplay/SnowBoss.png",
             "SceneName": "MainGameScene",
             "Sentence": "<1-Boss>雪だるナイト参上！\nクリーム雪原を治める雪だるまの長。\n鎧はあらゆる攻撃を防ぎます。\n雪だるナイトに\nアンナちゃんとっておきの\n必殺技を食らわせよう！",
             "StagePos": "(233,615)",
@@ -88,20 +88,8 @@
         "Stage8": {
             "BGM": "BGM/StageChoco21.mp3",
             "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
-            "MapFile": "StageData/caveStage0.json",
-            "Picture": "BackgroundTexture/洞窟背景.png",
-            "SceneName": "MainGameScene",
-            "Sentence": "<2-0>チョコ鉱山入口\nクリームに飽きたアンナちゃん。\n今度はチョコマウンテンに訪れました。\nでも、アンナちゃんは山登りよりも\n洞窟探検がしたいみたいです。\nアンナちゃんはウキウキしながら\n鉱山に入っていきました。",
-            "StagePos": "(270,695)",
-            "Tag": "SnowToCave",
-            "Text": "",
-            "Type": "Stage"
-        },
-        "Stage9": {
-            "BGM": "BGM/StageChoco21.mp3",
-            "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
             "MapFile": "StageData/caveStage1.json",
-            "Picture": "BackgroundTexture/洞窟背景.png",
+            "Picture": "StageDisplay/Cave1.png",
             "SceneName": "MainGameScene",
             "Sentence": "<2-1>チョコ鉱山の入口\nクリームに飽きたアンナちゃん。\n今度はチョコマウンテンに訪れました。\nでも、アンナちゃんは山登りよりも\n洞窟探検がしたいみたいです。\nアンナちゃんはウキウキしながら\n鉱山に入っていきました。",
             "StagePos": "(300,680)",
@@ -109,19 +97,19 @@
             "Text": "",
             "Type": "Stage"
         },
-        "Stage10": {
+        "Stage9": {
             "BGM": "BGM/StageChoco21.mp3",
             "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
             "MapFile": "StageData/caveStage2.json",
-            "Picture": "BackgroundTexture/洞窟背景.png",
+            "Picture": "StageDisplay/Cave2.png",
             "SceneName": "MainGameScene",
-            "Sentence": "<2-2>チョコ鉱山\n鉱山を掘り進める奴隷イチゴ、\nコーンを使って爆破させたり、\n洞窟の中は意外と賑やかです。\nどうやらこの先に、手下をこき使う\n悪いボスがいるみたい...",
+            "Sentence": "<2-2>チョコ鉱山\n天井のとんがりコーンは崩れ落ち、\n巨大なドーナッツは坂を転がります。\nなんて危険な洞窟なのでしょう...\nチョコとスリルを味わいながら、\nアンナちゃんは奥へ奥へと、\n進んでゆきました。",
             "StagePos": "(325,650)",
             "Tag": "",
             "Text": "",
             "Type": "Stage"
         },
-        "Stage11": {
+        "Stage10": {
             "BGM": "",
             "BackgroundTexture": "",
             "MapFile": "",
@@ -133,11 +121,11 @@
             "Text": "",
             "Type": "MiniGame"
         },
-        "Stage12": {
+        "Stage11": {
             "BGM": "BGM/StageChoco21.mp3",
             "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
             "MapFile": "StageData/caveStage3.json",
-            "Picture": "BackgroundTexture/洞窟背景.png",
+            "Picture": "StageDisplay/Cave3.png",
             "SceneName": "MainGameScene",
             "Sentence": "<2-3>急降下！！\nアンナちゃんの目の前に深い穴が！\nとげに気をつけながら穴の底を\n目指そう！",
             "StagePos": "(375,650)",
@@ -145,19 +133,19 @@
             "Text": "",
             "Type": "Stage"
         },
-        "Stage13": {
+        "Stage12": {
             "BGM": "BGM/StageChoco21.mp3",
             "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
             "MapFile": "StageData/caveStage4.json",
-            "Picture": "BackgroundTexture/洞窟背景.png",
+            "Picture": "StageDisplay/Cave4.png",
             "SceneName": "MainGameScene",
-            "Sentence": "<2-4>チョコ鉱山\n迫りくる天井！\nつぶされないように駆け抜けよう！",
+            "Sentence": "<2-4>チョコ鉱山\n迫りくるチョコの天井！\nつぶされないように駆け抜けよう！",
             "StagePos": "(400,680)",
             "Tag": "",
             "Text": "",
             "Type": "Stage"
         },
-        "Stage14": {
+        "Stage13": {
             "BGM": "",
             "BackgroundTexture": "",
             "MapFile": "",
@@ -169,35 +157,35 @@
             "Text": "",
             "Type": "MiniGame"
         },
-        "Stage15": {
+        "Stage14": {
             "BGM": "BGM/StageChoco21.mp3",
             "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
             "MapFile": "StageData/caveStage5.json",
-            "Picture": "BackgroundTexture/洞窟背景.png",
+            "Picture": "StageDisplay/Cave5.png",
             "SceneName": "MainGameScene",
-            "Sentence": "<2-5>チョコ鉱山\n天井のとんがりコーンは崩れ落ち、\n巨大なドーナッツは坂を転がります。\nなんて危険な洞窟なのでしょう...\nチョコとスリルを味わいながら、\nアンナちゃんは奥へ奥へと、\n進んでゆきました。",
+            "Sentence": "<2-5>巨大イチゴ現る！\n",
             "StagePos": "(430,580)",
             "Tag": "",
             "Text": "",
             "Type": "Stage"
         },
-        "Stage16": {
+        "Stage15": {
             "BGM": "BGM/StageChoco21.mp3",
             "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
             "MapFile": "StageData/caveStage6.json",
-            "Picture": "BackgroundTexture/洞窟背景.png",
+            "Picture": "StageDisplay/Cave6.png",
             "SceneName": "MainGameScene",
-            "Sentence": "<2-6>チョコ鉱山\n天井のとんがりコーンは崩れ落ち、\n巨大なドーナッツは坂を転がります。\nなんて危険な洞窟なのでしょう...\nチョコとスリルを味わいながら、\nアンナちゃんは奥へ奥へと、\n進んでゆきました。",
+            "Sentence": "<2-6>チョコのベルトコンベア\n鉱山を掘り進める奴隷イチゴ、\nコーンを使って爆破させたり、\n洞窟の中は意外と賑やかです。\nどうやらこの先に、手下をこき使う\n悪いボスがいるみたい...",
             "StagePos": "(445,530)",
             "Tag": "",
             "Text": "",
             "Type": "Stage"
         },
-        "Stage17": {
-            "BGM": "BGM/StageBoss6.wav",
+        "Stage16": {
+            "BGM": "BGM/StageBoss6.mp3",
             "BackgroundTexture": "BackgroundTexture/洞窟背景.png",
             "MapFile": "StageData/caveStageBoss.json",
-            "Picture": "BackgroundTexture/洞窟背景.png",
+            "Picture": "StageDisplay/CaveBoss.png",
             "SceneName": "MainGameScene",
             "Sentence": "<2-Boss>悪逆非道！監督クッキー\n手下をこき使う悪い長。\nひきょう者の奴隷監督クッキーは\n手下を使ってアンナちゃんを襲います。\n必殺技を使ってどうにか倒しましょう！",
             "StagePos": "(460,480)",
@@ -205,23 +193,11 @@
             "Text": "StageData/SignboardText/2-Boss/テキスト.txt",
             "Type": "Boss"
         },
-        "Stage18": {
-            "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
-            "BackgroundTexture": "BackgroundTexture/雲背景.png",
-            "MapFile": "StageData/cloudStageX.json",
-            "Picture": "BackgroundTexture/雲背景.png",
-            "SceneName": "MainGameScene",
-            "Sentence": "<3-0>チョコ鉱山出口\n鉱山から山頂に出たアンナちゃん。\nなんと、この世界の雲は綿菓子でした！\nアンナちゃんはよだれが止まりません。\nでも、空から攻撃してくる敵たちに\n気を付けてアンナちゃん！",
-            "StagePos": "(500,510)",
-            "Tag": "Elevator",
-            "Text": "",
-            "Type": "Stage"
-        },
-        "Stage19": {
+        "Stage17": {
             "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
             "BackgroundTexture": "BackgroundTexture/雲背景.png",
             "MapFile": "StageData/cloudStage1.json",
-            "Picture": "BackgroundTexture/雲背景.png",
+            "Picture": "StageDisplay/Cloud1.png",
             "SceneName": "MainGameScene",
             "Sentence": "<3-1>綿菓子スカイ\n鉱山から山頂に出たアンナちゃん。\nなんと、この世界の雲は綿菓子でした！\nアンナちゃんはよだれが止まりません。\nでも、空から攻撃してくる敵たちに\n気を付けてアンナちゃん！",
             "StagePos": "(570,510)",
@@ -229,19 +205,19 @@
             "Text": "",
             "Type": "Stage"
         },
-        "Stage20": {
+        "Stage18": {
             "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
             "BackgroundTexture": "BackgroundTexture/雲背景.png",
             "MapFile": "StageData/cloudStage2.json",
-            "Picture": "BackgroundTexture/雲背景.png",
+            "Picture": "StageDisplay/Cloud2.png",
             "SceneName": "MainGameScene",
-            "Sentence": "<3-2>大爆発！！\n鉱山から山頂に出たアンナちゃん。\nなんと、この世界の雲は綿菓子でした！\nアンナちゃんはよだれが止まりません。\nでも、空から攻撃してくる敵たちに\n気を付けてアンナちゃん！",
+            "Sentence": "<3-2>大爆発！！\n",
             "StagePos": "(620,480)",
             "Tag": "Blast",
             "Text": "",
             "Type": "Stage"
         },
-        "Stage21": {
+        "Stage19": {
             "BGM": "",
             "BackgroundTexture": "",
             "MapFile": "",
@@ -253,11 +229,11 @@
             "Text": "",
             "Type": "MiniGame"
         },
-        "Stage22": {
+        "Stage20": {
             "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
             "BackgroundTexture": "BackgroundTexture/雲背景.png",
             "MapFile": "StageData/cloudStage3.json",
-            "Picture": "BackgroundTexture/雲背景.png",
+            "Picture": "StageDisplay/Cloud3.png",
             "SceneName": "MainGameScene",
             "Sentence": "<3-3>わたがし大襲撃！\nたいへん！\n空から大量のおかしたちが、\n押し寄せてきた！\nゆっくりお菓子を食べてるヒマは、\nもうありません！\nにげて、にげて、アンナちゃん！",
             "StagePos": "(720,460)",
@@ -265,31 +241,31 @@
             "Text": "",
             "Type": "Stage"
         },
-        "Stage23": {
+        "Stage21": {
             "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
             "BackgroundTexture": "BackgroundTexture/雲背景.png",
             "MapFile": "StageData/cloudStage4.json",
-            "Picture": "BackgroundTexture/雲背景.png",
+            "Picture": "StageDisplay/Cloud4.png",
             "SceneName": "MainGameScene",
-            "Sentence": "<3-4>イチゴちゃんの大逆襲\n鉱山から山頂に出たアンナちゃん。\nなんと、この世界の雲は綿菓子でした！\nアンナちゃんはよだれが止まりません。\nでも、空から攻撃してくる敵たちに\n気を付けてアンナちゃん！",
+            "Sentence": "<3-4>イチゴちゃんの大逆襲\n",
             "StagePos": "(750,480)",
             "Tag": "",
             "Text": "",
             "Type": "Stage"
         },
-        "Stage24": {
+        "Stage22": {
             "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
             "BackgroundTexture": "BackgroundTexture/雲背景.png",
-            "MapFile": "StageData/cloudStage1.json",
+            "MapFile": "StageData/tmp.json",
             "Picture": "BackgroundTexture/雲背景.png",
             "SceneName": "MainGameScene",
-            "Sentence": "<3-5>巨大雲現る！！\nそこには大きな穴が開いた雲が\n頑張っても届きそうにない…",
+            "Sentence": "<3-5>巨大雲現る！！\n開発中！",
             "StagePos": "(795,460)",
             "Tag": "BigCloud",
             "Text": "",
             "Type": "Stage"
         },
-        "Stage25": {
+        "Stage23": {
             "BGM": "",
             "BackgroundTexture": "",
             "MapFile": "",
@@ -301,11 +277,11 @@
             "Text": "",
             "Type": "MiniGame"
         },
-        "Stage26": {
+        "Stage24": {
             "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
             "BackgroundTexture": "BackgroundTexture/雲背景.png",
             "MapFile": "StageData/cloudStage6.json",
-            "Picture": "BackgroundTexture/雲背景.png",
+            "Picture": "StageDisplay/Cloud6.png",
             "SceneName": "MainGameScene",
             "Sentence": "<3-6>大ジャンプ！！\nそこには大きな穴が開いた雲が\n頑張っても届きそうにない…",
             "StagePos": "(850,510)",
@@ -313,11 +289,11 @@
             "Text": "",
             "Type": "Stage"
         },
-        "Stage27": {
+        "Stage25": {
             "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
             "BackgroundTexture": "BackgroundTexture/雲背景.png",
             "MapFile": "StageData/cloudStage7.json",
-            "Picture": "BackgroundTexture/雲背景.png",
+            "Picture": "StageDisplay/Cloud7.png",
             "SceneName": "MainGameScene",
             "Sentence": "<3-7>綿菓子の雲に飛び乗って\nだんだん陽が暮れてきました。\n雲海の先に見えるのは、\nお菓子のお城でしょうか。\nお城を目指して、\nアンナちゃんは港に向かいました。",
             "StagePos": "(880,470)",
@@ -325,19 +301,19 @@
             "Text": "",
             "Type": "Stage"
         },
-        "Stage28": {
-            "BGM": "BGM/StageBoss6.wav",
+        "Stage26": {
+            "BGM": "BGM/StageBoss6.mp3",
             "BackgroundTexture": "BackgroundTexture/雲背景.png",
             "MapFile": "StageData/cloudStageBoss.json",
-            "Picture": "BackgroundTexture/雲背景.png",
+            "Picture": "StageDisplay/CloudBoss.png",
             "SceneName": "MainGameScene",
             "Sentence": "<3-Boss>泣く子も黙る綿菓子船長\nお菓子のお城に行きたいのに\n船に乗せてくれません。\n船長を倒して船を奪おう！\nおヒゲは綿あめだけど、\nおいしそうには思えない...",
             "StagePos": "(910,430)",
-            "Tag": "",
+            "Tag": "Ship",
             "Text": "StageData/SignboardText/3-Boss/テキスト.txt",
             "Type": "Boss"
         },
-        "Stage29": {
+        "Stage27": {
             "BGM": "",
             "BackgroundTexture": "",
             "MapFile": "",
@@ -349,35 +325,35 @@
             "Text": "",
             "Type": "MiniGame"
         },
-        "Stage30": {
+        "Stage28": {
             "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
             "BackgroundTexture": "BackgroundTexture/雲背景.png",
             "MapFile": "StageData/lastStage1.json",
-            "Picture": "BackgroundTexture/雲背景.png",
+            "Picture": "StageDisplay/Last1.png",
             "SceneName": "MainGameScene",
-            "Sentence": "<Last-1>ケーキ城へのエレベーター\n綿菓子の雲に飛び乗って\nだんだん陽が暮れてきました。\n雲海の先に見えるのは、\nお菓子のお城でしょうか。\nお城を目指して、\nアンナちゃんは港に向かいました。",
+            "Sentence": "<ケーキ城への大航海>\nアンナちゃんはわたがし船長から\n奪った船でケーキ城へと向かいます。",
             "StagePos": "(970,440)",
             "Tag": "Elevator",
             "Text": "",
             "Type": "Stage"
         },
-        "Stage31": {
+        "Stage29": {
             "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
             "BackgroundTexture": "BackgroundTexture/雲背景.png",
-            "MapFile": "StageData/cloudStage1.json",
+            "MapFile": "StageData/tmp.json",
             "Picture": "BackgroundTexture/雲背景.png",
             "SceneName": "MainGameScene",
-            "Sentence": "<Last-2>ケーキ城の入口\n綿菓子の雲に飛び乗って\nだんだん陽が暮れてきました。\n雲海の先に見えるのは、\nお菓子のお城でしょうか。\nお城を目指して、\nアンナちゃんは港に向かいました。",
+            "Sentence": "<ケーキ城の入口>\n開発中です！",
             "StagePos": "(990,300)",
             "Tag": "",
             "Text": "",
             "Type": "Stage"
         },
-        "Stage32": {
-            "BGM": "BGM/StageBoss6.wav",
+        "Stage30": {
+            "BGM": "BGM/StageBoss6.mp3",
             "BackgroundTexture": "BackgroundTexture/ラスボス背景.png",
             "MapFile": "StageData/LastBoss.json",
-            "Picture": "BackgroundTexture/ラスボス背景.png",
+            "Picture": "StageDisplay/LastBoss.png",
             "SceneName": "MainGameScene",
             "Sentence": "<大魔女ビター・ヴァイオレット>\nお菓子を独り占めしようとする\nワガママな女の子。\nお菓子は我のものなのじゃ！と、\nアンナちゃんは\nお菓子をかけた最後の戦いに挑みます。",
             "StagePos": "(1050,300)",

@@ -1,6 +1,7 @@
 ﻿#include"ManjuRush.h"
 #include"ControllerManager.h"
 #include"KeyInfo.h"
+#include"PlayMode.h"
 
 namespace ManjuRush
 {
@@ -31,16 +32,16 @@ namespace ManjuRush
 	{
 		if (flag == false) {
 			if (stopwatch < 2s) {
-				font(U"3").drawAt(600, 200+90);
+				font(U"3").drawAt(100,600, 200+90);
 			}
 			else if (stopwatch < 3s) {
-				font(U"2").drawAt(600, 200 + 90);
+				font(U"2").drawAt(100,600, 200 + 90);
 			}
 			else if (stopwatch < 4s) {
-				font(U"1").drawAt(600, 200 + 90);
+				font(U"1").drawAt(100,600, 200 + 90);
 			}
 			else if (stopwatch < 5.5s) {
-				font(U"スタート!").drawAt(600, 200 + 90);
+				font(U"スタート!").drawAt(100,600, 200 + 90);
 			}
 			else if (stopwatch > 5.5s) {
 				flag = true;
@@ -98,8 +99,13 @@ namespace ManjuRush
 						speed += 0.5;
 					}
 				}
-				//スコア
-				font(U"スコア:", score).draw(600, 0);
+
+				if (not photographyMode)
+				{
+					//スコア
+					font(U"スコア:{}/{}"_fmt(score, clearScore)).draw(65, 600, 0);
+				}
+
 				//ジャンプ
 
 				if ((getData().minigameUpKey.pressed()||ControllerManager::get().UpPressed()) && jump == false)
@@ -255,7 +261,11 @@ namespace ManjuRush
 			FontAsset{ U"NormalFont" }(U"{}で戻る"_fmt(ToKeyName(getData().menuDecisionKey, getData().gamepadMode))).drawAt(45, Scene::Center() + Vec2{ 0,150 });
 		}
 
-		FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30,Vec2{10,5});
+		if (not photographyMode)
+		{
+			FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30, Vec2{ 10,5 });
+		}
+
 	}
 
 }

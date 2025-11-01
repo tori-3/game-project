@@ -211,10 +211,14 @@ void GalleryScene::draw() const
 		}
 	}
 
-	homeIcon.drawAt(backButton.center, backButton.mouseOver() ? Palette::Gray : Palette::White);
+	homeIcon.drawAt(backButton.center, (backButton.mouseOver()&&manager.getChildren().empty()) ? Palette::Gray : Palette::White);
 	FontAsset{ U"NormalFont" }(U"{}-タイトルに戻る"_fmt(ToKeyName(getData().menuBackKey, getData().gamepadMode))).draw(30,Arg::leftCenter = backButton.center + Vec2{ 30,0 });
 
 
 
 	manager.draw();
+
+	const String explanation = U" {}-上  {}-下  {}-左  {}-右 {}-決定  {}-戻る"_fmt(ToKeyName(getData().minigameUpKey, getData().gamepadMode), ToKeyName(getData().minigameDownKey, getData().gamepadMode), ToKeyName(getData().minigameLeftKey, getData().gamepadMode), ToKeyName(getData().minigameRightKey, getData().gamepadMode), ToKeyName(getData().menuDecisionKey, getData().gamepadMode), ToKeyName(getData().menuBackKey, getData().gamepadMode));
+	FontAsset{ U"NormalFont" }(explanation).region(30, Arg::bottomLeft(5, Scene::Height())).stretched(5, 3).draw(ColorF{ 0,0.3 });
+	FontAsset{ U"NormalFont" }(explanation).draw(30, Arg::bottomLeft(5, Scene::Height()));
 }

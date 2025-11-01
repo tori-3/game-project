@@ -3,7 +3,7 @@
 
 void LoadAsset::Init()
 {
-	AudioAsset::Register(U"MiniGameBGM", U"BGM/MiniGameBGM.wav", Loop::Yes);
+	AudioAsset::Register(U"MiniGameBGM", U"BGM/MiniGameBGM.mp3", Loop::Yes);
 
 	LoadAsset::RegisterTexture(U"BackGroundTexture/雪原背景.png");
 	LoadAsset::RegisterTexture(U"BackGroundTexture/雲背景.png");
@@ -76,8 +76,10 @@ void LoadAsset::LoadAudio()
 	}
 
 	LoadAsset::RegisterAudio(U"BGM/StageCloud_Pxtone5.2.mp3", Loop::Yes);
+	LoadAsset::RegisterAudio(U"BGM/WorldMap2.mp3", Loop::Yes);
 
 	AudioAsset::LoadAsync(U"BGM/StageCloud_Pxtone5.2.mp3");
+	AudioAsset::LoadAsync(U"BGM/WorldMap2.mp3");
 
 	AudioAsset::Wait(U"キャンセル2");
 }

@@ -4,6 +4,7 @@
 #include"LoadAsset.h"
 #include"SweetsPanel.hpp"
 #include"CharacterSystem.h"
+#include"Shadow.h"
 
 class TitleScene : public App::Scene
 {
@@ -36,7 +37,8 @@ public:
 			playerWalkStop = true;
 			character.clearMotion();
 			character.addMotion(U"Tosshin", true);
-			changeMapTimer.restart();
+			//changeMapTimer.restart();
+			changeMapFlg = true;
 		},
 		[&] {
 			playerWalkStop = true;
@@ -67,8 +69,10 @@ public:
 
 	CharacterSystem character{ U"Characters/annna/annna.json",U"Characters/annna/motion.txt",0.5,startPlace,false};
 
-	Timer changeMapTimer{ 1s };
-	Timer changeMiniGameTimer{ 1s };
+	//Timer changeMapTimer{ 1s };
+	Timer changeMiniGameTimer{ 1.3s };
+
+	bool changeMapFlg = false;
 
 	static constexpr Vec2 menuPos{ 800,450 + 30-35 };
 	static constexpr double menuHeight = 60;
@@ -91,7 +95,15 @@ public:
 
 	double rogoTimer = 0;
 
+	Effect effect;
+
+	double rushEffectAccumulateTime = 0;
+
 	static constexpr Vec2 anyKeyPos{ 600,610 };
+
+	MSRenderTexture rTexture{ Scene::Size(),ColorF{0,0} };
+
+	Shadow shadow;
 
 	double translate()const
 	{
@@ -99,6 +111,8 @@ public:
 	}
 
 	TitleScene(const InitData& init);
+
+	~TitleScene();
 
 	void update() override;
 

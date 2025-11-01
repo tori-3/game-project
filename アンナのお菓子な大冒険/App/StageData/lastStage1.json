@@ -1,5 +1,8 @@
 ﻿{
-  "BackGround": [],
+    "BackGround": [
+        "StageData/lastStage1_back1.json",
+        "StageData/lastStage1_back2.json"
+    ],
   "Block": {
     "Candy": [
       "(0, 6)"

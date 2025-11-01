@@ -54,16 +54,6 @@ namespace Lisence
 		});
 	}
 
-
-	std::shared_ptr<UIElement>InfoPanel()
-	{
-		
-
-
-		auto col = Column::Create({});
-
-	}
-
 	std::shared_ptr<UIElement> LicenseDisplay()
 	{
 		//auto col = Column::Create({});
@@ -107,11 +97,11 @@ namespace Lisence
 			{U"・効果音ラボ (https://soundeffect-lab.info)  ",U"効果音素材"},
 			{U"・On-Jin ～音人～ (https://on-jin.com)  ",U"効果音素材"},
 			{U"・ザ・マッチメイカァズ (https://osabisi.sakura.ne.jp/m2/index.html)  ",U"効果音素材"},
+			{U"・OtoLogic (https://otologic.jp)  ",U"効果音素材　🕹️ まっくら迷路 BGM"},
 			{U"・夢にみた緑 (https://yougou.sonnabakana.com)  ",U"🕹️ ふぉーりんぐアンナちゃん BGM"},
-			{U"・いらすとや (https://www.irasutoya.com)  ",U"一部ミニゲーム素材"},
-			{U"・OtoLogic (https://otologic.jp)  ",U"🕹️ まっくら迷路 BGM"},
-			{U"・TAM Music Factory (https://www.tam-music.com/)",U"🕹️ まっくら迷路 効果音"},
-			{U"・エスフェクツ (https://esffects.net/)",U"🕹️ まっくら迷路 効果音"},
+			{U"・TAM Music Factory (https://www.tam-music.com)  ",U"効果音素材"},
+			{U"・エスフェクツ (https://esffects.net)  ",U"効果音素材"},
+			{U"・いらすとや (https://www.irasutoya.com)  ",U"一部ミニゲーム イラスト素材"},
 			{U"・Input Prompts · Kenney (https://kenney.nl/assets/input-prompts)  ",U"キーの画像"},
 		};
 

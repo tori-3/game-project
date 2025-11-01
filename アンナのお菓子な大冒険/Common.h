@@ -42,8 +42,8 @@ struct GameData
 	String text;
 
 	static constexpr int32 ChocoMountain = 8;
-	static constexpr int32 CandyCloud = 18;
-	static constexpr int32 LastBossStage = 32;// 26
+	static constexpr int32 CandyCloud = 17;
+	static constexpr int32 LastBossStage = 30;// 26
 
 	struct MiniGameState
 	{
@@ -83,6 +83,9 @@ struct GameData
 	//ボタンで終了したか
 	bool exitButton = false;
 
+
+	//タイトルシーンから移動したか(Map画面への遷移に使用)
+	bool fadeWipe = false;
 
 	//ゲームを始める前に呼ぶ
 	void initGame()

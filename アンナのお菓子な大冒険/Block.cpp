@@ -2,6 +2,7 @@
 #include"TalkManager.h"
 #include"KeyInfo.h"
 #include"ExplosionEffect.h"
+#include"PlayMode.h"
 
 void Block::reaction(const Point& pos, PhysicsBox* box)
 {
@@ -487,7 +488,10 @@ void SignboardBlock::draw(const Point& pos)const
 
 	if(fairy)
 	{
-		SoapBubble(Circle{ (pos + Vec2{0.5,0}) * rect_size,rect_size * 0.3 }, HSV{ Scene::Time() * 30 ,0.3 });
+		if(not photographyMode)
+		{
+			SoapBubble(Circle{ (pos + Vec2{0.5,0}) * rect_size,rect_size * 0.3 }, HSV{ Scene::Time() * 30 ,0.3 });
+		}
 	}
 	else
 	{
@@ -638,4 +642,15 @@ void StrawberrySoldierTowerBlock::update(const Point& pos)
 		DataManager::get().addEntity(U"StrawberrySoldierTower", pos * rect_size + Vec2{ 0.5,0.5 }*rect_size);
 		bornFlg = true;
 	}
+}
+
+void BackgroundDoor::draw(const Point& pos)const
+{
+	TextureAsset(U"Door").resized(rect_size * 2).draw(pos * rect_size);
+	TextureAsset(U"Door").resized(rect_size * 2).mirrored().draw(pos * rect_size);
+}
+
+void WindowBlock::draw(const Point& pos)const
+{
+	TextureAsset(U"Window").resized(rect_size).draw(pos * rect_size);
 }

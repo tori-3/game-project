@@ -5,6 +5,7 @@
 #include"ControllerInput.h"
 #include"KeyInfo.h"
 #include"ControllerManager.h"
+#include"ToggleButton.h"
 
 class KeyConfigInfo
 {
@@ -293,10 +294,28 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 	auto windowModeButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 240, .child = TextUI::Create({.text = text,.color=Palette::White}) });
 
 
-	String text2 = gameData.getIncreaseHPMode() ? U"❤HP増加をOFFにする" : U"❤HP増加をONにする";
-	auto hpModeText = TextUI::Create({ .text = text2,.color = Palette::White });
-	auto hpModeButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 340, .child = hpModeText });
+	//String text2 = gameData.getIncreaseHPMode() ? U"❤HP増加をOFFにする" : U"❤HP増加をONにする";
+	//auto hpModeText = TextUI::Create({ .text = text2,.color = Palette::White });
+	//auto hpModeButton = ChocolateButton::Create({ .color = Palette::Chocolate, .padding = 20,.margine = 10,.width = 340, .child = hpModeText });
 
+	auto hpModeToggle = ToggleButton::Create({ .value = gameData.getIncreaseHPMode() });
+
+	auto hpModePanel = RectPanel::Create
+	({
+		.color = AlphaF(0),
+		.margine = 0,
+		.child = Row::Create
+		({
+			.margine = {0,10},
+			.height = 50,
+			.children
+			{
+				TextUI::Create({.text = U"❤HP増加",.color = Palette::White,.width = 150}),
+				hpModeToggle,
+				//RectUI::Create({.size{50,50},.color = AlphaF(0)})
+			}
+		})
+	});
 
 	static int32 selectIndex = 0;
 	static LongPressInput upInput;
@@ -314,8 +333,8 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 	effectVolumeSliderPanel->color = selectIndex == 0 ? ColorF{ Palette::Skyblue } : AlphaF(0);
 	BGMVolumeSliderPanel->color = selectIndex == 1 ? ColorF{ Palette::Skyblue } : AlphaF(0);
 	vibrationSliderPanel->color = selectIndex == 2 ? ColorF{ Palette::Skyblue } : AlphaF(0);
-	windowModeButton->selected = selectIndex == 3;
-	hpModeButton->selected = selectIndex == 4;
+	hpModePanel->color = selectIndex == 3 ? ColorF{ Palette::Skyblue } : AlphaF(0);
+	windowModeButton->selected = selectIndex == 4;
 	keyConfigButton->selected = selectIndex == 5;
 	closeButton->selected = selectIndex == 6;
 
@@ -334,17 +353,8 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 					effectVolumeSliderPanel,
 					BGMVolumeSliderPanel,
 					vibrationSliderPanel,
+					hpModePanel,
 					windowModeButton,
-					hpModeButton,
-					//Row::Create
-					//({
-					//	.children
-					//	{
-					//		RectUI::Create({.size{50,50},.color=Alpha(0)}),
-					//		hpModeButton,
-					//		infoButton
-					//	}
-					//}),
 					keyConfigButton,
 					closeButton
 				}
@@ -387,8 +397,8 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 			effectVolumeSliderPanel->color = selectIndex == 0 ? ColorF{ Palette::Skyblue } : AlphaF(0);
 			BGMVolumeSliderPanel->color = selectIndex == 1 ? ColorF{ Palette::Skyblue } : AlphaF(0);
 			vibrationSliderPanel->color = selectIndex == 2 ? ColorF{ Palette::Skyblue } : AlphaF(0);
-			windowModeButton->selected = selectIndex == 3;
-			hpModeButton->selected = selectIndex == 4;
+			hpModePanel->color = selectIndex == 3 ? ColorF{ Palette::Skyblue } : AlphaF(0);
+			windowModeButton->selected = selectIndex == 4;
 			keyConfigButton->selected = selectIndex == 5;
 			closeButton->selected = selectIndex == 6;
 
@@ -429,19 +439,7 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 				ControllerManager::get().setVibration(0.3);
 			}
 
-
-			if (windowModeButton->clicked() || (selectIndex == 3 && gameData.menuDecisionKey.down()))
-			{
-				AudioAsset{ U"決定ボタン" }.playOneShot();
-
-				const bool isFullscreen = Window::GetState().fullscreen;
-				windowModeButton->setChild(TextUI::Create({.text = isFullscreen ? U"全画面にする":U"ウィンドウにする",.color=Palette::White  }));
-				Window::SetFullscreen(not isFullscreen);
-
-				gameData.save();
-			}
-
-			if(hpModeButton->clicked() || (selectIndex == 4 && gameData.menuDecisionKey.down()))
+			if(hpModeToggle->clicked() || (selectIndex == 3 && gameData.menuDecisionKey.down()))
 			{
 				AudioAsset{ U"決定ボタン" }.playOneShot();
 
@@ -536,8 +534,20 @@ std::shared_ptr<UIElement> SettingWindow(const InputGroup& upInputGroup, const I
 					gameData.setIncreaseHPMode(true);
 					gameData.save();
 
-					hpModeText->setText(U"❤HP増加をOFFにする");
+					hpModeToggle->value = gameData.getIncreaseHPMode();
+					//hpModeText->setText(U"❤HP増加をOFFにする");
 				}
+			}
+
+			if (windowModeButton->clicked() || (selectIndex == 4 && gameData.menuDecisionKey.down()))
+			{
+				AudioAsset{ U"決定ボタン" }.playOneShot();
+
+				const bool isFullscreen = Window::GetState().fullscreen;
+				windowModeButton->setChild(TextUI::Create({ .text = isFullscreen ? U"全画面にする" : U"ウィンドウにする",.color = Palette::White }));
+				Window::SetFullscreen(not isFullscreen);
+
+				gameData.save();
 			}
 
 			if(keyConfigButton->clicked()|| (selectIndex == 5 && gameData.menuDecisionKey.down()))

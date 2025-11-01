@@ -98,8 +98,8 @@ Map::Map(const InitData& init)
 	character.update(playerPos - Point{ 0 ,30 }, false);
 
 
-	AudioAsset::Register(U"WorldBGM", U"BGM/WorldMap2.mp3", Loop::Yes);
-	BGMManager::get().play(U"WorldBGM");
+	//AudioAsset::Register(U"WorldBGM", U"BGM/WorldMap2.mp3", Loop::Yes);
+	BGMManager::get().play(U"BGM/WorldMap2.mp3");
 
 
 	//アニメーション
@@ -196,7 +196,7 @@ void Map::update()
 		lastBossTimer.restart();
 	}
 
-	if (not panelFlg&&getData().menuBackKey.down())
+	if (not panelFlg&&(getData().menuBackKey.down()|| backButton.leftClicked()))
 	{
 		changeScene(U"TitleScene");
 		AudioAsset{ U"決定ボタン" }.playOneShot();
@@ -210,21 +210,16 @@ void Map::update()
 		manager.update();
 	}
 
-		if (backButton.leftClicked())
-		{
-			changeScene(U"TitleScene");
-			AudioAsset{ U"決定ボタン" }.playOneShot();
-		}
-
 		if(panelFlg&&getData().menuBackKey.down())
 		{
 			panelFlg = false;
 		}
 
-		if (panelFlg && (start.leftClicked() || getData().menuDecisionKey.down()) && index <= clearStage)
+		if (panelFlg && (startButton->clicked() || getData().menuDecisionKey.down()) && index <= clearStage)
 		{
 
-			AudioAsset{ U"決定ボタン" }.playOneShot();
+			//AudioAsset{ U"決定ボタン" }.playOneShot();
+			AudioAsset{ U"決定ボタンを押す16" }.playOneShot();
 
 			getData().initGame();
 			getData().mini_mode = Stage_Mode;
@@ -237,7 +232,7 @@ void Map::update()
 
 			if (sceneNames[index] == U"MainGameScene")
 			{
-				getData().description = U"{5}-ジャンプ\n{1}-左移動\n{3}-右移動\n{2}-しゃがむ\n{4}-技を発動\n{4}長押し-突進(🍪が10個貯まったら)";
+				getData().description = U"{5}-ジャンプ\n{1}-左移動\n{3}-右移動\n{2}-しゃがむ\n{4}-攻撃\n{4}長押し-突進(🍪が10個貯まったら)\n------------------------------------\n空中で攻撃：サマーソルトキック\nしゃがみながら攻撃：スライディング\n空中で{2}：ヘッドドロップ";
 			}
 			else
 			{
@@ -360,7 +355,7 @@ void Map::update()
 	//	}
 	//}
 
-	if (getData().menuDecisionKey.down())
+	if (panelFlg==false&&getData().menuDecisionKey.down())
 	{
 		AudioAsset{ U"決定ボタン" }.playOneShot();
 		panelFlg = true;
@@ -469,6 +464,27 @@ void Map::draw() const
 	if (panelFlg)
 	{
 		//Rect{ Arg::center(600,300),1100,450 }.draw(ColorF{ Palette::Deeppink,0.8 }).drawFrame(3, 0);
+		{
+			ScopedShadow s{ shadow };
+
+			if (index + 1 < getData().ChocoMountain)
+			{
+				snowPanel.resized(1250).drawAt(600, 300);
+			}
+			else if (index + 1 < getData().CandyCloud)
+			{
+				chocoPanel.resized(1250).drawAt(600, 300);
+			}
+			else if (index + 1 < getData().LastBossStage)
+			{
+				cloudPanel.resized(1250).drawAt(600, 300);
+			}
+			else
+			{
+				lastBossPanel.resized(1250).drawAt(600, 300);
+			}
+		}
+		shadow.draw();
 
 		if (index + 1 < getData().ChocoMountain)
 		{
@@ -526,15 +542,23 @@ void Map::draw() const
 		FontAsset{ U"NormalFont" }(U"→").drawAt(20, Scene::Center() + Vec2{ 180,-220 });
 
 	}
-
-	if (backButton.mouseOver())
-	{
-		Cursor::RequestStyle(CursorStyle::Hand);
-	}
 	
-	homeIcon.drawAt(backButton.center, backButton.mouseOver() ? Palette::Gray : Palette::White);
-	FontAsset{ U"NormalFont" }(U"{}-タイトルに戻る"_fmt(ToKeyName(getData().menuBackKey,getData().gamepadMode))).draw(30,Arg::leftCenter = backButton.center + Vec2{ 30,0 });
+	if(not panelFlg)
+	{
+		if (backButton.mouseOver())
+		{
+			Cursor::RequestStyle(CursorStyle::Hand);
+		}
 
+		homeIcon.drawAt(backButton.center, backButton.mouseOver() ? Palette::Gray : Palette::White);
+		FontAsset{ U"NormalFont" }(U"{}-タイトルに戻る"_fmt(ToKeyName(getData().menuBackKey, getData().gamepadMode))).draw(30, Arg::leftCenter = backButton.center + Vec2{ 30,0 });
+	}
+	else
+	{
+		const String explanation = U" {}-はじめる  {}-閉じる"_fmt(ToKeyName(getData().menuDecisionKey, getData().gamepadMode), ToKeyName(getData().menuBackKey, getData().gamepadMode));
+		FontAsset{ U"NormalFont" }(explanation).region(30, Arg::bottomLeft(5, Scene::Height())).stretched(5, 3).draw(ColorF{ 0,0.5 });
+		FontAsset{ U"NormalFont" }(explanation).draw(30, Arg::bottomLeft(5, Scene::Height()));
+	}
 
 	//if (largeFlg) {
 	//	Rect{ Scene::Size() }.draw(ColorF(0, 0.6));

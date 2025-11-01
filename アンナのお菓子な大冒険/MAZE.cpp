@@ -2,6 +2,7 @@
 #include"MAZE.h"
 #include"ControllerManager.h"
 #include"KeyInfo.h"
+#include"PlayMode.h"
 
 namespace Maze1
 {
@@ -236,9 +237,12 @@ namespace Maze1
 		}
 		light.draw();
 
-		watch(stopwatch).draw(1070, -5, Palette::White);
+		if (not photographyMode)
+		{
+			watch(stopwatch).draw(1070, -5, Palette::White);
 
-		FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30,Vec2{ 10,5 },ColorF{1,0.5});
+			FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30, Vec2{ 10,5 }, ColorF{ 1,0.5 });
+		}
 	}
 
 	Clear::Clear(const InitData& init)

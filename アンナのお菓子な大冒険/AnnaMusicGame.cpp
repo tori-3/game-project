@@ -1,5 +1,6 @@
 ﻿#include"AnnaMusicGame.h"
 #include"KeyInfo.h"
+#include"PlayMode.h"
 
 namespace AnnaMusicGame {
 
@@ -397,7 +398,7 @@ namespace AnnaMusicGame {
 
 		for (auto& rc : rcs)
 		{
-			if (rc.theta > 0&&cloudPos.y+10<Vec2{rc}.y)//判定　90　最初0からマイナス方向に並んでいる　回転で＋になったのだけ表示、判定
+			if (rc.theta > 0 && cloudPos.y + 10 < Vec2{ rc }.y)//判定　90　最初0からマイナス方向に並んでいる　回転で＋になったのだけ表示、判定
 			{
 				candyr.drawAt(rc);
 
@@ -406,7 +407,7 @@ namespace AnnaMusicGame {
 		}
 		for (auto& gc : gcs)
 		{
-			if (gc.theta > 0&& cloudPos.y+10 < Vec2{ gc }.y)//判定　90　最初0からマイナス方向に並んでいる　回転で＋になったのだけ表示、判定
+			if (gc.theta > 0 && cloudPos.y + 10 < Vec2{ gc }.y)//判定　90　最初0からマイナス方向に並んでいる　回転で＋になったのだけ表示、判定
 			{
 				candyg.drawAt(gc);
 
@@ -419,7 +420,7 @@ namespace AnnaMusicGame {
 		if (rcs.empty() and gcs.empty())
 		{
 			FontAsset(U"NormalFont")(U"Perfect{}\nMiss{}\nMaxcombo{}"_fmt(perfect, miss, maxcombo)).draw(60, 50, 50, Palette::Yellow);
-			FontAsset(U"NormalFont")(U"{}で戻る"_fmt(ToKeyName(getData().menuDecisionKey,getData().gamepadMode))).draw(30, 250, 300, Palette::Skyblue);
+			FontAsset(U"NormalFont")(U"{}で戻る"_fmt(ToKeyName(getData().menuDecisionKey, getData().gamepadMode))).draw(30, 250, 300, Palette::Skyblue);
 
 			if (miss <= 9)
 			{
@@ -435,13 +436,15 @@ namespace AnnaMusicGame {
 
 		effect.update();
 
-		FontAsset(U"NormalFont")(U"赤(←)は{}"_fmt(ToKeyName(getData().minigameLB, getData().gamepadMode))).draw(40, 700, 50, Palette::Red);
-		FontAsset(U"NormalFont")(U"黄緑(→)は{}"_fmt(ToKeyName(getData().minigameRB, getData().gamepadMode))).draw(40, 700, 90, Palette::Yellowgreen);
-		FontAsset(U"NormalFont")(U"をタイミング良く押そう！\nMiss9以下でクリア").draw(40, 700, 130, Palette::Skyblue);
-		FontAsset(U"NormalFont")(U"{}"_fmt(credit)).draw(30, 5, 750, Palette::Skyblue);
-		FontAsset(U"NormalFont")(U"Combo{}"_fmt(combo)).draw(60, 650+30, 380, Palette::Yellowgreen);
+		if (not photographyMode)
+		{
+			FontAsset(U"NormalFont")(U"赤(←)は{}"_fmt(ToKeyName(getData().minigameLB, getData().gamepadMode))).draw(40, 700, 50, Palette::Red);
+			FontAsset(U"NormalFont")(U"黄緑(→)は{}"_fmt(ToKeyName(getData().minigameRB, getData().gamepadMode))).draw(40, 700, 90, Palette::Yellowgreen);
+			FontAsset(U"NormalFont")(U"をタイミング良く押そう！\nMiss9以下でクリア").draw(40, 700, 130, Palette::Skyblue);
+			FontAsset(U"NormalFont")(U"{}"_fmt(credit)).draw(30, 5, 750, Palette::Skyblue);
+			FontAsset(U"NormalFont")(U"Combo{}"_fmt(combo)).draw(60, 650 + 30, 380, Palette::Yellowgreen);
 
-		FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30,Arg::topRight = Vec2{ Scene::Width() - 10,5 });
+			FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30, Arg::topRight = Vec2{ Scene::Width() - 10,5 });
+		}
 	}
-
 }

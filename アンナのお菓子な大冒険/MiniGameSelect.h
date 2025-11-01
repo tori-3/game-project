@@ -53,4 +53,7 @@ public:
 	void update()override;
 
 	void draw()const override;
+
+	void drawKey(const Vec2& pos,const InputGroup& inputs, StringView text)const;
+
 };

@@ -1,7 +1,7 @@
 ﻿{
   "BackGround": [
-    "C:/Users/tori_/source/repos/game-project/アンナのお菓子な大冒険/App/StageData/snowStage_bossBack2.json",
-    "C:/Users/tori_/source/repos/game-project/アンナのお菓子な大冒険/App/StageData/snowStage_bossBack.json"
+    "StageData/snowStage_bossBack2.json",
+    "StageData/snowStage_bossBack.json"
   ],
   "Block": {
     "CakeGround": [

@@ -4,7 +4,7 @@
 #include"LinerMove.h"
 #include"CharacterSystem.h"
 #include"BGMManager.hpp"
-
+#include"Shadow.h"
 
 class Map : public App::Scene
 {
@@ -38,7 +38,7 @@ public:
 	static constexpr Circle backButton{ {35,35},30 };
 
 	//ボタン(開始、イージー、ノーマル、ハード)
-	const Rect start{ Arg::center(600,470), 300, 70 };
+	//const Rect start{ Arg::center(600,470), 300, 70 };
 
 	//JSONファイル
 	JSON json = JSON::Load(U"map.json");
@@ -80,6 +80,7 @@ public:
 
 	Vec2 playerPos{};
 
+	Shadow shadow;
 
 	Texture stageFrame{ U"StageImage/stageFrame.png", TextureDesc::Mipped };
 	Texture stageBattle{ U"StageImage/stageBattle.png", TextureDesc::Mipped };

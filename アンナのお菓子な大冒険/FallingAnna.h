@@ -3,6 +3,7 @@
 #include"MiniGameSceneBase.h"
 #include"ControllerManager.h"
 #include"KeyInfo.h"
+#include"PlayMode.h"
 
 namespace FallingAnna {
 
@@ -877,21 +878,24 @@ namespace FallingAnna {
 					Cfont(U"失敗……").drawAt(textStyle, ww * 0.5f, wh * 0.35f);
 				}
 				//Sfont(U"合格ライン:", goukakuline).draw(textStyle, Arg::topLeft = Vec2(ww * 0.5f, wh * 0.47f));
-				FontAsset{ U"NormalFont" }(U"{}でおわる"_fmt(ToKeyName(getData().menuDecisionKey, getData().gamepadMode))).drawAt(60,Vec2(ww * 0.5f, wh * 0.6f));
+				FontAsset{ U"NormalFont" }(U"{}でおわる"_fmt(ToKeyName(getData().menuDecisionKey, getData().gamepadMode))).drawAt(60, Vec2(ww * 0.5f, wh * 0.6f));
 			}
-			if (getclear())
-			{
-				Sfont(Math::Round(score), U"/", goukakuline).draw(textStyle, Arg::topLeft = Vec2(ww * 0.05f, wh * 0.05f), Palette::Yellow);
-			}
-			else
-			{
-				Sfont(Math::Round(score), U"/", goukakuline).draw(textStyle, Arg::topLeft = Vec2(ww * 0.05f, wh * 0.05f));
-			}
-			Sfont(U"残り:", Math::Round(nokori / annah * 1.6), U"m").draw(textStyle, Arg::topRight = Vec2(ww * 0.95f, wh * 0.05f));
 
-			FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30,Arg::topRight = Vec2{ Scene::Width() - 10,5 });
+			if (not photographyMode)
+			{
+				if (getclear())
+				{
+					Sfont(Math::Round(score), U"/", goukakuline).draw(textStyle, Arg::topLeft = Vec2(ww * 0.05f, wh * 0.05f), Palette::Yellow);
+				}
+				else
+				{
+					Sfont(Math::Round(score), U"/", goukakuline).draw(textStyle, Arg::topLeft = Vec2(ww * 0.05f, wh * 0.05f));
+				}
+				Sfont(U"残り:", Math::Round(nokori / annah * 1.6), U"m").draw(textStyle, Arg::topRight = Vec2(ww * 0.95f, wh * 0.05f));
+
+				FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30, Arg::topRight = Vec2{ Scene::Width() - 10,5 });
+			}
 		}
-
 	};
 
 

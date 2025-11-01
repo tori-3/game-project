@@ -408,9 +408,11 @@
     <ClInclude Include="NotificationAddon.h" />
     <ClInclude Include="OpeningScene.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayMode.h" />
     <ClInclude Include="RingEffect.h" />
     <ClInclude Include="setting.h" />
     <ClInclude Include="SettingWindow.h" />
+    <ClInclude Include="Shadow.h" />
     <ClInclude Include="SimpleAction.h" />
     <ClInclude Include="SmoothCamera.h" />
     <ClInclude Include="SoundIcon.hpp" />
@@ -424,6 +426,7 @@
     <ClInclude Include="TalkManager.h" />
     <ClInclude Include="TalkWindow.h" />
     <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="ToggleButton.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App\example\obj\blacksmith.obj">

@@ -10,6 +10,7 @@
 #include"MiniGameSceneBase.h"
 #include"SmoothCamera.h"
 #include"Player.h"
+#include"Shadow.h"
 
 class MainGameScene : public MiniGameSceneBase
 {
@@ -42,7 +43,7 @@ public:
 	Spotlight* light = nullptr;
 	
 	RenderTexture backgroundRenderTexture{ Scene::Size() };
-	const RenderTexture internalTexture{ Scene::Size() };
+	//const RenderTexture internalTexture{ Scene::Size() };
 	//const RenderTexture downsample{ Scene::Size() / 2 };
 
 	bool bgmStart = false;
@@ -56,6 +57,9 @@ public:
 	Entity* fairy = nullptr;
 
 	bool setBossTalkFlg = false;
+
+	//お試し
+	Shadow shadow;
 
 	MainGameScene(const InitData& init);
 

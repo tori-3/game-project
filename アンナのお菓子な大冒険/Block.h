@@ -533,3 +533,15 @@ public:
 
 	void update(const Point& pos)override;
 };
+
+class BackgroundDoor :public Block
+{
+public:
+	void draw(const Point& pos)const override;
+};
+
+class WindowBlock :public Block
+{
+public:
+	void draw(const Point& pos)const override;
+};

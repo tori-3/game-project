@@ -62,5 +62,8 @@ private:
 	LongPressInput rightInput;
 	int32 m_settingSelectIndex = 0;
 
+	//キー説明をfadeさせるため
+	Transition m_fade{ 0.2s };
+
 	bool m_saveClearFlg = false;
 };

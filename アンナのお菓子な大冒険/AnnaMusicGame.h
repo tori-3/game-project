@@ -110,7 +110,7 @@ namespace AnnaMusicGame {
 		Array<OffsetCircular>& rcs = notes.first;
 		Array<OffsetCircular>& gcs = notes.second;
 
-		const Audio music{ U"MiniGameAsset/AnnaMusicGame/{}.mp3"_fmt(getData().mini_mode) ,Loop::No };
+		const Audio music{ getMusicPath() ,Loop::No };
 
 		//const Font font{ FontMethod::MSDF,50 };
 
@@ -151,6 +151,20 @@ namespace AnnaMusicGame {
 		bool small = false;
 
 	public:
+
+		String getMusicPath()const
+		{
+			switch(getData().mini_mode)
+			{
+			case Normal_Mode:
+				return U"BGM/StageBoss6.mp3";
+			case Hard_Mode:
+				return U"BGM/StageBossLast1.mp3";
+			default:
+				return U"BGM/StageSnow7.mp3";
+			}
+		}
+
 
 		RenderTexture background{ Scene::Size()/4 };
 		bool saveFlg = false;

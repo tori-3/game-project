@@ -3,6 +3,7 @@
 #include"KeyInfo.h"
 #include"Gimmick.h"
 #include"Enemy.h"
+#include"PlayMode.h"
 
 class StageEntity :public Entity
 {
@@ -84,7 +85,7 @@ MainGameScene::MainGameScene(const InitData& init)
 	}
 	else if(DataManager::get().isElevatorStage)
 	{
-		camera.update({ player->pos.x - Scene::Center().x,DataManager::get().elevatorPosY - Scene::Height() + rect_size });
+		camera.update({ player->pos.x - draw_x,DataManager::get().elevatorPosY - Scene::Height() + rect_size });
 	}
 	else
 	{
@@ -252,7 +253,7 @@ void MainGameScene::gameUpdate()
 		}
 		else if (DataManager::get().isElevatorStage)
 		{
-			camera.update({ player->pos.x - Scene::Center().x,DataManager::get().elevatorPosY-Scene::Height()+rect_size});
+			camera.update({ player->pos.x - draw_x,DataManager::get().elevatorPosY-Scene::Height()+rect_size});
 		}
 		else
 		{
@@ -312,16 +313,30 @@ void MainGameScene::gameDraw() const
 		}
 	}
 
-	//halfRenderTexture
-	//Shader::Downsample(backgroundRenderTexture, downsample);
-	Shader::GaussianBlur(backgroundRenderTexture, internalTexture, backgroundRenderTexture);
+	//Shader::GaussianBlur(backgroundRenderTexture, internalTexture, backgroundRenderTexture);
+
 	backgroundRenderTexture.draw();
+
 
 	{
 		//座標変換
 		const Transformer2D t{ camera.getMat3x2() };
+		ScopedShadow s{ shadow };
 		manager.draw();
-		//stage.draw(camera.pos + Scene::Size() / 2);
+	}
+
+	shadow.draw();
+
+	{
+		const Transformer2D t{ camera.getMat3x2() };
+
+		manager.draw();
+
+		if (getData().tag == U"Ship")
+		{
+			TextureAsset{ U"船体" }.draw(-rect_size, (stage.map.height() - 2) * rect_size);
+		}
+
 		DataManager::get().effect.update();
 
 		{
@@ -359,8 +374,11 @@ void MainGameScene::gameDraw() const
 	rTexture.resolve();
 	rTexture.draw();
 
-	CookieDisplay(player->itemCount, DataManager::get().tame);
-	HpDisplay(player->hp, DataManager::get().maxHP);
+	if (not photographyMode)
+	{
+		CookieDisplay(player->itemCount, DataManager::get().tame);
+		HpDisplay(player->hp, DataManager::get().maxHP);
+	}
 
 	if (0 < kaisouAlpha)
 	{
@@ -371,14 +389,17 @@ void MainGameScene::gameDraw() const
 	constexpr double space = 50;
 	TalkManager::get().talkWindow.draw(RectF{ space,Scene::Height() - height - space,Scene::Width() - space * 2 ,height }, { 250,50 },false,ToKeyName(getData().attackKey, getData().gamepadMode));
 
-	FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30,Arg::topRight = Vec2{ Scene::Width() - 10,5 });
-
-	if (DataManager::get().bossHPRate)
+	if (not photographyMode)
 	{
-		RoundRect{ Arg::center(Scene::Center().x, 30),FontAsset{ U"NormalFont" }(DataManager::get().bossName).region().w,20,10}.drawShadow(Vec2{0,0}, 24, 10, ColorF{0,0.3});
+		FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30, Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 
-		FontAsset{ U"NormalFont" }(DataManager::get().bossName).drawAt(25,Scene::Center().x, 30);
-		hpBar.draw(Palette::Purple, Palette::Red);
+		if (DataManager::get().bossHPRate)
+		{
+			RoundRect{ Arg::center(Scene::Center().x, 30),FontAsset{ U"NormalFont" }(DataManager::get().bossName).region().w,20,10 }.drawShadow(Vec2{ 0,0 }, 24, 10, ColorF{ 0,0.3 });
+
+			FontAsset{ U"NormalFont" }(DataManager::get().bossName).drawAt(25, Scene::Center().x, 30);
+			hpBar.draw(Palette::Purple, Palette::Red);
+		}
 	}
 
 	if (0 < damageTimer)
