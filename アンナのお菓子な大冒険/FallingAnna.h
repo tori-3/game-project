@@ -297,7 +297,7 @@ namespace FallingAnna {
 			{
 			case Stage_Mode:
 				nokori *= 1.0;
-				goukakuline *= 0.9;//1.0
+				goukakuline *= 0.7;//1.0
 				perrock *= 1.25;
 				pertoge *= 0.75;
 				percloud *= 1.0;
@@ -891,7 +891,7 @@ namespace FallingAnna {
 				{
 					Sfont(Math::Round(score), U"/", goukakuline).draw(textStyle, Arg::topLeft = Vec2(ww * 0.05f, wh * 0.05f));
 				}
-				Sfont(U"残り:", Math::Round(nokori / annah * 1.6), U"m").draw(textStyle, Arg::topRight = Vec2(ww * 0.95f, wh * 0.05f));
+				Sfont(U"残り:", Math::Round(nokori / annah * 1.6), U"m").draw(textStyle,40, Arg::topRight = Vec2(ww * 0.95f, wh * 0.05f));
 
 				FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30, Arg::topRight = Vec2{ Scene::Width() - 10,5 });
 			}

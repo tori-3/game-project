@@ -1,7 +1,6 @@
 ﻿#include"HawkDropOut.h"
 #include"BGMManager.hpp"
 #include"ControllerManager.h"
-#include"KeyInfo.h"
 #include"PlayMode.h"
 
 namespace HawkDropOut
@@ -25,7 +24,7 @@ namespace HawkDropOut
 	}
 
 	HawkDropOut::HawkDropOut(const InitData& init)
-		: MiniGameSceneBase{ init,false }
+		: MiniGameSceneBase{ init,true }
 	{
 		BGMManager::get().play(U"MiniGameBGM");
 
@@ -34,7 +33,7 @@ namespace HawkDropOut
 		switch (getData().mini_mode)
 		{
 		case Stage_Mode:
-			clearScore = 2500;
+			clearScore = 1800;
 			break;
 		case Easy_Mode:
 			clearScore = 2000;
@@ -188,7 +187,7 @@ namespace HawkDropOut
 		}
 
 		//上昇ボタン
-		if (ButtonUpdate(Rect{ 650, 180, 60, 60 }, 0.5, 30, 30, upEmoji, font, farmCount, upTime < 10.0, enemy, true) && (Rect{ 650, 180, 60, 60 }.leftPressed() || (getData().minigameUpKey.pressed()||ControllerManager::get().UpPressed())))
+		if (ButtonUpdate(Rect{ 650, 180, 60, 60 }, 0.5, 30, 30, upEmoji,farmCount, upTime < 10.0, enemy, true) && ((getData().minigameUpKey.pressed()||ControllerManager::get().UpPressed())))
 		{
 			cookieCircle.y -= Scene::DeltaTime() * (50.0 + plasdropspeed);
 			upTime += Scene::DeltaTime();
@@ -204,7 +203,7 @@ namespace HawkDropOut
 		}
 
 		//攻撃ボタン
-		if (ButtonUpdate(Rect{ 650, 250, 60, 60 }, 0.5, 30, 30, attackfunction, font, farmCount, numofmeat >= 1, enemy, j < 1) && (Rect{ 650, 250, 60, 60 }.leftClicked() || getData().minigameLB.pressed())) {
+		if (ButtonUpdate(Rect{ 650, 250, 60, 60 }, 0.5, 30, 30, attackfunction, farmCount, numofmeat >= 1, enemy, j < 1) && (getData().minigameLB.pressed())) {
 			attack = true;
 			attackball.x = cookieCircle.x - 10;
 			attackball.y = cookieCircle.y + 10;
@@ -255,7 +254,7 @@ namespace HawkDropOut
 
 
 		//超上昇ボタン
-		if (ButtonUpdate(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, numofmeat >= 2, enemy, true) && (Rect{ 715, 244, 70, 70 }.leftClicked() || getData().minigameRB.down()))
+		if (ButtonUpdate(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, farmCount, numofmeat >= 2, enemy, true) && (getData().minigameRB.down()))
 		{
 			tornadoFlg = true;
 			numofmeat -= 2;
@@ -266,7 +265,7 @@ namespace HawkDropOut
 		{
 			cookieCircle.y -= Scene::DeltaTime() * 1500.0;
 
-			const bool pressedTornado = ButtonUpdate(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, true, false, true) && (Rect{ 715, 244, 70, 70 }.leftPressed() || getData().minigameRB.pressed());
+			const bool pressedTornado = ButtonUpdate(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, farmCount, true, false, true) && (getData().minigameRB.pressed());
 
 			if (not pressedTornado || cookieCircle.y <= 50)
 			{
@@ -281,7 +280,7 @@ namespace HawkDropOut
 		//}
 
 		//下降ボタン
-		if (ButtonUpdate(Rect{ 650, 320, 60, 60 }, 0.5, 30, 30, downEmoji, font, factoryCount, true, enemy, true) && (Rect{ 650, 320, 60, 60 }.leftPressed() || (getData().minigameDownKey.pressed())||ControllerManager::get().DownPressed()))
+		if (ButtonUpdate(Rect{ 650, 320, 60, 60 }, 0.5, 30, 30, downEmoji, factoryCount, true, enemy, true) && ((getData().minigameDownKey.pressed())||ControllerManager::get().DownPressed()))
 		{
 			cookieCircle.y += Scene::DeltaTime() * 50.0;
 
@@ -553,19 +552,24 @@ namespace HawkDropOut
 
 			if (not photographyMode)
 			{
-				ButtonDraw(Rect{ 650, 180, 60, 60 }, 0.5, 30, 30, upEmoji, font, farmCount, upTime < 10.0, enemy, true);
-				ButtonDraw(Rect{ 650, 250, 60, 60 }, 0.5, 30, 30, attackfunction, font, farmCount, numofmeat >= 1, enemy, j < 1);
-				ButtonDraw(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, font, farmCount, numofmeat >= 2 || tornadoFlg, enemy, true);
-				ButtonDraw(Rect{ 650, 320, 60, 60 }, 0.5, 30, 30, downEmoji, font, factoryCount, true, enemy, true);
+				ButtonDraw(Rect{ 650, 180, 60, 60 }, 0.5, 30, 30, upEmoji, farmCount, upTime < 10.0, enemy, true,getData().minigameUpKey);
+				ButtonDraw(Rect{ 715, 244, 70, 70 }, 0.6, 40, 40, tornadoEmoji, farmCount, numofmeat >= 2 || tornadoFlg, enemy, true, getData().minigameRB);
+				ButtonDraw(Rect{ 650, 250, 60, 60 }, 0.5, 30, 30, attackfunction, farmCount, numofmeat >= 1, enemy, j < 1,getData().minigameLB);
+				ButtonDraw(Rect{ 650, 320, 60, 60 }, 0.5, 30, 30, downEmoji, factoryCount, true, enemy, true,getData().minigameDownKey);
 
 				if (10 > upTime) {
 					font(U"上昇可能時間: {:.2f} 秒"_fmt(10 - upTime)).draw(30, 0, 500, Palette::White);
 				}
 				else {
 					font(U"上昇不可能時間: {:.2f} 秒"_fmt(20 - upTime)).draw(30, 0, 500, Palette::Red);
+
+					if(not enemy)
+					{
+						FontAsset{ U"NormalFont" }(U"{}で回復"_fmt(ToKeyName(getData().minigameDownKey, getData().gamepadMode))).draw(28, 370, 500, Palette::Yellow);
+					}
 				}
 
-				font(U"飛距離 {}/{}"_fmt(FlyDistance, clearScore)).draw(30, 10, 10, getData().mini_mode == Hard_Mode ? Palette::White : Palette::Black);
+				font(U"ゴールまで {}"_fmt(clearScore- FlyDistance)).draw(30, 10, 10, getData().mini_mode == Hard_Mode ? Palette::White : Palette::Black);
 			}
 
 			if (clear)

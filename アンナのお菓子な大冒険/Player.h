@@ -108,6 +108,10 @@ public:
 
 	double slidingEffectAccumulateTime = 0;
 
+	static constexpr double CoyoteTime = 0.2;
+	double coyoteTimer = 0;
+
+
 	void setDataP(GameData* data)
 	{
 		jumpKey=data->jumpKey;

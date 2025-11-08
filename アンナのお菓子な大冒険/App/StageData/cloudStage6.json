@@ -1,7 +1,8 @@
 ﻿{
   "BackGround": [
     "StageData/cloudStage_back1.json",
-    "StageData/cloudStage_back2.json"
+    "StageData/cloudStage_back2.json",
+    "C:/Users/tori_/source/repos/game-project/アンナのお菓子な大冒険/App/StageData/cloudStage_backArrow.json"
   ],
   "Block": {
     "BeltConveyorRight": [
@@ -11,12 +12,6 @@
     ],
     "ChocolateWall": [
       "(0, 0)",
-      "(1, 0)",
-      "(2, 0)",
-      "(3, 0)",
-      "(4, 0)",
-      "(5, 0)",
-      "(6, 0)",
       "(0, 1)",
       "(0, 2)",
       "(0, 3)",

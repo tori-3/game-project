@@ -101,7 +101,7 @@ namespace Lisence
 			{U"・夢にみた緑 (https://yougou.sonnabakana.com)  ",U"🕹️ ふぉーりんぐアンナちゃん BGM"},
 			{U"・TAM Music Factory (https://www.tam-music.com)  ",U"効果音素材"},
 			{U"・エスフェクツ (https://esffects.net)  ",U"効果音素材"},
-			{U"・いらすとや (https://www.irasutoya.com)  ",U"一部ミニゲーム イラスト素材"},
+			{U"・いらすとや (https://www.irasutoya.com)  ",U"一部ミニゲームのイラスト素材"},
 			{U"・Input Prompts · Kenney (https://kenney.nl/assets/input-prompts)  ",U"キーの画像"},
 		};
 
@@ -111,9 +111,9 @@ namespace Lisence
 
 		//col->addChild(TextUI::Create({ .text = U"制作",.fontSize = 30,.color = ColorF{1} }));
 
-		col->addChild(TextUI::Create({ .text = U"使用させていただいた素材",.fontSize = 30,.color = ColorF{1} }));
+		col->addChild(TextUI::Create({ .text = U"制作：東京都市大学コンピュータ技術研究会",.fontSize = 30,.color = ColorF{1} }));
 
-		for (const auto& text : texts2)
+		for (const auto& text : texts)
 		{
 			auto row = Row::Create({ .mainAxis = MainAxis::start });
 			row->addChild(TextUI::Create({ .text = text.first,.fontSize = 20,.color = ColorF{1} }));
@@ -123,11 +123,11 @@ namespace Lisence
 
 		col->addChild(TextUI::Create({ .fontSize = 20 }));
 
-		col->addChild(TextUI::Create({ .text = U"制作：東京都市大学コンピュータ技術研究会",.fontSize = 30,.color = ColorF{1} }));
+		col->addChild(TextUI::Create({ .text = U"使用させていただいた素材",.fontSize = 30,.color = ColorF{1} }));
 
-		for(const auto& text:texts)
+		for (const auto& text : texts2)
 		{
-			auto row = Row::Create({.mainAxis=MainAxis::start});
+			auto row = Row::Create({ .mainAxis = MainAxis::start });
 			row->addChild(TextUI::Create({ .text = text.first,.fontSize = 20,.color = ColorF{1} }));
 			row->addChild(TextUI::Create({ .text = text.second,.fontSize = 17,.color = ColorF{0.7} }));
 			col->addChild(row);

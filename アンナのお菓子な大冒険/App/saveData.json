@@ -18,10 +18,10 @@
     0,
     0,
     5,
+    5,
     0,
     0,
-    0,
-    0,
+    5,
     0,
     0,
     5,
@@ -277,12 +277,12 @@
       "Normal": false
     },
     {
-      "Easy": false,
+      "Easy": true,
       "Hard": false,
       "Normal": false
     },
     {
-      "Easy": false,
+      "Easy": true,
       "Hard": false,
       "Normal": false
     },
@@ -299,6 +299,6 @@
   ],
   "NotifyGallery": false,
   "NotifyMiniGameSelect": false,
-  "SelectedStage": 17,
+  "SelectedStage": 29,
   "Vibration": 1.0
 }

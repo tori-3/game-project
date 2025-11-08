@@ -6,7 +6,7 @@
 namespace Maze2
 {
 	mazeGame::mazeGame(const InitData& init)//名前を変更してください
-		: MiniGameSceneBase{ init,false }
+		: MiniGameSceneBase{ init,true }
 	{
 		BGMManager::get().play(U"MiniGameBGM");
 
@@ -51,9 +51,9 @@ namespace Maze2
 		}
 		//player.vel = Vec2(KeyRight.pressed()-KeyLeft.pressed(), -KeyUp.pressed()+ KeyDown.pressed())/10;
 		rotate.angle_vel = 0.02 * ((getData().minigameRightKey.pressed()|| ControllerManager::get().RightPressed()) - (getData().minigameLeftKey.pressed()|| ControllerManager::get().LeftPressed()));
-		if (MouseL.pressed()) {
-			rotate.angle_vel = Cursor::DeltaF().x / 100.0;
-		}
+		//if (MouseL.pressed()) {
+		//	rotate.angle_vel = Cursor::DeltaF().x / 100.0;
+		//}
 		rotate.angle += rotate.angle_vel;
 		//rotate.angle = Cursor::Pos().x/100.0;
 		player.update(rotate, rotate.angle_vel * 0.1);
@@ -75,6 +75,9 @@ namespace Maze2
 			Circle{ Scene::Center(),500 }.draw(ColorF{ 1.0 }, ColorF{ 0 });
 		}
 		light.draw();
+
+
+		FontAsset{ U"NormalFont" }(U"{}-\U000F099B左回転          {}-\U000F0453右回転"_fmt(ToKeyName(getData().minigameLeftKey, getData().gamepadMode), ToKeyName(getData().minigameRightKey, getData().gamepadMode))).drawAt(35,Scene::Center().x,Scene::Height()-70);
 
 		if (clear)
 		{

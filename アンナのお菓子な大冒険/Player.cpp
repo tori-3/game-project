@@ -30,9 +30,10 @@ Player::Player(const Vec2& cpos) :
 
 	actMan.add(U"PreJump", {
 		.startCondition = [&]() {
-			return hitBox.touch(Direction::down) and jumpKey.down() and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Jump",U"Punch",U"Dead",U"Clear");
+			return (hitBox.touch(Direction::down)|| 0<coyoteTimer) and jumpKey.down() and not actMan.hasActive(U"Sliding",U"Summer",U"Damage",U"Jump",U"Punch",U"Dead",U"Clear",U"HeadDrop");
 		},
 		.start = [&]() {
+			coyoteTimer = 0;
 			DataManager::get().additiveEffect.add<ExplosionEffect>(hitBox.getFigure().getRectF().bottomCenter(), 30, ColorF{ Palette::White,0.3 });
 			AudioAsset{U"ジャンプ"}.playOneShot();
 			if (not actMan.hasActive(U"Rush"))character.addMotion(U"PreJump");
@@ -625,6 +626,11 @@ void Player::update()
 	if (hitBox.touch(Direction::down))
 	{
 		canSummer = true;
+		coyoteTimer = CoyoteTime;
+	}
+	else
+	{
+		coyoteTimer = Max(0.0, coyoteTimer - Scene::DeltaTime());
 	}
 
 	hitBox.physicsUpdate();

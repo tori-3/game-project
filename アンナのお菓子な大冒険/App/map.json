@@ -339,8 +339,8 @@
         },
         "Stage29": {
             "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
-            "BackgroundTexture": "BackgroundTexture/雲背景.png",
-            "MapFile": "StageData/tmp.json",
+            "BackgroundTexture": "BackgroundTexture/宇宙背景.png",
+            "MapFile": "StageData/lastStage2.json",
             "Picture": "BackgroundTexture/雲背景.png",
             "SceneName": "MainGameScene",
             "Sentence": "<ケーキ城の入口>\n開発中です！",

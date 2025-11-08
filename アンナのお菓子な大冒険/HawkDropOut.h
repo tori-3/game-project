@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include"Common.h"
 #include"MiniGameSceneBase.h"
+#include"KeyInfo.h"
 
 namespace HawkDropOut {
 
@@ -18,21 +19,25 @@ namespace HawkDropOut {
 
 		bool gameOverTimerFlg = false;
 
-		bool ButtonUpdate(const Rect& rect, double scale, int32 xdistance, int32 ydistance, const Texture& texture, const Font& font, int32 count, bool enabled, bool enemy, bool att)
+		bool ButtonUpdate(const Rect& rect, double scale, int32 xdistance, int32 ydistance, const Texture& texture, int32 count, bool enabled, bool enemy, bool att)
 		{
 			return(enabled && !enemy);
 		}
 
-		void ButtonDraw(const Rect& rect, double scale, int32 xdistance, int32 ydistance, const Texture& texture, const Font& font, int32 count, bool enabled, bool enemy, bool att)const
+		void ButtonDraw(const Rect& rect, double scale, int32 xdistance, int32 ydistance, const Texture& texture, int32 count, bool enabled, bool enemy, bool att,const InputGroup inputs)const
 		{
 			if (enabled && !enemy && att)
 			{
 				texture.scaled(scale).drawAt(rect.x + xdistance, rect.y + ydistance);
 
-				if (rect.mouseOver())
-				{
-					Cursor::RequestStyle(CursorStyle::Hand);
-				}
+				//if (rect.mouseOver())
+				//{
+				//	Cursor::RequestStyle(CursorStyle::Hand);
+				//}
+
+				const RectF keyRect{ Arg::center = rect.center() + Vec2{25,30 + -15},40,25 };
+				keyRect.draw(ColorF{ 0,0.7 });
+				FontAsset{ U"NormalFont" }(ToKeyName(inputs, getData().gamepadMode)).drawAt(20, keyRect.center());
 			}
 			else
 			{
