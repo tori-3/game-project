@@ -392,6 +392,8 @@ public:
 
 	Array<TalkWindow::TalkInfo>list;
 
+	bool countFlg = false;
+
 	SignboardBlock(const Array<TalkWindow::TalkInfo>&list_);
 
 	void update(const Point& pos)override;

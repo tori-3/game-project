@@ -150,4 +150,6 @@ public:
 	void update() override;
 
 	void draw() const override;
+
+	void drawCharacters()const;
 };

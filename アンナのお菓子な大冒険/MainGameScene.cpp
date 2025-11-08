@@ -400,6 +400,61 @@ void MainGameScene::gameDraw() const
 			FontAsset{ U"NormalFont" }(DataManager::get().bossName).drawAt(25, Scene::Center().x, 30);
 			hpBar.draw(Palette::Purple, Palette::Red);
 		}
+
+		if (getData().tag == U"Tutorial")
+		{
+			String text1;
+			String text2;
+
+			switch (DataManager::get().signboardCount)
+			{
+			case 0:break;
+			case 1: {
+				text1 = U"歩こう！";
+				text2 = U"{}-左　{}-右"_fmt(ToKeyName(getData().minigameLeftKey, getData().gamepadMode), ToKeyName(getData().minigameRightKey, getData().gamepadMode));
+			}break;
+			case 2: {
+				text1 = U"攻撃を出そう！";
+				text2 = U"{}"_fmt(ToKeyName(getData().attackKey, getData().gamepadMode));
+			}break;
+			case 3: {
+				text1 = U"ジャンプしよう！";
+				text2 = U"{}"_fmt(ToKeyName(getData().jumpKey, getData().gamepadMode));
+			}break;
+			case 4: {
+				text1 = U"サマーソルトキックで上に登ろう！";
+				text2 = U"{}→{}"_fmt(ToKeyName(getData().jumpKey, getData().gamepadMode), ToKeyName(getData().attackKey, getData().gamepadMode));
+			}break;
+			case 5: {
+				text1 = U"サマーソルトキックで大ジャンプしよう！";
+				text2 = U"{}→{}"_fmt(ToKeyName(getData().jumpKey, getData().gamepadMode), ToKeyName(getData().attackKey, getData().gamepadMode));
+			}break;
+			case 6: {
+				text1 = U"スライディングで狭いところを通ろう！";
+				text2 = U"{}＋{}"_fmt(ToKeyName(getData().downKey, getData().gamepadMode), ToKeyName(getData().attackKey, getData().gamepadMode));
+			}break;
+			case 7: {
+				text1 = U"ヘッドドロップで下に下がろう！";
+				text2 = U"{}→{}"_fmt(ToKeyName(getData().jumpKey, getData().gamepadMode), ToKeyName(getData().downKey, getData().gamepadMode));
+			}break;
+			case 8: {
+				text1 = U"巨大イチゴちゃんにヘッドドロップしよう！";
+				text2 = U"{}→{}"_fmt(ToKeyName(getData().jumpKey, getData().gamepadMode), ToKeyName(getData().downKey, getData().gamepadMode));
+			}break;
+			case 9: {
+				text1 = U"突進で壁を壊そう！";
+				text2 = U"🍪×10  {0}長押し→{0}離す"_fmt(ToKeyName(getData().attackKey, getData().gamepadMode));
+			}break;
+			default:break;
+			}
+
+			if (text1)
+			{
+				RoundRect{ Arg::center(Scene::Center().x, 50),FontAsset{ U"NormalFont" }(text1 + U"\n" + text2).region().size,10 }.drawShadow(Vec2{ 0,0 }, 24, 10, ColorF{ 0,0.3 });
+				FontAsset{ U"NormalFont" }(text1).drawAt(25, Scene::Center().x, 50 - FontAsset{ U"NormalFont" }.height(25) / 2.0);
+				FontAsset{ U"NormalFont" }(text2).drawAt(25, Scene::Center().x, 50 + FontAsset{ U"NormalFont" }.height(25) / 2.0);
+			}
+		}
 	}
 
 	if (0 < damageTimer)

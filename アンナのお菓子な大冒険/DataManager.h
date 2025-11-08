@@ -38,6 +38,8 @@ public:
 	//爆風
 	bool blast = false;
 
+	int32 signboardCount = 0;
+
 
 	void addEntity(const String& name, const Vec2& pos)
 	{

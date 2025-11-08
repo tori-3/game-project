@@ -135,6 +135,8 @@ Map::~Map()
 {
 	getData().stage = index + 1;
 	getData().save();
+
+	AudioAsset{ U"突進足音" }.stop(0.1s);
 }
 
 void Map::update()
@@ -143,20 +145,29 @@ void Map::update()
 
 	updatePos();
 
+	if (index == drawIndex)
+	{
+		AudioAsset{ U"突進足音" }.stop(0.1s);
+	}
+	else
+	{
+		AudioAsset{ U"突進足音" }.play();
+	}
+
 	time.start();
 
 	fairy.update(fairyPos, false);
-	snowKnight.update(snowKnightPos,true);
+	snowKnight.update(snowKnightPos, true);
 	cookieDoreisho.update(cookieDoreishoPos, true);
 	captain.update(captainPos, true);
 	lastBoss.update(lastBossPos, true);
 	itigoSlave.update(itigoSlavePos, true);
 
-	itigo.update(itigoPos + Vec2{ Periodic::Triangle0_1(15s,time.sF()) * itigoRoadLength,0 }, not Periodic::Square0_1(15s,time.sF()));
+	itigo.update(itigoPos + Vec2{ Periodic::Triangle0_1(15s,time.sF()) * itigoRoadLength,0 }, not Periodic::Square0_1(15s, time.sF()));
 	cloud.update(cloudPos + Vec2{ Periodic::Triangle0_1(16s,time.sF()) * itigoRoadLength,0 }, Periodic::Square0_1(16s, time.sF()));
 
 
-	if(snowKnightKiriageTimer.reachedZero())
+	if (snowKnightKiriageTimer.reachedZero())
 	{
 		snowKnight.addMotion(U"kiriage");
 		snowKnightKiriageTimer.restart();
@@ -168,35 +179,35 @@ void Map::update()
 		cookieDoreishoTimer.restart();
 	}
 
-	if(captainTimer.reachedZero())
+	if (captainTimer.reachedZero())
 	{
 		captainTimer.reset();
 		captainCloseTimer.restart();
 		captain.addMotion(U"Gaaa");
 	}
 
-	if(captainCloseTimer.reachedZero())
+	if (captainCloseTimer.reachedZero())
 	{
 		captainCloseTimer.reset();
 		captainTimer.restart();
 		captain.addMotion(U"Tojiru");
 	}
 
-	if(lastBossTimer.reachedZero())
+	if (lastBossTimer.reachedZero())
 	{
 		lastBossTimer.reset();
 		lastBoss.addMotion(U"ごめんあそばせ");
 		lastBossStandTimer.restart();
 	}
 
-	if(lastBossStandTimer.reachedZero())
+	if (lastBossStandTimer.reachedZero())
 	{
 		lastBossStandTimer.reset();
 		lastBoss.addMotion(U"Stand");
 		lastBossTimer.restart();
 	}
 
-	if (not panelFlg&&(getData().menuBackKey.down()|| backButton.leftClicked()))
+	if (not panelFlg && (getData().menuBackKey.down() || backButton.leftClicked()))
 	{
 		changeScene(U"TitleScene");
 		AudioAsset{ U"決定ボタン" }.playOneShot();
@@ -210,141 +221,146 @@ void Map::update()
 		manager.update();
 	}
 
-		if(panelFlg&&getData().menuBackKey.down())
+	if (panelFlg && getData().menuBackKey.down())
+	{
+		panelFlg = false;
+	}
+
+	if (panelFlg && (startButton->clicked() || getData().menuDecisionKey.down()) && index <= clearStage)
+	{
+
+		//AudioAsset{ U"決定ボタン" }.playOneShot();
+		AudioAsset{ U"決定ボタンを押す16" }.playOneShot();
+
+		getData().initGame();
+		getData().mini_mode = Stage_Mode;
+		getData().stage = index + 1;
+		getData().stageFile = stageList[index];
+		getData().backgroundTexture = json[U"StageData"][U"Stage{}"_fmt(index + 1)][U"BackgroundTexture"].getString();
+		getData().sceneName = sceneNames[index];
+		getData().tag = tagList[index];
+		getData().text = textList[index];
+
+		if (sceneNames[index] == U"MainGameScene")
 		{
-			panelFlg = false;
-		}
-
-		if (panelFlg && (startButton->clicked() || getData().menuDecisionKey.down()) && index <= clearStage)
-		{
-
-			//AudioAsset{ U"決定ボタン" }.playOneShot();
-			AudioAsset{ U"決定ボタンを押す16" }.playOneShot();
-
-			getData().initGame();
-			getData().mini_mode = Stage_Mode;
-			getData().stage = index + 1;
-			getData().stageFile = stageList[index];
-			getData().backgroundTexture = json[U"StageData"][U"Stage{}"_fmt(index + 1)][U"BackgroundTexture"].getString();
-			getData().sceneName = sceneNames[index];
-			getData().tag = tagList[index];
-			getData().text = textList[index];
-
-			if (sceneNames[index] == U"MainGameScene")
-			{
-				getData().description = U"{5}-ジャンプ\n{1}-左移動\n{3}-右移動\n{2}-しゃがむ\n{4}-攻撃\n{4}長押し-突進(🍪が10個貯まったら)\n------------------------------------\n空中で攻撃：サマーソルトキック\nしゃがみながら攻撃：スライディング\n空中で{2}：ヘッドドロップ";
-			}
-			else
-			{
-				getData().description = sentences[index];
-			}
-
-			//LoadAsset::RegisterTexture(getData().backgroundTexture);
-
-			String path = json[U"StageData"][U"Stage{}"_fmt(index + 1)][U"BGM"].getString();
-
-			getData().BGMPath = path;
-
-			//BGMの読み込み
-			if (path)
-			{
-				//if (FileSystem::BaseName(path) == U"StageBossLast1") {
-				//	constexpr uint64 sampleRate = 44100;
-				//	AudioAsset::Register(path, path, Arg::loopBegin = 22.588 * sampleRate);
-				//}
-				//else
-				//{
-					AudioAsset::Register(path, path, Loop::Yes);
-				//}
-			}
-
-			BGMManager::get().stop();
-			changeScene(sceneNames[index]);
-		};
-
-		//index
-		if (leftInput.down())
-		{
-			if (0 < index)
-			{
-				index--;
-				//left = true;
-				walk = true;
-				panelFlg = false;
-				AudioAsset{ U"カーソル移動" }.playOneShot();
-			}
-			else
-			{
-				AudioAsset{ U"ビープ音" }.playOneShot();
-			}
-		}
-
-		if (rightInput.down())
-		{
-			if (index != rect_num - 1 && (index < clearStage))
-			{
-				index++;
-				//left = false;
-				panelFlg = false;
-				AudioAsset{ U"カーソル移動" }.playOneShot();
-
-			}
-			else
-			{
-				AudioAsset{ U"ビープ音" }.playOneShot();
-			}
-		}
-
-		//if (RectF{ 100, 100,pictures[index].resized(450).size }.leftClicked() && index < clearStage && panelFlg) {
-		//	largeFlg = true;
-		//}
-
-		if (index == drawIndex)
-		{
-			if(not standing)
-			{
-				standing = true;
-				character.clearMotion();
-				character.addMotion(U"Standing");
-			}
+			getData().description = U"{5}-ジャンプ\n{1}-左移動\n{3}-右移動\n{2}-しゃがむ\n{4}-攻撃\n{4}長押し-突進(🍪が10個貯まったら)\n------------------------------------\n空中で攻撃：サマーソルトキック\nしゃがみながら攻撃：スライディング\n空中で{2}：ヘッドドロップ";
 		}
 		else
 		{
-			if(standing)
-			{
-				standing = false;
-				character.clearMotion();
-				character.addMotion(U"Walk");
-			}
+			getData().description = sentences[index];
 		}
 
+		//LoadAsset::RegisterTexture(getData().backgroundTexture);
 
-		character.update(playerPos - Vec2{ 0,30 }, index < drawIndex);
+		String path = json[U"StageData"][U"Stage{}"_fmt(index + 1)][U"BGM"].getString();
 
+		getData().BGMPath = path;
 
+		//BGMの読み込み
+		if (path)
 		{
-			Transformer2D target{ MapCamera(playerPos),TransformCursor::Yes };
-
-			for (int i = 0; i < rect_num; i++)
-			{
-				double r = (i == index) ? rect_size / 2.0 : rect_size / 2.5;
-
-				constexpr Vec2 supplementary{ 0,-5 };
-
-				Vec2 pos = stagePosList[i] + supplementary;
-
-				if (Circle{ pos,r }.mouseOver())
-				{
-
-				}
-
-				if (Circle{ pos,r }.leftClicked() && i <= clearStage)
-				{
-					index = i;
-					AudioAsset{ U"決定ボタン" }.playOneShot();
-				}
-			}
+			//if (FileSystem::BaseName(path) == U"StageBossLast1") {
+			//	constexpr uint64 sampleRate = 44100;
+			//	AudioAsset::Register(path, path, Arg::loopBegin = 22.588 * sampleRate);
+			//}
+			//else
+			//{
+			AudioAsset::Register(path, path, Loop::Yes);
+			//}
 		}
+
+		BGMManager::get().stop();
+		changeScene(sceneNames[index]);
+	};
+
+	//index
+	if (leftInput.down())
+	{
+		if (0 < index)
+		{
+			index--;
+			//left = true;
+			walk = true;
+			panelFlg = false;
+			AudioAsset{ U"カーソル移動" }.playOneShot();
+		}
+		else
+		{
+			AudioAsset{ U"ビープ音" }.playOneShot();
+		}
+	}
+
+	if (rightInput.down())
+	{
+		if (index != rect_num - 1 && (index < clearStage))
+		{
+			index++;
+			//left = false;
+			panelFlg = false;
+			AudioAsset{ U"カーソル移動" }.playOneShot();
+
+		}
+		else
+		{
+			AudioAsset{ U"ビープ音" }.playOneShot();
+		}
+	}
+
+	//if (RectF{ 100, 100,pictures[index].resized(450).size }.leftClicked() && index < clearStage && panelFlg) {
+	//	largeFlg = true;
+	//}
+
+	if (index == drawIndex)
+	{
+		if (not standing)
+		{
+			standing = true;
+			character.clearMotion();
+			character.addMotion(U"Standing");
+		}
+	}
+	else
+	{
+		if (standing)
+		{
+			standing = false;
+			character.clearMotion();
+			character.addMotion(U"Walk");
+		}
+	}
+
+
+	character.update(playerPos - Vec2{ 0,30 }, index < drawIndex);
+
+
+	constexpr RectF panelRect{ Arg::center(600,300),1250 * 15 / 17.0,1250 * 6 / 17.0 };
+	const bool touchPanel = panelFlg && panelRect.mouseOver();
+
+	if (not touchPanel)
+	{
+		Transformer2D target{ MapCamera(playerPos),TransformCursor::Yes };
+
+		for (int i = 0; i < rect_num; i++)
+		{
+			double r = (i == index) ? rect_size / 2.0 : rect_size / 2.5;
+
+			constexpr Vec2 supplementary{ 0,-5 };
+
+			Vec2 pos = stagePosList[i] + supplementary;
+
+			if (Circle{ pos,r }.mouseOver())
+			{
+				Cursor::RequestStyle(CursorStyle::Hand);
+			}
+
+			if (Circle{ pos,r }.leftClicked() && i <= clearStage)
+			{
+				index = i;
+				AudioAsset{ U"決定ボタン" }.playOneShot();
+			}
+
+		}
+	}
 
 	//}
 	//else
@@ -355,12 +371,107 @@ void Map::update()
 	//	}
 	//}
 
-	if (panelFlg==false&&getData().menuDecisionKey.down())
+	if (panelFlg == false && getData().menuDecisionKey.down())
 	{
 		AudioAsset{ U"決定ボタン" }.playOneShot();
 		panelFlg = true;
 	}
 
+}
+
+void Map::drawCharacters()const
+{
+	for (int i = 0; i < rect_num - 1; i++)
+	{
+		Line{ stagePosList[i],stagePosList[i + 1] }.draw(2, ColorF{ 0.8 });
+	}
+
+	for (int i = 0; i < rect_num; i++)
+	{
+		ColorF color = Palette::Red;
+		if (i < clearStage)
+		{
+			color = ColorF{ 0.3,0.3,1.0 };
+		}
+		else if (clearStage < i)
+		{
+			color = Palette::Gray;
+		}
+
+		double r = (i == index) ? rect_size / 2.0 : rect_size / 2.5;
+
+		constexpr Vec2 supplementary{ 0,-5 };
+
+		Vec2 pos = stagePosList[i] + supplementary;
+
+
+		const double size = typeList[i] == StageType::Boss ? r * 2 + 15 : r * 2;
+
+		stageFrame.resized(size).drawAt(pos);
+
+		stageColor.resized(size).drawAt(pos, color);
+
+		switch (typeList[i])
+		{
+		case StageType::Stage:
+			break;
+		case StageType::Boss:
+			stageBattle.resized(size).drawAt(pos);
+			break;
+		case StageType::MiniGame:
+			stageGame.resized(r * 2, r * 2 * 0.7).drawAt(pos);
+			break;
+		default:
+			break;
+		}
+
+		if (i == index)
+		{
+			Ellipse{ pos + Vec2{-1,5},r * 1.2,r * 0.7 }.drawFrame(0, 3, Palette::Deeppink);
+		}
+
+	}
+
+	if (getData().ChocoMountain - 2 <= getData().clearStage)
+	{
+		snowKnight.draw();
+	}
+
+	if (getData().ChocoMountain + 1 <= getData().clearStage)
+	{
+		itigoSlave.draw();
+	}
+
+	if (2 <= getData().clearStage)
+	{
+		fairy.draw();
+		itigo.draw();
+	}
+
+	if (getData().CandyCloud - 2 <= getData().clearStage)
+	{
+		cookieDoreisho.draw();
+	}
+
+	if (getData().CandyCloud <= getData().clearStage)
+	{
+		cloud.draw();
+	}
+
+	if (getData().LastBossStage - 3 <= getData().clearStage)
+	{
+		captain.draw();
+	}
+
+	if (getData().LastBossStage - 1 <= getData().clearStage)
+	{
+		lastBoss.draw();
+	}
+
+	{
+		const ScopedRenderStates2D rs{ SamplerState::ClampNearest };
+		character.draw();
+	}
 }
 
 void Map::draw() const
@@ -370,103 +481,21 @@ void Map::draw() const
 
 		background.resized(Scene::Width()).draw(Arg::bottomRight = Scene::Size());
 
-		for (int i = 0; i < rect_num - 1; i++)
-		{
-			Line{ stagePosList[i],stagePosList[i + 1] }.draw(2, ColorF{ 0.8 });
-		}
 
-		for (int i = 0; i < rect_num; i++)
-		{
-			ColorF color = Palette::Red;
-			if (i < clearStage)
-			{
-				color = ColorF{ 0.3,0.3,1.0 };
-			}
-			else if (clearStage < i)
-			{
-				color = Palette::Gray;
-			}
-
-			double r = (i == index) ? rect_size / 2.0 : rect_size / 2.5;
-
-			constexpr Vec2 supplementary{ 0,-5 };
-
-			Vec2 pos = stagePosList[i] + supplementary;
-
-
-			const double size = typeList[i] == StageType::Boss ? r * 2 + 15 : r * 2;
-
-			stageFrame.resized(size).drawAt(pos);
-
-			stageColor.resized(size).drawAt(pos, color);
-
-			switch (typeList[i])
-			{
-			case StageType::Stage:
-				break;
-			case StageType::Boss:
-				stageBattle.resized(size).drawAt(pos);
-				break;
-			case StageType::MiniGame:
-				stageGame.resized(r * 2, r * 2 * 0.7).drawAt(pos);
-				break;
-			default:
-				break;
-			}
-
-			if (i == index)
-			{
-				Ellipse{ pos + Vec2{-1,5},r * 1.2,r * 0.7 }.drawFrame(0, 3, Palette::Deeppink);
-			}
-
-		}
-
-		if (getData().ChocoMountain - 2 <= getData().clearStage)
-		{
-			snowKnight.draw();
-		}
-
-		if (getData().ChocoMountain + 1 <= getData().clearStage)
-		{
-			itigoSlave.draw();
-		}
-
-		if (2 <= getData().clearStage)
-		{
-			fairy.draw();
-			itigo.draw();
-		}
-
-		if (getData().CandyCloud - 2 <= getData().clearStage)
-		{
-			cookieDoreisho.draw();
-		}
-
-		if (getData().CandyCloud  <= getData().clearStage)
-		{
-			cloud.draw();
-		}
-
-		if (getData().LastBossStage - 3 <= getData().clearStage)
-		{
-			captain.draw();
-		}
-
-		if (getData().LastBossStage - 1 <= getData().clearStage)
-		{
-			lastBoss.draw();
-		}
-
-
-		character.draw();
+		//drawCharacters();
 	}
 
-	if (panelFlg)
-	{
-		//Rect{ Arg::center(600,300),1100,450 }.draw(ColorF{ Palette::Deeppink,0.8 }).drawFrame(3, 0);
-		{
-			ScopedShadow s{ shadow };
 
+	{
+		ScopedShadow s{ shadow };
+
+		{
+			Transformer2D target{ MapCamera(playerPos) };
+			drawCharacters();
+		}
+
+		if (panelFlg)
+		{
 			if (index + 1 < getData().ChocoMountain)
 			{
 				snowPanel.resized(1250).drawAt(600, 300);
@@ -484,7 +513,38 @@ void Map::draw() const
 				lastBossPanel.resized(1250).drawAt(600, 300);
 			}
 		}
-		shadow.draw();
+	}
+	shadow.draw();
+
+	{
+		Transformer2D target{ MapCamera(playerPos) };
+		drawCharacters();
+	}
+
+	if (panelFlg)
+	{
+		////RectF{ Arg::center(600,300),1250*15/17.0,1250 * 6 / 17.0 };
+		//{
+		//	ScopedShadow s{ shadow };
+
+		//	if (index + 1 < getData().ChocoMountain)
+		//	{
+		//		snowPanel.resized(1250).drawAt(600, 300);
+		//	}
+		//	else if (index + 1 < getData().CandyCloud)
+		//	{
+		//		chocoPanel.resized(1250).drawAt(600, 300);
+		//	}
+		//	else if (index + 1 < getData().LastBossStage)
+		//	{
+		//		cloudPanel.resized(1250).drawAt(600, 300);
+		//	}
+		//	else
+		//	{
+		//		lastBossPanel.resized(1250).drawAt(600, 300);
+		//	}
+		//}
+		//shadow.draw();
 
 		if (index + 1 < getData().ChocoMountain)
 		{

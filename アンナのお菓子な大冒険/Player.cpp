@@ -694,6 +694,7 @@ void Player::update()
 
 void Player::draw()const
 {
+	const ScopedRenderStates2D rs{ SamplerState::ClampNearest };
 	character.draw();
 }
 

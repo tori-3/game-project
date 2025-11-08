@@ -392,8 +392,10 @@ void TitleScene::draw() const
 		}
 	}
 
-
-	character.draw();
+	{
+		const ScopedRenderStates2D rs{ SamplerState::ClampNearest };
+		character.draw();
+	}
 
 	{
 		const ScopedRenderTarget2D target{ rTexture.clear(ColorF{0.5,0}) };

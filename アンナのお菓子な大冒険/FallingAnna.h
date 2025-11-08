@@ -240,7 +240,7 @@ namespace FallingAnna {
 		//リザルトの地面の高さ
 		const float jimentaka = 0.73;
 
-		const float spscore = 1.5, scorebai = 0.01, rockscore = 20, damagedscore = -40, damagedwari = 0.8;
+		const float spscore = 1.5, scorebai = 0.01, rockscore = 20, damagedscore = -10, damagedwari = 0.8;
 
 		//リザルトの終了を告げる鐘
 		bool superend = false;
@@ -251,6 +251,9 @@ namespace FallingAnna {
 		float attack = 0;
 
 		TextStyle textStyle = TextStyle::Outline(0.2, ColorF{ 0.0 });
+
+
+		double destructionEffectTimer = 0;
 
 
 		float soutaix(float x)const
@@ -297,7 +300,7 @@ namespace FallingAnna {
 			{
 			case Stage_Mode:
 				nokori *= 1.0;
-				goukakuline *= 0.7;//1.0
+				goukakuline = 200;//1.0
 				perrock *= 1.25;
 				pertoge *= 0.75;
 				percloud *= 1.0;
@@ -459,6 +462,8 @@ namespace FallingAnna {
 						brokes.push_back(a);
 						rocks.erase(rocks.begin() + i);
 						score += rockscore;
+
+						destructionEffectTimer = 10.0 / 60.0;
 					}
 					else
 					{
@@ -569,7 +574,7 @@ namespace FallingAnna {
 			hitstop = hitstopT;
 			nowspy = spy;
 			damageA.playOneShot();
-			score = (score - damagedscore) * damagedwari;
+			score = (score + damagedscore) * damagedwari;
 			if (score < 0)score = 0;
 		}
 		void kasoku()
@@ -592,7 +597,10 @@ namespace FallingAnna {
 		}
 		void gameUpdate() override
 		{
-			float cl = 1;
+			destructionEffectTimer -= Scene::DeltaTime();
+
+			float cl = 60 * Scene::DeltaTime();
+
 			batframe(cl);
 			rockframe(cl);
 			if (getData().minigameLeftKey.pressed()|| ControllerManager::LeftPressed())
@@ -867,6 +875,16 @@ namespace FallingAnna {
 			{
 				bats[i].draw(-soutaix(bats[i].gettx()) + bats[i].gettx(), 0);
 			}
+
+			{
+				String text = U"加速して　を破壊しよう！      {}-左　{}-右　{}-加速　{}-減速"_fmt(ToKeyName(getData().minigameLeftKey, getData().gamepadMode), ToKeyName(getData().minigameRightKey, getData().gamepadMode),ToKeyName(getData().minigameDownKey, getData().gamepadMode), ToKeyName(getData().minigameUpKey, getData().gamepadMode));
+
+				FontAsset{ U"NormalFont" }(text).region(30, 20, Scene::Height() - 45).stretched(20, 5).draw(ColorF{ 0,0.3 });
+				FontAsset{ U"NormalFont" }(text).draw(30, 20, Scene::Height() - 45);
+
+				rock.resized(30).draw(140, Scene::Height() - 40);
+			}
+
 			if (getsuperend())
 			{
 				if (getclear())
@@ -883,17 +901,40 @@ namespace FallingAnna {
 
 			if (not photographyMode)
 			{
-				if (getclear())
+				//if (getclear())
+				//{
+				//}
+				//else
+				//{
+				//	Sfont(U"スコア:", Math::Round(score)).draw(textStyle, Arg::topLeft = Vec2(ww * 0.05f, wh * 0.05f));
+				//}
+
+				ColorF scoreColor = Palette::White;
+
+				if (0 < destructionEffectTimer)
 				{
-					Sfont(Math::Round(score), U"/", goukakuline).draw(textStyle, Arg::topLeft = Vec2(ww * 0.05f, wh * 0.05f), Palette::Yellow);
+					scoreColor = Palette::Lightgreen;
 				}
-				else
+				else if (58 < hitstop)
 				{
-					Sfont(Math::Round(score), U"/", goukakuline).draw(textStyle, Arg::topLeft = Vec2(ww * 0.05f, wh * 0.05f));
+					scoreColor = Palette::Red;
 				}
+				else if(getclear())
+				{
+					scoreColor = Palette::Yellow;
+				}
+
+				Sfont(U"スコア:", Math::Round(score)).draw(textStyle, Arg::topLeft = Vec2(ww * 0.05f, wh * 0.05f), scoreColor);
+
+				Sfont(U"合格スコア:", goukakuline,U"  ").draw(textStyle, 40, Arg::topLeft = Vec2(ww * 0.05f, wh * 0.05f + 75)).top().draw(3);
+
+
 				Sfont(U"残り:", Math::Round(nokori / annah * 1.6), U"m").draw(textStyle,40, Arg::topRight = Vec2(ww * 0.95f, wh * 0.05f));
 
 				FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30, Arg::topRight = Vec2{ Scene::Width() - 10,5 });
+
+
+				//FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw();
 			}
 		}
 	};

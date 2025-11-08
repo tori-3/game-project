@@ -254,6 +254,15 @@ namespace ManjuRush
 			manju.scaled(0.8).rotatedAt(Vec2{ enemys[0].w / 2 + 10,enemys[0].h / 2 }, rad3).draw(enemys[3].x - 10, enemys[3].y);
 		}
 
+		{
+			String text = U"{}-ジャンプ　{}-下がる"_fmt(ToKeyName(getData().minigameUpKey, getData().gamepadMode), ToKeyName(getData().minigameDownKey, getData().gamepadMode));
+
+			FontAsset{ U"NormalFont" }(text).region(30, 20, Scene::Height() - 45).stretched(20,5).draw(ColorF{ 0,0.3 });
+			FontAsset{ U"NormalFont" }(text).draw(30, 20, Scene::Height() - 45);
+		}
+
+
+
 		if (clear)
 		{
 			Scene::Rect().draw(ColorF{ 0,0.5 });

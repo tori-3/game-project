@@ -1,9 +1,9 @@
 ﻿{
-  "BGMVolume": 0.5,
+  "BGMVolume": 0.0,
   "ClearHP": [
     5,
-    0,
-    0,
+    5,
+    5,
     5,
     0,
     5,
@@ -267,7 +267,7 @@
   ],
   "MiniGame": [
     {
-      "Easy": false,
+      "Easy": true,
       "Hard": false,
       "Normal": false
     },
@@ -287,7 +287,7 @@
       "Normal": false
     },
     {
-      "Easy": false,
+      "Easy": true,
       "Hard": false,
       "Normal": false
     },
@@ -299,6 +299,6 @@
   ],
   "NotifyGallery": false,
   "NotifyMiniGameSelect": false,
-  "SelectedStage": 29,
+  "SelectedStage": 22,
   "Vibration": 1.0
 }

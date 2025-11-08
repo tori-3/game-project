@@ -444,6 +444,12 @@ SignboardBlock::SignboardBlock(const Array<TalkWindow::TalkInfo>&list_)
 
 void  SignboardBlock::update(const Point& pos)
 {
+	if (not countFlg && (pos.x-1) * rect_size < DataManager::get().playerPos.x)
+	{
+		++DataManager::get().signboardCount;
+		countFlg = true;
+	}
+
 	if (DataManager::get().playerPos.intersects(RectF{ (pos - Vec2{2,2}) * rect_size,rect_size * 5 }))
 	{
 		if (DataManager::get().playerPos.x<RectF{ pos * rect_size,rect_size }.centerX())
