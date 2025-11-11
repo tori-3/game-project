@@ -42,16 +42,18 @@ public:
 
 	}
 
-	Mat3x2 getMat3x2()const {
+	Mat3x2 getMat3x2()const
+	{
+		return Mat3x2::Translate(-pos) * ShakeMat(shakeTimer, shakeTimer.sF() * 50);
 
-		if (DataManager::get().table.contains(U"LastBoss"))
-		{
-			return Mat3x2::Translate(5 - rect_size, -rect_size) * ShakeMat(shakeTimer, shakeTimer.sF() * 50);
-		}
-		else
-		{
-			return Mat3x2::Translate(-pos) * ShakeMat(shakeTimer, shakeTimer.sF() * 50);
-		}
+		//if (DataManager::get().table.contains(U"LastBoss"))
+		//{
+		//	return Mat3x2::Translate(5 - rect_size, -rect_size) * ShakeMat(shakeTimer, shakeTimer.sF() * 50);
+		//}
+		//else
+		//{
+		//	return Mat3x2::Translate(-pos) * ShakeMat(shakeTimer, shakeTimer.sF() * 50);
+		//}
 	}
 
 	static Mat3x2 ShakeMat(const Timer& timer, double amplitude = 20)

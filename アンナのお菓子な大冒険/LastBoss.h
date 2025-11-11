@@ -12,6 +12,7 @@
 
 #include"LinerMove.h"
 
+#include"MyRandom.h"
 
 class ClosedUmbrella:public Entity
 {
@@ -121,6 +122,9 @@ public:
 	int32 throwUmbrellaCount = 0;
 
 	bool playLastBGM = false;
+
+	MyRandom rand1{ 3 };
+	MyRandom rand2{ 4 };
 
 	LastBoss(const Vec2& cpos);
 

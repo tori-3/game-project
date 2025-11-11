@@ -1,5 +1,5 @@
 ﻿{
-  "BGMVolume": 0.0,
+  "BGMVolume": 0.5328019857406616,
   "ClearHP": [
     5,
     5,
@@ -7,21 +7,14 @@
     5,
     0,
     5,
-    0,
     5,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
+    5,
     0,
     0,
     5,
     5,
     0,
     0,
-    5,
     0,
     0,
     5,
@@ -29,8 +22,15 @@
     0,
     0,
     5,
+    0,
+    0,
     5,
-    0
+    5,
+    0,
+    0,
+    5,
+    5,
+    11
   ],
   "ClearStage": 30,
   "EffectVolume": 0.5,
@@ -249,7 +249,7 @@
     5,
     5,
     5,
-    5,
+    7,
     5,
     5,
     5,
@@ -262,43 +262,43 @@
     9,
     5,
     5,
-    5,
-    5
+    7,
+    9
   ],
   "MiniGame": [
     {
       "Easy": true,
+      "Hard": true,
+      "Normal": true
+    },
+    {
+      "Easy": true,
+      "Hard": true,
+      "Normal": false
+    },
+    {
+      "Easy": true,
       "Hard": false,
       "Normal": false
+    },
+    {
+      "Easy": true,
+      "Hard": false,
+      "Normal": false
+    },
+    {
+      "Easy": true,
+      "Hard": false,
+      "Normal": true
     },
     {
       "Easy": false,
-      "Hard": false,
-      "Normal": false
-    },
-    {
-      "Easy": true,
-      "Hard": false,
-      "Normal": false
-    },
-    {
-      "Easy": true,
-      "Hard": false,
-      "Normal": false
-    },
-    {
-      "Easy": true,
-      "Hard": false,
-      "Normal": false
-    },
-    {
-      "Easy": false,
-      "Hard": false,
+      "Hard": true,
       "Normal": false
     }
   ],
   "NotifyGallery": false,
   "NotifyMiniGameSelect": false,
-  "SelectedStage": 22,
+  "SelectedStage": 23,
   "Vibration": 1.0
 }

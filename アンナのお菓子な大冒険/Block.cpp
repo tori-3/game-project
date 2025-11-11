@@ -660,3 +660,8 @@ void WindowBlock::draw(const Point& pos)const
 {
 	TextureAsset(U"Window").resized(rect_size).draw(pos * rect_size);
 }
+
+void ChocoCakeWindow::draw(const Point& pos)const
+{
+	TextureAsset(U"ChocoCakeWindow").resized(rect_size * 2).draw(pos * rect_size);
+}

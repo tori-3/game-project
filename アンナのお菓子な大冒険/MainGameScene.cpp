@@ -64,6 +64,30 @@ MainGameScene::MainGameScene(const InitData& init)
 		DataManager::get().addEntity(U"BigCloudEnemy",Vec2{Scene::Center()});
 	}
 
+	if (getData().tag == U"Castle")
+	{
+		moonLight = RenderTexture{ Size(8,12) * rect_size / 4 };
+
+		{
+			ScopedRenderTarget2D target{ moonLight };
+			ScopedRenderStates2D state{ MakeTransparentBlendState() };
+			const Transformer2D t{ Mat3x2::Scale(1/4.0) };
+
+			Circle{ Vec2{ 4, 2 } *rect_size, rect_size }.drawPie(-90_deg, 180_deg);
+			Quad{ Vec2{ 3, 2 } *rect_size , Vec2{ 5, 2 } *rect_size , Vec2{ 6.5, 10.2 } *rect_size , Vec2{ 1.5, 10.2 } *rect_size }.draw();
+		}
+
+		//const RenderTexture downsample4{ moonLight.size() / 4 };
+		const RenderTexture internalTexture4{ moonLight.size() };
+		//Shader::Downsample(moonLight, downsample4);
+		Shader::GaussianBlur(moonLight, internalTexture4, moonLight);
+
+
+		manager.add(new BigRollingRocks{ {rect_size * 3.5,rect_size * 6.5} });
+
+	}
+
+
 	DataManager::get().maxHP = getData().maxHPList[getData().stage - 1];
 
 	adder.update(manager);
@@ -87,13 +111,18 @@ MainGameScene::MainGameScene(const InitData& init)
 	{
 		camera.update({ player->pos.x - draw_x,DataManager::get().elevatorPosY - Scene::Height() + rect_size });
 	}
+	else if(getData().tag==U"Last")
+	{
+		camera.update({ rect_size - 5, rect_size });
+	}
 	else
 	{
 		camera.update({ player->pos.x - draw_x,player->pos.y - draw_y });
 	}
+
 	DataManager::get().cameraTopLeft = camera.pos;
 
-	if (getData().backgroundTexture == U"BackgroundTexture/洞窟背景.png")
+	if (getData().backgroundTexture == U"BackgroundTexture/洞窟背景.png"|| getData().tag == U"Castle"|| getData().tag == U"Last")
 	{
 		light = new Spotlight{ Scene::Size() };
 	}
@@ -255,6 +284,10 @@ void MainGameScene::gameUpdate()
 		{
 			camera.update({ player->pos.x - draw_x,DataManager::get().elevatorPosY-Scene::Height()+rect_size});
 		}
+		else if (getData().tag == U"Last")
+		{
+			camera.update({ rect_size - 5, rect_size });
+		}
 		else
 		{
 			camera.update({ player->pos.x - draw_x,player->pos.y - draw_y });
@@ -298,7 +331,7 @@ void MainGameScene::gameDraw() const
 	}
 
 	{
-		if(getData().CandyCloud<=getData().stage&& getData().stage < getData().LastBossStage)
+		if(getData().CandyCloud<=getData().stage&& getData().stage < getData().LastBossStage-1)
 		{
 			const ScopedRenderTarget2D target{ backgroundRenderTexture.clear(ColorF{1.0,0}) };
 			const ScopedRenderStates2D blend{ MakeBlendState() };
@@ -336,24 +369,57 @@ void MainGameScene::gameDraw() const
 		{
 			TextureAsset{ U"船体" }.draw(-rect_size, (stage.map.height() - 2) * rect_size);
 		}
-
-		DataManager::get().effect.update();
-
-		{
-			const ScopedRenderTarget2D target{ rTexture.clear(ColorF{0.5,0}) };
-			const ScopedRenderStates2D blend{ MakeTransparentBlendState() };
-			DataManager::get().additiveEffect.update();
-		}
 	}
 
 	if (light)
 	{
 		{
+			double backLight = 0.3;
+
+			if (DataManager::get().laser)
+			{
+				backLight = 0.1;
+			}
+
+			if (getData().tag == U"Castle")
+			{
+				backLight = 0.6;
+			}
+
 			//ライトを描く
-			ScopedSpotlight target{ *light,ColorF{0.3} };
+			ScopedSpotlight target{ *light,ColorF{backLight} };
 			const Transformer2D t{ camera.getMat3x2() };
 
-			Circle{ player->pos,500 }.draw(ColorF{ 1.0 }, ColorF{ 0.0 });
+
+			if (getData().tag == U"Castle")
+			{
+				for(int32 i=0;i<stage.width()/8;++i)
+				{
+					const Rect rect{ i * 8 * rect_size,0,Size(8,12) * rect_size };
+					if(rect.intersects(RectF{ DataManager::get().cameraTopLeft,Scene::Size()}))
+					{
+						moonLight.scaled(4).draw(rect.pos);
+					}
+				}
+			}
+			else if(getData().tag == U"Last")
+			{
+				//Circle{ DataManager::get().cameraTopLeft+Scene::Center(),900 }.draw(ColorF{ 1 }, ColorF{ -0.1 });
+
+				//Circle{ player->pos,150 }.draw(ColorF{ 0.5 }, ColorF{ 0.0 });
+
+				//if(not DataManager::get().table.contains(U"Clear"))
+				//{
+				//	Circle{ DataManager::get().lastBossPos,150}.draw(ColorF{0.5}, ColorF{0.0});
+				//}
+
+				RectF{ DataManager::get().cameraTopLeft,Scene::Width() / 2,Scene::Height() }.draw(Arg::left = ColorF{ 0.25 }, Arg::right = ColorF{ 1.3 });
+				RectF{ DataManager::get().cameraTopLeft + Vec2{Scene::Width() / 2,0},Scene::Width() / 2,Scene::Height() }.draw(Arg::left = ColorF{ 1.3 }, Arg::right = ColorF{ 0.25 });
+			}
+			else
+			{
+				Circle{ player->pos,500 }.draw(ColorF{ 1.0 }, ColorF{ 0.0 });
+			}
 
 			if (DataManager::get().table.contains(U"SlaversCookie"))
 			{
@@ -368,6 +434,18 @@ void MainGameScene::gameDraw() const
 		}
 
 		light->draw();
+	}
+
+	{
+		const Transformer2D t{ camera.getMat3x2() };
+
+		DataManager::get().effect.update();
+
+		{
+			const ScopedRenderTarget2D target{ rTexture.clear(ColorF{0.5,0}) };
+			const ScopedRenderStates2D blend{ MakeTransparentBlendState() };
+			DataManager::get().additiveEffect.update();
+		}
 	}
 
 	Graphics2D::Flush();

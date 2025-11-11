@@ -876,15 +876,6 @@ namespace FallingAnna {
 				bats[i].draw(-soutaix(bats[i].gettx()) + bats[i].gettx(), 0);
 			}
 
-			{
-				String text = U"加速して　を破壊しよう！      {}-左　{}-右　{}-加速　{}-減速"_fmt(ToKeyName(getData().minigameLeftKey, getData().gamepadMode), ToKeyName(getData().minigameRightKey, getData().gamepadMode),ToKeyName(getData().minigameDownKey, getData().gamepadMode), ToKeyName(getData().minigameUpKey, getData().gamepadMode));
-
-				FontAsset{ U"NormalFont" }(text).region(30, 20, Scene::Height() - 45).stretched(20, 5).draw(ColorF{ 0,0.3 });
-				FontAsset{ U"NormalFont" }(text).draw(30, 20, Scene::Height() - 45);
-
-				rock.resized(30).draw(140, Scene::Height() - 40);
-			}
-
 			if (getsuperend())
 			{
 				if (getclear())
@@ -919,22 +910,26 @@ namespace FallingAnna {
 				{
 					scoreColor = Palette::Red;
 				}
-				else if(getclear())
-				{
-					scoreColor = Palette::Yellow;
-				}
 
 				Sfont(U"スコア:", Math::Round(score)).draw(textStyle, Arg::topLeft = Vec2(ww * 0.05f, wh * 0.05f), scoreColor);
 
-				Sfont(U"合格スコア:", goukakuline,U"  ").draw(textStyle, 40, Arg::topLeft = Vec2(ww * 0.05f, wh * 0.05f + 75)).top().draw(3);
+				Sfont(U"合格スコア:", goukakuline, U"  ").draw(textStyle, 40, Arg::topLeft = Vec2(ww * 0.05f, wh * 0.05f + 75), getclear() ? Palette::Yellow : Palette::White).top().draw(3);
 
 
-				Sfont(U"残り:", Math::Round(nokori / annah * 1.6), U"m").draw(textStyle,40, Arg::topRight = Vec2(ww * 0.95f, wh * 0.05f));
-
-				FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30, Arg::topRight = Vec2{ Scene::Width() - 10,5 });
+				Sfont(U"残り:", Math::Round(nokori / annah * 1.6), U"m").draw(textStyle,50, Arg::topRight = Vec2(ww * 0.95f, wh * 0.05f));
 
 
-				//FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw();
+				String text = U"加速して　を破壊しよう！      {}-左　{}-右　{}-加速　{}-減速"_fmt(ToKeyName(getData().minigameLeftKey, getData().gamepadMode), ToKeyName(getData().minigameRightKey, getData().gamepadMode), ToKeyName(getData().minigameDownKey, getData().gamepadMode), ToKeyName(getData().minigameUpKey, getData().gamepadMode));
+
+				//FontAsset{ U"NormalFont" }(text).region(30, 20, Scene::Height() - 45).stretched(20, 5).draw(ColorF{ 0,0.3 });
+
+				RectF{ 0, Scene::Height() - 50,Scene::Width(),50 }.draw(ColorF{ 0,0.3 });
+
+				FontAsset{ U"NormalFont" }(text).draw(30, 20, Scene::Height() - 45);
+
+				FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30, Arg::topRight(Scene::Width() - 20, Scene::Height() - 45));
+
+				rock.resized(30).draw(140, Scene::Height() - 40);
 			}
 		}
 	};

@@ -61,6 +61,10 @@ public:
 	//お試し
 	Shadow shadow;
 
+
+	RenderTexture moonLight;
+
+
 	MainGameScene(const InitData& init);
 
 	~MainGameScene();

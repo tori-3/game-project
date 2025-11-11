@@ -341,11 +341,11 @@
             "BGM": "BGM/StageCloud_Pxtone5.2.mp3",
             "BackgroundTexture": "BackgroundTexture/宇宙背景.png",
             "MapFile": "StageData/lastStage2.json",
-            "Picture": "BackgroundTexture/雲背景.png",
+            "Picture": "StageDisplay/Last2.png",
             "SceneName": "MainGameScene",
             "Sentence": "<ケーキ城 - 入口>\nついにアンナちゃんはチョコ城に\nたどり着いた。彼女には妖精たちの\n運命が託されている……\nが、アンナちゃんはそんな応援を全く\n気にせず、甘い香りに釣られて門を\nくぐるのでした……",
             "StagePos": "(990,300)",
-            "Tag": "",
+            "Tag": "Castle",
             "Text": "",
             "Type": "Stage"
         },
@@ -357,7 +357,7 @@
             "SceneName": "MainGameScene",
             "Sentence": "<大魔女ビター・ヴァイオレット>\nお菓子を独り占めしようとする\nワガママな女の子。\nお菓子は我のものなのじゃ！と、\nアンナちゃんは\nお菓子をかけた最後の戦いに挑みます。",
             "StagePos": "(1050,300)",
-            "Tag": "",
+            "Tag": "Last",
             "Text": "StageData/SignboardText/LastBoss/テキスト.txt",
             "Type": "Boss"
         }

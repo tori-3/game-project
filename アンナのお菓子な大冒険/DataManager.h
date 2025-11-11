@@ -40,6 +40,9 @@ public:
 
 	int32 signboardCount = 0;
 
+	Vec2 lastBossPos{};
+
+	bool laser = false;
 
 	void addEntity(const String& name, const Vec2& pos)
 	{

@@ -134,17 +134,36 @@ public:
 	void draw()const override
 	{
 		TextureAsset{ U"船体" }.draw(-rect_size, DataManager::get().elevatorPosY);
-
-		//for (int32 i = 1; i < stageSize.x - 1; ++i)
-		//{
-		//	TextureAsset{ U"ChocolateWall" }.resized(rect_size).draw(i * rect_size, DataManager::get().elevatorPosY);
-		//}
-
-
 	}
 
 	bool isActive()override
 	{
 		return true;
+	}
+};
+
+class BigRollingRocks :public Entity
+{
+public:
+
+	Audio audio = AudioAsset{ U"ドーナツ" };
+
+	const double audioLength = audio.lengthSec();
+
+	Stopwatch time;
+
+	BigRollingRocks(const Vec2& cpos);
+
+	void update()override;
+
+	void lateUpdate()override;
+
+	void draw()const override;
+
+	bool isActive()override;
+
+	double volume()const
+	{
+		return Clamp((2 - Abs(DataManager::get().playerPos.x - pos.x) / (rect_size * 10)), 0.0, 1.0);
 	}
 };

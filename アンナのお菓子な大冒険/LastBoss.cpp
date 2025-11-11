@@ -225,6 +225,8 @@ LastBoss::LastBoss(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,-5),
 
 	//カメラの設定のため
 	DataManager::get().table.insert(U"LastBoss");
+
+	DataManager::get().lastBossPos = pos;
 }
 
 void LastBoss::update()
@@ -294,7 +296,7 @@ void LastBoss::update()
 			character.addMotion(U"Stand");
 
 			if (isLastSpart()) {
-				switch (Random(0, 4))
+				switch (rand2.get())
 				{
 				case 0:type = State::enemyFalls; break;
 				case 1:type = State::umbrellaShot; break;
@@ -309,7 +311,7 @@ void LastBoss::update()
 					type = State::kick;
 				}
 				else {
-					switch (Random(0, 4))
+					switch (rand1.get())
 					{
 					case 0:type = State::throwUmbrella; break;
 					case 1:type = State::enemyFalls; break;
@@ -378,7 +380,7 @@ void LastBoss::update()
 
 			AudioAsset{ U"召喚" }.playOneShot();
 
-			for (int32 i = 0; i < (isLastSpart()?5:3) ; ++i) {
+			for (int32 i = 0; i < (isLastSpart()?7:4) ; ++i) {
 
 				const Vec2 enemyPos = Vec2(Random(rect_size * 2.0, DataManager::get().stageSize.x - rect_size * 2.0), rect_size*2);
 
@@ -694,14 +696,14 @@ void LastBoss::update()
 
 			updateFunc = [=]() {
 
-			};
+				};
 
 			endFunc = [&]() {
 				type = State::kompeitoGalaxyJump;
 
-			};
+				};
 
-		}
+		}break;
 
 		default:
 			break;
@@ -729,6 +731,8 @@ void LastBoss::update()
 		BGMManager::get().play(U"BGM/StageBossLast1.mp3");
 		playLastBGM = true;
 	}
+
+	DataManager::get().lastBossPos = pos;
 
 	magicCircle.update();
 

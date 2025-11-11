@@ -77,7 +77,8 @@ public:
 		{U"FloatingCookieItem",[]() {return new FloatingCookieItemBlock(); }},
 		{U"StrawberrySoldierTower",[]() {return new StrawberrySoldierTowerBlock(); }},
 		{U"BackgroundDoor",[]() {return new BackgroundDoor(); }},
-		{ U"WindowBlock",[]() {return new WindowBlock(); } }
+		{ U"WindowBlock",[]() {return new WindowBlock(); } },
+		{U"ChocoCakeWindow",[]() {return new ChocoCakeWindow(); }}
 	};
 
 	Stage(const JSON& json,bool backGround=false) {

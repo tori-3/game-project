@@ -404,6 +404,7 @@
     <ClInclude Include="MiniGameSelect.h" />
     <ClInclude Include="MotionLoader.h" />
     <ClInclude Include="Movements.h" />
+    <ClInclude Include="MyRandom.h" />
     <ClInclude Include="NinePatch.hpp" />
     <ClInclude Include="NotificationAddon.h" />
     <ClInclude Include="OpeningScene.h" />

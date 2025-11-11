@@ -241,7 +241,9 @@ namespace Maze1
 		{
 			watch(stopwatch).draw(1070, -5, Palette::White);
 
-			FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30, Vec2{ 10,5 }, ColorF{ 1,0.5 });
+			const RectF rect = FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).region(30, Arg::bottomLeft = Vec2{ 10,Scene::Height() - 5 });
+
+			FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30, Arg::bottomLeft = Vec2{ 10,Scene::Height() - 5 }, rect.stretched(20, 20).intersects(ballPos) ? AlphaF(0.2) : AlphaF(1));
 		}
 	}
 

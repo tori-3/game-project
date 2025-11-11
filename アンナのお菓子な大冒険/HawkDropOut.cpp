@@ -582,7 +582,7 @@ namespace HawkDropOut
 
 		if(not photographyMode)
 		{
-			FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30, Arg::topRight = Vec2{ Scene::Width() - 10,5 });
+			FontAsset{ U"NormalFont" }(U"{} ポーズ"_fmt(ToKeyName(getData().pauseKey, getData().gamepadMode))).draw(30, Arg::bottomRight = Vec2{ Scene::Width() - 10,Scene::Height() - 5 });
 		}
 	}
 }

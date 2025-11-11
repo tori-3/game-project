@@ -504,7 +504,7 @@ void Map::draw() const
 			{
 				chocoPanel.resized(1250).drawAt(600, 300);
 			}
-			else if (index + 1 < getData().LastBossStage)
+			else if (index + 1 < getData().LastBossStage - 1)
 			{
 				cloudPanel.resized(1250).drawAt(600, 300);
 			}
@@ -554,7 +554,7 @@ void Map::draw() const
 		{
 			chocoPanel.resized(1250).drawAt(600, 300);
 		}
-		else if (index + 1 < getData().LastBossStage)
+		else if (index + 1 < getData().LastBossStage - 1)
 		{
 			cloudPanel.resized(1250).drawAt(600, 300);
 		}

@@ -547,3 +547,9 @@ class WindowBlock :public Block
 public:
 	void draw(const Point& pos)const override;
 };
+
+class ChocoCakeWindow :public Block
+{
+public:
+	void draw(const Point& pos)const override;
+};

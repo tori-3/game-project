@@ -662,7 +662,7 @@ void Captain::update()
 
 	if (timer <= 0)
 	{
-		type = Random(0, 3);
+		type = rand.get();
 
 		if (type == 3)
 		{

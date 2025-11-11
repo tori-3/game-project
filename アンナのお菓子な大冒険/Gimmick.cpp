@@ -249,3 +249,55 @@ bool DanmakuKompeito::isActive()
 {
 	return 0 < hp && 0 < timer;
 }
+
+BigRollingRocks::BigRollingRocks(const Vec2& cpos)
+	:Entity{ U"Rocks", Circle{ 0,0,rect_size*3.5 },cpos,{0,0},1 }
+{
+	audio.playOneShot(volume());
+	time.restart();
+}
+
+void BigRollingRocks::update()
+{
+	ClearPrint();
+	manager->stage->hit(&hitBox);
+
+	if (audioLength - 0.4 < time.sF())
+	{
+		audio.playOneShot(volume());
+		time.restart();
+	}
+
+	pos.x += Scene::DeltaTime() * 200 * 3.5 * 1 / 2;
+
+	hitBox.physicsUpdate();
+	hitBox.update();
+
+	attack(U"Player", hitBox.getFigure(), 2);
+	attack(U"Enemy", hitBox.getFigure(), 2);
+
+	if (hitBox.touch(Direction::right))
+	{
+		hp = 0;
+	}
+}
+
+void BigRollingRocks::lateUpdate()
+{
+	if (not isActive())
+	{
+		DataManager::get().additiveEffect.add<ExplosionEffect>(pos, 100*3, Palette::Darkgray);
+		audio.stop();
+		AudioAsset{ U"ドーナツ衝突" }.playOneShot();
+	}
+}
+
+void BigRollingRocks::draw()const
+{
+	TextureAsset{ U"Doughnut" }.resized(rect_size * 2 * 3.5).rotated(DataManager::get().time * 120_deg * 1/2).drawAt(pos);
+}
+
+bool BigRollingRocks::isActive()
+{
+	return 0 < hp && pos.y < DataManager::get().stageSize.y + 200;
+}

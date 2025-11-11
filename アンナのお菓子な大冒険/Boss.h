@@ -5,6 +5,7 @@
 #include"MotionLoader.h"
 #include"CookieItem.h"
 #include"CharacterSystem.h"
+#include"MyRandom.h"
 
 class SnowKnight :public Entity
 {
@@ -118,6 +119,8 @@ public:
 	CharacterSystem character;
 
 	size_t type = 1;
+
+	MyRandom rand{ 3 };
 
 	Captain(const Vec2& cpos);
 

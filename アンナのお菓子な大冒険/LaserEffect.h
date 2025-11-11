@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include"DataManager.h"
 
 struct LaserEffect : IEffect
 {
@@ -11,7 +12,14 @@ struct LaserEffect : IEffect
 	explicit LaserEffect(const RectF& rect, double rad, const ColorF& color)
 		: rect{ rect }
 		, color{ color }
-		, rad{ rad } {}
+		, rad{ rad } {
+		DataManager::get().laser = true;
+	}
+
+	~LaserEffect()
+	{
+		DataManager::get().laser = false;
+	}
 
 	bool update(double t) override;
 };
