@@ -112,8 +112,8 @@ public:
 
 	bool damageFlg = false;
 
-	static constexpr double mutekiTime = 1.5;
-	double damageTimer = 0;
+	//static constexpr double mutekiTime = 1.5;
+	//double damageTimer = 0;
 
 	bool kickFlg = false;
 

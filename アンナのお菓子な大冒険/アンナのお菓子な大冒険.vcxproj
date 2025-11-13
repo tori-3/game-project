@@ -354,6 +354,7 @@
   <ItemGroup>
     <ClInclude Include="AnimationSystem.h" />
     <ClInclude Include="AnnaMusicGame.h" />
+    <ClInclude Include="AttackInfo.h" />
     <ClInclude Include="BeltConveyorButton.h" />
     <ClInclude Include="BGMManager.hpp" />
     <ClInclude Include="ControllerInput.h" />

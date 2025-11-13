@@ -13,7 +13,7 @@ public:
 
 	int32 attackCount = 0;
 
-	static constexpr int32 maxHp = 3;
+	static constexpr int32 maxHp = 5;
 
 	CharacterSystem character;
 
@@ -42,7 +42,7 @@ public:
 	Vec2 kenboxVel{ 0,0 };
 	int32 kenboxHp{ 10 };
 
-	Vec2 force{};
+	//Vec2 force{};
 
 	//剣を振ったか
 	bool kenFlg = false;
@@ -99,7 +99,7 @@ class Captain :public Entity
 {
 public:
 
-	static constexpr int32 maxHp = 25;
+	static constexpr int32 maxHp = 30;
 
 	double accumulatedTime = 0;
 

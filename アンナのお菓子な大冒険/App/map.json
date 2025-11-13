@@ -165,7 +165,7 @@
             "SceneName": "MainGameScene",
             "Sentence": "<2-5>巨大イチゴ現る！\n赤いイチゴさん！どうしてそんなに大きくなってしまったんですか～？\n真面目にやってきたからかもしれない……",
             "StagePos": "(430,580)",
-            "Tag": "",
+            "Tag": "BigCookie",
             "Text": "",
             "Type": "Stage"
         },

@@ -31,9 +31,6 @@ void SnowKnight::update()
 
 	manager->stage->hit(&hitBox);
 
-	hitBox.physicsUpdate();
-	hitBox.update();
-
 	attack(U"Player", hitBox.getFigure(), 1);
 
 	if (timer <= 0)
@@ -222,6 +219,9 @@ void SnowKnight::update()
 		}
 	}
 
+	hitBox.physicsUpdate();
+	hitBox.update();
+
 	character.update(pos, left);
 	if (not yoroi)
 	{
@@ -251,114 +251,122 @@ void SnowKnight::lateUpdate()
 
 void SnowKnight::damage(int32 n, const Vec2& _force, DamageType damageType)
 {
-	if (not character.hasMotion(U"Muteki") and not character.hasMotion(U"YoroiMuteki"))
+	//if (not character.hasMotion(U"Muteki") and not character.hasMotion(U"YoroiMuteki"))
+	//{
+	if (yoroi)
 	{
-		if (yoroi)
+		//5は突進のダメージ
+		if (5 <= n)
 		{
-			//5は突進のダメージ
-			if (5 <= n)
-			{
-				yoroi -= 1;
-			}
-			else
-			{
-				String text;
+			yoroi -= 1;
 
-				if (attackCount < 3)
-				{
-					text = U"むてき！";
-				}
-				else if (attackCount < 4)
-				{
-					text = U"むてきだってば！";
-				}
-				else if (attackCount < 5)
-				{
-					text = U"よろいさいきょう！";
-				}
-				else if (attackCount < 6)
-				{
-					text = U"きかないね！";
-				}
-				else if (attackCount < 7)
-				{
-					text = U"とっしんしてみな！";
-				}
-				else
-				{
-					if (IsOdd(attackCount))
-					{
-						if (10 <= dynamic_cast<Player*>(manager->get(U"Player"))->itemCount)
-						{
-							text = U"攻撃ボタン長押し！";
-						}
-						else
-						{
-							text = U"クッキーを取ろう！";
-						}
-					}
-					else
-					{
-						text = U"むてき！";
-					}
-				}
-
-				DataManager::get().effect.add<FadeUpEffect>(pos,text, FontAsset(U"NormalFont"),Palette::Blue);
-
-				++attackCount;
-			}
-
-			if (yoroi <= 0)
-			{
-				character.addMotion(U"Nugeru");
-			}
-
-			character.addMotion(U"YoroiMuteki");
-			force = _force;
-			vel.y = force.y;
-			vel.x = force.x * 1.5;
-
-			AudioAsset{ U"ヘッドドロップ" }.playOneShot();
+			character.removeMotion(U"YoroiMuteki");
+			character.addMotion(U"Nugeru");
 		}
 		else
 		{
-			hp -= n;
-			character.addMotion(U"Muteki");
-			force = _force;
-			vel.y = force.y;
-			vel.x = force.x;
-		}
+			String text;
 
-		if (5 <= n)
-		{
-			dynamic_cast<Player*>(manager->get(U"Player"))->stopRush();
-			if (pos.x < manager->get(U"Player")->pos.x)
+			if (attackCount < 3)
 			{
-				manager->get(U"Player")->damage(0, Vec2{ 200,-20 });
+				text = U"むてき！";
+			}
+			else if (attackCount < 4)
+			{
+				text = U"むてきだってば！";
+			}
+			else if (attackCount < 5)
+			{
+				text = U"よろいさいきょう！";
+			}
+			else if (attackCount < 6)
+			{
+				text = U"きかないね！";
+			}
+			else if (attackCount < 7)
+			{
+				text = U"とっしんしてみな！";
 			}
 			else
 			{
-				manager->get(U"Player")->damage(0, Vec2{ -200,-20 });
-			}
-		}
-	}
-	else if (character.hasMotion(U"YoroiMuteki") and 5 <= n)
-	{
-		if (yoroi)
-		{
-			yoroi -= 1;
-			if (yoroi <= 0)
-			{
-				character.addMotion(U"Nugeru");
+				if (IsOdd(attackCount))
+				{
+					if (10 <= dynamic_cast<Player*>(manager->get(U"Player"))->itemCount)
+					{
+						text = U"攻撃ボタン長押し！";
+					}
+					else
+					{
+						text = U"クッキーを取ろう！";
+					}
+				}
+				else
+				{
+					text = U"むてき！";
+				}
 			}
 
-			character.addMotion(U"Muteki");
-			force = _force;
-			vel.y = force.y;
-			vel.x = force.x * 1.5;
-			AudioAsset{ U"ヘッドドロップ" }.playOneShot();
+			DataManager::get().effect.add<FadeUpEffect>(pos, text, FontAsset(U"NormalFont"), Palette::Blue);
+
+			character.removeMotion(U"YoroiMuteki");
+			character.addMotion(U"YoroiMuteki");
+
+			++attackCount;
 		}
+
+		//if (yoroi <= 0)
+		//{
+		//	character.addMotion(U"Nugeru");
+		//}
+
+		//character.addMotion(U"YoroiMuteki");
+
+		//force = _force;
+		vel.y = _force.y;
+		vel.x = _force.x*0.4;
+
+		AudioAsset{ U"ヘッドドロップ" }.playOneShot();
 	}
+	else
+	{
+		hp -= n;
+		character.removeMotion(U"Muteki");
+		character.addMotion(U"Muteki");
+		//force = _force;
+		vel.y = _force.y;
+		vel.x = _force.x*0.4;
+	}
+
+	//if (5 <= n)
+	//{
+	//	dynamic_cast<Player*>(manager->get(U"Player"))->stopRush();
+	//	if (pos.x < manager->get(U"Player")->pos.x)
+	//	{
+	//		manager->get(U"Player")->damage(0, Vec2{ 200,-20 });
+	//	}
+	//	else
+	//	{
+	//		manager->get(U"Player")->damage(0, Vec2{ -200,-20 });
+	//	}
+	//}
+	//}
+	//else if (character.hasMotion(U"YoroiMuteki") and 5 <= n)
+	//{
+	//	if (yoroi)
+	//	{
+	//		yoroi -= 1;
+	//		if (yoroi <= 0)
+	//		{
+	//			character.addMotion(U"Nugeru");
+	//		}
+
+	//		character.addMotion(U"Muteki");
+	//		force = _force;
+	//		vel.y = force.y;
+	//		vel.x = force.x * 1.5;
+	//		AudioAsset{ U"ヘッドドロップ" }.playOneShot();
+	//	}
+	//}
 }
 
 void SnowKnight::draw()const
@@ -1015,9 +1023,7 @@ void Captain::draw()const
 
 void Captain::damage(int32 n, const Vec2&, DamageType)
 {
-	if (not character.hasMotion(U"Muteki"))
-	{
-		hp -= n;
-		character.addMotion(U"Muteki");
-	}
+	hp -= n;
+	character.removeMotion(U"Muteki");
+	character.addMotion(U"Muteki");
 }

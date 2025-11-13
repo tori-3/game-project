@@ -1160,5 +1160,8 @@
     <ClInclude Include="MyRandom.h">
       <Filter>Header Files\GameLib</Filter>
     </ClInclude>
+    <ClInclude Include="AttackInfo.h">
+      <Filter>Header Files\MainGameScene</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

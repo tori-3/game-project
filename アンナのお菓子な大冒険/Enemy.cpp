@@ -9,10 +9,9 @@ StrawberrySoldier::StrawberrySoldier(const Vec2& cpos)
 }
 
 StrawberrySoldier::StrawberrySoldier(const Vec2& cpos,Big)
-	: Entity{ U"Enemy", RectF{Arg::center(0,0),70*2,69*2},cpos,{0,0},1 }
+	: Entity{ U"Enemy", RectF{Arg::center(0,0),70*2,69*2},cpos,{0,0},5 }
 	, character{ U"Characters/itigo/itigo.json" ,U"Characters/itigo/motion.txt" ,0.3*2,cpos,true,false }
 	,isBig(true)
-
 {
 	character.addMotion(U"", true);
 }
@@ -77,14 +76,6 @@ void StrawberrySoldier::lateUpdate()
 void StrawberrySoldier::draw()const
 {
 	character.draw();
-}
-
-void StrawberrySoldier::damage(int32 n, const Vec2&, DamageType)
-{
-	if(not isBig)
-	{
-		Entity::damage(n);
-	}
 }
 
 CookieSoldier::CookieSoldier(const Vec2& cpos)
@@ -304,7 +295,7 @@ ItigoSlave::ItigoSlave(const Vec2& cpos) :Entity{ U"Enemy", RectF{Arg::center(0,
 	character.addMotion(U"walk", true);
 }
 
-ItigoSlave::ItigoSlave(const Vec2& cpos,Big) :Entity{ U"Enemy", RectF{Arg::center(0,15),70 * 1.5*2,69 * 1.5*2 },cpos,{0,0},2 }
+ItigoSlave::ItigoSlave(const Vec2& cpos,Big) :Entity{ U"Enemy", RectF{Arg::center(0,15),70 * 1.5*2,69 * 1.5*2 },cpos,{0,0},10 }
 , character{ U"Characters/itigoSlave/itigoSlave.json" ,U"Characters/itigoSlave/motion.txt" ,0.3*2,cpos,true,false }
 ,isBig(true)
 {
@@ -392,16 +383,15 @@ void ItigoSlave::lateUpdate()
 
 void ItigoSlave::damage(int32 n, const Vec2& force, DamageType)
 {
-	if (not isBig)
+	character.removeMotion(U"attack");
+	hp -= n;
+
+	if(not isBig)
 	{
-		if (not character.hasMotion(U"Muteki"))
-		{
-			character.removeMotion(U"attack");
-			hp -= n;
-			character.addMotion(U"Muteki");
-			vel.y = force.y;
-			vel.x = force.x * 1.5;
-		}
+		character.removeMotion(U"Muteki");
+		character.addMotion(U"Muteki");
+		vel.y = force.y;
+		vel.x = force.x * 1.5;
 	}
 }
 

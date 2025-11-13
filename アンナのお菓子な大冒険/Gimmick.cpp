@@ -81,8 +81,8 @@ void RollingRocks::update()
 	hitBox.update();
 
 	attack(U"Player", hitBox.getFigure(), 1);
-	attack(U"Enemy", hitBox.getFigure(), 1);
-	attack(U"SlaversCookie", hitBox.getFigure(), 1);
+	attackEnemy(AttackInfo{ AttackType::Donut,id },U"Enemy", hitBox.getFigure(), 1);
+	attackEnemy(AttackInfo{ AttackType::Donut,id },U"SlaversCookie", hitBox.getFigure(), 1);
 
 	if (hitBox.touch(Direction::left))
 	{

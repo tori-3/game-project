@@ -3,6 +3,7 @@
 #include"HitBox.h"
 #include"DataManager.h"
 #include"Stage.h"
+#include"AttackInfo.h"
 
 class EntityManager;
 
@@ -20,6 +21,8 @@ public:
 	HitBox hitBox;
 	bool alive = true;
 
+	HashSet<AttackInfo>attacked;
+
 	Entity(const String& tag,const Figure& figure, const Vec2& _pos, const Vec2& _vel,int32 _hp) :tag{ tag },pos{_pos}, vel{_vel}, hp{_hp}, hitBox{&pos, &vel, figure, &hp} {}
 
 	virtual ~Entity() = default;
@@ -31,6 +34,17 @@ public:
 	virtual void draw()const = 0;
 
 	virtual void damage(int32 n, const Vec2& force = {}, DamageType damageType = DamageType::Brakable);
+
+	//プレイヤーは敵に対してdamageではなくこれを呼ぶ
+	void enemyDamage(const AttackInfo& info, int32 n, const Vec2& force = {}, DamageType damageType = DamageType::Brakable)
+	{
+		if(not attacked.contains(info))
+		{
+			attacked.insert(info);
+
+			damage(n, force, damageType);
+		}
+	}
 
 	void kill()
 	{
@@ -63,8 +77,16 @@ public:
 		return attack(target,figure,damage,200,damageType,kaisuu);
 	}
 
+
+	Array<Entity*> attackEnemy(const AttackInfo& info,StringView target, const Figure& figure, int32 damage, double power = 200, DamageType damageType = DamageType::Brakable, int32 kaisuu = -1);
+
+	Array<Entity*> attackEnemy(const AttackInfo& info,StringView target, const Figure& figure, int32 damage, DamageType damageType, int32 kaisuu = -1)
+	{
+		return attackEnemy(info,target, figure, damage, 200, damageType, kaisuu);
+	}
+
 	//ダメージを受けたEntityのみを返す
-	Array<Entity*> attackDamaged(StringView target, const Figure& figure, double damage, double power = 200, int32 kaisuu = -1);
+	Array<Entity*> attackEnemyDamaged(const AttackInfo& info, StringView target, const Figure& figure, double damage, double power = 200, int32 kaisuu = -1);
 
 private:
 

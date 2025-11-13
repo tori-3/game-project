@@ -15,6 +15,8 @@ public:
 
 	CharacterSystem character;
 
+	int32 id = CreateID();
+
 	Hadouken(const Vec2& _pos, double angle) :Entity {U"PlayerAttack", RectF{Arg::center(0,0),50,50},_pos,{0,0},1}, angle{angle}
 		, character{ U"Characters/Hadouken/Hadouken.json",U"Characters/Hadouken/motion.txt",0.25,_pos,false }
 	{
@@ -22,7 +24,8 @@ public:
 		z = 100;
 	}
 
-	void update()override {
+	void update()override
+	{
 
 		timer -= Scene::DeltaTime();
 
@@ -30,26 +33,31 @@ public:
 
 		manager->stage->hit(&hitBox);
 
-		if (hitBox.touch(Direction::left) || hitBox.touch(Direction::right) || hitBox.touch(Direction::up) || hitBox.touch(Direction::down)) {
+		if (hitBox.touch(Direction::left) || hitBox.touch(Direction::right) || hitBox.touch(Direction::up) || hitBox.touch(Direction::down))
+		{
 			collisionFlg = true;
 		}
 
-		if (timer<=0) {
+		if (timer<=0)
+		{
 			hp = 0;
 		}
 
 		pos += OffsetCircular{ {0,0},Scene::DeltaTime() * 700,angle };
 
-		for (auto& entity : manager->getArray(U"Enemy")) {
-				if (entity->hitBox.intersects(hitBox)) {
-					entity->damage(1, OffsetCircular{ {0,0},700,angle });
+		for (auto& entity : manager->getArray(U"Enemy"))
+		{
+				if (entity->hitBox.intersects(hitBox))
+				{
+					entity->enemyDamage(AttackInfo{AttackType::Punch,id},1, OffsetCircular{ {0,0},700,angle });
 					collisionFlg = true;
 
 					break;
 				}
 		}
 
-		if (collisionFlg) {
+		if (collisionFlg)
+		{
 			hp = 0;
 			DataManager::get().additiveEffect.add<ExplosionEffect>(pos,35,HSV{ -20,0.8,1 });
 			AudioAsset{ U"パンチヒット" }.playOneShot();
@@ -61,8 +69,15 @@ public:
 		character.update(pos, false);
 	}
 
-	void draw()const override {
+	void draw()const override
+	{
 		character.draw();
+	}
+
+	static int32 CreateID()
+	{
+		static int32 id = 0;
+		return id++;
 	}
 };
 
@@ -111,6 +126,10 @@ public:
 	static constexpr double CoyoteTime = 0.2;
 	double coyoteTimer = 0;
 
+	int32 rushCount = 0;
+	int32 slidingCount = 0;
+	int32 headDropCount = 0;
+	int32 summerCount = 0;
 
 	void setDataP(GameData* data)
 	{

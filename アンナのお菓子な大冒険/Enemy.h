@@ -29,8 +29,6 @@ public:
 	void lateUpdate()override;
 
 	void draw()const override;
-
-	void damage(int32 n, const Vec2& force, DamageType)override;
 };
 
 class CookieSoldier :public Entity

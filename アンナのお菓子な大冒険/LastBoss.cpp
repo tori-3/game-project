@@ -374,7 +374,7 @@ void LastBoss::update()
 
 		}break;
 		case State::enemyFalls: {
-			timer = 3.0;
+			timer = 1.5;
 
 			character.addMotion(U"UdeAgeru");
 
@@ -416,14 +416,14 @@ void LastBoss::update()
 
 		}break;
 		case State::umbrellaShot: {
-			timer = 10.0;
+			timer = 4.0;
 
 			character.addMotion(U"ごめんあそばせ");
 
 			for (int32 i = 0; i < 10; ++i) {
 				const SizeF stageSize = DataManager::get().stageSize;
 
-				const Vec2 enemyPos = Vec2(stageSize.x + 400 * i, Random(rect_size * 5.0, stageSize.y - rect_size * 2.0));
+				const Vec2 enemyPos = Vec2(stageSize.x + 300 * i, Random(rect_size * 6.0, stageSize.y - rect_size * 2.0));
 				ClosedUmbrella* umb = new ClosedUmbrella{ enemyPos,-90_deg,400 };
 				umb->effectFlg = true;
 				manager->add(umb);
@@ -457,7 +457,7 @@ void LastBoss::update()
 
 			
 
-			for (int32 i = 0; i < 3; ++i) {
+			for (int32 i = 0; i < (isLastSpart()?4:2); ++i) {
 				const SizeF stageSize = DataManager::get().stageSize;
 
 				ChaseUmbrella* umb = new ChaseUmbrella{ pos,30_deg*(i-1),Random(300.0,500.0),timeLim };
@@ -721,9 +721,9 @@ void LastBoss::update()
 		}
 	}
 
-	if (0 < damageTimer) {
-		damageTimer -= Scene::DeltaTime();
-	}
+	//if (0 < damageTimer) {
+	//	damageTimer -= Scene::DeltaTime();
+	//}
 
 	if((not playLastBGM)&&isLastSpart())
 	{
@@ -759,12 +759,9 @@ void LastBoss::draw()const
 
 void LastBoss::damage(int32 n, const Vec2&, DamageType)
 {
-	if (damageTimer <= 0)
-	{
-		hp -= n;
-		damageTimer = mutekiTime;
-		damageFlg = true;
+	hp -= n;
+	damageFlg = true;
 
-		character.addMotion(U"Muteki");
-	}
+	character.removeMotion(U"Muteki");
+	character.addMotion(U"Muteki");
 }

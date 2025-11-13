@@ -148,7 +148,7 @@ private:
 			textColor.a *= alpha;
 
 			constexpr double height = 80;
-			const RectF rect{ 10, (Scene::Height() - height) - (10 + notification.currentIndex * height), (m_style.width * xScale), height - 1 };
+			const RectF rect{ Arg::topRight(Scene::Width() - 10, (Scene::Height() - height) - (10 + notification.currentIndex * height)), (m_style.width * xScale), height - 1 };
 			rect.rounded(3).draw(backgroundColor);
 
 			if (notification.type != Type::Normal)

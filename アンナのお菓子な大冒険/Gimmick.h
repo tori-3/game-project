@@ -38,6 +38,8 @@ public:
 
 	Stopwatch time;
 
+	int32 id = CreateID();
+
 	RollingRocks(const Vec2& cpos);
 
 	void update()override;
@@ -51,6 +53,12 @@ public:
 	double volume()const
 	{
 		return Clamp((2 - Abs(DataManager::get().playerPos.x - pos.x)/ (rect_size*10)), 0.0, 1.0);
+	}
+
+	static int32 CreateID()
+	{
+		static int32 id = 0;
+		return id++;
 	}
 };
 

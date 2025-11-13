@@ -97,6 +97,8 @@ Player::Player(const Vec2& cpos) :
 			rushEffectAccumulateTime = 0;
 			windEffectAccumulateTime = 0;
 
+			++rushCount;
+
 			//前のフレームのtouchが残っているためここで当たり判定を取っておく
 			manager->stage->hit(&hitBox);
 		},
@@ -149,7 +151,7 @@ Player::Player(const Vec2& cpos) :
 				AudioAsset{ U"突進足音" }.stop(0.1s);
 			}
 
-			if (attackDamaged(U"Enemy",  character.character.table.at(U"Hitbox").joint.getQuad(), 5, 1500))
+			if (attackEnemyDamaged(AttackInfo{AttackType::Rush,rushCount},U"Enemy", character.character.table.at(U"Hitbox").joint.getQuad(), 10, 1500))
 			{
 				AudioAsset{ U"突進衝突" }.playOneShot();
 			}
@@ -280,10 +282,12 @@ Player::Player(const Vec2& cpos) :
 			character.addMotion(U"Sliding");
 			hitBox.setFigure(RectF{ Arg::center(0,defaultBody.h / 4),defaultBody.w,defaultBody.h / 2 });
 			AudioAsset{ U"スライディング" }.playOneShot();
+
+			++slidingCount;
 		},
 		.update = [&](double t) {
 
-			attack(U"Enemy", character.character.table.at(U"Hitbox").joint.getQuad(), 1, 1000);
+			attackEnemy(AttackInfo{AttackType::Sliding,slidingCount},U"Enemy", character.character.table.at(U"Hitbox").joint.getQuad(), 1, 1000);
 
 
 			slidingEffectAccumulateTime += Scene::DeltaTime();
@@ -351,9 +355,11 @@ Player::Player(const Vec2& cpos) :
 			character.addMotion(U"Summer");
 			summerHited = false;
 			vel.y = -500.0;
+
+			++summerCount;
 		},
 		.update = [&](double t) {
-			if (attack(U"Enemy",Circle{ pos,70 },1,200) and (not summerHited)) {
+			if (attackEnemy(AttackInfo{AttackType::Summer,summerCount},U"Enemy",Circle{ pos,70 },1,200) and (not summerHited)) {
 				AudioAsset{ U"サマーソルトヒット" }.playOneShot();
 				summerHited = true;
 			}
@@ -372,11 +378,15 @@ Player::Player(const Vec2& cpos) :
 		.start = [&]() {
 			character.addMotion(U"HeadDrop");
 			speed = 0;
-		},
-		.update = [&](double t) {
 
-			for (auto enemy : attack(U"Enemy", hitBox.Get_Box(), 2, 200)) {
-				if (enemy->isActive()) {
+			++headDropCount;
+		},
+		.update = [&](double t)
+		{
+			for (auto enemy : attackEnemy(AttackInfo{AttackType::HeadDrop,headDropCount},U"Enemy", hitBox.Get_Box(), 2, 200))
+			{
+				if (enemy->isActive())
+				{
 					actMan.start(U"Jump");
 					actMan.start(U"HeadDropMuteki");
 					Motion m;

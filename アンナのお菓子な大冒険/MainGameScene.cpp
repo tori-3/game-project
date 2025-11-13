@@ -479,6 +479,19 @@ void MainGameScene::gameDraw() const
 			hpBar.draw(Palette::Purple, Palette::Red);
 		}
 
+		if (getData().tag == U"BigCookie")
+		{
+			if (DataManager::get().signboardCount == 1)
+			{
+				String text1 = U"ヘッドドロップでクッキーの上に乗ろう！";
+				String text2 = U"{0}→{1}→{1}→{1}→…"_fmt(ToKeyName(getData().jumpKey, getData().gamepadMode), ToKeyName(getData().downKey, getData().gamepadMode));
+
+				RoundRect{ Arg::center(Scene::Center().x, 50),FontAsset{ U"NormalFont" }(text1 + U"\n" + text2).region().size,10 }.drawShadow(Vec2{ 0,0 }, 24, 10, ColorF{ 0,0.6 });
+				FontAsset{ U"NormalFont" }(text1).drawAt(25, Scene::Center().x, 50 - FontAsset{ U"NormalFont" }.height(25) / 2.0);
+				FontAsset{ U"NormalFont" }(text2).drawAt(25, Scene::Center().x, 50 + FontAsset{ U"NormalFont" }.height(25) / 2.0);
+			}
+		}
+
 		if (getData().tag == U"Tutorial")
 		{
 			String text1;
@@ -528,7 +541,7 @@ void MainGameScene::gameDraw() const
 
 			if (text1)
 			{
-				RoundRect{ Arg::center(Scene::Center().x, 50),FontAsset{ U"NormalFont" }(text1 + U"\n" + text2).region().size,10 }.drawShadow(Vec2{ 0,0 }, 24, 10, ColorF{ 0,0.3 });
+				RoundRect{ Arg::center(Scene::Center().x, 50),FontAsset{ U"NormalFont" }(text1 + U"\n" + text2).region().size,10 }.drawShadow(Vec2{ 0,0 }, 24, 10, ColorF{ 0,0.6 });
 				FontAsset{ U"NormalFont" }(text1).drawAt(25, Scene::Center().x, 50 - FontAsset{ U"NormalFont" }.height(25) / 2.0);
 				FontAsset{ U"NormalFont" }(text2).drawAt(25, Scene::Center().x, 50 + FontAsset{ U"NormalFont" }.height(25) / 2.0);
 			}

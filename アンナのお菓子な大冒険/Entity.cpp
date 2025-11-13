@@ -46,7 +46,33 @@ Array<Entity*> Entity::attack(StringView target, const Figure& figure, int32 dam
 	return list;
 }
 
-Array<Entity*> Entity::attackDamaged(StringView target, const Figure& figure, double damage, double power, int32 kaisuu)
+Array<Entity*> Entity::attackEnemy(const AttackInfo&info,StringView target, const Figure& figure, int32 damage, double power, DamageType damageType, int32 kaisuu)
+{
+	Array<Entity*>list;
+	for (auto& entity : manager->getArray(target)) {
+		if (entity->hitBox.getFigure().intersects(figure)) {
+
+			if (entity->pos.x < pos.x) {
+				entity->enemyDamage(info,damage, { -power,-200 }, damageType);
+			}
+			else {
+				entity->enemyDamage(info,damage, { power,-200 }, damageType);
+			}
+
+			list << entity;
+			if (kaisuu == 0) {
+				break;
+			}
+			else {
+				kaisuu -= 1;
+			}
+		}
+	}
+	return list;
+}
+
+
+Array<Entity*> Entity::attackEnemyDamaged(const AttackInfo& info, StringView target, const Figure& figure, double damage, double power, int32 kaisuu)
 {
 	Array<Entity*>list;
 	for (auto& entity : manager->getArray(target))
@@ -58,11 +84,11 @@ Array<Entity*> Entity::attackDamaged(StringView target, const Figure& figure, do
 
 			if (entity->pos.x < pos.x)
 			{
-				entity->damage(damage, { -power,-200 });
+				entity->enemyDamage(info,damage, { -power,-200 });
 			}
 			else
 			{
-				entity->damage(damage, { power,-200 });
+				entity->enemyDamage(info,damage, { power,-200 });
 			}
 
 			if (entity->hp < tmpHp)
